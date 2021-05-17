@@ -17,7 +17,6 @@ import (
 	io "io"
 	math "math"
 	bits "math/bits"
-	sort "sort"
 )
 
 func (m *TestAllTypesProto3_NestedMessage) UnmarshalVT(dAtA []byte) error {
@@ -9606,21 +9605,23 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.PackedNestedEnum) > 0 {
-		dAtA6 := make([]byte, len(m.PackedNestedEnum)*10)
-		var j5 int
+		var pksize6 int
+		for _, num := range m.PackedNestedEnum {
+			pksize6 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize6
+		j5 := i
 		for _, num1 := range m.PackedNestedEnum {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA6[j5] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j5] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j5++
 			}
-			dAtA6[j5] = uint8(num)
+			dAtA[j5] = uint8(num)
 			j5++
 		}
-		i -= j5
-		copy(dAtA[i:], dAtA6[:j5])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j5))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize6))
 		i--
 		dAtA[i] = 0x5
 		i--
@@ -9710,146 +9711,151 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x8a
 	}
 	if len(m.PackedSint64) > 0 {
-		var j9 int
-		dAtA11 := make([]byte, len(m.PackedSint64)*10)
+		var pksize10 int
 		for _, num := range m.PackedSint64 {
-			x10 := (uint64(num) << 1) ^ uint64((num >> 63))
-			for x10 >= 1<<7 {
-				dAtA11[j9] = uint8(uint64(x10)&0x7f | 0x80)
+			pksize10 += sozTestMessagesProto3(uint64(num))
+		}
+		i -= pksize10
+		j9 := i
+		for _, num := range m.PackedSint64 {
+			x11 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x11 >= 1<<7 {
+				dAtA[j9] = uint8(uint64(x11)&0x7f | 0x80)
 				j9++
-				x10 >>= 7
+				x11 >>= 7
 			}
-			dAtA11[j9] = uint8(x10)
+			dAtA[j9] = uint8(x11)
 			j9++
 		}
-		i -= j9
-		copy(dAtA[i:], dAtA11[:j9])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j9))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize10))
 		i--
 		dAtA[i] = 0x5
 		i--
 		dAtA[i] = 0x82
 	}
 	if len(m.PackedSint32) > 0 {
-		dAtA12 := make([]byte, len(m.PackedSint32)*5)
-		var j13 int
+		var pksize13 int
+		for _, num := range m.PackedSint32 {
+			pksize13 += sozTestMessagesProto3(uint64(num))
+		}
+		i -= pksize13
+		j12 := i
 		for _, num := range m.PackedSint32 {
 			x14 := (uint32(num) << 1) ^ uint32((num >> 31))
 			for x14 >= 1<<7 {
-				dAtA12[j13] = uint8(uint64(x14)&0x7f | 0x80)
-				j13++
+				dAtA[j12] = uint8(uint64(x14)&0x7f | 0x80)
+				j12++
 				x14 >>= 7
 			}
-			dAtA12[j13] = uint8(x14)
-			j13++
+			dAtA[j12] = uint8(x14)
+			j12++
 		}
-		i -= j13
-		copy(dAtA[i:], dAtA12[:j13])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j13))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize13))
 		i--
 		dAtA[i] = 0x4
 		i--
 		dAtA[i] = 0xfa
 	}
 	if len(m.PackedUint64) > 0 {
-		dAtA16 := make([]byte, len(m.PackedUint64)*10)
-		var j15 int
+		var pksize16 int
+		for _, num := range m.PackedUint64 {
+			pksize16 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize16
+		j15 := i
 		for _, num := range m.PackedUint64 {
 			for num >= 1<<7 {
-				dAtA16[j15] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j15] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j15++
 			}
-			dAtA16[j15] = uint8(num)
+			dAtA[j15] = uint8(num)
 			j15++
 		}
-		i -= j15
-		copy(dAtA[i:], dAtA16[:j15])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j15))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize16))
 		i--
 		dAtA[i] = 0x4
 		i--
 		dAtA[i] = 0xf2
 	}
 	if len(m.PackedUint32) > 0 {
-		dAtA18 := make([]byte, len(m.PackedUint32)*10)
-		var j17 int
+		var pksize18 int
+		for _, num := range m.PackedUint32 {
+			pksize18 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize18
+		j17 := i
 		for _, num := range m.PackedUint32 {
 			for num >= 1<<7 {
-				dAtA18[j17] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j17] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j17++
 			}
-			dAtA18[j17] = uint8(num)
+			dAtA[j17] = uint8(num)
 			j17++
 		}
-		i -= j17
-		copy(dAtA[i:], dAtA18[:j17])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j17))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize18))
 		i--
 		dAtA[i] = 0x4
 		i--
 		dAtA[i] = 0xea
 	}
 	if len(m.PackedInt64) > 0 {
-		dAtA20 := make([]byte, len(m.PackedInt64)*10)
-		var j19 int
+		var pksize20 int
+		for _, num := range m.PackedInt64 {
+			pksize20 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize20
+		j19 := i
 		for _, num1 := range m.PackedInt64 {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA20[j19] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j19] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j19++
 			}
-			dAtA20[j19] = uint8(num)
+			dAtA[j19] = uint8(num)
 			j19++
 		}
-		i -= j19
-		copy(dAtA[i:], dAtA20[:j19])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j19))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize20))
 		i--
 		dAtA[i] = 0x4
 		i--
 		dAtA[i] = 0xe2
 	}
 	if len(m.PackedInt32) > 0 {
-		dAtA22 := make([]byte, len(m.PackedInt32)*10)
-		var j21 int
+		var pksize22 int
+		for _, num := range m.PackedInt32 {
+			pksize22 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize22
+		j21 := i
 		for _, num1 := range m.PackedInt32 {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA22[j21] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j21] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j21++
 			}
-			dAtA22[j21] = uint8(num)
+			dAtA[j21] = uint8(num)
 			j21++
 		}
-		i -= j21
-		copy(dAtA[i:], dAtA22[:j21])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j21))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize22))
 		i--
 		dAtA[i] = 0x4
 		i--
 		dAtA[i] = 0xda
 	}
 	if len(m.MapStringForeignEnum) > 0 {
-		keysForMapStringForeignEnum := make([]string, 0, len(m.MapStringForeignEnum))
 		for k := range m.MapStringForeignEnum {
-			keysForMapStringForeignEnum = append(keysForMapStringForeignEnum, string(k))
-		}
-		sort.Slice(keysForMapStringForeignEnum, func(i, j int) bool {
-			return keysForMapStringForeignEnum[i] < keysForMapStringForeignEnum[j]
-		})
-		for iNdEx := len(keysForMapStringForeignEnum) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringForeignEnum[string(keysForMapStringForeignEnum[iNdEx])]
+			v := m.MapStringForeignEnum[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i -= len(keysForMapStringForeignEnum[iNdEx])
-			copy(dAtA[i:], keysForMapStringForeignEnum[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringForeignEnum[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -9860,22 +9866,15 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapStringNestedEnum) > 0 {
-		keysForMapStringNestedEnum := make([]string, 0, len(m.MapStringNestedEnum))
 		for k := range m.MapStringNestedEnum {
-			keysForMapStringNestedEnum = append(keysForMapStringNestedEnum, string(k))
-		}
-		sort.Slice(keysForMapStringNestedEnum, func(i, j int) bool {
-			return keysForMapStringNestedEnum[i] < keysForMapStringNestedEnum[j]
-		})
-		for iNdEx := len(keysForMapStringNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringNestedEnum[string(keysForMapStringNestedEnum[iNdEx])]
+			v := m.MapStringNestedEnum[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i -= len(keysForMapStringNestedEnum[iNdEx])
-			copy(dAtA[i:], keysForMapStringNestedEnum[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringNestedEnum[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -9886,15 +9885,8 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapStringForeignMessage) > 0 {
-		keysForMapStringForeignMessage := make([]string, 0, len(m.MapStringForeignMessage))
 		for k := range m.MapStringForeignMessage {
-			keysForMapStringForeignMessage = append(keysForMapStringForeignMessage, string(k))
-		}
-		sort.Slice(keysForMapStringForeignMessage, func(i, j int) bool {
-			return keysForMapStringForeignMessage[i] < keysForMapStringForeignMessage[j]
-		})
-		for iNdEx := len(keysForMapStringForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringForeignMessage[string(keysForMapStringForeignMessage[iNdEx])]
+			v := m.MapStringForeignMessage[k]
 			baseI := i
 			{
 				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
@@ -9906,9 +9898,9 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i--
 			dAtA[i] = 0x12
-			i -= len(keysForMapStringForeignMessage[iNdEx])
-			copy(dAtA[i:], keysForMapStringForeignMessage[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringForeignMessage[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -9919,15 +9911,8 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapStringNestedMessage) > 0 {
-		keysForMapStringNestedMessage := make([]string, 0, len(m.MapStringNestedMessage))
 		for k := range m.MapStringNestedMessage {
-			keysForMapStringNestedMessage = append(keysForMapStringNestedMessage, string(k))
-		}
-		sort.Slice(keysForMapStringNestedMessage, func(i, j int) bool {
-			return keysForMapStringNestedMessage[i] < keysForMapStringNestedMessage[j]
-		})
-		for iNdEx := len(keysForMapStringNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringNestedMessage[string(keysForMapStringNestedMessage[iNdEx])]
+			v := m.MapStringNestedMessage[k]
 			baseI := i
 			{
 				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
@@ -9939,9 +9924,9 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i--
 			dAtA[i] = 0x12
-			i -= len(keysForMapStringNestedMessage[iNdEx])
-			copy(dAtA[i:], keysForMapStringNestedMessage[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringNestedMessage[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -9952,24 +9937,17 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapStringBytes) > 0 {
-		keysForMapStringBytes := make([]string, 0, len(m.MapStringBytes))
 		for k := range m.MapStringBytes {
-			keysForMapStringBytes = append(keysForMapStringBytes, string(k))
-		}
-		sort.Slice(keysForMapStringBytes, func(i, j int) bool {
-			return keysForMapStringBytes[i] < keysForMapStringBytes[j]
-		})
-		for iNdEx := len(keysForMapStringBytes) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringBytes[string(keysForMapStringBytes[iNdEx])]
+			v := m.MapStringBytes[k]
 			baseI := i
 			i -= len(v)
 			copy(dAtA[i:], v)
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
 			i--
 			dAtA[i] = 0x12
-			i -= len(keysForMapStringBytes[iNdEx])
-			copy(dAtA[i:], keysForMapStringBytes[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringBytes[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -9980,24 +9958,17 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapStringString) > 0 {
-		keysForMapStringString := make([]string, 0, len(m.MapStringString))
 		for k := range m.MapStringString {
-			keysForMapStringString = append(keysForMapStringString, string(k))
-		}
-		sort.Slice(keysForMapStringString, func(i, j int) bool {
-			return keysForMapStringString[i] < keysForMapStringString[j]
-		})
-		for iNdEx := len(keysForMapStringString) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapStringString[string(keysForMapStringString[iNdEx])]
+			v := m.MapStringString[k]
 			baseI := i
 			i -= len(v)
 			copy(dAtA[i:], v)
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
 			i--
 			dAtA[i] = 0x12
-			i -= len(keysForMapStringString[iNdEx])
-			copy(dAtA[i:], keysForMapStringString[iNdEx])
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringString[iNdEx])))
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
 			i--
 			dAtA[i] = 0xa
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10009,7 +9980,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.MapBoolBool) > 0 {
 		for k := range m.MapBoolBool {
-			v := m.MapBoolBool[bool(k)]
+			v := m.MapBoolBool[k]
 			baseI := i
 			i--
 			if v {
@@ -10035,21 +10006,14 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapInt32Double) > 0 {
-		keysForMapInt32Double := make([]int32, 0, len(m.MapInt32Double))
 		for k := range m.MapInt32Double {
-			keysForMapInt32Double = append(keysForMapInt32Double, int32(k))
-		}
-		sort.Slice(keysForMapInt32Double, func(i, j int) bool {
-			return keysForMapInt32Double[i] < keysForMapInt32Double[j]
-		})
-		for iNdEx := len(keysForMapInt32Double) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapInt32Double[int32(keysForMapInt32Double[iNdEx])]
+			v := m.MapInt32Double[k]
 			baseI := i
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
 			i--
 			dAtA[i] = 0x11
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Double[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10060,21 +10024,14 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapInt32Float) > 0 {
-		keysForMapInt32Float := make([]int32, 0, len(m.MapInt32Float))
 		for k := range m.MapInt32Float {
-			keysForMapInt32Float = append(keysForMapInt32Float, int32(k))
-		}
-		sort.Slice(keysForMapInt32Float, func(i, j int) bool {
-			return keysForMapInt32Float[i] < keysForMapInt32Float[j]
-		})
-		for iNdEx := len(keysForMapInt32Float) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapInt32Float[int32(keysForMapInt32Float[iNdEx])]
+			v := m.MapInt32Float[k]
 			baseI := i
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
 			i--
 			dAtA[i] = 0x15
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Float[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10085,22 +10042,15 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapSfixed64Sfixed64) > 0 {
-		keysForMapSfixed64Sfixed64 := make([]int64, 0, len(m.MapSfixed64Sfixed64))
 		for k := range m.MapSfixed64Sfixed64 {
-			keysForMapSfixed64Sfixed64 = append(keysForMapSfixed64Sfixed64, int64(k))
-		}
-		sort.Slice(keysForMapSfixed64Sfixed64, func(i, j int) bool {
-			return keysForMapSfixed64Sfixed64[i] < keysForMapSfixed64Sfixed64[j]
-		})
-		for iNdEx := len(keysForMapSfixed64Sfixed64) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapSfixed64Sfixed64[int64(keysForMapSfixed64Sfixed64[iNdEx])]
+			v := m.MapSfixed64Sfixed64[k]
 			baseI := i
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
 			i--
 			dAtA[i] = 0x11
 			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapSfixed64Sfixed64[iNdEx]))
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
 			i--
 			dAtA[i] = 0x9
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10111,22 +10061,15 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapSfixed32Sfixed32) > 0 {
-		keysForMapSfixed32Sfixed32 := make([]int32, 0, len(m.MapSfixed32Sfixed32))
 		for k := range m.MapSfixed32Sfixed32 {
-			keysForMapSfixed32Sfixed32 = append(keysForMapSfixed32Sfixed32, int32(k))
-		}
-		sort.Slice(keysForMapSfixed32Sfixed32, func(i, j int) bool {
-			return keysForMapSfixed32Sfixed32[i] < keysForMapSfixed32Sfixed32[j]
-		})
-		for iNdEx := len(keysForMapSfixed32Sfixed32) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapSfixed32Sfixed32[int32(keysForMapSfixed32Sfixed32[iNdEx])]
+			v := m.MapSfixed32Sfixed32[k]
 			baseI := i
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
 			i--
 			dAtA[i] = 0x15
 			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapSfixed32Sfixed32[iNdEx]))
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
 			i--
 			dAtA[i] = 0xd
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10137,22 +10080,15 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapFixed64Fixed64) > 0 {
-		keysForMapFixed64Fixed64 := make([]uint64, 0, len(m.MapFixed64Fixed64))
 		for k := range m.MapFixed64Fixed64 {
-			keysForMapFixed64Fixed64 = append(keysForMapFixed64Fixed64, uint64(k))
-		}
-		sort.Slice(keysForMapFixed64Fixed64, func(i, j int) bool {
-			return keysForMapFixed64Fixed64[i] < keysForMapFixed64Fixed64[j]
-		})
-		for iNdEx := len(keysForMapFixed64Fixed64) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapFixed64Fixed64[uint64(keysForMapFixed64Fixed64[iNdEx])]
+			v := m.MapFixed64Fixed64[k]
 			baseI := i
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
 			i--
 			dAtA[i] = 0x11
 			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapFixed64Fixed64[iNdEx]))
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
 			i--
 			dAtA[i] = 0x9
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10163,22 +10099,15 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapFixed32Fixed32) > 0 {
-		keysForMapFixed32Fixed32 := make([]uint32, 0, len(m.MapFixed32Fixed32))
 		for k := range m.MapFixed32Fixed32 {
-			keysForMapFixed32Fixed32 = append(keysForMapFixed32Fixed32, uint32(k))
-		}
-		sort.Slice(keysForMapFixed32Fixed32, func(i, j int) bool {
-			return keysForMapFixed32Fixed32[i] < keysForMapFixed32Fixed32[j]
-		})
-		for iNdEx := len(keysForMapFixed32Fixed32) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapFixed32Fixed32[uint32(keysForMapFixed32Fixed32[iNdEx])]
+			v := m.MapFixed32Fixed32[k]
 			baseI := i
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
 			i--
 			dAtA[i] = 0x15
 			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapFixed32Fixed32[iNdEx]))
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
 			i--
 			dAtA[i] = 0xd
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10189,20 +10118,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapSint64Sint64) > 0 {
-		keysForMapSint64Sint64 := make([]int64, 0, len(m.MapSint64Sint64))
 		for k := range m.MapSint64Sint64 {
-			keysForMapSint64Sint64 = append(keysForMapSint64Sint64, int64(k))
-		}
-		sort.Slice(keysForMapSint64Sint64, func(i, j int) bool {
-			return keysForMapSint64Sint64[i] < keysForMapSint64Sint64[j]
-		})
-		for iNdEx := len(keysForMapSint64Sint64) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapSint64Sint64[int64(keysForMapSint64Sint64[iNdEx])]
+			v := m.MapSint64Sint64[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(keysForMapSint64Sint64[iNdEx])<<1)^uint64((keysForMapSint64Sint64[iNdEx]>>63))))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(k)<<1)^uint64((k>>63))))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10213,20 +10135,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapSint32Sint32) > 0 {
-		keysForMapSint32Sint32 := make([]int32, 0, len(m.MapSint32Sint32))
 		for k := range m.MapSint32Sint32 {
-			keysForMapSint32Sint32 = append(keysForMapSint32Sint32, int32(k))
-		}
-		sort.Slice(keysForMapSint32Sint32, func(i, j int) bool {
-			return keysForMapSint32Sint32[i] < keysForMapSint32Sint32[j]
-		})
-		for iNdEx := len(keysForMapSint32Sint32) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapSint32Sint32[int32(keysForMapSint32Sint32[iNdEx])]
+			v := m.MapSint32Sint32[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(keysForMapSint32Sint32[iNdEx])<<1)^uint32((keysForMapSint32Sint32[iNdEx]>>31))))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(k)<<1)^uint32((k>>31))))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10237,20 +10152,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapUint64Uint64) > 0 {
-		keysForMapUint64Uint64 := make([]uint64, 0, len(m.MapUint64Uint64))
 		for k := range m.MapUint64Uint64 {
-			keysForMapUint64Uint64 = append(keysForMapUint64Uint64, uint64(k))
-		}
-		sort.Slice(keysForMapUint64Uint64, func(i, j int) bool {
-			return keysForMapUint64Uint64[i] < keysForMapUint64Uint64[j]
-		})
-		for iNdEx := len(keysForMapUint64Uint64) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapUint64Uint64[uint64(keysForMapUint64Uint64[iNdEx])]
+			v := m.MapUint64Uint64[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapUint64Uint64[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10261,20 +10169,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapUint32Uint32) > 0 {
-		keysForMapUint32Uint32 := make([]uint32, 0, len(m.MapUint32Uint32))
 		for k := range m.MapUint32Uint32 {
-			keysForMapUint32Uint32 = append(keysForMapUint32Uint32, uint32(k))
-		}
-		sort.Slice(keysForMapUint32Uint32, func(i, j int) bool {
-			return keysForMapUint32Uint32[i] < keysForMapUint32Uint32[j]
-		})
-		for iNdEx := len(keysForMapUint32Uint32) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapUint32Uint32[uint32(keysForMapUint32Uint32[iNdEx])]
+			v := m.MapUint32Uint32[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapUint32Uint32[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10285,20 +10186,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapInt64Int64) > 0 {
-		keysForMapInt64Int64 := make([]int64, 0, len(m.MapInt64Int64))
 		for k := range m.MapInt64Int64 {
-			keysForMapInt64Int64 = append(keysForMapInt64Int64, int64(k))
-		}
-		sort.Slice(keysForMapInt64Int64, func(i, j int) bool {
-			return keysForMapInt64Int64[i] < keysForMapInt64Int64[j]
-		})
-		for iNdEx := len(keysForMapInt64Int64) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapInt64Int64[int64(keysForMapInt64Int64[iNdEx])]
+			v := m.MapInt64Int64[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt64Int64[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10309,20 +10203,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.MapInt32Int32) > 0 {
-		keysForMapInt32Int32 := make([]int32, 0, len(m.MapInt32Int32))
 		for k := range m.MapInt32Int32 {
-			keysForMapInt32Int32 = append(keysForMapInt32Int32, int32(k))
-		}
-		sort.Slice(keysForMapInt32Int32, func(i, j int) bool {
-			return keysForMapInt32Int32[i] < keysForMapInt32Int32[j]
-		})
-		for iNdEx := len(keysForMapInt32Int32) - 1; iNdEx >= 0; iNdEx-- {
-			v := m.MapInt32Int32[int32(keysForMapInt32Int32[iNdEx])]
+			v := m.MapInt32Int32[k]
 			baseI := i
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Int32[iNdEx]))
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
@@ -10355,42 +10242,46 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if len(m.RepeatedForeignEnum) > 0 {
-		dAtA24 := make([]byte, len(m.RepeatedForeignEnum)*10)
-		var j23 int
+		var pksize24 int
+		for _, num := range m.RepeatedForeignEnum {
+			pksize24 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize24
+		j23 := i
 		for _, num1 := range m.RepeatedForeignEnum {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA24[j23] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j23] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j23++
 			}
-			dAtA24[j23] = uint8(num)
+			dAtA[j23] = uint8(num)
 			j23++
 		}
-		i -= j23
-		copy(dAtA[i:], dAtA24[:j23])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j23))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize24))
 		i--
 		dAtA[i] = 0x3
 		i--
 		dAtA[i] = 0xa2
 	}
 	if len(m.RepeatedNestedEnum) > 0 {
-		dAtA26 := make([]byte, len(m.RepeatedNestedEnum)*10)
-		var j25 int
+		var pksize26 int
+		for _, num := range m.RepeatedNestedEnum {
+			pksize26 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize26
+		j25 := i
 		for _, num1 := range m.RepeatedNestedEnum {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA26[j25] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j25] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j25++
 			}
-			dAtA26[j25] = uint8(num)
+			dAtA[j25] = uint8(num)
 			j25++
 		}
-		i -= j25
-		copy(dAtA[i:], dAtA26[:j25])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j25))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize26))
 		i--
 		dAtA[i] = 0x3
 		i--
@@ -10534,124 +10425,136 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xaa
 	}
 	if len(m.RepeatedSint64) > 0 {
-		var j29 int
-		dAtA31 := make([]byte, len(m.RepeatedSint64)*10)
+		var pksize30 int
 		for _, num := range m.RepeatedSint64 {
-			x30 := (uint64(num) << 1) ^ uint64((num >> 63))
-			for x30 >= 1<<7 {
-				dAtA31[j29] = uint8(uint64(x30)&0x7f | 0x80)
+			pksize30 += sozTestMessagesProto3(uint64(num))
+		}
+		i -= pksize30
+		j29 := i
+		for _, num := range m.RepeatedSint64 {
+			x31 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x31 >= 1<<7 {
+				dAtA[j29] = uint8(uint64(x31)&0x7f | 0x80)
 				j29++
-				x30 >>= 7
+				x31 >>= 7
 			}
-			dAtA31[j29] = uint8(x30)
+			dAtA[j29] = uint8(x31)
 			j29++
 		}
-		i -= j29
-		copy(dAtA[i:], dAtA31[:j29])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j29))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize30))
 		i--
 		dAtA[i] = 0x2
 		i--
 		dAtA[i] = 0xa2
 	}
 	if len(m.RepeatedSint32) > 0 {
-		dAtA32 := make([]byte, len(m.RepeatedSint32)*5)
-		var j33 int
+		var pksize33 int
+		for _, num := range m.RepeatedSint32 {
+			pksize33 += sozTestMessagesProto3(uint64(num))
+		}
+		i -= pksize33
+		j32 := i
 		for _, num := range m.RepeatedSint32 {
 			x34 := (uint32(num) << 1) ^ uint32((num >> 31))
 			for x34 >= 1<<7 {
-				dAtA32[j33] = uint8(uint64(x34)&0x7f | 0x80)
-				j33++
+				dAtA[j32] = uint8(uint64(x34)&0x7f | 0x80)
+				j32++
 				x34 >>= 7
 			}
-			dAtA32[j33] = uint8(x34)
-			j33++
+			dAtA[j32] = uint8(x34)
+			j32++
 		}
-		i -= j33
-		copy(dAtA[i:], dAtA32[:j33])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j33))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize33))
 		i--
 		dAtA[i] = 0x2
 		i--
 		dAtA[i] = 0x9a
 	}
 	if len(m.RepeatedUint64) > 0 {
-		dAtA36 := make([]byte, len(m.RepeatedUint64)*10)
-		var j35 int
+		var pksize36 int
+		for _, num := range m.RepeatedUint64 {
+			pksize36 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize36
+		j35 := i
 		for _, num := range m.RepeatedUint64 {
 			for num >= 1<<7 {
-				dAtA36[j35] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j35] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j35++
 			}
-			dAtA36[j35] = uint8(num)
+			dAtA[j35] = uint8(num)
 			j35++
 		}
-		i -= j35
-		copy(dAtA[i:], dAtA36[:j35])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j35))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize36))
 		i--
 		dAtA[i] = 0x2
 		i--
 		dAtA[i] = 0x92
 	}
 	if len(m.RepeatedUint32) > 0 {
-		dAtA38 := make([]byte, len(m.RepeatedUint32)*10)
-		var j37 int
+		var pksize38 int
+		for _, num := range m.RepeatedUint32 {
+			pksize38 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize38
+		j37 := i
 		for _, num := range m.RepeatedUint32 {
 			for num >= 1<<7 {
-				dAtA38[j37] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j37] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j37++
 			}
-			dAtA38[j37] = uint8(num)
+			dAtA[j37] = uint8(num)
 			j37++
 		}
-		i -= j37
-		copy(dAtA[i:], dAtA38[:j37])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j37))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize38))
 		i--
 		dAtA[i] = 0x2
 		i--
 		dAtA[i] = 0x8a
 	}
 	if len(m.RepeatedInt64) > 0 {
-		dAtA40 := make([]byte, len(m.RepeatedInt64)*10)
-		var j39 int
+		var pksize40 int
+		for _, num := range m.RepeatedInt64 {
+			pksize40 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize40
+		j39 := i
 		for _, num1 := range m.RepeatedInt64 {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA40[j39] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j39] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j39++
 			}
-			dAtA40[j39] = uint8(num)
+			dAtA[j39] = uint8(num)
 			j39++
 		}
-		i -= j39
-		copy(dAtA[i:], dAtA40[:j39])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j39))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize40))
 		i--
 		dAtA[i] = 0x2
 		i--
 		dAtA[i] = 0x82
 	}
 	if len(m.RepeatedInt32) > 0 {
-		dAtA42 := make([]byte, len(m.RepeatedInt32)*10)
-		var j41 int
+		var pksize42 int
+		for _, num := range m.RepeatedInt32 {
+			pksize42 += sovTestMessagesProto3(uint64(num))
+		}
+		i -= pksize42
+		j41 := i
 		for _, num1 := range m.RepeatedInt32 {
 			num := uint64(num1)
 			for num >= 1<<7 {
-				dAtA42[j41] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA[j41] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
 				j41++
 			}
-			dAtA42[j41] = uint8(num)
+			dAtA[j41] = uint8(num)
 			j41++
 		}
-		i -= j41
-		copy(dAtA[i:], dAtA42[:j41])
-		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(j41))
+		i = encodeVarintTestMessagesProto3(dAtA, i, uint64(pksize42))
 		i--
 		dAtA[i] = 0x1
 		i--

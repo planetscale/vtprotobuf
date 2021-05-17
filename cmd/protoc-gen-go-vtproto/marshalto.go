@@ -158,8 +158,16 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 	case protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.EnumKind:
 		if packed {
 			jvar := "j" + numGen.Next()
-			p.P(`dAtA`, numGen.Next(), ` := make([]byte, len(m.`, fieldname, `)*10)`)
-			p.P(`var `, jvar, ` int`)
+			total := "pksize" + numGen.Next()
+
+			p.P(`var `, total, ` int`)
+			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(total, ` += sov`, p.localName, `(uint64(num))`)
+			p.P(`}`)
+
+			p.P(`i -= `, total)
+			p.P(jvar, `:= i`)
+
 			switch field.Desc.Kind() {
 			case protoreflect.Int64Kind, protoreflect.Int32Kind, protoreflect.EnumKind:
 				p.P(`for _, num1 := range m.`, fieldname, ` {`)
@@ -168,16 +176,15 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 				p.P(`for _, num := range m.`, fieldname, ` {`)
 			}
 			p.P(`for num >= 1<<7 {`)
-			p.P(`dAtA`, numGen.Current(), `[`, jvar, `] = uint8(uint64(num)&0x7f|0x80)`)
+			p.P(`dAtA[`, jvar, `] = uint8(uint64(num)&0x7f|0x80)`)
 			p.P(`num >>= 7`)
 			p.P(jvar, `++`)
 			p.P(`}`)
-			p.P(`dAtA`, numGen.Current(), `[`, jvar, `] = uint8(num)`)
+			p.P(`dAtA[`, jvar, `] = uint8(num)`)
 			p.P(jvar, `++`)
 			p.P(`}`)
-			p.P(`i -= `, jvar)
-			p.P(`copy(dAtA[i:], dAtA`, numGen.Current(), `[:`, jvar, `])`)
-			p.callVarint(jvar)
+
+			p.callVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
 			val := p.reverseListRange(`m.`, fieldname)
@@ -368,24 +375,29 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 		}
 	case protoreflect.Sint32Kind:
 		if packed {
-			datavar := "dAtA" + numGen.Next()
 			jvar := "j" + numGen.Next()
-			p.P(datavar, ` := make([]byte, len(m.`, fieldname, ")*5)")
-			p.P(`var `, jvar, ` int`)
+			total := "pksize" + numGen.Next()
+
+			p.P(`var `, total, ` int`)
+			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(total, ` += soz`, p.localName, `(uint64(num))`)
+			p.P(`}`)
+			p.P(`i -= `, total)
+			p.P(jvar, `:= i`)
+
 			p.P(`for _, num := range m.`, fieldname, ` {`)
 			xvar := "x" + numGen.Next()
 			p.P(xvar, ` := (uint32(num) << 1) ^ uint32((num >> 31))`)
 			p.P(`for `, xvar, ` >= 1<<7 {`)
-			p.P(datavar, `[`, jvar, `] = uint8(uint64(`, xvar, `)&0x7f|0x80)`)
+			p.P(`dAtA[`, jvar, `] = uint8(uint64(`, xvar, `)&0x7f|0x80)`)
 			p.P(jvar, `++`)
 			p.P(xvar, ` >>= 7`)
 			p.P(`}`)
-			p.P(datavar, `[`, jvar, `] = uint8(`, xvar, `)`)
+			p.P(`dAtA[`, jvar, `] = uint8(`, xvar, `)`)
 			p.P(jvar, `++`)
 			p.P(`}`)
-			p.P(`i -= `, jvar)
-			p.P(`copy(dAtA[i:], `, datavar, `[:`, jvar, `])`)
-			p.callVarint(jvar)
+
+			p.callVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
 			val := p.reverseListRange(`m.`, fieldname)
@@ -405,23 +417,28 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 	case protoreflect.Sint64Kind:
 		if packed {
 			jvar := "j" + numGen.Next()
-			xvar := "x" + numGen.Next()
-			datavar := "dAtA" + numGen.Next()
-			p.P(`var `, jvar, ` int`)
-			p.P(datavar, ` := make([]byte, len(m.`, fieldname, `)*10)`)
+			total := "pksize" + numGen.Next()
+
+			p.P(`var `, total, ` int`)
 			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(total, ` += soz`, p.localName, `(uint64(num))`)
+			p.P(`}`)
+			p.P(`i -= `, total)
+			p.P(jvar, `:= i`)
+
+			p.P(`for _, num := range m.`, fieldname, ` {`)
+			xvar := "x" + numGen.Next()
 			p.P(xvar, ` := (uint64(num) << 1) ^ uint64((num >> 63))`)
 			p.P(`for `, xvar, ` >= 1<<7 {`)
-			p.P(datavar, `[`, jvar, `] = uint8(uint64(`, xvar, `)&0x7f|0x80)`)
+			p.P(`dAtA[`, jvar, `] = uint8(uint64(`, xvar, `)&0x7f|0x80)`)
 			p.P(jvar, `++`)
 			p.P(xvar, ` >>= 7`)
 			p.P(`}`)
-			p.P(datavar, `[`, jvar, `] = uint8(`, xvar, `)`)
+			p.P(`dAtA[`, jvar, `] = uint8(`, xvar, `)`)
 			p.P(jvar, `++`)
 			p.P(`}`)
-			p.P(`i -= `, jvar)
-			p.P(`copy(dAtA[i:], `, datavar, `[:`, jvar, `])`)
-			p.callVarint(jvar)
+
+			p.callVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
 			val := p.reverseListRange(`m.`, fieldname)
