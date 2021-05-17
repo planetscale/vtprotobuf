@@ -173,6 +173,9 @@ func (m *FailureSet) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *FailureSet) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -536,6 +539,9 @@ func (m *ConformanceRequest) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -553,6 +559,15 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x48
+	}
+	if vtmsg, ok := m.Payload.(vtprotoMessageConformance); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
 	}
 	if m.JspbEncodingOptions != nil {
 		{
@@ -582,15 +597,6 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = encodeVarintConformance(dAtA, i, uint64(m.RequestedOutputFormat))
 		i--
 		dAtA[i] = 0x18
-	}
-	if vtmsg, ok := m.Payload.(vtprotoMessageConformance); ok {
-		{
-			size := vtmsg.SizeVT()
-			i -= size
-			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
 	}
 	return len(dAtA) - i, nil
 }
@@ -1050,6 +1056,9 @@ func (m *ConformanceResponse) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1082,20 +1091,6 @@ func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVT(dAtA []byte) (in
 	i = encodeVarintConformance(dAtA, i, uint64(len(m.ParseError)))
 	i--
 	dAtA[i] = 0xa
-	return len(dAtA) - i, nil
-}
-func (m *ConformanceResponse_SerializeError) MarshalToVT(dAtA []byte) (int, error) {
-	size := m.SizeVT()
-	return m.MarshalToSizedBufferVT(dAtA[:size])
-}
-
-func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	i -= len(m.SerializeError)
-	copy(dAtA[i:], m.SerializeError)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.SerializeError)))
-	i--
-	dAtA[i] = 0x32
 	return len(dAtA) - i, nil
 }
 func (m *ConformanceResponse_RuntimeError) MarshalToVT(dAtA []byte) (int, error) {
@@ -1154,6 +1149,20 @@ func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
 }
+func (m *ConformanceResponse_SerializeError) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.SerializeError)
+	copy(dAtA[i:], m.SerializeError)
+	i = encodeVarintConformance(dAtA, i, uint64(len(m.SerializeError)))
+	i--
+	dAtA[i] = 0x32
+	return len(dAtA) - i, nil
+}
 func (m *ConformanceResponse_JspbPayload) MarshalToVT(dAtA []byte) (int, error) {
 	size := m.SizeVT()
 	return m.MarshalToSizedBufferVT(dAtA[:size])
@@ -1207,16 +1216,6 @@ func (m *ConformanceResponse_ParseError) SizeVT() (n int) {
 	n += 1 + l + sovConformance(uint64(l))
 	return n
 }
-func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.SerializeError)
-	n += 1 + l + sovConformance(uint64(l))
-	return n
-}
 func (m *ConformanceResponse_RuntimeError) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1254,6 +1253,16 @@ func (m *ConformanceResponse_Skipped) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.Skipped)
+	n += 1 + l + sovConformance(uint64(l))
+	return n
+}
+func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.SerializeError)
 	n += 1 + l + sovConformance(uint64(l))
 	return n
 }
@@ -1367,6 +1376,9 @@ func (m *JspbEncodingConfig) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *JspbEncodingConfig) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int

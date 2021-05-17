@@ -21,7 +21,7 @@ func main() {
 
 func generateFile(plugin *protogen.Plugin, file *protogen.File) {
 	gf := plugin.NewGeneratedFile(file.GeneratedFilenamePrefix+"_vtproto.pb.go", file.GoImportPath)
-	vtprotogen := &vtproto{GeneratedFile: gf}
+	vtprotogen := &vtproto{GeneratedFile: gf, stable: true}
 	if !vtprotogen.Generate(file) {
 		gf.Skip()
 	}

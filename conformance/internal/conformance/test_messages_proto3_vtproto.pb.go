@@ -17,6 +17,7 @@ import (
 	io "io"
 	math "math"
 	bits "math/bits"
+	sort "sort"
 )
 
 func (m *TestAllTypesProto3_NestedMessage) UnmarshalVT(dAtA []byte) error {
@@ -144,6 +145,9 @@ func (m *TestAllTypesProto3_NestedMessage) MarshalToVT(dAtA []byte) (int, error)
 }
 
 func (m *TestAllTypesProto3_NestedMessage) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -6104,11 +6108,17 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &TestAllTypesProto3_NestedMessage{}
-			if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if oneof, ok := m.OneofField.(*TestAllTypesProto3_OneofNestedMessage); ok {
+				if err := oneof.OneofNestedMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				v := &TestAllTypesProto3_NestedMessage{}
+				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+				m.OneofField = &TestAllTypesProto3_OneofNestedMessage{v}
 			}
-			m.OneofField = &TestAllTypesProto3_OneofNestedMessage{v}
 			iNdEx = postIndex
 		case 113:
 			if wireType != 2 {
@@ -8804,6 +8814,9 @@ func (m *TestAllTypesProto3) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -8938,6 +8951,23 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x88
 	}
+	if len(m.RepeatedStruct) > 0 {
+		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				encoded, err := proto.Marshal(m.RepeatedStruct[iNdEx])
+				if err != nil {
+					return 0, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(encoded)))
+			}
+			i--
+			dAtA[i] = 0x14
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
 	if len(m.RepeatedListValue) > 0 {
 		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
 			{
@@ -8987,23 +9017,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			dAtA[i] = 0x13
 			i--
 			dAtA[i] = 0xda
-		}
-	}
-	if len(m.RepeatedStruct) > 0 {
-		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				encoded, err := proto.Marshal(m.RepeatedStruct[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(encoded)))
-			}
-			i--
-			dAtA[i] = 0x14
-			i--
-			dAtA[i] = 0xa2
 		}
 	}
 	if len(m.RepeatedFieldmask) > 0 {
@@ -9451,381 +9464,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 		}
 	}
-	if len(m.MapStringForeignEnum) > 0 {
-		for k := range m.MapStringForeignEnum {
-			v := m.MapStringForeignEnum[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xd2
-		}
-	}
-	if len(m.MapStringNestedEnum) > 0 {
-		for k := range m.MapStringNestedEnum {
-			v := m.MapStringNestedEnum[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xca
-		}
-	}
-	if len(m.MapStringForeignMessage) > 0 {
-		for k := range m.MapStringForeignMessage {
-			v := m.MapStringForeignMessage[k]
-			baseI := i
-			{
-				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xc2
-		}
-	}
-	if len(m.MapStringNestedMessage) > 0 {
-		for k := range m.MapStringNestedMessage {
-			v := m.MapStringNestedMessage[k]
-			baseI := i
-			{
-				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xba
-		}
-	}
-	if len(m.MapStringBytes) > 0 {
-		for k := range m.MapStringBytes {
-			v := m.MapStringBytes[k]
-			baseI := i
-			if len(v) > 0 {
-				i -= len(v)
-				copy(dAtA[i:], v)
-				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
-				i--
-				dAtA[i] = 0x12
-			}
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xb2
-		}
-	}
-	if len(m.MapStringString) > 0 {
-		for k := range m.MapStringString {
-			v := m.MapStringString[k]
-			baseI := i
-			i -= len(v)
-			copy(dAtA[i:], v)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
-			i--
-			dAtA[i] = 0x12
-			i -= len(k)
-			copy(dAtA[i:], k)
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(k)))
-			i--
-			dAtA[i] = 0xa
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xaa
-		}
-	}
-	if len(m.MapBoolBool) > 0 {
-		for k := range m.MapBoolBool {
-			v := m.MapBoolBool[k]
-			baseI := i
-			i--
-			if v {
-				dAtA[i] = 1
-			} else {
-				dAtA[i] = 0
-			}
-			i--
-			dAtA[i] = 0x10
-			i--
-			if k {
-				dAtA[i] = 1
-			} else {
-				dAtA[i] = 0
-			}
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0xa2
-		}
-	}
-	if len(m.MapInt32Double) > 0 {
-		for k := range m.MapInt32Double {
-			v := m.MapInt32Double[k]
-			baseI := i
-			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
-			i--
-			dAtA[i] = 0x11
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0x9a
-		}
-	}
-	if len(m.MapInt32Float) > 0 {
-		for k := range m.MapInt32Float {
-			v := m.MapInt32Float[k]
-			baseI := i
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
-			i--
-			dAtA[i] = 0x15
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0x92
-		}
-	}
-	if len(m.MapSfixed64Sfixed64) > 0 {
-		for k := range m.MapSfixed64Sfixed64 {
-			v := m.MapSfixed64Sfixed64[k]
-			baseI := i
-			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
-			i--
-			dAtA[i] = 0x11
-			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
-			i--
-			dAtA[i] = 0x9
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0x8a
-		}
-	}
-	if len(m.MapSfixed32Sfixed32) > 0 {
-		for k := range m.MapSfixed32Sfixed32 {
-			v := m.MapSfixed32Sfixed32[k]
-			baseI := i
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
-			i--
-			dAtA[i] = 0x15
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
-			i--
-			dAtA[i] = 0xd
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x4
-			i--
-			dAtA[i] = 0x82
-		}
-	}
-	if len(m.MapFixed64Fixed64) > 0 {
-		for k := range m.MapFixed64Fixed64 {
-			v := m.MapFixed64Fixed64[k]
-			baseI := i
-			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
-			i--
-			dAtA[i] = 0x11
-			i -= 8
-			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
-			i--
-			dAtA[i] = 0x9
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xfa
-		}
-	}
-	if len(m.MapFixed32Fixed32) > 0 {
-		for k := range m.MapFixed32Fixed32 {
-			v := m.MapFixed32Fixed32[k]
-			baseI := i
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
-			i--
-			dAtA[i] = 0x15
-			i -= 4
-			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
-			i--
-			dAtA[i] = 0xd
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xf2
-		}
-	}
-	if len(m.MapSint64Sint64) > 0 {
-		for k := range m.MapSint64Sint64 {
-			v := m.MapSint64Sint64[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(k)<<1)^uint64((k>>63))))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xea
-		}
-	}
-	if len(m.MapSint32Sint32) > 0 {
-		for k := range m.MapSint32Sint32 {
-			v := m.MapSint32Sint32[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(k)<<1)^uint32((k>>31))))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xe2
-		}
-	}
-	if len(m.MapUint64Uint64) > 0 {
-		for k := range m.MapUint64Uint64 {
-			v := m.MapUint64Uint64[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xda
-		}
-	}
-	if len(m.MapUint32Uint32) > 0 {
-		for k := range m.MapUint32Uint32 {
-			v := m.MapUint32Uint32[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xd2
-		}
-	}
-	if len(m.MapInt64Int64) > 0 {
-		for k := range m.MapInt64Int64 {
-			v := m.MapInt64Int64[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xca
-		}
-	}
-	if len(m.MapInt32Int32) > 0 {
-		for k := range m.MapInt32Int32 {
-			v := m.MapInt32Int32[k]
-			baseI := i
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
-			i--
-			dAtA[i] = 0x10
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(k))
-			i--
-			dAtA[i] = 0x8
-			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
-			i--
-			dAtA[i] = 0x3
-			i--
-			dAtA[i] = 0xc2
-		}
-	}
 	if len(m.UnpackedNestedEnum) > 0 {
 		for iNdEx := len(m.UnpackedNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
 			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(m.UnpackedNestedEnum[iNdEx]))
@@ -9970,7 +9608,8 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if len(m.PackedNestedEnum) > 0 {
 		dAtA6 := make([]byte, len(m.PackedNestedEnum)*10)
 		var j5 int
-		for _, num := range m.PackedNestedEnum {
+		for _, num1 := range m.PackedNestedEnum {
+			num := uint64(num1)
 			for num >= 1<<7 {
 				dAtA6[j5] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
@@ -10194,6 +9833,505 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xda
 	}
+	if len(m.MapStringForeignEnum) > 0 {
+		keysForMapStringForeignEnum := make([]string, 0, len(m.MapStringForeignEnum))
+		for k := range m.MapStringForeignEnum {
+			keysForMapStringForeignEnum = append(keysForMapStringForeignEnum, string(k))
+		}
+		sort.Slice(keysForMapStringForeignEnum, func(i, j int) bool {
+			return keysForMapStringForeignEnum[i] < keysForMapStringForeignEnum[j]
+		})
+		for iNdEx := len(keysForMapStringForeignEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignEnum[string(keysForMapStringForeignEnum[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringForeignEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignEnum[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringForeignEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapStringNestedEnum) > 0 {
+		keysForMapStringNestedEnum := make([]string, 0, len(m.MapStringNestedEnum))
+		for k := range m.MapStringNestedEnum {
+			keysForMapStringNestedEnum = append(keysForMapStringNestedEnum, string(k))
+		}
+		sort.Slice(keysForMapStringNestedEnum, func(i, j int) bool {
+			return keysForMapStringNestedEnum[i] < keysForMapStringNestedEnum[j]
+		})
+		for iNdEx := len(keysForMapStringNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedEnum[string(keysForMapStringNestedEnum[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringNestedEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedEnum[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringNestedEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapStringForeignMessage) > 0 {
+		keysForMapStringForeignMessage := make([]string, 0, len(m.MapStringForeignMessage))
+		for k := range m.MapStringForeignMessage {
+			keysForMapStringForeignMessage = append(keysForMapStringForeignMessage, string(k))
+		}
+		sort.Slice(keysForMapStringForeignMessage, func(i, j int) bool {
+			return keysForMapStringForeignMessage[i] < keysForMapStringForeignMessage[j]
+		})
+		for iNdEx := len(keysForMapStringForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignMessage[string(keysForMapStringForeignMessage[iNdEx])]
+			baseI := i
+			{
+				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringForeignMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignMessage[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringForeignMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.MapStringNestedMessage) > 0 {
+		keysForMapStringNestedMessage := make([]string, 0, len(m.MapStringNestedMessage))
+		for k := range m.MapStringNestedMessage {
+			keysForMapStringNestedMessage = append(keysForMapStringNestedMessage, string(k))
+		}
+		sort.Slice(keysForMapStringNestedMessage, func(i, j int) bool {
+			return keysForMapStringNestedMessage[i] < keysForMapStringNestedMessage[j]
+		})
+		for iNdEx := len(keysForMapStringNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedMessage[string(keysForMapStringNestedMessage[iNdEx])]
+			baseI := i
+			{
+				size, err := v.MarshalToSizedBufferVT(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTestMessagesProto3(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringNestedMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedMessage[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringNestedMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.MapStringBytes) > 0 {
+		keysForMapStringBytes := make([]string, 0, len(m.MapStringBytes))
+		for k := range m.MapStringBytes {
+			keysForMapStringBytes = append(keysForMapStringBytes, string(k))
+		}
+		sort.Slice(keysForMapStringBytes, func(i, j int) bool {
+			return keysForMapStringBytes[i] < keysForMapStringBytes[j]
+		})
+		for iNdEx := len(keysForMapStringBytes) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringBytes[string(keysForMapStringBytes[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringBytes[iNdEx])
+			copy(dAtA[i:], keysForMapStringBytes[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringBytes[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.MapStringString) > 0 {
+		keysForMapStringString := make([]string, 0, len(m.MapStringString))
+		for k := range m.MapStringString {
+			keysForMapStringString = append(keysForMapStringString, string(k))
+		}
+		sort.Slice(keysForMapStringString, func(i, j int) bool {
+			return keysForMapStringString[i] < keysForMapStringString[j]
+		})
+		for iNdEx := len(keysForMapStringString) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringString[string(keysForMapStringString[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringString[iNdEx])
+			copy(dAtA[i:], keysForMapStringString[iNdEx])
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(len(keysForMapStringString[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.MapBoolBool) > 0 {
+		for k := range m.MapBoolBool {
+			v := m.MapBoolBool[bool(k)]
+			baseI := i
+			i--
+			if v {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x10
+			i--
+			if k {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.MapInt32Double) > 0 {
+		keysForMapInt32Double := make([]int32, 0, len(m.MapInt32Double))
+		for k := range m.MapInt32Double {
+			keysForMapInt32Double = append(keysForMapInt32Double, int32(k))
+		}
+		sort.Slice(keysForMapInt32Double, func(i, j int) bool {
+			return keysForMapInt32Double[i] < keysForMapInt32Double[j]
+		})
+		for iNdEx := len(keysForMapInt32Double) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Double[int32(keysForMapInt32Double[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
+			i--
+			dAtA[i] = 0x11
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Double[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if len(m.MapInt32Float) > 0 {
+		keysForMapInt32Float := make([]int32, 0, len(m.MapInt32Float))
+		for k := range m.MapInt32Float {
+			keysForMapInt32Float = append(keysForMapInt32Float, int32(k))
+		}
+		sort.Slice(keysForMapInt32Float, func(i, j int) bool {
+			return keysForMapInt32Float[i] < keysForMapInt32Float[j]
+		})
+		for iNdEx := len(keysForMapInt32Float) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Float[int32(keysForMapInt32Float[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
+			i--
+			dAtA[i] = 0x15
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Float[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x92
+		}
+	}
+	if len(m.MapSfixed64Sfixed64) > 0 {
+		keysForMapSfixed64Sfixed64 := make([]int64, 0, len(m.MapSfixed64Sfixed64))
+		for k := range m.MapSfixed64Sfixed64 {
+			keysForMapSfixed64Sfixed64 = append(keysForMapSfixed64Sfixed64, int64(k))
+		}
+		sort.Slice(keysForMapSfixed64Sfixed64, func(i, j int) bool {
+			return keysForMapSfixed64Sfixed64[i] < keysForMapSfixed64Sfixed64[j]
+		})
+		for iNdEx := len(keysForMapSfixed64Sfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed64Sfixed64[int64(keysForMapSfixed64Sfixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapSfixed64Sfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.MapSfixed32Sfixed32) > 0 {
+		keysForMapSfixed32Sfixed32 := make([]int32, 0, len(m.MapSfixed32Sfixed32))
+		for k := range m.MapSfixed32Sfixed32 {
+			keysForMapSfixed32Sfixed32 = append(keysForMapSfixed32Sfixed32, int32(k))
+		}
+		sort.Slice(keysForMapSfixed32Sfixed32, func(i, j int) bool {
+			return keysForMapSfixed32Sfixed32[i] < keysForMapSfixed32Sfixed32[j]
+		})
+		for iNdEx := len(keysForMapSfixed32Sfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed32Sfixed32[int32(keysForMapSfixed32Sfixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapSfixed32Sfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.MapFixed64Fixed64) > 0 {
+		keysForMapFixed64Fixed64 := make([]uint64, 0, len(m.MapFixed64Fixed64))
+		for k := range m.MapFixed64Fixed64 {
+			keysForMapFixed64Fixed64 = append(keysForMapFixed64Fixed64, uint64(k))
+		}
+		sort.Slice(keysForMapFixed64Fixed64, func(i, j int) bool {
+			return keysForMapFixed64Fixed64[i] < keysForMapFixed64Fixed64[j]
+		})
+		for iNdEx := len(keysForMapFixed64Fixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed64Fixed64[uint64(keysForMapFixed64Fixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapFixed64Fixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xfa
+		}
+	}
+	if len(m.MapFixed32Fixed32) > 0 {
+		keysForMapFixed32Fixed32 := make([]uint32, 0, len(m.MapFixed32Fixed32))
+		for k := range m.MapFixed32Fixed32 {
+			keysForMapFixed32Fixed32 = append(keysForMapFixed32Fixed32, uint32(k))
+		}
+		sort.Slice(keysForMapFixed32Fixed32, func(i, j int) bool {
+			return keysForMapFixed32Fixed32[i] < keysForMapFixed32Fixed32[j]
+		})
+		for iNdEx := len(keysForMapFixed32Fixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed32Fixed32[uint32(keysForMapFixed32Fixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapFixed32Fixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xf2
+		}
+	}
+	if len(m.MapSint64Sint64) > 0 {
+		keysForMapSint64Sint64 := make([]int64, 0, len(m.MapSint64Sint64))
+		for k := range m.MapSint64Sint64 {
+			keysForMapSint64Sint64 = append(keysForMapSint64Sint64, int64(k))
+		}
+		sort.Slice(keysForMapSint64Sint64, func(i, j int) bool {
+			return keysForMapSint64Sint64[i] < keysForMapSint64Sint64[j]
+		})
+		for iNdEx := len(keysForMapSint64Sint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint64Sint64[int64(keysForMapSint64Sint64[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint64(keysForMapSint64Sint64[iNdEx])<<1)^uint64((keysForMapSint64Sint64[iNdEx]>>63))))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.MapSint32Sint32) > 0 {
+		keysForMapSint32Sint32 := make([]int32, 0, len(m.MapSint32Sint32))
+		for k := range m.MapSint32Sint32 {
+			keysForMapSint32Sint32 = append(keysForMapSint32Sint32, int32(k))
+		}
+		sort.Slice(keysForMapSint32Sint32, func(i, j int) bool {
+			return keysForMapSint32Sint32[i] < keysForMapSint32Sint32[j]
+		})
+		for iNdEx := len(keysForMapSint32Sint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint32Sint32[int32(keysForMapSint32Sint32[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64((uint32(keysForMapSint32Sint32[iNdEx])<<1)^uint32((keysForMapSint32Sint32[iNdEx]>>31))))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.MapUint64Uint64) > 0 {
+		keysForMapUint64Uint64 := make([]uint64, 0, len(m.MapUint64Uint64))
+		for k := range m.MapUint64Uint64 {
+			keysForMapUint64Uint64 = append(keysForMapUint64Uint64, uint64(k))
+		}
+		sort.Slice(keysForMapUint64Uint64, func(i, j int) bool {
+			return keysForMapUint64Uint64[i] < keysForMapUint64Uint64[j]
+		})
+		for iNdEx := len(keysForMapUint64Uint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint64Uint64[uint64(keysForMapUint64Uint64[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapUint64Uint64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.MapUint32Uint32) > 0 {
+		keysForMapUint32Uint32 := make([]uint32, 0, len(m.MapUint32Uint32))
+		for k := range m.MapUint32Uint32 {
+			keysForMapUint32Uint32 = append(keysForMapUint32Uint32, uint32(k))
+		}
+		sort.Slice(keysForMapUint32Uint32, func(i, j int) bool {
+			return keysForMapUint32Uint32[i] < keysForMapUint32Uint32[j]
+		})
+		for iNdEx := len(keysForMapUint32Uint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint32Uint32[uint32(keysForMapUint32Uint32[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapUint32Uint32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapInt64Int64) > 0 {
+		keysForMapInt64Int64 := make([]int64, 0, len(m.MapInt64Int64))
+		for k := range m.MapInt64Int64 {
+			keysForMapInt64Int64 = append(keysForMapInt64Int64, int64(k))
+		}
+		sort.Slice(keysForMapInt64Int64, func(i, j int) bool {
+			return keysForMapInt64Int64[i] < keysForMapInt64Int64[j]
+		})
+		for iNdEx := len(keysForMapInt64Int64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt64Int64[int64(keysForMapInt64Int64[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt64Int64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapInt32Int32) > 0 {
+		keysForMapInt32Int32 := make([]int32, 0, len(m.MapInt32Int32))
+		for k := range m.MapInt32Int32 {
+			keysForMapInt32Int32 = append(keysForMapInt32Int32, int32(k))
+		}
+		sort.Slice(keysForMapInt32Int32, func(i, j int) bool {
+			return keysForMapInt32Int32[i] < keysForMapInt32Int32[j]
+		})
+		for iNdEx := len(keysForMapInt32Int32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Int32[int32(keysForMapInt32Int32[iNdEx])]
+			baseI := i
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(keysForMapInt32Int32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarintTestMessagesProto3(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
 	if len(m.RepeatedCord) > 0 {
 		for iNdEx := len(m.RepeatedCord) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.RepeatedCord[iNdEx])
@@ -10219,7 +10357,8 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if len(m.RepeatedForeignEnum) > 0 {
 		dAtA24 := make([]byte, len(m.RepeatedForeignEnum)*10)
 		var j23 int
-		for _, num := range m.RepeatedForeignEnum {
+		for _, num1 := range m.RepeatedForeignEnum {
+			num := uint64(num1)
 			for num >= 1<<7 {
 				dAtA24[j23] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
@@ -10239,7 +10378,8 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if len(m.RepeatedNestedEnum) > 0 {
 		dAtA26 := make([]byte, len(m.RepeatedNestedEnum)*10)
 		var j25 int
-		for _, num := range m.RepeatedNestedEnum {
+		for _, num1 := range m.RepeatedNestedEnum {
+			num := uint64(num1)
 			for num >= 1<<7 {
 				dAtA26[j25] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
@@ -11046,6 +11186,169 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 			n += 2 + l + sovTestMessagesProto3(uint64(l))
 		}
 	}
+	if len(m.MapInt32Int32) > 0 {
+		for k, v := range m.MapInt32Int32 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapInt64Int64) > 0 {
+		for k, v := range m.MapInt64Int64 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapUint32Uint32) > 0 {
+		for k, v := range m.MapUint32Uint32 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapUint64Uint64) > 0 {
+		for k, v := range m.MapUint64Uint64 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapSint32Sint32) > 0 {
+		for k, v := range m.MapSint32Sint32 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sozTestMessagesProto3(uint64(k)) + 1 + sozTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapSint64Sint64) > 0 {
+		for k, v := range m.MapSint64Sint64 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sozTestMessagesProto3(uint64(k)) + 1 + sozTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapFixed32Fixed32) > 0 {
+		for k, v := range m.MapFixed32Fixed32 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + 4 + 1 + 4
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapFixed64Fixed64) > 0 {
+		for k, v := range m.MapFixed64Fixed64 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + 8 + 1 + 8
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapSfixed32Sfixed32) > 0 {
+		for k, v := range m.MapSfixed32Sfixed32 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + 4 + 1 + 4
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapSfixed64Sfixed64) > 0 {
+		for k, v := range m.MapSfixed64Sfixed64 {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + 8 + 1 + 8
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapInt32Float) > 0 {
+		for k, v := range m.MapInt32Float {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + 4
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapInt32Double) > 0 {
+		for k, v := range m.MapInt32Double {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + 8
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapBoolBool) > 0 {
+		for k, v := range m.MapBoolBool {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + 1 + 1 + 1
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringString) > 0 {
+		for k, v := range m.MapStringString {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + len(v) + sovTestMessagesProto3(uint64(len(v)))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringBytes) > 0 {
+		for k, v := range m.MapStringBytes {
+			_ = k
+			_ = v
+			l = 1 + len(v) + sovTestMessagesProto3(uint64(len(v)))
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + l
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringNestedMessage) > 0 {
+		for k, v := range m.MapStringNestedMessage {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.SizeVT()
+			}
+			l += 1 + sovTestMessagesProto3(uint64(l))
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + l
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringForeignMessage) > 0 {
+		for k, v := range m.MapStringForeignMessage {
+			_ = k
+			_ = v
+			l = 0
+			if v != nil {
+				l = v.SizeVT()
+			}
+			l += 1 + sovTestMessagesProto3(uint64(l))
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + l
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringNestedEnum) > 0 {
+		for k, v := range m.MapStringNestedEnum {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
+	if len(m.MapStringForeignEnum) > 0 {
+		for k, v := range m.MapStringForeignEnum {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + sovTestMessagesProto3(uint64(v))
+			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
+		}
+	}
 	if len(m.PackedInt32) > 0 {
 		l = 0
 		for _, e := range m.PackedInt32 {
@@ -11170,164 +11473,6 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	if len(m.UnpackedNestedEnum) > 0 {
 		for _, e := range m.UnpackedNestedEnum {
 			n += 2 + sovTestMessagesProto3(uint64(e))
-		}
-	}
-	if len(m.MapInt32Int32) > 0 {
-		for k, v := range m.MapInt32Int32 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapInt64Int64) > 0 {
-		for k, v := range m.MapInt64Int64 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapUint32Uint32) > 0 {
-		for k, v := range m.MapUint32Uint32 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapUint64Uint64) > 0 {
-		for k, v := range m.MapUint64Uint64 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapSint32Sint32) > 0 {
-		for k, v := range m.MapSint32Sint32 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sozTestMessagesProto3(uint64(k)) + 1 + sozTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapSint64Sint64) > 0 {
-		for k, v := range m.MapSint64Sint64 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sozTestMessagesProto3(uint64(k)) + 1 + sozTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapFixed32Fixed32) > 0 {
-		for k, v := range m.MapFixed32Fixed32 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + 4 + 1 + 4
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapFixed64Fixed64) > 0 {
-		for k, v := range m.MapFixed64Fixed64 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + 8 + 1 + 8
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapSfixed32Sfixed32) > 0 {
-		for k, v := range m.MapSfixed32Sfixed32 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + 4 + 1 + 4
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapSfixed64Sfixed64) > 0 {
-		for k, v := range m.MapSfixed64Sfixed64 {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + 8 + 1 + 8
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapInt32Float) > 0 {
-		for k, v := range m.MapInt32Float {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + 4
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapInt32Double) > 0 {
-		for k, v := range m.MapInt32Double {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + sovTestMessagesProto3(uint64(k)) + 1 + 8
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapBoolBool) > 0 {
-		for k, v := range m.MapBoolBool {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + 1 + 1 + 1
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringString) > 0 {
-		for k, v := range m.MapStringString {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + len(v) + sovTestMessagesProto3(uint64(len(v)))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringBytes) > 0 {
-		for k, v := range m.MapStringBytes {
-			_ = k
-			_ = v
-			l = 0
-			if len(v) > 0 {
-				l = 1 + len(v) + sovTestMessagesProto3(uint64(len(v)))
-			}
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + l
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringNestedMessage) > 0 {
-		for k, v := range m.MapStringNestedMessage {
-			_ = k
-			_ = v
-			l = v.SizeVT()
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + l + sovTestMessagesProto3(uint64(l))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringForeignMessage) > 0 {
-		for k, v := range m.MapStringForeignMessage {
-			_ = k
-			_ = v
-			l = v.SizeVT()
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + l + sovTestMessagesProto3(uint64(l))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringNestedEnum) > 0 {
-		for k, v := range m.MapStringNestedEnum {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
-		}
-	}
-	if len(m.MapStringForeignEnum) > 0 {
-		for k, v := range m.MapStringForeignEnum {
-			_ = k
-			_ = v
-			mapEntrySize := 1 + len(k) + sovTestMessagesProto3(uint64(len(k))) + 1 + sovTestMessagesProto3(uint64(v))
-			n += mapEntrySize + 2 + sovTestMessagesProto3(uint64(mapEntrySize))
 		}
 	}
 	if vtmsg, ok := m.OneofField.(vtprotoMessageTestMessagesProto3); ok {
@@ -11468,12 +11613,6 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 			n += 2 + l + sovTestMessagesProto3(uint64(l))
 		}
 	}
-	if len(m.RepeatedStruct) > 0 {
-		for _, e := range m.RepeatedStruct {
-			l = proto.Size(e)
-			n += 2 + l + sovTestMessagesProto3(uint64(l))
-		}
-	}
 	if len(m.RepeatedAny) > 0 {
 		for _, e := range m.RepeatedAny {
 			l = proto.Size(e)
@@ -11488,6 +11627,12 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for _, e := range m.RepeatedListValue {
+			l = proto.Size(e)
+			n += 2 + l + sovTestMessagesProto3(uint64(l))
+		}
+	}
+	if len(m.RepeatedStruct) > 0 {
+		for _, e := range m.RepeatedStruct {
 			l = proto.Size(e)
 			n += 2 + l + sovTestMessagesProto3(uint64(l))
 		}
@@ -11736,6 +11881,9 @@ func (m *ForeignMessage) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *ForeignMessage) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
 	i := len(dAtA)
 	_ = i
 	var l int

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 
@@ -424,10 +423,14 @@ func (p *vtproto) field(field *protogen.Field, fieldname string, proto3 bool) {
 		p.P(`}`)
 		if oneof {
 			buf := `dAtA[iNdEx:postIndex]`
-			p.P(`v := &`, p.noStarOrSliceType(field), `{}`)
-			log.Printf("oneof message: %v", field.GoIdent)
+			msgname := p.noStarOrSliceType(field)
+			p.P(`if oneof, ok := m.`, fieldname, `.(*`, field.GoIdent, `); ok {`)
+			p.decodemessage("oneof."+field.GoName, buf, field.Message.Desc)
+			p.P(`} else {`)
+			p.P(`v := &`, msgname, `{}`)
 			p.decodemessage("v", buf, field.Message.Desc)
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{v}`)
+			p.P(`}`)
 		} else if field.Desc.IsMap() {
 			goTyp, _ := fieldGoType(p.GeneratedFile, field)
 			goTypK, _ := fieldGoType(p.GeneratedFile, field.Message.Fields[0])

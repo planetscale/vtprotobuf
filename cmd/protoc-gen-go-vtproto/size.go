@@ -157,22 +157,18 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 				sum = append(sum, strconv.Itoa(valueKeySize))
 				sum = append(sum, `len(v)+sov`+p.localName+`(uint64(len(v)))`)
 			case protoreflect.BytesKind:
-				p.P(`l = 0`)
-				if proto3 {
-					p.P(`if len(v) > 0 {`)
-				} else {
-					p.P(`if v != nil {`)
-				}
 				p.P(`l = `, strconv.Itoa(valueKeySize), ` + len(v)+sov`+p.localName+`(uint64(len(v)))`)
-				p.P(`}`)
 				sum = append(sum, `l`)
 			case protoreflect.Sint32Kind, protoreflect.Sint64Kind:
 				sum = append(sum, strconv.Itoa(valueKeySize))
 				sum = append(sum, `soz`+p.localName+`(uint64(v))`)
 			case protoreflect.MessageKind:
+				p.P(`l = 0`)
+				p.P(`if v != nil {`)
 				p.P(`l = v.`, sizeName, `()`)
-				sum = append(sum, strconv.Itoa(valueKeySize))
-				sum = append(sum, `l+sov`+p.localName+`(uint64(l))`)
+				p.P(`}`)
+				p.P(`l += `, strconv.Itoa(valueKeySize), ` + sov`+p.localName+`(uint64(l))`)
+				sum = append(sum, `l`)
 			}
 			p.P(`mapEntrySize := `, strings.Join(sum, "+"))
 			p.P(`n+=mapEntrySize+`, fieldKeySize, `+sov`, p.localName, `(uint64(mapEntrySize))`)

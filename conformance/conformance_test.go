@@ -39,15 +39,6 @@ var (
 	protoRoot = flag.String("protoroot", os.Getenv("PROTOBUF_ROOT"), "The root of the protobuf source tree.")
 )
 
-func TestBadCases(t *testing.T) {
-	p := &pb.TestAllTypesProto3{
-		OptionalInt32: 1234,
-	}
-
-	bt, _ := p.MarshalVT()
-	t.Logf("%s", hex.Dump(bt))
-}
-
 func Test(t *testing.T) {
 	if !*execute {
 		t.SkipNow()
@@ -68,17 +59,55 @@ func Test(t *testing.T) {
 var marshalDifflog io.WriteCloser
 
 func conformanceUnmarshal(b []byte, msg proto.Message) error {
+	expected := proto.Clone(msg)
+	if err := proto.Unmarshal(b, expected); err != nil {
+		return err
+	}
 	type unmarshalvt interface {
 		UnmarshalVT(b []byte) error
 	}
 	if u, ok := msg.(unmarshalvt); ok {
-		return u.UnmarshalVT(b)
+		if err := u.UnmarshalVT(b); err != nil {
+			return err
+		}
+
+		if !proto.Equal(expected, msg) {
+			fmt.Fprintf(marshalDifflog, "UNMARSHAL\n")
+			fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", prototext.Format(expected))
+			fmt.Fprintf(marshalDifflog, "got:\n%s\n\n", prototext.Format(msg))
+			fmt.Fprintf(marshalDifflog, "raw: %#v\n\n", b)
+			fmt.Fprintf(marshalDifflog, "==============\n\n")
+		}
+		return nil
 	}
 	return proto.Unmarshal(b, msg)
 }
 
 func conformanceMarshal(msg proto.Message) ([]byte, error) {
-	expected, err := proto.Marshal(msg)
+	var expected, got []byte
+	var err error
+
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(marshalDifflog, "MARSHAL\n")
+			fmt.Fprintf(marshalDifflog, "message:\n%s\n\n", prototext.Format(msg))
+			fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", hex.Dump(expected))
+			fmt.Fprintf(marshalDifflog, "CRASH:\n%s\n\n", r)
+			fmt.Fprintf(marshalDifflog, "golang:\n%#v\n\n", msg)
+			fmt.Fprintf(marshalDifflog, "==============\n\n")
+		} else if err != nil {
+			// do nothing
+		} else if got != nil && !bytes.Equal(expected, got) {
+			fmt.Fprintf(marshalDifflog, "MARSHAL\n")
+			fmt.Fprintf(marshalDifflog, "message:\n%s\n\n", prototext.Format(msg))
+			fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", hex.Dump(expected))
+			fmt.Fprintf(marshalDifflog, "got:\n%s\n\n", hex.Dump(got))
+			fmt.Fprintf(marshalDifflog, "golang:\n%#v\n\n", msg)
+			fmt.Fprintf(marshalDifflog, "==============\n\n")
+		}
+	}()
+
+	expected, err = proto.Marshal(msg)
 	if err != nil {
 		return nil, err
 	}
@@ -87,16 +116,9 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 		MarshalVT() ([]byte, error)
 	}
 	if m, ok := msg.(marshalvt); ok {
-		got, err := m.MarshalVT()
+		got, err = m.MarshalVT()
 		if err != nil {
 			return nil, err
-		}
-
-		if !bytes.Equal(expected, got) {
-			fmt.Fprintf(marshalDifflog, "message:\n%s\n\n", prototext.Format(msg))
-			fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", hex.Dump(expected))
-			fmt.Fprintf(marshalDifflog, "got:\n%s\n\n", hex.Dump(got))
-			fmt.Fprintf(marshalDifflog, "==============\n\n")
 		}
 		return got, nil
 	}

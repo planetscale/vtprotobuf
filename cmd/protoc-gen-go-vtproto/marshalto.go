@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -160,7 +161,7 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 			p.P(`dAtA`, numGen.Next(), ` := make([]byte, len(m.`, fieldname, `)*10)`)
 			p.P(`var `, jvar, ` int`)
 			switch field.Desc.Kind() {
-			case protoreflect.Int64Kind, protoreflect.Int32Kind:
+			case protoreflect.Int64Kind, protoreflect.Int32Kind, protoreflect.EnumKind:
 				p.P(`for _, num1 := range m.`, fieldname, ` {`)
 				p.P(`num := uint64(num1)`)
 			default:
@@ -305,13 +306,15 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 			valKind := field.Message.Fields[1].Desc.Kind()
 
 			var val string
-			if p.stable {
+			if p.stable && keyKind != protoreflect.BoolKind {
 				keysName := `keysFor` + fieldname
 				p.P(keysName, ` := make([]`, goTypK, `, 0, len(m.`, fieldname, `))`)
 				p.P(`for k := range m.`, fieldname, ` {`)
 				p.P(keysName, ` = append(`, keysName, `, `, goTypK, `(k))`)
 				p.P(`}`)
-				p.P(p.Ident("sort", CamelCase(goTypK)+"s"), `(`, keysName, `)`)
+				p.P(p.Ident("sort", "Slice"), `(`, keysName, `, func(i, j int) bool {`)
+				p.P(`return `, keysName, `[i] < `, keysName, `[j]`)
+				p.P(`})`)
 				val = p.reverseListRange(keysName)
 			} else {
 				p.P(`for k := range m.`, fieldname, ` {`)
@@ -325,18 +328,9 @@ func (p *vtproto) marshalField(proto3 bool, numGen *counter, message *protogen.M
 			p.P(`baseI := i`)
 
 			accessor := `v`
-			if valKind == protoreflect.BytesKind {
-				if proto3 {
-					p.P(`if len(`, accessor, `) > 0 {`)
-				} else {
-					p.P(`if `, accessor, ` != nil {`)
-				}
-			}
 			p.marshalMapField(field, field.Message.Fields[1], accessor)
 			p.encodeKey(2, wireTypes[valKind])
-			if valKind == protoreflect.BytesKind {
-				p.P(`}`)
-			}
+
 			p.marshalMapField(field, field.Message.Fields[0], val)
 			p.encodeKey(1, wireTypes[keyKind])
 			p.callVarint(`baseI - i`)
@@ -475,9 +469,9 @@ func (p *vtproto) generateMessageMarshal(message *protogen.Message) {
 	p.P(`}`)
 	p.P(``)
 	p.P(`func (m *`, ccTypeName, `) MarshalToSizedBufferVT(dAtA []byte) (int, error) {`)
-	// p.P(`if m == nil {`)
-	// p.P(`return 0, nil`)
-	// p.P(`}`)
+	p.P(`if m == nil {`)
+	p.P(`return 0, nil`)
+	p.P(`}`)
 	p.P(`i := len(dAtA)`)
 	p.P(`_ = i`)
 	p.P(`var l int`)
@@ -486,6 +480,11 @@ func (p *vtproto) generateMessageMarshal(message *protogen.Message) {
 	p.P(`i -= len(m.unknownFields)`)
 	p.P(`copy(dAtA[i:], m.unknownFields)`)
 	p.P(`}`)
+
+	sort.Slice(message.Fields, func(i, j int) bool {
+		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
+	})
+
 	oneofs := make(map[string]struct{})
 	for i := len(message.Fields) - 1; i >= 0; i-- {
 		field := message.Fields[i]
