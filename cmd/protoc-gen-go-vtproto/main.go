@@ -1,20 +1,46 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"runtime/debug"
+	"strings"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
+type ObjectSet map[protogen.GoIdent]bool
+
+func (o ObjectSet) String() string {
+	return fmt.Sprintf("%#v", o)
+}
+
+func (o ObjectSet) Set(s string) error {
+	idx := strings.LastIndexByte(s, '.')
+	if idx < 0 {
+		return fmt.Errorf("invalid object name: %q", s)
+	}
+
+	ident := protogen.GoIdent{
+		GoImportPath: protogen.GoImportPath(s[0:idx]),
+		GoName:       s[idx+1:],
+	}
+	o[ident] = true
+	return nil
+}
+
 func main() {
-	protogen.Options{}.Run(func(plugin *protogen.Plugin) error {
-		generateAllFiles(plugin)
+	poolable := make(ObjectSet)
+	var f flag.FlagSet
+	f.Var(poolable, "P", "use memory pooling for this object")
+	protogen.Options{ParamFunc: f.Set}.Run(func(plugin *protogen.Plugin) error {
+		generateAllFiles(plugin, poolable)
 		return nil
 	})
 }
 
-func generateAllFiles(plugin *protogen.Plugin) {
+func generateAllFiles(plugin *protogen.Plugin, poolable ObjectSet) {
 	seen := make(map[protogen.GoImportPath]bool)
 	for _, file := range plugin.Files {
 		if !file.Generate {
@@ -22,7 +48,7 @@ func generateAllFiles(plugin *protogen.Plugin) {
 		}
 
 		gf := plugin.NewGeneratedFile(file.GeneratedFilenamePrefix+"_vtproto.pb.go", file.GoImportPath)
-		pf := &vtprotofile{GeneratedFile: gf, stable: false}
+		pf := &vtprotofile{GeneratedFile: gf, stable: false, mempool: poolable}
 		if !pf.Generate(file, seen) {
 			gf.Skip()
 		}
@@ -33,6 +59,7 @@ type vtprotofile struct {
 	*protogen.GeneratedFile
 	atleastOne bool
 	stable     bool
+	mempool    ObjectSet
 }
 
 func (p *vtprotofile) generateMessage(message *protogen.Message) {

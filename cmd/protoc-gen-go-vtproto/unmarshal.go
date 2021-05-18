@@ -660,7 +660,7 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, message *protogen.Me
 
 	p.P(`case `, strconv.Itoa(int(field.Desc.Number())), `:`)
 	wireType := wireTypes[field.Desc.Kind()]
-	if field.Desc.IsList() {
+	if field.Desc.IsList() && wireType != protowire.BytesType {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
 		p.unmarshalFieldItem(field, fieldname, message, false)
 		p.P(`} else if wireType == `, strconv.Itoa(int(protowire.BytesType)), `{`)

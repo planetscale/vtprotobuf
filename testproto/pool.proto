@@ -1,0 +1,10 @@
+syntax = "proto3";
+option go_package = "vitess.io/vtprotobuf/testproto";
+
+import "vitess.io/vtprotobuf/vtproto/ext.proto";
+
+message Test {
+  option (vtproto.mempool) = true;
+  string foo1 = 1;
+  uint64 foo2 = 2;
+}

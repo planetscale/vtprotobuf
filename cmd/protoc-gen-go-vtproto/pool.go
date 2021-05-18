@@ -3,26 +3,25 @@ package main
 import (
 	"fmt"
 
+	"vitess.io/vtprotobuf/vtproto"
+
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
-
-var poolable = map[protogen.GoIdent]bool{
-	protogen.GoIdent{
-		GoName:       "Row",
-		GoImportPath: "vitess.io/vitess/go/vt/proto/query",
-	}: true,
-	protogen.GoIdent{
-		GoName:       "VStreamRowsResponse",
-		GoImportPath: "vitess.io/vitess/go/vt/proto/binlogdata",
-	}: true,
-}
 
 func (p *vtprotofile) shouldPool(message *protogen.Message) bool {
 	if message == nil {
 		return false
 	}
-	return poolable[message.GoIdent]
+	if p.mempool[message.GoIdent] {
+		return true
+	}
+	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Mempool)
+	if mempool, ok := ext.(bool); ok {
+		return mempool
+	}
+	return false
 }
 
 func (p *vtprotofile) PoolMessage(message *protogen.Message) {
