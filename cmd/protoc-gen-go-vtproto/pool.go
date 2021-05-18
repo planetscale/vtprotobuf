@@ -18,14 +18,14 @@ var poolable = map[protogen.GoIdent]bool{
 	}: true,
 }
 
-func (p *vtproto) shouldPool(message *protogen.Message) bool {
+func (p *vtprotofile) shouldPool(message *protogen.Message) bool {
 	if message == nil {
 		return false
 	}
 	return poolable[message.GoIdent]
 }
 
-func (p *vtproto) generateMessagePool(message *protogen.Message) {
+func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 	if !p.shouldPool(message) {
 		return
 	}

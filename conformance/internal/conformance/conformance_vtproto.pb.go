@@ -7,7 +7,6 @@ package conformance
 import (
 	fmt "fmt"
 	io "io"
-	bits "math/bits"
 )
 
 func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
@@ -18,7 +17,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowConformance
+				return ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -44,7 +43,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
-						return ErrIntOverflowConformance
+						return ErrIntOverflow
 					}
 					if iNdEx >= l {
 						return io.ErrUnexpectedEOF
@@ -58,11 +57,11 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 				}
 				intStringLen := int(stringLen)
 				if intStringLen < 0 {
-					return ErrInvalidLengthConformance
+					return ErrInvalidLength
 				}
 				postIndex := iNdEx + intStringLen
 				if postIndex < 0 {
-					return ErrInvalidLengthConformance
+					return ErrInvalidLength
 				}
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
@@ -73,7 +72,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 				var packedLen int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
-						return ErrIntOverflowConformance
+						return ErrIntOverflow
 					}
 					if iNdEx >= l {
 						return io.ErrUnexpectedEOF
@@ -86,11 +85,11 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				if packedLen < 0 {
-					return ErrInvalidLengthConformance
+					return ErrInvalidLength
 				}
 				postIndex := iNdEx + packedLen
 				if postIndex < 0 {
-					return ErrInvalidLengthConformance
+					return ErrInvalidLength
 				}
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
@@ -103,7 +102,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 					var stringLen uint64
 					for shift := uint(0); ; shift += 7 {
 						if shift >= 64 {
-							return ErrIntOverflowConformance
+							return ErrIntOverflow
 						}
 						if iNdEx >= l {
 							return io.ErrUnexpectedEOF
@@ -117,11 +116,11 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 					}
 					intStringLen := int(stringLen)
 					if intStringLen < 0 {
-						return ErrInvalidLengthConformance
+						return ErrInvalidLength
 					}
 					postIndex := iNdEx + intStringLen
 					if postIndex < 0 {
-						return ErrInvalidLengthConformance
+						return ErrInvalidLength
 					}
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
@@ -134,12 +133,12 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			}
 		default:
 			iNdEx = preIndex
-			skippy, err := skipConformance(dAtA[iNdEx:])
+			skippy, err := skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -188,7 +187,7 @@ func (m *FailureSet) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Failure[iNdEx])
 			copy(dAtA[i:], m.Failure[iNdEx])
-			i = encodeVarintConformance(dAtA, i, uint64(len(m.Failure[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -205,7 +204,7 @@ func (m *FailureSet) SizeVT() (n int) {
 	if len(m.Failure) > 0 {
 		for _, s := range m.Failure {
 			l = len(s)
-			n += 1 + l + sovConformance(uint64(l))
+			n += 1 + l + sov(uint64(l))
 		}
 	}
 	if m.unknownFields != nil {
@@ -222,7 +221,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowConformance
+				return ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -250,7 +249,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -263,11 +262,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -283,7 +282,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -297,11 +296,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -315,7 +314,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -329,11 +328,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -347,7 +346,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -361,11 +360,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -379,7 +378,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.RequestedOutputFormat = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -398,7 +397,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -412,11 +411,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -430,7 +429,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.TestCategory = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -449,7 +448,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -462,11 +461,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if msglen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + msglen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -485,7 +484,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -500,12 +499,12 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.PrintUnknownFields = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skipConformance(dAtA[iNdEx:])
+			skippy, err := skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -560,7 +559,7 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x48
 	}
-	if vtmsg, ok := m.Payload.(vtprotoMessageConformance); ok {
+	if vtmsg, ok := m.Payload.(vtprotoMessage); ok {
 		{
 			size := vtmsg.SizeVT()
 			i -= size
@@ -576,25 +575,25 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				return 0, err
 			}
 			i -= size
-			i = encodeVarintConformance(dAtA, i, uint64(size))
+			i = encodeVarint(dAtA, i, uint64(size))
 		}
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.TestCategory != 0 {
-		i = encodeVarintConformance(dAtA, i, uint64(m.TestCategory))
+		i = encodeVarint(dAtA, i, uint64(m.TestCategory))
 		i--
 		dAtA[i] = 0x28
 	}
 	if len(m.MessageType) > 0 {
 		i -= len(m.MessageType)
 		copy(dAtA[i:], m.MessageType)
-		i = encodeVarintConformance(dAtA, i, uint64(len(m.MessageType)))
+		i = encodeVarint(dAtA, i, uint64(len(m.MessageType)))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.RequestedOutputFormat != 0 {
-		i = encodeVarintConformance(dAtA, i, uint64(m.RequestedOutputFormat))
+		i = encodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -610,7 +609,7 @@ func (m *ConformanceRequest_ProtobufPayload) MarshalToSizedBufferVT(dAtA []byte)
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -624,7 +623,7 @@ func (m *ConformanceRequest_JsonPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.JsonPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -638,7 +637,7 @@ func (m *ConformanceRequest_JspbPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.JspbPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -652,7 +651,7 @@ func (m *ConformanceRequest_TextPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.TextPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -663,22 +662,22 @@ func (m *ConformanceRequest) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if vtmsg, ok := m.Payload.(vtprotoMessageConformance); ok {
+	if vtmsg, ok := m.Payload.(vtprotoMessage); ok {
 		n += vtmsg.SizeVT()
 	}
 	if m.RequestedOutputFormat != 0 {
-		n += 1 + sovConformance(uint64(m.RequestedOutputFormat))
+		n += 1 + sov(uint64(m.RequestedOutputFormat))
 	}
 	l = len(m.MessageType)
 	if l > 0 {
-		n += 1 + l + sovConformance(uint64(l))
+		n += 1 + l + sov(uint64(l))
 	}
 	if m.TestCategory != 0 {
-		n += 1 + sovConformance(uint64(m.TestCategory))
+		n += 1 + sov(uint64(m.TestCategory))
 	}
 	if m.JspbEncodingOptions != nil {
 		l = m.JspbEncodingOptions.SizeVT()
-		n += 1 + l + sovConformance(uint64(l))
+		n += 1 + l + sov(uint64(l))
 	}
 	if m.PrintUnknownFields {
 		n += 2
@@ -696,7 +695,7 @@ func (m *ConformanceRequest_ProtobufPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ProtobufPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_JsonPayload) SizeVT() (n int) {
@@ -706,7 +705,7 @@ func (m *ConformanceRequest_JsonPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JsonPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_JspbPayload) SizeVT() (n int) {
@@ -716,7 +715,7 @@ func (m *ConformanceRequest_JspbPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JspbPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_TextPayload) SizeVT() (n int) {
@@ -726,7 +725,7 @@ func (m *ConformanceRequest_TextPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.TextPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
@@ -737,7 +736,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowConformance
+				return ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -765,7 +764,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -779,11 +778,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -797,7 +796,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -811,11 +810,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -829,7 +828,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -843,11 +842,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -861,7 +860,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -874,11 +873,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -894,7 +893,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -908,11 +907,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -926,7 +925,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -940,11 +939,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -958,7 +957,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -972,11 +971,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -990,7 +989,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1004,11 +1003,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1017,12 +1016,12 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipConformance(dAtA[iNdEx:])
+			skippy, err := skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1067,7 +1066,7 @@ func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if vtmsg, ok := m.Result.(vtprotoMessageConformance); ok {
+	if vtmsg, ok := m.Result.(vtprotoMessage); ok {
 		{
 			size := vtmsg.SizeVT()
 			i -= size
@@ -1088,7 +1087,7 @@ func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.ParseError)
 	copy(dAtA[i:], m.ParseError)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.ParseError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ParseError)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -1102,7 +1101,7 @@ func (m *ConformanceResponse_RuntimeError) MarshalToSizedBufferVT(dAtA []byte) (
 	i := len(dAtA)
 	i -= len(m.RuntimeError)
 	copy(dAtA[i:], m.RuntimeError)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.RuntimeError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -1116,7 +1115,7 @@ func (m *ConformanceResponse_ProtobufPayload) MarshalToSizedBufferVT(dAtA []byte
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0x1a
 	return len(dAtA) - i, nil
@@ -1130,7 +1129,7 @@ func (m *ConformanceResponse_JsonPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.JsonPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x22
 	return len(dAtA) - i, nil
@@ -1144,7 +1143,7 @@ func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	i := len(dAtA)
 	i -= len(m.Skipped)
 	copy(dAtA[i:], m.Skipped)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.Skipped)))
+	i = encodeVarint(dAtA, i, uint64(len(m.Skipped)))
 	i--
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
@@ -1158,7 +1157,7 @@ func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVT(dAtA []byte)
 	i := len(dAtA)
 	i -= len(m.SerializeError)
 	copy(dAtA[i:], m.SerializeError)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.SerializeError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.SerializeError)))
 	i--
 	dAtA[i] = 0x32
 	return len(dAtA) - i, nil
@@ -1172,7 +1171,7 @@ func (m *ConformanceResponse_JspbPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.JspbPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -1186,7 +1185,7 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarintConformance(dAtA, i, uint64(len(m.TextPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -1197,7 +1196,7 @@ func (m *ConformanceResponse) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if vtmsg, ok := m.Result.(vtprotoMessageConformance); ok {
+	if vtmsg, ok := m.Result.(vtprotoMessage); ok {
 		n += vtmsg.SizeVT()
 	}
 	if m.unknownFields != nil {
@@ -1213,7 +1212,7 @@ func (m *ConformanceResponse_ParseError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ParseError)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_RuntimeError) SizeVT() (n int) {
@@ -1223,7 +1222,7 @@ func (m *ConformanceResponse_RuntimeError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.RuntimeError)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_ProtobufPayload) SizeVT() (n int) {
@@ -1233,7 +1232,7 @@ func (m *ConformanceResponse_ProtobufPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ProtobufPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_JsonPayload) SizeVT() (n int) {
@@ -1243,7 +1242,7 @@ func (m *ConformanceResponse_JsonPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JsonPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_Skipped) SizeVT() (n int) {
@@ -1253,7 +1252,7 @@ func (m *ConformanceResponse_Skipped) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.Skipped)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
@@ -1263,7 +1262,7 @@ func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.SerializeError)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_JspbPayload) SizeVT() (n int) {
@@ -1273,7 +1272,7 @@ func (m *ConformanceResponse_JspbPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JspbPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_TextPayload) SizeVT() (n int) {
@@ -1283,7 +1282,7 @@ func (m *ConformanceResponse_TextPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.TextPayload)
-	n += 1 + l + sovConformance(uint64(l))
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
@@ -1294,7 +1293,7 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowConformance
+				return ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1322,7 +1321,7 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConformance
+					return ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1337,12 +1336,12 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 			m.UseJspbArrayAnyFormat = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skipConformance(dAtA[iNdEx:])
+			skippy, err := skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthConformance
+				return ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1413,113 +1412,4 @@ func (m *JspbEncodingConfig) SizeVT() (n int) {
 		n += len(m.unknownFields)
 	}
 	return n
-}
-
-func skipConformance(dAtA []byte) (n int, err error) {
-	l := len(dAtA)
-	iNdEx := 0
-	depth := 0
-	for iNdEx < l {
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return 0, ErrIntOverflowConformance
-			}
-			if iNdEx >= l {
-				return 0, io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		wireType := int(wire & 0x7)
-		switch wireType {
-		case 0:
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return 0, ErrIntOverflowConformance
-				}
-				if iNdEx >= l {
-					return 0, io.ErrUnexpectedEOF
-				}
-				iNdEx++
-				if dAtA[iNdEx-1] < 0x80 {
-					break
-				}
-			}
-		case 1:
-			iNdEx += 8
-		case 2:
-			var length int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return 0, ErrIntOverflowConformance
-				}
-				if iNdEx >= l {
-					return 0, io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				length |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if length < 0 {
-				return 0, ErrInvalidLengthConformance
-			}
-			iNdEx += length
-		case 3:
-			depth++
-		case 4:
-			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupConformance
-			}
-			depth--
-		case 5:
-			iNdEx += 4
-		default:
-			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
-		}
-		if iNdEx < 0 {
-			return 0, ErrInvalidLengthConformance
-		}
-		if depth == 0 {
-			return iNdEx, nil
-		}
-	}
-	return 0, io.ErrUnexpectedEOF
-}
-
-var (
-	ErrInvalidLengthConformance        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowConformance          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupConformance = fmt.Errorf("proto: unexpected end of group")
-)
-
-func encodeVarintConformance(dAtA []byte, offset int, v uint64) int {
-	offset -= sovConformance(v)
-	base := offset
-	for v >= 1<<7 {
-		dAtA[offset] = uint8(v&0x7f | 0x80)
-		v >>= 7
-		offset++
-	}
-	dAtA[offset] = uint8(v)
-	return base
-}
-
-func sovConformance(x uint64) (n int) {
-	return (bits.Len64(x|1) + 6) / 7
-}
-func sozConformance(x uint64) (n int) {
-	return sovConformance(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-
-type vtprotoMessageConformance interface {
-	MarshalToVT([]byte) (int, error)
-	SizeVT() int
 }

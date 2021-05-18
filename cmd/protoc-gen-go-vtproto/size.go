@@ -12,20 +12,7 @@ import (
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-func (p *vtproto) sizeVarint() {
-	p.P(`
-	func sov`, p.localName, `(x uint64) (n int) {
-                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
-	}`)
-}
-
-func (p *vtproto) sizeZigZag() {
-	p.P(`func soz`, p.localName, `(x uint64) (n int) {
-		return sov`, p.localName, `(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-	}`)
-}
-
-func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, field *protogen.Field, sizeName string) {
+func (p *vtprotofile) sizeForField(proto3 bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
 	nullcheck := field.Message != nil
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -44,7 +31,7 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind, protoreflect.Fixed64Kind, protoreflect.Sfixed64Kind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(len(m.`, fieldname, `)*8))`, `+len(m.`, fieldname, `)*8`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)*8))`, `+len(m.`, fieldname, `)*8`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+8), `*len(m.`, fieldname, `)`)
 		} else if proto3 {
@@ -56,7 +43,7 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 		}
 	case protoreflect.FloatKind, protoreflect.Fixed32Kind, protoreflect.Sfixed32Kind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(len(m.`, fieldname, `)*4))`, `+len(m.`, fieldname, `)*4`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)*4))`, `+len(m.`, fieldname, `)*4`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+4), `*len(m.`, fieldname, `)`)
 		} else if proto3 {
@@ -70,23 +57,23 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 		if packed {
 			p.P(`l = 0`)
 			p.P(`for _, e := range m.`, fieldname, ` {`)
-			p.P(`l+=sov`, p.localName, `(uint64(e))`)
+			p.P(`l+=sov(uint64(e))`)
 			p.P(`}`)
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(l))+l`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(l))+l`)
 		} else if repeated {
 			p.P(`for _, e := range m.`, fieldname, ` {`)
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(e))`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(e))`)
 			p.P(`}`)
 		} else if proto3 {
 			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(m.`, fieldname, `))`)
 			p.P(`}`)
 		} else {
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(m.`, fieldname, `))`)
 		}
 	case protoreflect.BoolKind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(len(m.`, fieldname, `)))`, `+len(m.`, fieldname, `)*1`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)))`, `+len(m.`, fieldname, `)*1`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+1), `*len(m.`, fieldname, `)`)
 		} else if proto3 {
@@ -100,16 +87,16 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 		if repeated {
 			p.P(`for _, s := range m.`, fieldname, ` { `)
 			p.P(`l = len(s)`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else if proto3 {
 			p.P(`l=len(m.`, fieldname, `)`)
 			p.P(`if l > 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else {
 			p.P(`l=len(m.`, fieldname, `)`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 		}
 	case protoreflect.GroupKind:
 		panic(fmt.Errorf("size does not support group %v", fieldname))
@@ -131,13 +118,13 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 			case protoreflect.FloatKind, protoreflect.Fixed32Kind, protoreflect.Sfixed32Kind:
 				sum = append(sum, `4`)
 			case protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.Uint32Kind, protoreflect.EnumKind, protoreflect.Int32Kind:
-				sum = append(sum, `sov`+p.localName+`(uint64(k))`)
+				sum = append(sum, `sov(uint64(k))`)
 			case protoreflect.BoolKind:
 				sum = append(sum, `1`)
 			case protoreflect.StringKind, protoreflect.BytesKind:
-				sum = append(sum, `len(k)+sov`+p.localName+`(uint64(len(k)))`)
+				sum = append(sum, `len(k)+sov(uint64(len(k)))`)
 			case protoreflect.Sint32Kind, protoreflect.Sint64Kind:
-				sum = append(sum, `soz`+p.localName+`(uint64(k))`)
+				sum = append(sum, `soz(uint64(k))`)
 			}
 
 			switch field.Message.Fields[1].Desc.Kind() {
@@ -149,29 +136,29 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 				sum = append(sum, strconv.Itoa(4))
 			case protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.Uint32Kind, protoreflect.EnumKind, protoreflect.Int32Kind:
 				sum = append(sum, strconv.Itoa(valueKeySize))
-				sum = append(sum, `sov`+p.localName+`(uint64(v))`)
+				sum = append(sum, `sov(uint64(v))`)
 			case protoreflect.BoolKind:
 				sum = append(sum, strconv.Itoa(valueKeySize))
 				sum = append(sum, `1`)
 			case protoreflect.StringKind:
 				sum = append(sum, strconv.Itoa(valueKeySize))
-				sum = append(sum, `len(v)+sov`+p.localName+`(uint64(len(v)))`)
+				sum = append(sum, `len(v)+sov(uint64(len(v)))`)
 			case protoreflect.BytesKind:
-				p.P(`l = `, strconv.Itoa(valueKeySize), ` + len(v)+sov`+p.localName+`(uint64(len(v)))`)
+				p.P(`l = `, strconv.Itoa(valueKeySize), ` + len(v)+sov(uint64(len(v)))`)
 				sum = append(sum, `l`)
 			case protoreflect.Sint32Kind, protoreflect.Sint64Kind:
 				sum = append(sum, strconv.Itoa(valueKeySize))
-				sum = append(sum, `soz`+p.localName+`(uint64(v))`)
+				sum = append(sum, `soz(uint64(v))`)
 			case protoreflect.MessageKind:
 				p.P(`l = 0`)
 				p.P(`if v != nil {`)
 				p.P(`l = v.`, sizeName, `()`)
 				p.P(`}`)
-				p.P(`l += `, strconv.Itoa(valueKeySize), ` + sov`+p.localName+`(uint64(l))`)
+				p.P(`l += `, strconv.Itoa(valueKeySize), ` + sov(uint64(l))`)
 				sum = append(sum, `l`)
 			}
 			p.P(`mapEntrySize := `, strings.Join(sum, "+"))
-			p.P(`n+=mapEntrySize+`, fieldKeySize, `+sov`, p.localName, `(uint64(mapEntrySize))`)
+			p.P(`n+=mapEntrySize+`, fieldKeySize, `+sov(uint64(mapEntrySize))`)
 			p.P(`}`)
 		} else if field.Desc.IsList() {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
@@ -180,7 +167,7 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 			} else {
 				p.P(`l=e.`, sizeName, `()`)
 			}
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else {
 			if foreign {
@@ -188,40 +175,40 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 			} else {
 				p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
 			}
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 		}
 	case protoreflect.BytesKind:
 		if repeated {
 			p.P(`for _, b := range m.`, fieldname, ` { `)
 			p.P(`l = len(b)`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else if proto3 {
 			p.P(`l=len(m.`, fieldname, `)`)
 			p.P(`if l > 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else {
 			p.P(`l=len(m.`, fieldname, `)`)
-			p.P(`n+=`, strconv.Itoa(key), `+l+sov`, p.localName, `(uint64(l))`)
+			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 		}
 	case protoreflect.Sint32Kind, protoreflect.Sint64Kind:
 		if packed {
 			p.P(`l = 0`)
 			p.P(`for _, e := range m.`, fieldname, ` {`)
-			p.P(`l+=soz`, p.localName, `(uint64(e))`)
+			p.P(`l+=soz(uint64(e))`)
 			p.P(`}`)
-			p.P(`n+=`, strconv.Itoa(key), `+sov`, p.localName, `(uint64(l))+l`)
+			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(l))+l`)
 		} else if repeated {
 			p.P(`for _, e := range m.`, fieldname, ` {`)
-			p.P(`n+=`, strconv.Itoa(key), `+soz`, p.localName, `(uint64(e))`)
+			p.P(`n+=`, strconv.Itoa(key), `+soz(uint64(e))`)
 			p.P(`}`)
 		} else if proto3 {
 			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+soz`, p.localName, `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+soz(uint64(m.`, fieldname, `))`)
 			p.P(`}`)
 		} else {
-			p.P(`n+=`, strconv.Itoa(key), `+soz`, p.localName, `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+soz(uint64(m.`, fieldname, `))`)
 		}
 	default:
 		panic("not implemented")
@@ -231,7 +218,7 @@ func (p *vtproto) sizeGenerateField(proto3 bool, message *protogen.Message, fiel
 	}
 }
 
-func (p *vtproto) generateMessageSize(message *protogen.Message) {
+func (p *vtprotofile) SizeMessage(message *protogen.Message) {
 	sizeName := "SizeVT"
 	ccTypeName := message.GoIdent
 
@@ -245,12 +232,12 @@ func (p *vtproto) generateMessageSize(message *protogen.Message) {
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil
 		if !oneof {
-			p.sizeGenerateField(true, message, field, sizeName)
+			p.sizeForField(true, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
 				oneofs[fieldname] = struct{}{}
-				p.P(`if vtmsg, ok := m.`, fieldname, `.(vtprotoMessage`, p.localName, `); ok {`)
+				p.P(`if vtmsg, ok := m.`, fieldname, `.(vtprotoMessage); ok {`)
 				p.P(`n+=vtmsg.`, sizeName, `()`)
 				p.P(`}`)
 			}
@@ -274,17 +261,18 @@ func (p *vtproto) generateMessageSize(message *protogen.Message) {
 		p.P(`}`)
 		p.P(`var l int`)
 		p.P(`_ = l`)
-		p.sizeGenerateField(false, message, field, sizeName)
+		p.sizeForField(false, field, sizeName)
 		p.P(`return n`)
 		p.P(`}`)
 	}
-
-	if !p.atleastOne {
-		return
-	}
 }
 
-func (p *vtproto) generateSizeHelpers() {
-	p.sizeVarint()
-	p.sizeZigZag()
+func (p *vtprotofile) SizeHelpers() {
+	p.P(`
+	func sov(x uint64) (n int) {
+                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+	}`)
+	p.P(`func soz(x uint64) (n int) {
+		return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+	}`)
 }
