@@ -38,9 +38,7 @@ func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 	p.P(`},`)
 	p.P(`}`)
 
-	p.P(`func (m *`, ccTypeName, `) ReturnToVTPool() {`)
-	p.P(`if m != nil {`)
-
+	p.P(`func (m *`, ccTypeName, `) ResetVT() {`)
 	var saved []*protogen.Field
 	for _, field := range message.Fields {
 		fieldName := field.GoName
@@ -50,7 +48,7 @@ func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
 				if p.shouldPool(field.Message) {
 					p.P(`for _, mm := range m.`, fieldName, `{`)
-					p.P(`mm.ReturnToVTPool()`)
+					p.P(`mm.ResetVT()`)
 					p.P(`}`)
 				}
 			}
@@ -70,11 +68,14 @@ func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 	}
 
 	p.P(`m.Reset()`)
-
 	for i, field := range saved {
 		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i))
 	}
+	p.P(`}`)
 
+	p.P(`func (m *`, ccTypeName, `) ReturnToVTPool() {`)
+	p.P(`if m != nil {`)
+	p.P(`m.ResetVT()`)
 	p.P(`vtprotoPool_`, ccTypeName, `.Put(m)`)
 	p.P(`}`)
 	p.P(`}`)

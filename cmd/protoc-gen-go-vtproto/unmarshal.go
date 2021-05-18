@@ -249,7 +249,7 @@ func (p *vtprotofile) noStarOrSliceType(field *protogen.Field) string {
 	return typ
 }
 
-func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string, proto3 bool) {
+func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Desc.ContainingOneof() != nil
@@ -470,20 +470,27 @@ func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string
 			p.P(`}`)
 			p.P(`m.`, fieldname, `[mapkey] = mapvalue`)
 		} else if repeated {
-			if p.shouldPool(field.Message) {
-				p.P(`v := `, field.Message.GoIdent, `FromVTPool()`)
+			if p.shouldPool(message) {
+				p.P(`if len(m.`, fieldname, `) == cap(m.`, fieldname, `) {`)
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
+				p.P(`} else {`)
+				p.P(`m.`, fieldname, ` = m.`, fieldname, `[:len(m.`, fieldname, `) + 1]`)
+				p.P(`if m.`, fieldname, `[len(m.`, fieldname, `) - 1] == nil {`)
+				p.P(`m.`, fieldname, `[len(m.`, fieldname, `) - 1] = &`, field.Message.GoIdent, `{}`)
+				p.P(`}`)
+				p.P(`}`)
 			} else {
-				p.P(`v := &`, p.noStarOrSliceType(field), `{}`)
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
 			}
+			varname := fmt.Sprintf("m.%s[len(m.%s) - 1]", fieldname, fieldname)
 			buf := `dAtA[iNdEx:postIndex]`
-			p.decodeMessage("v", buf, field.Message.Desc)
-			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
+			p.decodeMessage(varname, buf, field.Message.Desc)
 		} else {
 			p.P(`if m.`, fieldname, ` == nil {`)
-			if p.shouldPool(field.Message) {
+			if p.shouldPool(message) && p.shouldPool(field.Message) {
 				p.P(`m.`, fieldname, ` = `, field.Message.GoIdent, `FromVTPool()`)
 			} else {
-				p.P(`m.`, fieldname, ` = &`, p.noStarOrSliceType(field), `{}`)
+				p.P(`m.`, fieldname, ` = &`, field.Message.GoIdent, `{}`)
 			}
 			p.P(`}`)
 			p.decodeMessage("m."+fieldname, "dAtA[iNdEx:postIndex]", field.Message.Desc)
@@ -644,7 +651,7 @@ var wireTypes = map[protoreflect.Kind]protowire.Type{
 	protoreflect.GroupKind:    protowire.StartGroupType,
 }
 
-func (p *vtprotofile) unmarshalField(field *protogen.Field, proto3 bool, required protoreflect.FieldNumbers) {
+func (p *vtprotofile) unmarshalField(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
 	if field.Oneof != nil {
@@ -655,7 +662,7 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, proto3 bool, require
 	wireType := wireTypes[field.Desc.Kind()]
 	if field.Desc.IsList() {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
-		p.unmarshalFieldItem(field, fieldname, false)
+		p.unmarshalFieldItem(field, fieldname, message, false)
 		p.P(`} else if wireType == `, strconv.Itoa(int(protowire.BytesType)), `{`)
 		p.P(`var packedLen int`)
 		p.decodeVarint("packedLen", "int")
@@ -687,13 +694,19 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, proto3 bool, require
 		case protoreflect.BoolKind:
 			p.P(`elementCount = packedLen`)
 		}
-		p.P(`if cap(m.`, fieldname, `) < elementCount {`)
+
+		if p.shouldPool(message) {
+			p.P(`if elementCount != 0 && len(m.`, fieldname, `) == 0 && cap(m.`, fieldname, `) < elementCount {`)
+		} else {
+			p.P(`if elementCount != 0 && len(m.`, fieldname, `) == 0 {`)
+		}
+
 		fieldtyp, _ := fieldGoType(p.GeneratedFile, field)
 		p.P(`m.`, fieldname, ` = make(`, fieldtyp, `, 0, elementCount)`)
 		p.P(`}`)
 
 		p.P(`for iNdEx < postIndex {`)
-		p.unmarshalFieldItem(field, fieldname, false)
+		p.unmarshalFieldItem(field, fieldname, message, false)
 		p.P(`}`)
 		p.P(`} else {`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
@@ -702,7 +715,7 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, proto3 bool, require
 		p.P(`if wireType != `, strconv.Itoa(int(wireType)), `{`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
 		p.P(`}`)
-		p.unmarshalFieldItem(field, fieldname, proto3)
+		p.unmarshalFieldItem(field, fieldname, message, proto3)
 	}
 
 	if field.Desc.Cardinality() == protoreflect.Required {
@@ -743,7 +756,7 @@ func (p *vtprotofile) MessageUnmarshal(message *protogen.Message, proto3 bool) {
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.unmarshalField(field, proto3, required)
+		p.unmarshalField(field, message, proto3, required)
 	}
 	p.P(`default:`)
 	if len(message.Extensions) > 0 {

@@ -95,7 +95,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.Failure) < elementCount {
+				if elementCount != 0 && len(m.Failure) == 0 {
 					m.Failure = make([]string, 0, elementCount)
 				}
 				for iNdEx < postIndex {

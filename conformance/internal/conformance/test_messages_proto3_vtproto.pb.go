@@ -770,7 +770,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedInt32) < elementCount {
+				if elementCount != 0 && len(m.RepeatedInt32) == 0 {
 					m.RepeatedInt32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -846,7 +846,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedInt64) < elementCount {
+				if elementCount != 0 && len(m.RepeatedInt64) == 0 {
 					m.RepeatedInt64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -922,7 +922,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedUint32) < elementCount {
+				if elementCount != 0 && len(m.RepeatedUint32) == 0 {
 					m.RepeatedUint32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -998,7 +998,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedUint64) < elementCount {
+				if elementCount != 0 && len(m.RepeatedUint64) == 0 {
 					m.RepeatedUint64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1075,7 +1075,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedSint32) < elementCount {
+				if elementCount != 0 && len(m.RepeatedSint32) == 0 {
 					m.RepeatedSint32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1153,7 +1153,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.RepeatedSint64) < elementCount {
+				if elementCount != 0 && len(m.RepeatedSint64) == 0 {
 					m.RepeatedSint64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1215,7 +1215,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.RepeatedFixed32) < elementCount {
+				if elementCount != 0 && len(m.RepeatedFixed32) == 0 {
 					m.RepeatedFixed32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1267,7 +1267,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.RepeatedFixed64) < elementCount {
+				if elementCount != 0 && len(m.RepeatedFixed64) == 0 {
 					m.RepeatedFixed64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1319,7 +1319,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.RepeatedSfixed32) < elementCount {
+				if elementCount != 0 && len(m.RepeatedSfixed32) == 0 {
 					m.RepeatedSfixed32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1371,7 +1371,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.RepeatedSfixed64) < elementCount {
+				if elementCount != 0 && len(m.RepeatedSfixed64) == 0 {
 					m.RepeatedSfixed64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1424,7 +1424,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.RepeatedFloat) < elementCount {
+				if elementCount != 0 && len(m.RepeatedFloat) == 0 {
 					m.RepeatedFloat = make([]float32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1478,7 +1478,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.RepeatedDouble) < elementCount {
+				if elementCount != 0 && len(m.RepeatedDouble) == 0 {
 					m.RepeatedDouble = make([]float64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1540,7 +1540,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen
-				if cap(m.RepeatedBool) < elementCount {
+				if elementCount != 0 && len(m.RepeatedBool) == 0 {
 					m.RepeatedBool = make([]bool, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1621,7 +1621,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedString) < elementCount {
+				if elementCount != 0 && len(m.RepeatedString) == 0 {
 					m.RepeatedString = make([]string, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1714,7 +1714,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedBytes) < elementCount {
+				if elementCount != 0 && len(m.RepeatedBytes) == 0 {
 					m.RepeatedBytes = make([][]byte, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1777,11 +1777,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &TestAllTypesProto3_NestedMessage{}
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				m.RepeatedNestedMessage = append(m.RepeatedNestedMessage, &TestAllTypesProto3_NestedMessage{})
+				if err := m.RepeatedNestedMessage[len(m.RepeatedNestedMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.RepeatedNestedMessage = append(m.RepeatedNestedMessage, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -1810,7 +1809,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedNestedMessage) < elementCount {
+				if elementCount != 0 && len(m.RepeatedNestedMessage) == 0 {
 					m.RepeatedNestedMessage = make([]*TestAllTypesProto3_NestedMessage, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1839,11 +1838,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &TestAllTypesProto3_NestedMessage{}
-					if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					m.RepeatedNestedMessage = append(m.RepeatedNestedMessage, &TestAllTypesProto3_NestedMessage{})
+					if err := m.RepeatedNestedMessage[len(m.RepeatedNestedMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 						return err
 					}
-					m.RepeatedNestedMessage = append(m.RepeatedNestedMessage, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -1876,11 +1874,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &ForeignMessage{}
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				m.RepeatedForeignMessage = append(m.RepeatedForeignMessage, &ForeignMessage{})
+				if err := m.RepeatedForeignMessage[len(m.RepeatedForeignMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.RepeatedForeignMessage = append(m.RepeatedForeignMessage, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -1909,7 +1906,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedForeignMessage) < elementCount {
+				if elementCount != 0 && len(m.RepeatedForeignMessage) == 0 {
 					m.RepeatedForeignMessage = make([]*ForeignMessage, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -1938,11 +1935,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &ForeignMessage{}
-					if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					m.RepeatedForeignMessage = append(m.RepeatedForeignMessage, &ForeignMessage{})
+					if err := m.RepeatedForeignMessage[len(m.RepeatedForeignMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 						return err
 					}
-					m.RepeatedForeignMessage = append(m.RepeatedForeignMessage, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -1993,7 +1989,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedNestedEnum) < elementCount {
+				if elementCount != 0 && len(m.RepeatedNestedEnum) == 0 {
 					m.RepeatedNestedEnum = make([]TestAllTypesProto3_NestedEnum, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2062,7 +2058,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedForeignEnum) < elementCount {
+				if elementCount != 0 && len(m.RepeatedForeignEnum) == 0 {
 					m.RepeatedForeignEnum = make([]ForeignEnum, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2143,7 +2139,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedStringPiece) < elementCount {
+				if elementCount != 0 && len(m.RepeatedStringPiece) == 0 {
 					m.RepeatedStringPiece = make([]string, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2236,7 +2232,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedCord) < elementCount {
+				if elementCount != 0 && len(m.RepeatedCord) == 0 {
 					m.RepeatedCord = make([]string, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2324,7 +2320,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedInt32) < elementCount {
+				if elementCount != 0 && len(m.PackedInt32) == 0 {
 					m.PackedInt32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2400,7 +2396,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedInt64) < elementCount {
+				if elementCount != 0 && len(m.PackedInt64) == 0 {
 					m.PackedInt64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2476,7 +2472,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedUint32) < elementCount {
+				if elementCount != 0 && len(m.PackedUint32) == 0 {
 					m.PackedUint32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2552,7 +2548,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedUint64) < elementCount {
+				if elementCount != 0 && len(m.PackedUint64) == 0 {
 					m.PackedUint64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2629,7 +2625,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedSint32) < elementCount {
+				if elementCount != 0 && len(m.PackedSint32) == 0 {
 					m.PackedSint32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2707,7 +2703,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.PackedSint64) < elementCount {
+				if elementCount != 0 && len(m.PackedSint64) == 0 {
 					m.PackedSint64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2769,7 +2765,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.PackedFixed32) < elementCount {
+				if elementCount != 0 && len(m.PackedFixed32) == 0 {
 					m.PackedFixed32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2821,7 +2817,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.PackedFixed64) < elementCount {
+				if elementCount != 0 && len(m.PackedFixed64) == 0 {
 					m.PackedFixed64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2873,7 +2869,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.PackedSfixed32) < elementCount {
+				if elementCount != 0 && len(m.PackedSfixed32) == 0 {
 					m.PackedSfixed32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2925,7 +2921,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.PackedSfixed64) < elementCount {
+				if elementCount != 0 && len(m.PackedSfixed64) == 0 {
 					m.PackedSfixed64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -2978,7 +2974,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.PackedFloat) < elementCount {
+				if elementCount != 0 && len(m.PackedFloat) == 0 {
 					m.PackedFloat = make([]float32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3032,7 +3028,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.PackedDouble) < elementCount {
+				if elementCount != 0 && len(m.PackedDouble) == 0 {
 					m.PackedDouble = make([]float64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3094,7 +3090,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen
-				if cap(m.PackedBool) < elementCount {
+				if elementCount != 0 && len(m.PackedBool) == 0 {
 					m.PackedBool = make([]bool, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3163,7 +3159,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.PackedNestedEnum) < elementCount {
+				if elementCount != 0 && len(m.PackedNestedEnum) == 0 {
 					m.PackedNestedEnum = make([]TestAllTypesProto3_NestedEnum, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3239,7 +3235,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedInt32) < elementCount {
+				if elementCount != 0 && len(m.UnpackedInt32) == 0 {
 					m.UnpackedInt32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3315,7 +3311,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedInt64) < elementCount {
+				if elementCount != 0 && len(m.UnpackedInt64) == 0 {
 					m.UnpackedInt64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3391,7 +3387,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedUint32) < elementCount {
+				if elementCount != 0 && len(m.UnpackedUint32) == 0 {
 					m.UnpackedUint32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3467,7 +3463,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedUint64) < elementCount {
+				if elementCount != 0 && len(m.UnpackedUint64) == 0 {
 					m.UnpackedUint64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3544,7 +3540,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedSint32) < elementCount {
+				if elementCount != 0 && len(m.UnpackedSint32) == 0 {
 					m.UnpackedSint32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3622,7 +3618,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					}
 				}
 				elementCount = count
-				if cap(m.UnpackedSint64) < elementCount {
+				if elementCount != 0 && len(m.UnpackedSint64) == 0 {
 					m.UnpackedSint64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3684,7 +3680,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.UnpackedFixed32) < elementCount {
+				if elementCount != 0 && len(m.UnpackedFixed32) == 0 {
 					m.UnpackedFixed32 = make([]uint32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3736,7 +3732,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.UnpackedFixed64) < elementCount {
+				if elementCount != 0 && len(m.UnpackedFixed64) == 0 {
 					m.UnpackedFixed64 = make([]uint64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3788,7 +3784,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.UnpackedSfixed32) < elementCount {
+				if elementCount != 0 && len(m.UnpackedSfixed32) == 0 {
 					m.UnpackedSfixed32 = make([]int32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3840,7 +3836,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.UnpackedSfixed64) < elementCount {
+				if elementCount != 0 && len(m.UnpackedSfixed64) == 0 {
 					m.UnpackedSfixed64 = make([]int64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3893,7 +3889,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 4
-				if cap(m.UnpackedFloat) < elementCount {
+				if elementCount != 0 && len(m.UnpackedFloat) == 0 {
 					m.UnpackedFloat = make([]float32, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -3947,7 +3943,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen / 8
-				if cap(m.UnpackedDouble) < elementCount {
+				if elementCount != 0 && len(m.UnpackedDouble) == 0 {
 					m.UnpackedDouble = make([]float64, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -4009,7 +4005,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				}
 				var elementCount int
 				elementCount = packedLen
-				if cap(m.UnpackedBool) < elementCount {
+				if elementCount != 0 && len(m.UnpackedBool) == 0 {
 					m.UnpackedBool = make([]bool, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -4078,7 +4074,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.UnpackedNestedEnum) < elementCount {
+				if elementCount != 0 && len(m.UnpackedNestedEnum) == 0 {
 					m.UnpackedNestedEnum = make([]TestAllTypesProto3_NestedEnum, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6638,11 +6634,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.BoolValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedBoolWrapper = append(m.RepeatedBoolWrapper, &wrappers.BoolValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBoolWrapper[len(m.RepeatedBoolWrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedBoolWrapper = append(m.RepeatedBoolWrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -6671,7 +6666,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedBoolWrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedBoolWrapper) == 0 {
 					m.RepeatedBoolWrapper = make([]*wrappers.BoolValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6700,11 +6695,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.BoolValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedBoolWrapper = append(m.RepeatedBoolWrapper, &wrappers.BoolValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBoolWrapper[len(m.RepeatedBoolWrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedBoolWrapper = append(m.RepeatedBoolWrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -6737,11 +6731,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.Int32Value{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedInt32Wrapper = append(m.RepeatedInt32Wrapper, &wrappers.Int32Value{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt32Wrapper[len(m.RepeatedInt32Wrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedInt32Wrapper = append(m.RepeatedInt32Wrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -6770,7 +6763,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedInt32Wrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedInt32Wrapper) == 0 {
 					m.RepeatedInt32Wrapper = make([]*wrappers.Int32Value, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6799,11 +6792,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.Int32Value{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedInt32Wrapper = append(m.RepeatedInt32Wrapper, &wrappers.Int32Value{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt32Wrapper[len(m.RepeatedInt32Wrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedInt32Wrapper = append(m.RepeatedInt32Wrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -6836,11 +6828,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.Int64Value{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedInt64Wrapper = append(m.RepeatedInt64Wrapper, &wrappers.Int64Value{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt64Wrapper[len(m.RepeatedInt64Wrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedInt64Wrapper = append(m.RepeatedInt64Wrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -6869,7 +6860,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedInt64Wrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedInt64Wrapper) == 0 {
 					m.RepeatedInt64Wrapper = make([]*wrappers.Int64Value, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6898,11 +6889,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.Int64Value{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedInt64Wrapper = append(m.RepeatedInt64Wrapper, &wrappers.Int64Value{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt64Wrapper[len(m.RepeatedInt64Wrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedInt64Wrapper = append(m.RepeatedInt64Wrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -6935,11 +6925,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.UInt32Value{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedUint32Wrapper = append(m.RepeatedUint32Wrapper, &wrappers.UInt32Value{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint32Wrapper[len(m.RepeatedUint32Wrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedUint32Wrapper = append(m.RepeatedUint32Wrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -6968,7 +6957,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedUint32Wrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedUint32Wrapper) == 0 {
 					m.RepeatedUint32Wrapper = make([]*wrappers.UInt32Value, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -6997,11 +6986,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.UInt32Value{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedUint32Wrapper = append(m.RepeatedUint32Wrapper, &wrappers.UInt32Value{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint32Wrapper[len(m.RepeatedUint32Wrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedUint32Wrapper = append(m.RepeatedUint32Wrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7034,11 +7022,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.UInt64Value{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedUint64Wrapper = append(m.RepeatedUint64Wrapper, &wrappers.UInt64Value{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint64Wrapper[len(m.RepeatedUint64Wrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedUint64Wrapper = append(m.RepeatedUint64Wrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7067,7 +7054,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedUint64Wrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedUint64Wrapper) == 0 {
 					m.RepeatedUint64Wrapper = make([]*wrappers.UInt64Value, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7096,11 +7083,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.UInt64Value{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedUint64Wrapper = append(m.RepeatedUint64Wrapper, &wrappers.UInt64Value{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint64Wrapper[len(m.RepeatedUint64Wrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedUint64Wrapper = append(m.RepeatedUint64Wrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7133,11 +7119,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.FloatValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedFloatWrapper = append(m.RepeatedFloatWrapper, &wrappers.FloatValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFloatWrapper[len(m.RepeatedFloatWrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedFloatWrapper = append(m.RepeatedFloatWrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7166,7 +7151,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedFloatWrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedFloatWrapper) == 0 {
 					m.RepeatedFloatWrapper = make([]*wrappers.FloatValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7195,11 +7180,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.FloatValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedFloatWrapper = append(m.RepeatedFloatWrapper, &wrappers.FloatValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFloatWrapper[len(m.RepeatedFloatWrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedFloatWrapper = append(m.RepeatedFloatWrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7232,11 +7216,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.DoubleValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedDoubleWrapper = append(m.RepeatedDoubleWrapper, &wrappers.DoubleValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDoubleWrapper[len(m.RepeatedDoubleWrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedDoubleWrapper = append(m.RepeatedDoubleWrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7265,7 +7248,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedDoubleWrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedDoubleWrapper) == 0 {
 					m.RepeatedDoubleWrapper = make([]*wrappers.DoubleValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7294,11 +7277,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.DoubleValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedDoubleWrapper = append(m.RepeatedDoubleWrapper, &wrappers.DoubleValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDoubleWrapper[len(m.RepeatedDoubleWrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedDoubleWrapper = append(m.RepeatedDoubleWrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7331,11 +7313,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.StringValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedStringWrapper = append(m.RepeatedStringWrapper, &wrappers.StringValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStringWrapper[len(m.RepeatedStringWrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedStringWrapper = append(m.RepeatedStringWrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7364,7 +7345,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedStringWrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedStringWrapper) == 0 {
 					m.RepeatedStringWrapper = make([]*wrappers.StringValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7393,11 +7374,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.StringValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedStringWrapper = append(m.RepeatedStringWrapper, &wrappers.StringValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStringWrapper[len(m.RepeatedStringWrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedStringWrapper = append(m.RepeatedStringWrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7430,11 +7410,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &wrappers.BytesValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedBytesWrapper = append(m.RepeatedBytesWrapper, &wrappers.BytesValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBytesWrapper[len(m.RepeatedBytesWrapper)-1]); err != nil {
 					return err
 				}
-				m.RepeatedBytesWrapper = append(m.RepeatedBytesWrapper, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7463,7 +7442,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedBytesWrapper) < elementCount {
+				if elementCount != 0 && len(m.RepeatedBytesWrapper) == 0 {
 					m.RepeatedBytesWrapper = make([]*wrappers.BytesValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7492,11 +7471,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &wrappers.BytesValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedBytesWrapper = append(m.RepeatedBytesWrapper, &wrappers.BytesValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBytesWrapper[len(m.RepeatedBytesWrapper)-1]); err != nil {
 						return err
 					}
-					m.RepeatedBytesWrapper = append(m.RepeatedBytesWrapper, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7764,11 +7742,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &duration.Duration{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedDuration = append(m.RepeatedDuration, &duration.Duration{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDuration[len(m.RepeatedDuration)-1]); err != nil {
 					return err
 				}
-				m.RepeatedDuration = append(m.RepeatedDuration, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7797,7 +7774,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedDuration) < elementCount {
+				if elementCount != 0 && len(m.RepeatedDuration) == 0 {
 					m.RepeatedDuration = make([]*duration.Duration, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7826,11 +7803,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &duration.Duration{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedDuration = append(m.RepeatedDuration, &duration.Duration{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDuration[len(m.RepeatedDuration)-1]); err != nil {
 						return err
 					}
-					m.RepeatedDuration = append(m.RepeatedDuration, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7863,11 +7839,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &timestamp.Timestamp{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedTimestamp = append(m.RepeatedTimestamp, &timestamp.Timestamp{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1]); err != nil {
 					return err
 				}
-				m.RepeatedTimestamp = append(m.RepeatedTimestamp, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7896,7 +7871,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedTimestamp) < elementCount {
+				if elementCount != 0 && len(m.RepeatedTimestamp) == 0 {
 					m.RepeatedTimestamp = make([]*timestamp.Timestamp, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -7925,11 +7900,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &timestamp.Timestamp{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedTimestamp = append(m.RepeatedTimestamp, &timestamp.Timestamp{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1]); err != nil {
 						return err
 					}
-					m.RepeatedTimestamp = append(m.RepeatedTimestamp, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -7962,11 +7936,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &field_mask.FieldMask{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedFieldmask = append(m.RepeatedFieldmask, &field_mask.FieldMask{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFieldmask[len(m.RepeatedFieldmask)-1]); err != nil {
 					return err
 				}
-				m.RepeatedFieldmask = append(m.RepeatedFieldmask, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -7995,7 +7968,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedFieldmask) < elementCount {
+				if elementCount != 0 && len(m.RepeatedFieldmask) == 0 {
 					m.RepeatedFieldmask = make([]*field_mask.FieldMask, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -8024,11 +7997,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &field_mask.FieldMask{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedFieldmask = append(m.RepeatedFieldmask, &field_mask.FieldMask{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFieldmask[len(m.RepeatedFieldmask)-1]); err != nil {
 						return err
 					}
-					m.RepeatedFieldmask = append(m.RepeatedFieldmask, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -8061,11 +8033,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &_struct.Struct{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedStruct = append(m.RepeatedStruct, &_struct.Struct{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
 					return err
 				}
-				m.RepeatedStruct = append(m.RepeatedStruct, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -8094,7 +8065,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedStruct) < elementCount {
+				if elementCount != 0 && len(m.RepeatedStruct) == 0 {
 					m.RepeatedStruct = make([]*_struct.Struct, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -8123,11 +8094,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &_struct.Struct{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedStruct = append(m.RepeatedStruct, &_struct.Struct{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
 						return err
 					}
-					m.RepeatedStruct = append(m.RepeatedStruct, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -8160,11 +8130,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &any.Any{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedAny = append(m.RepeatedAny, &any.Any{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedAny[len(m.RepeatedAny)-1]); err != nil {
 					return err
 				}
-				m.RepeatedAny = append(m.RepeatedAny, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -8193,7 +8162,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedAny) < elementCount {
+				if elementCount != 0 && len(m.RepeatedAny) == 0 {
 					m.RepeatedAny = make([]*any.Any, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -8222,11 +8191,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &any.Any{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedAny = append(m.RepeatedAny, &any.Any{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedAny[len(m.RepeatedAny)-1]); err != nil {
 						return err
 					}
-					m.RepeatedAny = append(m.RepeatedAny, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -8259,11 +8227,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &_struct.Value{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedValue = append(m.RepeatedValue, &_struct.Value{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
 					return err
 				}
-				m.RepeatedValue = append(m.RepeatedValue, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -8292,7 +8259,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedValue) < elementCount {
+				if elementCount != 0 && len(m.RepeatedValue) == 0 {
 					m.RepeatedValue = make([]*_struct.Value, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -8321,11 +8288,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &_struct.Value{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedValue = append(m.RepeatedValue, &_struct.Value{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
 						return err
 					}
-					m.RepeatedValue = append(m.RepeatedValue, v)
 					iNdEx = postIndex
 				}
 			} else {
@@ -8358,11 +8324,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				if postIndex > l {
 					return io.ErrUnexpectedEOF
 				}
-				v := &_struct.ListValue{}
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+				m.RepeatedListValue = append(m.RepeatedListValue, &_struct.ListValue{})
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
 					return err
 				}
-				m.RepeatedListValue = append(m.RepeatedListValue, v)
 				iNdEx = postIndex
 			} else if wireType == 2 {
 				var packedLen int
@@ -8391,7 +8356,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					return io.ErrUnexpectedEOF
 				}
 				var elementCount int
-				if cap(m.RepeatedListValue) < elementCount {
+				if elementCount != 0 && len(m.RepeatedListValue) == 0 {
 					m.RepeatedListValue = make([]*_struct.ListValue, 0, elementCount)
 				}
 				for iNdEx < postIndex {
@@ -8420,11 +8385,10 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 					if postIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					v := &_struct.ListValue{}
-					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+					m.RepeatedListValue = append(m.RepeatedListValue, &_struct.ListValue{})
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
 						return err
 					}
-					m.RepeatedListValue = append(m.RepeatedListValue, v)
 					iNdEx = postIndex
 				}
 			} else {
