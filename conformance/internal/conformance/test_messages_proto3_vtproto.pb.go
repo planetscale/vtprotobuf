@@ -8040,7 +8040,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0xca
 	}
-	if vtmsg, ok := m.OneofField.(vtprotoMessage); ok {
+	if vtmsg, ok := m.OneofField.(interface {
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
+	}); ok {
 		{
 			size := vtmsg.SizeVT()
 			i -= size
@@ -9964,7 +9967,7 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 			n += 2 + sov(uint64(e))
 		}
 	}
-	if vtmsg, ok := m.OneofField.(vtprotoMessage); ok {
+	if vtmsg, ok := m.OneofField.(interface{ SizeVT() int }); ok {
 		n += vtmsg.SizeVT()
 	}
 	if m.OptionalBoolWrapper != nil {

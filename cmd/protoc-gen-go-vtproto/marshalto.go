@@ -11,6 +11,12 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
+func init() {
+	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
+		return &marshal{VTGeneratedFile: gen, Stable: false}
+	})
+}
+
 type counter int
 
 func (cnt *counter) Next() string {
@@ -22,21 +28,26 @@ func (cnt *counter) Current() string {
 	return strconv.Itoa(int(*cnt))
 }
 
-func (p *vtprotofile) encodeFixed64(varName ...string) {
+type marshal struct {
+	*VTGeneratedFile
+	Stable bool
+}
+
+func (p *marshal) encodeFixed64(varName ...string) {
 	p.P(`i -= 8`)
 	p.P(p.Ident("encoding/binary", "LittleEndian"), `.PutUint64(dAtA[i:], uint64(`, strings.Join(varName, ""), `))`)
 }
 
-func (p *vtprotofile) encodeFixed32(varName ...string) {
+func (p *marshal) encodeFixed32(varName ...string) {
 	p.P(`i -= 4`)
 	p.P(p.Ident("encoding/binary", "LittleEndian"), `.PutUint32(dAtA[i:], uint32(`, strings.Join(varName, ""), `))`)
 }
 
-func (p *vtprotofile) encodeVarint(varName ...string) {
+func (p *marshal) encodeVarint(varName ...string) {
 	p.P(`i = encodeVarint(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
 }
 
-func (p *vtprotofile) encodeKey(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) {
+func (p *marshal) encodeKey(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) {
 	x := uint32(fieldNumber)<<3 | uint32(wireType)
 	i := 0
 	keybuf := make([]byte, 0)
@@ -61,7 +72,7 @@ func keySize(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) int 
 	return size
 }
 
-func (p *vtprotofile) marshalMapField(kvField *protogen.Field, varName string) {
+func (p *marshal) marshalMapField(kvField *protogen.Field, varName string) {
 	switch kvField.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(`, varName, `))`)
@@ -93,7 +104,7 @@ func (p *vtprotofile) marshalMapField(kvField *protogen.Field, varName string) {
 	}
 }
 
-func (p *vtprotofile) marshalField(proto3 bool, numGen *counter, field *protogen.Field) {
+func (p *marshal) marshalField(proto3 bool, numGen *counter, field *protogen.Field) {
 	fieldname := field.GoName
 	nullcheck := field.Message != nil
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -313,7 +324,7 @@ func (p *vtprotofile) marshalField(proto3 bool, numGen *counter, field *protogen
 			valKind := field.Message.Fields[1].Desc.Kind()
 
 			var val string
-			if p.stable && keyKind != protoreflect.BoolKind {
+			if p.Stable && keyKind != protoreflect.BoolKind {
 				keysName := `keysFor` + fieldname
 				p.P(keysName, ` := make([]`, goTypK, `, 0, len(m.`, fieldname, `))`)
 				p.P(`for k := range m.`, fieldname, ` {`)
@@ -327,7 +338,7 @@ func (p *vtprotofile) marshalField(proto3 bool, numGen *counter, field *protogen
 				p.P(`for k := range m.`, fieldname, ` {`)
 				val = "k"
 			}
-			if p.stable {
+			if p.Stable {
 				p.P(`v := m.`, fieldname, `[`, goTypK, `(`, val, `)]`)
 			} else {
 				p.P(`v := m.`, fieldname, `[`, val, `]`)
@@ -463,7 +474,17 @@ func (p *vtprotofile) marshalField(proto3 bool, numGen *counter, field *protogen
 	}
 }
 
-func (p *vtprotofile) MarshalMessage(message *protogen.Message) {
+func (p *marshal) message(message *protogen.Message) {
+	for _, nested := range message.Messages {
+		p.message(nested)
+	}
+
+	if message.Desc.IsMapEntry() {
+		return
+	}
+
+	p.Once = true
+
 	var numGen counter
 	ccTypeName := message.GoIdent
 
@@ -512,7 +533,10 @@ func (p *vtprotofile) MarshalMessage(message *protogen.Message) {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
 				oneofs[fieldname] = struct{}{}
-				p.P(`if vtmsg, ok := m.`, fieldname, `.(vtprotoMessage); ok {`)
+				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
+				p.P(`MarshalToVT([]byte) (int, error)`)
+				p.P(`SizeVT() int`)
+				p.P(`}); ok {`)
 				p.marshalForward("vtmsg", false)
 				p.P(`}`)
 			}
@@ -541,7 +565,16 @@ func (p *vtprotofile) MarshalMessage(message *protogen.Message) {
 	}
 }
 
-func (p *vtprotofile) MarshalHelpers() {
+func (p *marshal) GenerateFile(file *protogen.File) {
+	for _, message := range file.Messages {
+		p.message(message)
+	}
+	if p.Once {
+		p.helpers()
+	}
+}
+
+func (p *marshal) helpers() {
 	p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
 	p.P(`offset -= sov(v)`)
 	p.P(`base := offset`)
@@ -555,13 +588,13 @@ func (p *vtprotofile) MarshalHelpers() {
 	p.P(`}`)
 }
 
-func (p *vtprotofile) reverseListRange(expression ...string) string {
+func (p *marshal) reverseListRange(expression ...string) string {
 	exp := strings.Join(expression, "")
 	p.P(`for iNdEx := len(`, exp, `) - 1; iNdEx >= 0; iNdEx-- {`)
 	return exp + `[iNdEx]`
 }
 
-func (p *vtprotofile) marshalBackward(varName string, varInt bool, message *protogen.Message) {
+func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
 	foreign := strings.HasPrefix(string(message.Desc.FullName()), "google.protobuf.")
 
 	p.P(`{`)
@@ -590,7 +623,7 @@ func (p *vtprotofile) marshalBackward(varName string, varInt bool, message *prot
 	p.P(`}`)
 }
 
-func (p *vtprotofile) marshalForward(varName string, varInt bool) {
+func (p *marshal) marshalForward(varName string, varInt bool) {
 	p.P(`{`)
 	p.P(`size := `, varName, `.SizeVT()`)
 	p.P(`i -= size`)

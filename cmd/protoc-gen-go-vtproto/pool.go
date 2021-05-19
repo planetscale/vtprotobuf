@@ -3,32 +3,36 @@ package main
 import (
 	"fmt"
 
-	"vitess.io/vtprotobuf/vtproto"
-
 	"google.golang.org/protobuf/compiler/protogen"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func (p *vtprotofile) shouldPool(message *protogen.Message) bool {
-	if message == nil {
-		return false
-	}
-	if p.mempool[message.GoIdent] {
-		return true
-	}
-	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Mempool)
-	if mempool, ok := ext.(bool); ok {
-		return mempool
-	}
-	return false
+func init() {
+	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
+		return &pooler{gen}
+	})
 }
 
-func (p *vtprotofile) PoolMessage(message *protogen.Message) {
-	if !p.shouldPool(message) {
+type pooler struct {
+	*VTGeneratedFile
+}
+
+func (p *pooler) GenerateFile(file *protogen.File) {
+	for _, message := range file.Messages {
+		p.message(message)
+	}
+}
+
+func (p *pooler) message(message *protogen.Message) {
+	for _, nested := range message.Messages {
+		p.message(nested)
+	}
+
+	if message.Desc.IsMapEntry() || !p.ShouldPool(message) {
 		return
 	}
 
+	p.Once = true
 	ccTypeName := message.GoIdent
 
 	p.P(`var vtprotoPool_`, ccTypeName, ` = `, p.Ident("sync", "Pool"), `{`)
@@ -45,7 +49,7 @@ func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 		if field.Desc.IsList() {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
-				if p.shouldPool(field.Message) {
+				if p.ShouldPool(field.Message) {
 					p.P(`for _, mm := range m.`, fieldName, `{`)
 					p.P(`mm.ResetVT()`)
 					p.P(`}`)
@@ -56,7 +60,7 @@ func (p *vtprotofile) PoolMessage(message *protogen.Message) {
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
-				if p.shouldPool(field.Message) {
+				if p.ShouldPool(field.Message) {
 					p.P(`m.`, fieldName, `.ReturnToVTPool()`)
 				}
 			case protoreflect.BytesKind:

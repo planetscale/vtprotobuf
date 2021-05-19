@@ -498,7 +498,10 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x48
 	}
-	if vtmsg, ok := m.Payload.(vtprotoMessage); ok {
+	if vtmsg, ok := m.Payload.(interface {
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
+	}); ok {
 		{
 			size := vtmsg.SizeVT()
 			i -= size
@@ -601,7 +604,7 @@ func (m *ConformanceRequest) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if vtmsg, ok := m.Payload.(vtprotoMessage); ok {
+	if vtmsg, ok := m.Payload.(interface{ SizeVT() int }); ok {
 		n += vtmsg.SizeVT()
 	}
 	if m.RequestedOutputFormat != 0 {
@@ -1005,7 +1008,10 @@ func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if vtmsg, ok := m.Result.(vtprotoMessage); ok {
+	if vtmsg, ok := m.Result.(interface {
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
+	}); ok {
 		{
 			size := vtmsg.SizeVT()
 			i -= size
@@ -1135,7 +1141,7 @@ func (m *ConformanceResponse) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if vtmsg, ok := m.Result.(vtprotoMessage); ok {
+	if vtmsg, ok := m.Result.(interface{ SizeVT() int }); ok {
 		n += vtmsg.SizeVT()
 	}
 	if m.unknownFields != nil {

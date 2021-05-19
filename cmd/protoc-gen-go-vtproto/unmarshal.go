@@ -10,7 +10,17 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func (p *vtprotofile) decodeMessage(varName, buf string, desc protoreflect.Descriptor) {
+func init() {
+	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
+		return &unmarshal{gen}
+	})
+}
+
+type unmarshal struct {
+	*VTGeneratedFile
+}
+
+func (p *unmarshal) decodeMessage(varName, buf string, desc protoreflect.Descriptor) {
 	if strings.HasPrefix(string(desc.FullName()), "google.protobuf.") {
 		p.P(`if err := `, p.Ident(ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
 		p.P(`return err`)
@@ -22,7 +32,7 @@ func (p *vtprotofile) decodeMessage(varName, buf string, desc protoreflect.Descr
 	p.P(`}`)
 }
 
-func (p *vtprotofile) decodeVarint(varName string, typName string) {
+func (p *unmarshal) decodeVarint(varName string, typName string) {
 	p.P(`for shift := uint(0); ; shift += 7 {`)
 	p.P(`if shift >= 64 {`)
 	p.P(`return ErrIntOverflow`)
@@ -39,7 +49,7 @@ func (p *vtprotofile) decodeVarint(varName string, typName string) {
 	p.P(`}`)
 }
 
-func (p *vtprotofile) decodeFixed32(varName string, typeName string) {
+func (p *unmarshal) decodeFixed32(varName string, typeName string) {
 	p.P(`if (iNdEx+4) > l {`)
 	p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 	p.P(`}`)
@@ -47,7 +57,7 @@ func (p *vtprotofile) decodeFixed32(varName string, typeName string) {
 	p.P(`iNdEx += 4`)
 }
 
-func (p *vtprotofile) decodeFixed64(varName string, typeName string) {
+func (p *unmarshal) decodeFixed64(varName string, typeName string) {
 	p.P(`if (iNdEx+8) > l {`)
 	p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 	p.P(`}`)
@@ -98,7 +108,7 @@ func fieldGoType(g *protogen.GeneratedFile, field *protogen.Field) (goType strin
 	return goType, pointer
 }
 
-func (p *vtprotofile) declareMapField(varName string, nullable bool, field *protogen.Field) {
+func (p *unmarshal) declareMapField(varName string, nullable bool, field *protogen.Field) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var `, varName, ` float64`)
@@ -142,7 +152,7 @@ func (p *vtprotofile) declareMapField(varName string, nullable bool, field *prot
 	}
 }
 
-func (p *vtprotofile) mapField(varName string, field *protogen.Field) {
+func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var `, varName, `temp uint64`)
@@ -238,7 +248,7 @@ func (p *vtprotofile) mapField(varName string, field *protogen.Field) {
 	}
 }
 
-func (p *vtprotofile) noStarOrSliceType(field *protogen.Field) string {
+func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 	typ, _ := fieldGoType(p.GeneratedFile, field)
 	if typ[0] == '[' && typ[1] == ']' {
 		typ = typ[2:]
@@ -249,7 +259,7 @@ func (p *vtprotofile) noStarOrSliceType(field *protogen.Field) string {
 	return typ
 }
 
-func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
+func (p *unmarshal) unmarshalFieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Desc.ContainingOneof() != nil
@@ -470,7 +480,7 @@ func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string
 			p.P(`}`)
 			p.P(`m.`, fieldname, `[mapkey] = mapvalue`)
 		} else if repeated {
-			if p.shouldPool(message) {
+			if p.ShouldPool(message) {
 				p.P(`if len(m.`, fieldname, `) == cap(m.`, fieldname, `) {`)
 				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
 				p.P(`} else {`)
@@ -487,7 +497,7 @@ func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string
 			p.decodeMessage(varname, buf, field.Message.Desc)
 		} else {
 			p.P(`if m.`, fieldname, ` == nil {`)
-			if p.shouldPool(message) && p.shouldPool(field.Message) {
+			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
 				p.P(`m.`, fieldname, ` = `, field.Message.GoIdent, `FromVTPool()`)
 			} else {
 				p.P(`m.`, fieldname, ` = &`, field.Message.GoIdent, `{}`)
@@ -624,10 +634,6 @@ func (p *vtprotofile) unmarshalFieldItem(field *protogen.Field, fieldname string
 	}
 }
 
-func (p *vtprotofile) Ident(path, ident string) string {
-	return p.QualifiedGoIdent(protogen.GoImportPath(path).Ident(ident))
-}
-
 const ProtoPkg = "google.golang.org/protobuf/proto"
 
 var wireTypes = map[protoreflect.Kind]protowire.Type{
@@ -651,7 +657,7 @@ var wireTypes = map[protoreflect.Kind]protowire.Type{
 	protoreflect.GroupKind:    protowire.StartGroupType,
 }
 
-func (p *vtprotofile) unmarshalField(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
+func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
 	if field.Oneof != nil {
@@ -695,7 +701,7 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, message *protogen.Me
 			p.P(`elementCount = packedLen`)
 		}
 
-		if p.shouldPool(message) {
+		if p.ShouldPool(message) {
 			p.P(`if elementCount != 0 && len(m.`, fieldname, `) == 0 && cap(m.`, fieldname, `) < elementCount {`)
 		} else {
 			p.P(`if elementCount != 0 && len(m.`, fieldname, `) == 0 {`)
@@ -732,7 +738,16 @@ func (p *vtprotofile) unmarshalField(field *protogen.Field, message *protogen.Me
 	}
 }
 
-func (p *vtprotofile) MessageUnmarshal(message *protogen.Message, proto3 bool) {
+func (p *unmarshal) message(message *protogen.Message) {
+	for _, nested := range message.Messages {
+		p.message(nested)
+	}
+
+	if message.Desc.IsMapEntry() {
+		return
+	}
+
+	p.Once = true
 	ccTypeName := message.GoIdent
 	required := message.Desc.RequiredNumbers()
 
@@ -756,7 +771,7 @@ func (p *vtprotofile) MessageUnmarshal(message *protogen.Message, proto3 bool) {
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.unmarshalField(field, message, proto3, required)
+		p.unmarshalField(field, message, true, required)
 	}
 	p.P(`default:`)
 	if len(message.Extensions) > 0 {
@@ -834,7 +849,17 @@ func (p *vtprotofile) MessageUnmarshal(message *protogen.Message, proto3 bool) {
 	p.P(`}`)
 }
 
-func (p *vtprotofile) UnmarshalHelpers() {
+func (p *unmarshal) GenerateFile(file *protogen.File) {
+	for _, message := range file.Messages {
+		p.message(message)
+	}
+
+	if p.Once {
+		p.helpers()
+	}
+}
+
+func (p *unmarshal) helpers() {
 	p.P(`func skip(dAtA []byte) (n int, err error) {
 		l := len(dAtA)
 		iNdEx := 0

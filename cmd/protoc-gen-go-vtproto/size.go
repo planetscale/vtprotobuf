@@ -5,14 +5,22 @@ import (
 	"strconv"
 	"strings"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
-	"google.golang.org/protobuf/encoding/protowire"
-
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/encoding/protowire"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-func (p *vtprotofile) sizeForField(proto3 bool, field *protogen.Field, sizeName string) {
+func init() {
+	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
+		return &sizer{gen}
+	})
+}
+
+type sizer struct {
+	*VTGeneratedFile
+}
+
+func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
 	nullcheck := field.Message != nil
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -218,7 +226,26 @@ func (p *vtprotofile) sizeForField(proto3 bool, field *protogen.Field, sizeName 
 	}
 }
 
-func (p *vtprotofile) SizeMessage(message *protogen.Message) {
+func (p *sizer) GenerateFile(file *protogen.File) {
+	for _, message := range file.Messages {
+		p.sizeForMessage(message)
+	}
+	if p.Once {
+		p.helpers()
+	}
+}
+
+func (p *sizer) sizeForMessage(message *protogen.Message) {
+	for _, nested := range message.Messages {
+		p.sizeForMessage(nested)
+	}
+
+	if message.Desc.IsMapEntry() {
+		return
+	}
+
+	p.Once = true
+
 	sizeName := "SizeVT"
 	ccTypeName := message.GoIdent
 
@@ -237,7 +264,7 @@ func (p *vtprotofile) SizeMessage(message *protogen.Message) {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
 				oneofs[fieldname] = struct{}{}
-				p.P(`if vtmsg, ok := m.`, fieldname, `.(vtprotoMessage); ok {`)
+				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{ SizeVT() int }); ok {`)
 				p.P(`n+=vtmsg.`, sizeName, `()`)
 				p.P(`}`)
 			}
@@ -267,7 +294,7 @@ func (p *vtprotofile) SizeMessage(message *protogen.Message) {
 	}
 }
 
-func (p *vtprotofile) SizeHelpers() {
+func (p *sizer) helpers() {
 	p.P(`
 	func sov(x uint64) (n int) {
                 return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
