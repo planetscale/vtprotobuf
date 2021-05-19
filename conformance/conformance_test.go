@@ -21,7 +21,7 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 
-	pb "vitess.io/vtprotobuf/conformance/internal/conformance"
+	pb "github.com/planetscale/vtprotobuf/conformance/internal/conformance"
 )
 
 func init() {

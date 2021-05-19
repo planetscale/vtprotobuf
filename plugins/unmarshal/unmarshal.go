@@ -4,33 +4,129 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
-		return &unmarshal{VTGeneratedFile: gen}
+	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+		return &unmarshal{GeneratedFile: gen}
 	})
 }
 
 type unmarshal struct {
-	*common.VTGeneratedFile
+	*generator.GeneratedFile
 	once bool
 }
 
-var _ common.Plugin = (*unmarshal)(nil)
+var _ generator.Plugin = (*unmarshal)(nil)
 
 func (p *unmarshal) Name() string {
 	return "unmarshal"
 }
 
+func (p *unmarshal) GenerateFile(file *protogen.File) bool {
+	for _, message := range file.Messages {
+		p.message(message)
+	}
+
+	return p.once
+}
+
+func (p *unmarshal) GenerateHelpers() {
+	p.P(`func skip(dAtA []byte) (n int, err error) {
+		l := len(dAtA)
+		iNdEx := 0
+		depth := 0
+		for iNdEx < l {
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return 0, ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			wireType := int(wire & 0x7)
+			switch wireType {
+			case 0:
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
+					}
+					iNdEx++
+					if dAtA[iNdEx-1] < 0x80 {
+						break
+					}
+				}
+			case 1:
+				iNdEx += 8
+			case 2:
+				var length int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return 0, ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					length |= (int(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if length < 0 {
+					return 0, ErrInvalidLength
+				}
+				iNdEx += length
+			case 3:
+				depth++
+			case 4:
+				if depth == 0 {
+					return 0, ErrUnexpectedEndOfGroup
+				}
+				depth--
+			case 5:
+				iNdEx += 4
+			default:
+				return 0, `, p.Ident("fmt", `Errorf`), `("proto: illegal wireType %d", wireType)
+			}
+			if iNdEx < 0 {
+				return 0, ErrInvalidLength
+			}
+			if depth == 0 {
+				return iNdEx, nil
+			}
+		}
+		return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
+	}
+
+	var (
+		ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
+		ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
+		ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
+	)
+	`)
+}
+
 func (p *unmarshal) decodeMessage(varName, buf string, desc protoreflect.Descriptor) {
 	if strings.HasPrefix(string(desc.FullName()), "google.protobuf.") {
-		p.P(`if err := `, p.Ident(common.ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
+		p.P(`if err := `, p.Ident(generator.ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 		return
@@ -224,7 +320,7 @@ func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 	return typ
 }
 
-func (p *unmarshal) unmarshalFieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
+func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Desc.ContainingOneof() != nil
@@ -599,7 +695,7 @@ func (p *unmarshal) unmarshalFieldItem(field *protogen.Field, fieldname string, 
 	}
 }
 
-func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
+func (p *unmarshal) field(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
 	if field.Oneof != nil {
@@ -607,10 +703,10 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 	}
 
 	p.P(`case `, strconv.Itoa(int(field.Desc.Number())), `:`)
-	wireType := p.WireType(field.Desc.Kind())
+	wireType := generator.ProtoWireType(field.Desc.Kind())
 	if field.Desc.IsList() && wireType != protowire.BytesType {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
-		p.unmarshalFieldItem(field, fieldname, message, false)
+		p.fieldItem(field, fieldname, message, false)
 		p.P(`} else if wireType == `, strconv.Itoa(int(protowire.BytesType)), `{`)
 		p.P(`var packedLen int`)
 		p.decodeVarint("packedLen", "int")
@@ -654,7 +750,7 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 		p.P(`}`)
 
 		p.P(`for iNdEx < postIndex {`)
-		p.unmarshalFieldItem(field, fieldname, message, false)
+		p.fieldItem(field, fieldname, message, false)
 		p.P(`}`)
 		p.P(`} else {`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
@@ -663,7 +759,7 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 		p.P(`if wireType != `, strconv.Itoa(int(wireType)), `{`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
 		p.P(`}`)
-		p.unmarshalFieldItem(field, fieldname, message, proto3)
+		p.fieldItem(field, fieldname, message, proto3)
 	}
 
 	if field.Desc.Cardinality() == protoreflect.Required {
@@ -713,7 +809,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.unmarshalField(field, message, true, required)
+		p.field(field, message, true, required)
 	}
 	p.P(`default:`)
 	if len(message.Extensions) > 0 {
@@ -743,7 +839,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 		p.P(`if (iNdEx + skippy) > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(p.Ident(common.ProtoPkg, "AppendExtension"), `(m, int32(fieldNum), dAtA[iNdEx:iNdEx+skippy])`)
+		p.P(p.Ident(generator.ProtoPkg, "AppendExtension"), `(m, int32(fieldNum), dAtA[iNdEx:iNdEx+skippy])`)
 		p.P(`iNdEx += skippy`)
 		p.P(`} else {`)
 	}
@@ -780,7 +876,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 			panic("missing required field")
 		}
 		p.P(`if hasFields[`, strconv.Itoa(int(fieldBit/64)), `] & uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `) == 0 {`)
-		p.P(`return new(`, p.Ident(common.ProtoPkg, "RequiredNotSetError"), `)`)
+		p.P(`return new(`, p.Ident(generator.ProtoPkg, "RequiredNotSetError"), `)`)
 		p.P(`}`)
 	}
 	p.P()
@@ -789,100 +885,4 @@ func (p *unmarshal) message(message *protogen.Message) {
 	p.P(`}`)
 	p.P(`return nil`)
 	p.P(`}`)
-}
-
-func (p *unmarshal) GenerateFile(file *protogen.File) bool {
-	for _, message := range file.Messages {
-		p.message(message)
-	}
-
-	return p.once
-}
-
-func (p *unmarshal) GenerateHelpers() {
-	p.P(`func skip(dAtA []byte) (n int, err error) {
-		l := len(dAtA)
-		iNdEx := 0
-		depth := 0
-		for iNdEx < l {
-			var wire uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return 0, ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				wire |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			wireType := int(wire & 0x7)
-			switch wireType {
-			case 0:
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
-					}
-					iNdEx++
-					if dAtA[iNdEx-1] < 0x80 {
-						break
-					}
-				}
-			case 1:
-				iNdEx += 8
-			case 2:
-				var length int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return 0, ErrIntOverflow
-					}
-					if iNdEx >= l {
-						return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					length |= (int(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if length < 0 {
-					return 0, ErrInvalidLength
-				}
-				iNdEx += length
-			case 3:
-				depth++
-			case 4:
-				if depth == 0 {
-					return 0, ErrUnexpectedEndOfGroup
-				}
-				depth--
-			case 5:
-				iNdEx += 4
-			default:
-				return 0, `, p.Ident("fmt", `Errorf`), `("proto: illegal wireType %d", wireType)
-			}
-			if iNdEx < 0 {
-				return 0, ErrInvalidLength
-			}
-			if depth == 0 {
-				return iNdEx, nil
-			}
-		}
-		return 0, `, p.Ident("io", "ErrUnexpectedEOF"), `
-	}
-
-	var (
-		ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
-		ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
-		ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
-	)
-	`)
 }

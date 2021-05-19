@@ -2,39 +2,39 @@ package pool
 
 import (
 	"fmt"
-	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
-		return &pooler{VTGeneratedFile: gen}
+	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+		return &pool{GeneratedFile: gen}
 	})
 }
 
-type pooler struct {
-	*common.VTGeneratedFile
+type pool struct {
+	*generator.GeneratedFile
 	once bool
 }
 
-var _ common.Plugin = (*pooler)(nil)
+var _ generator.Plugin = (*pool)(nil)
 
-func (p *pooler) Name() string {
+func (p *pool) Name() string {
 	return "pool"
 }
 
-func (p *pooler) GenerateHelpers() {
-}
-func (p *pooler) GenerateFile(file *protogen.File) bool {
+func (p *pool) GenerateHelpers() {}
+
+func (p *pool) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
 	}
 	return p.once
 }
 
-func (p *pooler) message(message *protogen.Message) {
+func (p *pool) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
 		p.message(nested)
 	}

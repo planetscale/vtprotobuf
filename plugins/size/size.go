@@ -4,31 +4,49 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
-		return &sizer{VTGeneratedFile: gen}
+	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+		return &size{GeneratedFile: gen}
 	})
 }
 
-type sizer struct {
-	*common.VTGeneratedFile
+type size struct {
+	*generator.GeneratedFile
 	once bool
 }
 
-func (p *sizer) Name() string {
+var _ generator.Plugin = (*size)(nil)
+
+func (p *size) Name() string {
 	return "size"
 }
 
-var _ common.Plugin = (*sizer)(nil)
+func (p *size) GenerateFile(file *protogen.File) bool {
+	for _, message := range file.Messages {
+		p.message(message)
+	}
 
-func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string) {
+	return p.once
+}
+
+func (p *size) GenerateHelpers() {
+	p.P(`
+	func sov(x uint64) (n int) {
+                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+	}`)
+	p.P(`func soz(x uint64) (n int) {
+		return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+	}`)
+}
+
+func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
 	nullcheck := field.Message != nil
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -38,12 +56,12 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		p.P(`if m.`, fieldname, ` != nil {`)
 	}
 	packed := field.Desc.IsPacked()
-	wireType := p.WireType(field.Desc.Kind())
+	wireType := generator.ProtoWireType(field.Desc.Kind())
 	fieldNumber := field.Desc.Number()
 	if packed {
 		wireType = protowire.BytesType
 	}
-	key := common.KeySize(fieldNumber, wireType)
+	key := generator.KeySize(fieldNumber, wireType)
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind, protoreflect.Fixed64Kind, protoreflect.Sfixed64Kind:
 		if packed {
@@ -120,9 +138,9 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		foreign := strings.HasPrefix(string(field.Message.Desc.FullName()), "google.protobuf.")
 
 		if field.Desc.IsMap() {
-			fieldKeySize := common.KeySize(field.Desc.Number(), p.WireType(field.Desc.Kind()))
-			keyKeySize := common.KeySize(1, p.WireType(field.Message.Fields[0].Desc.Kind()))
-			valueKeySize := common.KeySize(2, p.WireType(field.Message.Fields[1].Desc.Kind()))
+			fieldKeySize := generator.KeySize(field.Desc.Number(), generator.ProtoWireType(field.Desc.Kind()))
+			keyKeySize := generator.KeySize(1, generator.ProtoWireType(field.Message.Fields[0].Desc.Kind()))
+			valueKeySize := generator.KeySize(2, generator.ProtoWireType(field.Message.Fields[1].Desc.Kind()))
 			p.P(`for k, v := range m.`, fieldname, ` { `)
 			p.P(`_ = k`)
 			p.P(`_ = v`)
@@ -179,7 +197,7 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		} else if field.Desc.IsList() {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
 			if foreign {
-				p.P(`l=`, p.Ident(common.ProtoPkg, "Size"), `(e)`)
+				p.P(`l=`, p.Ident(generator.ProtoPkg, "Size"), `(e)`)
 			} else {
 				p.P(`l=e.`, sizeName, `()`)
 			}
@@ -187,7 +205,7 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 			p.P(`}`)
 		} else {
 			if foreign {
-				p.P(`l=`, p.Ident(common.ProtoPkg, "Size"), `(m.`, fieldname, `)`)
+				p.P(`l=`, p.Ident(generator.ProtoPkg, "Size"), `(m.`, fieldname, `)`)
 			} else {
 				p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
 			}
@@ -234,17 +252,9 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 	}
 }
 
-func (p *sizer) GenerateFile(file *protogen.File) bool {
-	for _, message := range file.Messages {
-		p.sizeForMessage(message)
-	}
-	
-	return p.once
-}
-
-func (p *sizer) sizeForMessage(message *protogen.Message) {
+func (p *size) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.sizeForMessage(nested)
+		p.message(nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -266,7 +276,7 @@ func (p *sizer) sizeForMessage(message *protogen.Message) {
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil
 		if !oneof {
-			p.sizeForField(true, field, sizeName)
+			p.field(true, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
@@ -295,18 +305,8 @@ func (p *sizer) sizeForMessage(message *protogen.Message) {
 		p.P(`}`)
 		p.P(`var l int`)
 		p.P(`_ = l`)
-		p.sizeForField(false, field, sizeName)
+		p.field(false, field, sizeName)
 		p.P(`return n`)
 		p.P(`}`)
 	}
-}
-
-func (p *sizer) GenerateHelpers() {
-	p.P(`
-	func sov(x uint64) (n int) {
-                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
-	}`)
-	p.P(`func soz(x uint64) (n int) {
-		return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-	}`)
 }

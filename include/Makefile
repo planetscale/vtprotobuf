@@ -9,5 +9,5 @@ regenerate:
 		--proto_path=. \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		-I$(PROTOBUF_ROOT)/src/google/protobuf \
-		vitess.io/vtprotobuf/vtproto/ext.proto
-	mv vitess.io/vtprotobuf/vtproto/*.go $(PWD)/../vtproto
+		github.com/planetscale/vtprotobuf/vtproto/ext.proto
+	mv github.com/planetscale/vtprotobuf/vtproto/*.go $(PWD)/../vtproto

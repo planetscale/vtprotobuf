@@ -1,4 +1,4 @@
-module vitess.io/vtprotobuf
+module github.com/planetscale/vtprotobuf
 
 go 1.16
 

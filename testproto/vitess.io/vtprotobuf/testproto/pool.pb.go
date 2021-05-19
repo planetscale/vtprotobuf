@@ -11,7 +11,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "vitess.io/vtprotobuf/vtproto"
+	_ "github.com/planetscale/vtprotobuf/vtproto"
 )
 
 const (

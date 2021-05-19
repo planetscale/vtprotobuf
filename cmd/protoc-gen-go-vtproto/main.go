@@ -4,7 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"strings"
-	"vitess.io/vtprotobuf/plugins/common"
+
+	"github.com/planetscale/vtprotobuf/generator"
+	_ "github.com/planetscale/vtprotobuf/plugins/marshal"
+	_ "github.com/planetscale/vtprotobuf/plugins/pool"
+	_ "github.com/planetscale/vtprotobuf/plugins/size"
+	_ "github.com/planetscale/vtprotobuf/plugins/unmarshal"
 
 	"google.golang.org/protobuf/compiler/protogen"
 )
@@ -40,17 +45,17 @@ func main() {
 }
 
 func generateAllFiles(plugin *protogen.Plugin, poolable ObjectSet) {
-	seen := make(map[common.GeneratedHelper]bool)
+	ext := &generator.Extensions{Poolable: poolable}
+	gen := generator.NewGenerator(ext)
+
 	for _, file := range plugin.Files {
 		if !file.Generate {
 			continue
 		}
 
 		gf := plugin.NewGeneratedFile(file.GeneratedFilenamePrefix+"_vtproto.pb.go", file.GoImportPath)
-		if !common.GenerateFile(gf, file, seen) {
+		if !gen.GenerateFile(gf, file) {
 			gf.Skip()
 		}
 	}
 }
-
-

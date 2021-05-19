@@ -1,7 +1,7 @@
 syntax = "proto3";
-option go_package = "vitess.io/vtprotobuf/testproto";
+option go_package = "github.com/planetscale/vtprotobuf/testproto";
 
-import "vitess.io/vtprotobuf/vtproto/ext.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 message Test {
   option (vtproto.mempool) = true;
