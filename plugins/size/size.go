@@ -1,9 +1,10 @@
-package main
+package size
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
+	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
@@ -11,14 +12,21 @@ import (
 )
 
 func init() {
-	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
-		return &sizer{gen}
+	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
+		return &sizer{VTGeneratedFile: gen}
 	})
 }
 
 type sizer struct {
-	*VTGeneratedFile
+	*common.VTGeneratedFile
+	once bool
 }
+
+func (p *sizer) Name() string {
+	return "size"
+}
+
+var _ common.Plugin = (*sizer)(nil)
 
 func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
@@ -30,12 +38,12 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		p.P(`if m.`, fieldname, ` != nil {`)
 	}
 	packed := field.Desc.IsPacked()
-	wireType := wireTypes[field.Desc.Kind()]
+	wireType := p.WireType(field.Desc.Kind())
 	fieldNumber := field.Desc.Number()
 	if packed {
 		wireType = protowire.BytesType
 	}
-	key := keySize(fieldNumber, wireType)
+	key := common.KeySize(fieldNumber, wireType)
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind, protoreflect.Fixed64Kind, protoreflect.Sfixed64Kind:
 		if packed {
@@ -112,9 +120,9 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		foreign := strings.HasPrefix(string(field.Message.Desc.FullName()), "google.protobuf.")
 
 		if field.Desc.IsMap() {
-			fieldKeySize := keySize(field.Desc.Number(), wireTypes[field.Desc.Kind()])
-			keyKeySize := keySize(1, wireTypes[field.Message.Fields[0].Desc.Kind()])
-			valueKeySize := keySize(2, wireTypes[field.Message.Fields[1].Desc.Kind()])
+			fieldKeySize := common.KeySize(field.Desc.Number(), p.WireType(field.Desc.Kind()))
+			keyKeySize := common.KeySize(1, p.WireType(field.Message.Fields[0].Desc.Kind()))
+			valueKeySize := common.KeySize(2, p.WireType(field.Message.Fields[1].Desc.Kind()))
 			p.P(`for k, v := range m.`, fieldname, ` { `)
 			p.P(`_ = k`)
 			p.P(`_ = v`)
@@ -171,7 +179,7 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 		} else if field.Desc.IsList() {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
 			if foreign {
-				p.P(`l=`, p.Ident(ProtoPkg, "Size"), `(e)`)
+				p.P(`l=`, p.Ident(common.ProtoPkg, "Size"), `(e)`)
 			} else {
 				p.P(`l=e.`, sizeName, `()`)
 			}
@@ -179,7 +187,7 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 			p.P(`}`)
 		} else {
 			if foreign {
-				p.P(`l=`, p.Ident(ProtoPkg, "Size"), `(m.`, fieldname, `)`)
+				p.P(`l=`, p.Ident(common.ProtoPkg, "Size"), `(m.`, fieldname, `)`)
 			} else {
 				p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
 			}
@@ -226,13 +234,12 @@ func (p *sizer) sizeForField(proto3 bool, field *protogen.Field, sizeName string
 	}
 }
 
-func (p *sizer) GenerateFile(file *protogen.File) {
+func (p *sizer) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.sizeForMessage(message)
 	}
-	if p.Once {
-		p.helpers()
-	}
+	
+	return p.once
 }
 
 func (p *sizer) sizeForMessage(message *protogen.Message) {
@@ -244,7 +251,7 @@ func (p *sizer) sizeForMessage(message *protogen.Message) {
 		return
 	}
 
-	p.Once = true
+	p.once = true
 
 	sizeName := "SizeVT"
 	ccTypeName := message.GoIdent
@@ -294,7 +301,7 @@ func (p *sizer) sizeForMessage(message *protogen.Message) {
 	}
 }
 
-func (p *sizer) helpers() {
+func (p *sizer) GenerateHelpers() {
 	p.P(`
 	func sov(x uint64) (n int) {
                 return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7

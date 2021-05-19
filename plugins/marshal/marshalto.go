@@ -1,10 +1,11 @@
-package main
+package marshal
 
 import (
 	"fmt"
 	"sort"
 	"strconv"
 	"strings"
+	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
@@ -12,7 +13,7 @@ import (
 )
 
 func init() {
-	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
+	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
 		return &marshal{VTGeneratedFile: gen, Stable: false}
 	})
 }
@@ -29,9 +30,16 @@ func (cnt *counter) Current() string {
 }
 
 type marshal struct {
-	*VTGeneratedFile
-	Stable bool
+	*common.VTGeneratedFile
+	Stable, once bool
 }
+
+var _ common.Plugin = (*marshal)(nil)
+
+func (p *marshal) Name() string {
+	return "marshal"
+}
+
 
 func (p *marshal) encodeFixed64(varName ...string) {
 	p.P(`i -= 8`)
@@ -60,16 +68,6 @@ func (p *marshal) encodeKey(fieldNumber protoreflect.FieldNumber, wireType proto
 		p.P(`i--`)
 		p.P(`dAtA[i] = `, fmt.Sprintf("%#v", keybuf[i]))
 	}
-}
-
-func keySize(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) int {
-	x := uint32(fieldNumber)<<3 | uint32(wireType)
-	size := 0
-	for size = 0; x > 127; size++ {
-		x >>= 7
-	}
-	size++
-	return size
 }
 
 func (p *marshal) marshalMapField(kvField *protogen.Field, varName string) {
@@ -114,7 +112,7 @@ func (p *marshal) marshalField(proto3 bool, numGen *counter, field *protogen.Fie
 		p.P(`if m.`, fieldname, ` != nil {`)
 	}
 	packed := field.Desc.IsPacked()
-	wireType := wireTypes[field.Desc.Kind()]
+	wireType := p.WireType(field.Desc.Kind())
 	fieldNumber := field.Desc.Number()
 	if packed {
 		wireType = protowire.BytesType
@@ -319,7 +317,7 @@ func (p *marshal) marshalField(proto3 bool, numGen *counter, field *protogen.Fie
 		panic(fmt.Errorf("marshaler does not support group %v", fieldname))
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
-			goTypK, _ := fieldGoType(p.GeneratedFile, field.Message.Fields[0])
+			goTypK, _ := p.FieldGoType( field.Message.Fields[0])
 			keyKind := field.Message.Fields[0].Desc.Kind()
 			valKind := field.Message.Fields[1].Desc.Kind()
 
@@ -347,10 +345,10 @@ func (p *marshal) marshalField(proto3 bool, numGen *counter, field *protogen.Fie
 
 			accessor := `v`
 			p.marshalMapField(field.Message.Fields[1], accessor)
-			p.encodeKey(2, wireTypes[valKind])
+			p.encodeKey(2, p.WireType(valKind))
 
 			p.marshalMapField(field.Message.Fields[0], val)
-			p.encodeKey(1, wireTypes[keyKind])
+			p.encodeKey(1, p.WireType(keyKind))
 			p.encodeVarint(`baseI - i`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
@@ -483,7 +481,7 @@ func (p *marshal) message(message *protogen.Message) {
 		return
 	}
 
-	p.Once = true
+	p.once = true
 
 	var numGen counter
 	ccTypeName := message.GoIdent
@@ -565,16 +563,14 @@ func (p *marshal) message(message *protogen.Message) {
 	}
 }
 
-func (p *marshal) GenerateFile(file *protogen.File) {
+func (p *marshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
 	}
-	if p.Once {
-		p.helpers()
-	}
+	return p.once
 }
 
-func (p *marshal) helpers() {
+func (p *marshal) GenerateHelpers() {
 	p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
 	p.P(`offset -= sov(v)`)
 	p.P(`base := offset`)
@@ -599,7 +595,7 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 
 	p.P(`{`)
 	if foreign {
-		p.P(`encoded, err := `, p.Ident(ProtoPkg, "Marshal"), `(`, varName, `)`)
+		p.P(`encoded, err := `, p.Ident(common.ProtoPkg, "Marshal"), `(`, varName, `)`)
 	} else {
 		p.P(`size, err := `, varName, `.MarshalToSizedBufferVT(dAtA[:i])`)
 	}

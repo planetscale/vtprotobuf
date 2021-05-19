@@ -1,26 +1,37 @@
-package main
+package pool
 
 import (
 	"fmt"
+	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func init() {
-	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
-		return &pooler{gen}
+	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
+		return &pooler{VTGeneratedFile: gen}
 	})
 }
 
 type pooler struct {
-	*VTGeneratedFile
+	*common.VTGeneratedFile
+	once bool
 }
 
-func (p *pooler) GenerateFile(file *protogen.File) {
+var _ common.Plugin = (*pooler)(nil)
+
+func (p *pooler) Name() string {
+	return "pool"
+}
+
+func (p *pooler) GenerateHelpers() {
+}
+func (p *pooler) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
 	}
+	return p.once
 }
 
 func (p *pooler) message(message *protogen.Message) {
@@ -32,7 +43,7 @@ func (p *pooler) message(message *protogen.Message) {
 		return
 	}
 
-	p.Once = true
+	p.once = true
 	ccTypeName := message.GoIdent
 
 	p.P(`var vtprotoPool_`, ccTypeName, ` = `, p.Ident("sync", "Pool"), `{`)

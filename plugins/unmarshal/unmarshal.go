@@ -1,9 +1,10 @@
-package main
+package unmarshal
 
 import (
 	"fmt"
 	"strconv"
 	"strings"
+	"vitess.io/vtprotobuf/plugins/common"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
@@ -11,18 +12,25 @@ import (
 )
 
 func init() {
-	RegisterPlugin(func(gen *VTGeneratedFile) Plugin {
-		return &unmarshal{gen}
+	common.RegisterPlugin(func(gen *common.VTGeneratedFile) common.Plugin {
+		return &unmarshal{VTGeneratedFile: gen}
 	})
 }
 
 type unmarshal struct {
-	*VTGeneratedFile
+	*common.VTGeneratedFile
+	once bool
+}
+
+var _ common.Plugin = (*unmarshal)(nil)
+
+func (p *unmarshal) Name() string {
+	return "unmarshal"
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, desc protoreflect.Descriptor) {
 	if strings.HasPrefix(string(desc.FullName()), "google.protobuf.") {
-		p.P(`if err := `, p.Ident(ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
+		p.P(`if err := `, p.Ident(common.ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 		return
@@ -63,49 +71,6 @@ func (p *unmarshal) decodeFixed64(varName string, typeName string) {
 	p.P(`}`)
 	p.P(varName, ` = `, typeName, `(`, p.Ident("encoding/binary", "LittleEndian"), `.Uint64(dAtA[iNdEx:]))`)
 	p.P(`iNdEx += 8`)
-}
-
-func fieldGoType(g *protogen.GeneratedFile, field *protogen.Field) (goType string, pointer bool) {
-	if field.Desc.IsWeak() {
-		return "struct{}", false
-	}
-
-	pointer = field.Desc.HasPresence()
-	switch field.Desc.Kind() {
-	case protoreflect.BoolKind:
-		goType = "bool"
-	case protoreflect.EnumKind:
-		goType = g.QualifiedGoIdent(field.Enum.GoIdent)
-	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind:
-		goType = "int32"
-	case protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
-		goType = "uint32"
-	case protoreflect.Int64Kind, protoreflect.Sint64Kind, protoreflect.Sfixed64Kind:
-		goType = "int64"
-	case protoreflect.Uint64Kind, protoreflect.Fixed64Kind:
-		goType = "uint64"
-	case protoreflect.FloatKind:
-		goType = "float32"
-	case protoreflect.DoubleKind:
-		goType = "float64"
-	case protoreflect.StringKind:
-		goType = "string"
-	case protoreflect.BytesKind:
-		goType = "[]byte"
-		pointer = false // rely on nullability of slices for presence
-	case protoreflect.MessageKind, protoreflect.GroupKind:
-		goType = "*" + g.QualifiedGoIdent(field.Message.GoIdent)
-		pointer = false // pointer captured as part of the type
-	}
-	switch {
-	case field.Desc.IsList():
-		return "[]" + goType, false
-	case field.Desc.IsMap():
-		keyType, _ := fieldGoType(g, field.Message.Fields[0])
-		valType, _ := fieldGoType(g, field.Message.Fields[1])
-		return fmt.Sprintf("map[%v]%v", keyType, valType), false
-	}
-	return goType, pointer
 }
 
 func (p *unmarshal) declareMapField(varName string, nullable bool, field *protogen.Field) {
@@ -229,7 +194,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 	case protoreflect.Uint32Kind:
 		p.decodeVarint(varName, "uint32")
 	case protoreflect.EnumKind:
-		goTypV, _ := fieldGoType(p.GeneratedFile, field)
+		goTypV, _ := p.FieldGoType(field)
 		p.decodeVarint(varName, goTypV)
 	case protoreflect.Sfixed32Kind:
 		p.decodeFixed32(varName, "int32")
@@ -249,7 +214,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 }
 
 func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
-	typ, _ := fieldGoType(p.GeneratedFile, field)
+	typ, _ := p.FieldGoType(field)
 	if typ[0] == '[' && typ[1] == ']' {
 		typ = typ[2:]
 	}
@@ -442,9 +407,9 @@ func (p *unmarshal) unmarshalFieldItem(field *protogen.Field, fieldname string, 
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{v}`)
 			p.P(`}`)
 		} else if field.Desc.IsMap() {
-			goTyp, _ := fieldGoType(p.GeneratedFile, field)
-			goTypK, _ := fieldGoType(p.GeneratedFile, field.Message.Fields[0])
-			goTypV, _ := fieldGoType(p.GeneratedFile, field.Message.Fields[1])
+			goTyp, _ := p.FieldGoType(field)
+			goTypK, _ := p.FieldGoType(field.Message.Fields[0])
+			goTypV, _ := p.FieldGoType(field.Message.Fields[1])
 
 			p.P(`if m.`, fieldname, ` == nil {`)
 			p.P(`m.`, fieldname, ` = make(`, goTyp, `)`)
@@ -634,29 +599,6 @@ func (p *unmarshal) unmarshalFieldItem(field *protogen.Field, fieldname string, 
 	}
 }
 
-const ProtoPkg = "google.golang.org/protobuf/proto"
-
-var wireTypes = map[protoreflect.Kind]protowire.Type{
-	protoreflect.BoolKind:     protowire.VarintType,
-	protoreflect.EnumKind:     protowire.VarintType,
-	protoreflect.Int32Kind:    protowire.VarintType,
-	protoreflect.Sint32Kind:   protowire.VarintType,
-	protoreflect.Uint32Kind:   protowire.VarintType,
-	protoreflect.Int64Kind:    protowire.VarintType,
-	protoreflect.Sint64Kind:   protowire.VarintType,
-	protoreflect.Uint64Kind:   protowire.VarintType,
-	protoreflect.Sfixed32Kind: protowire.Fixed32Type,
-	protoreflect.Fixed32Kind:  protowire.Fixed32Type,
-	protoreflect.FloatKind:    protowire.Fixed32Type,
-	protoreflect.Sfixed64Kind: protowire.Fixed64Type,
-	protoreflect.Fixed64Kind:  protowire.Fixed64Type,
-	protoreflect.DoubleKind:   protowire.Fixed64Type,
-	protoreflect.StringKind:   protowire.BytesType,
-	protoreflect.BytesKind:    protowire.BytesType,
-	protoreflect.MessageKind:  protowire.BytesType,
-	protoreflect.GroupKind:    protowire.StartGroupType,
-}
-
 func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Message, proto3 bool, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
@@ -665,7 +607,7 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 	}
 
 	p.P(`case `, strconv.Itoa(int(field.Desc.Number())), `:`)
-	wireType := wireTypes[field.Desc.Kind()]
+	wireType := p.WireType(field.Desc.Kind())
 	if field.Desc.IsList() && wireType != protowire.BytesType {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
 		p.unmarshalFieldItem(field, fieldname, message, false)
@@ -707,7 +649,7 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 			p.P(`if elementCount != 0 && len(m.`, fieldname, `) == 0 {`)
 		}
 
-		fieldtyp, _ := fieldGoType(p.GeneratedFile, field)
+		fieldtyp, _ := p.FieldGoType(field)
 		p.P(`m.`, fieldname, ` = make(`, fieldtyp, `, 0, elementCount)`)
 		p.P(`}`)
 
@@ -734,7 +676,7 @@ func (p *unmarshal) unmarshalField(field *protogen.Field, message *protogen.Mess
 		if fieldBit == required.Len() {
 			panic("missing required field")
 		}
-		p.P(`hasFields[`, strconv.Itoa(int(fieldBit/64)), `] |= uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `)`)
+		p.P(`hasFields[`, strconv.Itoa(fieldBit/64), `] |= uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `)`)
 	}
 }
 
@@ -747,7 +689,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 		return
 	}
 
-	p.Once = true
+	p.once = true
 	ccTypeName := message.GoIdent
 	required := message.Desc.RequiredNumbers()
 
@@ -801,7 +743,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 		p.P(`if (iNdEx + skippy) > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(p.Ident(ProtoPkg, "AppendExtension"), `(m, int32(fieldNum), dAtA[iNdEx:iNdEx+skippy])`)
+		p.P(p.Ident(common.ProtoPkg, "AppendExtension"), `(m, int32(fieldNum), dAtA[iNdEx:iNdEx+skippy])`)
 		p.P(`iNdEx += skippy`)
 		p.P(`} else {`)
 	}
@@ -838,7 +780,7 @@ func (p *unmarshal) message(message *protogen.Message) {
 			panic("missing required field")
 		}
 		p.P(`if hasFields[`, strconv.Itoa(int(fieldBit/64)), `] & uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `) == 0 {`)
-		p.P(`return new(`, p.Ident(ProtoPkg, "RequiredNotSetError"), `)`)
+		p.P(`return new(`, p.Ident(common.ProtoPkg, "RequiredNotSetError"), `)`)
 		p.P(`}`)
 	}
 	p.P()
@@ -849,17 +791,15 @@ func (p *unmarshal) message(message *protogen.Message) {
 	p.P(`}`)
 }
 
-func (p *unmarshal) GenerateFile(file *protogen.File) {
+func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
 	}
 
-	if p.Once {
-		p.helpers()
-	}
+	return p.once
 }
 
-func (p *unmarshal) helpers() {
+func (p *unmarshal) GenerateHelpers() {
 	p.P(`func skip(dAtA []byte) (n int, err error) {
 		l := len(dAtA)
 		iNdEx := 0
