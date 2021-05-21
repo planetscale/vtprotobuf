@@ -5,14 +5,14 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterPlugin("unmarshal", func(gen *generator.GeneratedFile) generator.Plugin {
 		return &unmarshal{GeneratedFile: gen}
 	})
 }
@@ -23,10 +23,6 @@ type unmarshal struct {
 }
 
 var _ generator.Plugin = (*unmarshal)(nil)
-
-func (p *unmarshal) Name() string {
-	return "unmarshal"
-}
 
 func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {

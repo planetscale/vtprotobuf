@@ -5,14 +5,14 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterPlugin("size", func(gen *generator.GeneratedFile) generator.Plugin {
 		return &size{GeneratedFile: gen}
 	})
 }

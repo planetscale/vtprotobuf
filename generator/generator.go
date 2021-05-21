@@ -5,11 +5,12 @@ import (
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/runtime/protoimpl"
 )
 
 type helper struct {
 	path   protogen.GoImportPath
-	plugin string
+	plugin int
 }
 
 type Extensions struct {
@@ -17,15 +18,22 @@ type Extensions struct {
 }
 
 type Generator struct {
-	seen map[helper]bool
-	ext  *Extensions
+	seen  map[helper]bool
+	ext   *Extensions
+	plugs []PluginFactory
 }
 
-func NewGenerator(ext *Extensions) *Generator {
-	return &Generator{
-		seen: make(map[helper]bool),
-		ext:  ext,
+func NewGenerator(features []string, ext *Extensions) (*Generator, error) {
+	plugs, err := findPlugins(features)
+	if err != nil {
+		return nil, err
 	}
+
+	return &Generator{
+		seen:  make(map[helper]bool),
+		ext:   ext,
+		plugs: plugs,
+	}, nil
 }
 
 func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.File) bool {
@@ -47,18 +55,28 @@ func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.Fi
 	p.P("package ", file.GoPackageName)
 	p.P()
 
+	protoimplPackage := protogen.GoImportPath("google.golang.org/protobuf/runtime/protoimpl")
+	p.P("const (")
+	p.P("// Verify that this generated code is sufficiently up-to-date.")
+	p.P("_ = ", protoimplPackage.Ident("EnforceVersion"), "(", protoimpl.GenVersion, " - ", protoimplPackage.Ident("MinVersion"), ")")
+	p.P("// Verify that runtime/protoimpl is sufficiently up-to-date.")
+	p.P("_ = ", protoimplPackage.Ident("EnforceVersion"), "(", protoimplPackage.Ident("MaxVersion"), " - ", protoimpl.GenVersion, ")")
+	p.P(")")
+	p.P()
+
 	var generated bool
-	for _, plugin := range pluginsForFile(p) {
+	for pidx, pfactory := range gen.plugs {
+		plugin := pfactory(p)
 		if plugin.GenerateFile(file) {
 			generated = true
 
-			key := helper{
+			helpersForPlugin := helper{
 				path:   file.GoImportPath,
-				plugin: plugin.Name(),
+				plugin: pidx,
 			}
-			if !gen.seen[key] {
+			if !gen.seen[helpersForPlugin] {
 				plugin.GenerateHelpers()
-				gen.seen[key] = true
+				gen.seen[helpersForPlugin] = true
 			}
 		}
 	}

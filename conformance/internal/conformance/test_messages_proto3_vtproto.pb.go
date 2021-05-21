@@ -8,6 +8,7 @@ import (
 	binary "encoding/binary"
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -17,6 +18,13 @@ import (
 	io "io"
 	math "math"
 	bits "math/bits"
+)
+
+const (
+	// Verify that this generated code is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+	// Verify that runtime/protoimpl is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
 func (m *TestAllTypesProto3_NestedMessage) MarshalVT() (dAtA []byte, err error) {

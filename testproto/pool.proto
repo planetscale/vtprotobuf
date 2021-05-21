@@ -5,6 +5,6 @@ import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 message Test {
   option (vtproto.mempool) = true;
-  string foo1 = 1 [option (vtproto.fieldopt) = 1];
+  string foo1 = 1;
   uint64 foo2 = 2;
 }

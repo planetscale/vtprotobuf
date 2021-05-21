@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/planetscale/vtprotobuf/generator"
+	_ "github.com/planetscale/vtprotobuf/plugins/grpc"
 	_ "github.com/planetscale/vtprotobuf/plugins/marshal"
 	_ "github.com/planetscale/vtprotobuf/plugins/pool"
 	_ "github.com/planetscale/vtprotobuf/plugins/size"
@@ -35,18 +36,24 @@ func (o ObjectSet) Set(s string) error {
 }
 
 func main() {
+	var features string
 	poolable := make(ObjectSet)
+
 	var f flag.FlagSet
-	f.Var(poolable, "P", "use memory pooling for this object")
+	f.Var(poolable, "pool", "use memory pooling for this object")
+	f.StringVar(&features, "features", "all", "list of features to generate (comma separated)")
+
 	protogen.Options{ParamFunc: f.Set}.Run(func(plugin *protogen.Plugin) error {
-		generateAllFiles(plugin, poolable)
-		return nil
+		return generateAllFiles(strings.Split(features, ","), plugin, poolable)
 	})
 }
 
-func generateAllFiles(plugin *protogen.Plugin, poolable ObjectSet) {
+func generateAllFiles(features []string, plugin *protogen.Plugin, poolable ObjectSet) error {
 	ext := &generator.Extensions{Poolable: poolable}
-	gen := generator.NewGenerator(ext)
+	gen, err := generator.NewGenerator(features, ext)
+	if err != nil {
+		return err
+	}
 
 	for _, file := range plugin.Files {
 		if !file.Generate {
@@ -58,4 +65,5 @@ func generateAllFiles(plugin *protogen.Plugin, poolable ObjectSet) {
 			gf.Skip()
 		}
 	}
+	return nil
 }

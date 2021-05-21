@@ -33,6 +33,14 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	return false
 }
 
+func (b *GeneratedFile) Alloc(vname string, message *protogen.Message) {
+	if b.ShouldPool(message) {
+		b.P(vname, " := ", message.GoIdent, `FromVTPool()`)
+	} else {
+		b.P(vname, " := new(", message.GoIdent, `)`)
+	}
+}
+
 func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, pointer bool) {
 	if field.Desc.IsWeak() {
 		return "struct{}", false

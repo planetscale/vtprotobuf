@@ -1,8 +1,7 @@
 export GOBIN=$(PWD)/bin
 export PROTOBUF_ROOT=$(HOME)/src/protobuf-3.16.0
-VTROOT=$(HOME)/src/vitess
 
-.PHONY: install test gen-conformance
+.PHONY: install test gen-conformance gen-include genall
 
 install:
 	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
@@ -26,7 +25,7 @@ gen-conformance:
 		conformance/conformance.proto
 
 gen-include:
-	$(VTROOT)/bin/protoc \
+	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=include \
 		--go_out=include --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		-I$(PROTOBUF_ROOT)/src \

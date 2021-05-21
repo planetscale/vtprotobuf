@@ -6,7 +6,15 @@ package conformance
 
 import (
 	fmt "fmt"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+)
+
+const (
+	// Verify that this generated code is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(20 - protoimpl.MinVersion)
+	// Verify that runtime/protoimpl is sufficiently up-to-date.
+	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
 func (m *FailureSet) MarshalVT() (dAtA []byte, err error) {

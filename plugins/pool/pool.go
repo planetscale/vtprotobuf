@@ -3,13 +3,13 @@ package pool
 import (
 	"fmt"
 
+	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
-	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterPlugin("pool", func(gen *generator.GeneratedFile) generator.Plugin {
 		return &pool{GeneratedFile: gen}
 	})
 }
@@ -20,10 +20,6 @@ type pool struct {
 }
 
 var _ generator.Plugin = (*pool)(nil)
-
-func (p *pool) Name() string {
-	return "pool"
-}
 
 func (p *pool) GenerateHelpers() {}
 

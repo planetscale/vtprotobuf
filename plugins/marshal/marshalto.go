@@ -8,15 +8,13 @@ import (
 
 	"github.com/planetscale/vtprotobuf/generator"
 
-	_ "github.com/planetscale/vtprotobuf/plugins/size"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func init() {
-	generator.RegisterPlugin(func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterPlugin("marshal", func(gen *generator.GeneratedFile) generator.Plugin {
 		return &marshal{GeneratedFile: gen, Stable: false}
 	})
 }
@@ -38,10 +36,6 @@ type marshal struct {
 }
 
 var _ generator.Plugin = (*marshal)(nil)
-
-func (p *marshal) Name() string {
-	return "marshal"
-}
 
 func (p *marshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {

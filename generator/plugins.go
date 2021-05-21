@@ -1,37 +1,43 @@
 package generator
 
 import (
+	"fmt"
 	"sort"
 
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
-var defaultPlugins []PluginFactory
+var defaultPlugins = make(map[string]PluginFactory)
 
-func pluginsForFile(file *GeneratedFile) []Plugin {
-	plugins := make([]Plugin, 0, len(defaultPlugins))
+func findPlugins(features []string) ([]PluginFactory, error) {
+	sort.Strings(features)
 
-	for _, pg := range defaultPlugins {
-		plugins = append(plugins, pg(file))
+	plugins := make([]PluginFactory, 0, len(defaultPlugins))
+	for _, feature := range features {
+		if feature == "all" {
+			plugins = plugins[:0]
+			for _, pg := range defaultPlugins {
+				plugins = append(plugins, pg)
+			}
+			break
+		}
+
+		pg, ok := defaultPlugins[feature]
+		if !ok {
+			return nil, fmt.Errorf("unknown feature: %q", feature)
+		}
+		plugins = append(plugins, pg)
 	}
-
-	// Sort the slice stably so the contents of the generated files don't
-	// "jump around" when enabling or disabling more plugins
-	sort.SliceStable(plugins, func(i, j int) bool {
-		return plugins[i].Name() < plugins[j].Name()
-	})
-
-	return plugins
+	return plugins, nil
 }
 
-func RegisterPlugin(plugin PluginFactory) {
-	defaultPlugins = append(defaultPlugins, plugin)
+func RegisterPlugin(name string, plugin PluginFactory) {
+	defaultPlugins[name] = plugin
 }
 
 type PluginFactory func(gen *GeneratedFile) Plugin
 
 type Plugin interface {
-	Name() string
 	GenerateFile(file *protogen.File) bool
 	GenerateHelpers()
 }
