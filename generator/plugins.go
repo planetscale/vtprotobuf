@@ -9,24 +9,36 @@ import (
 
 var defaultPlugins = make(map[string]PluginFactory)
 
-func findPlugins(features []string) ([]PluginFactory, error) {
-	sort.Strings(features)
+type sortedPlugin struct {
+	f PluginFactory
+	n string
+}
 
-	plugins := make([]PluginFactory, 0, len(defaultPlugins))
-	for _, feature := range features {
-		if feature == "all" {
-			plugins = plugins[:0]
-			for _, pg := range defaultPlugins {
-				plugins = append(plugins, pg)
+func findPlugins(features []string) ([]PluginFactory, error) {
+	var sorted []sortedPlugin
+	for _, name := range features {
+		if name == "all" {
+			sorted = sorted[:0]
+			for n, pg := range defaultPlugins {
+				sorted = append(sorted, sortedPlugin{f: pg, n: n})
 			}
 			break
 		}
 
-		pg, ok := defaultPlugins[feature]
+		pg, ok := defaultPlugins[name]
 		if !ok {
-			return nil, fmt.Errorf("unknown feature: %q", feature)
+			return nil, fmt.Errorf("unknown feature: %q", name)
 		}
-		plugins = append(plugins, pg)
+		sorted = append(sorted, sortedPlugin{f: pg, n: name})
+	}
+
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].n < sorted[j].n
+	})
+
+	var plugins []PluginFactory
+	for _, sp := range sorted {
+		plugins = append(plugins, sp.f)
 	}
 	return plugins, nil
 }
