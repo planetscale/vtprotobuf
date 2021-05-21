@@ -41,10 +41,10 @@ func main() {
 
 	var f flag.FlagSet
 	f.Var(poolable, "pool", "use memory pooling for this object")
-	f.StringVar(&features, "features", "all", "list of features to generate (comma separated)")
+	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
 
 	protogen.Options{ParamFunc: f.Set}.Run(func(plugin *protogen.Plugin) error {
-		return generateAllFiles(strings.Split(features, ","), plugin, poolable)
+		return generateAllFiles(strings.Split(features, "+"), plugin, poolable)
 	})
 }
 
