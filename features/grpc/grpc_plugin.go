@@ -11,7 +11,7 @@ var requireUnimplementedAlways = true
 var requireUnimplemented = &requireUnimplementedAlways
 
 func init() {
-	generator.RegisterPlugin("grpc", func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterFeature("grpc", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &grpc{gen}
 	})
 }

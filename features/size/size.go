@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	generator.RegisterPlugin("size", func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterFeature("size", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &size{GeneratedFile: gen}
 	})
 }
@@ -22,7 +22,7 @@ type size struct {
 	once bool
 }
 
-var _ generator.Plugin = (*size)(nil)
+var _ generator.FeatureGenerator = (*size)(nil)
 
 func (p *size) Name() string {
 	return "size"

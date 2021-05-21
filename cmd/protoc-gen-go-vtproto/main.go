@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
+	_ "github.com/planetscale/vtprotobuf/features/grpc"
+	_ "github.com/planetscale/vtprotobuf/features/marshal"
+	_ "github.com/planetscale/vtprotobuf/features/pool"
+	_ "github.com/planetscale/vtprotobuf/features/size"
+	_ "github.com/planetscale/vtprotobuf/features/unmarshal"
 	"github.com/planetscale/vtprotobuf/generator"
-	_ "github.com/planetscale/vtprotobuf/plugins/grpc"
-	_ "github.com/planetscale/vtprotobuf/plugins/marshal"
-	_ "github.com/planetscale/vtprotobuf/plugins/pool"
-	_ "github.com/planetscale/vtprotobuf/plugins/size"
-	_ "github.com/planetscale/vtprotobuf/plugins/unmarshal"
 
 	"google.golang.org/protobuf/compiler/protogen"
 )
@@ -48,9 +48,9 @@ func main() {
 	})
 }
 
-func generateAllFiles(features []string, plugin *protogen.Plugin, poolable ObjectSet) error {
+func generateAllFiles(featureNames []string, plugin *protogen.Plugin, poolable ObjectSet) error {
 	ext := &generator.Extensions{Poolable: poolable}
-	gen, err := generator.NewGenerator(features, ext)
+	gen, err := generator.NewGenerator(featureNames, ext)
 	if err != nil {
 		return err
 	}

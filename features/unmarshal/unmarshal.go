@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	generator.RegisterPlugin("unmarshal", func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterFeature("unmarshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen}
 	})
 }
@@ -22,7 +22,7 @@ type unmarshal struct {
 	once bool
 }
 
-var _ generator.Plugin = (*unmarshal)(nil)
+var _ generator.FeatureGenerator = (*unmarshal)(nil)
 
 func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {

@@ -8,9 +8,9 @@ import (
 	"google.golang.org/protobuf/runtime/protoimpl"
 )
 
-type helper struct {
-	path   protogen.GoImportPath
-	plugin int
+type featureHelpers struct {
+	path    protogen.GoImportPath
+	feature int
 }
 
 type Extensions struct {
@@ -18,21 +18,21 @@ type Extensions struct {
 }
 
 type Generator struct {
-	seen  map[helper]bool
-	ext   *Extensions
-	plugs []PluginFactory
+	seen     map[featureHelpers]bool
+	ext      *Extensions
+	features []Feature
 }
 
-func NewGenerator(features []string, ext *Extensions) (*Generator, error) {
-	plugs, err := findPlugins(features)
+func NewGenerator(featureNames []string, ext *Extensions) (*Generator, error) {
+	features, err := findFeatures(featureNames)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Generator{
-		seen:  make(map[helper]bool),
-		ext:   ext,
-		plugs: plugs,
+		seen:     make(map[featureHelpers]bool),
+		ext:      ext,
+		features: features,
 	}, nil
 }
 
@@ -65,17 +65,17 @@ func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.Fi
 	p.P()
 
 	var generated bool
-	for pidx, pfactory := range gen.plugs {
-		plugin := pfactory(p)
-		if plugin.GenerateFile(file) {
+	for fidx, feat := range gen.features {
+		featGenerator := feat(p)
+		if featGenerator.GenerateFile(file) {
 			generated = true
 
-			helpersForPlugin := helper{
-				path:   file.GoImportPath,
-				plugin: pidx,
+			helpersForPlugin := featureHelpers{
+				path:    file.GoImportPath,
+				feature: fidx,
 			}
 			if !gen.seen[helpersForPlugin] {
-				plugin.GenerateHelpers()
+				featGenerator.GenerateHelpers()
 				gen.seen[helpersForPlugin] = true
 			}
 		}

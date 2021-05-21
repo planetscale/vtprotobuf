@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	generator.RegisterPlugin("pool", func(gen *generator.GeneratedFile) generator.Plugin {
+	generator.RegisterFeature("pool", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &pool{GeneratedFile: gen}
 	})
 }
@@ -19,7 +19,7 @@ type pool struct {
 	once bool
 }
 
-var _ generator.Plugin = (*pool)(nil)
+var _ generator.FeatureGenerator = (*pool)(nil)
 
 func (p *pool) GenerateHelpers() {}
 
