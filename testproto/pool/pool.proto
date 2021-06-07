@@ -1,9 +1,9 @@
 syntax = "proto3";
-option go_package = "github.com/planetscale/vtprotobuf/testproto";
+option go_package = "testproto/pool";
 
 import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
-message Test {
+message MemoryPoolExtension {
   option (vtproto.mempool) = true;
   string foo1 = 1;
   uint64 foo2 = 2;
