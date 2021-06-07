@@ -1,6 +1,12 @@
 syntax = "proto3";
 option go_package = "testproto/proto3opt";
 
+enum SimpleEnum {
+  ENUM1 = 0;
+  ENUM2 = 1;
+  ENUM3 = 2;
+}
+
 message OptionalFieldInProto3 {
   optional int32 optional_int32 = 1;
   optional int64 optional_int64 = 2;
@@ -17,4 +23,6 @@ message OptionalFieldInProto3 {
   optional bool optional_bool = 13;
   optional string optional_string = 14;
   optional bytes optional_bytes = 15;
+
+  optional SimpleEnum optional_enum = 16;
 }
