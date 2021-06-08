@@ -13,6 +13,7 @@ import (
 	"github.com/planetscale/vtprotobuf/generator"
 
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
 type ObjectSet map[protogen.GoIdent]bool
@@ -48,6 +49,8 @@ func main() {
 	})
 }
 
+var SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+
 func generateAllFiles(featureNames []string, plugin *protogen.Plugin, poolable ObjectSet) error {
 	ext := &generator.Extensions{Poolable: poolable}
 	gen, err := generator.NewGenerator(featureNames, ext)
@@ -65,5 +68,7 @@ func generateAllFiles(featureNames []string, plugin *protogen.Plugin, poolable O
 			gf.Skip()
 		}
 	}
+
+	plugin.SupportedFeatures = SupportedFeatures
 	return nil
 }

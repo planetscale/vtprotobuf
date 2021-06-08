@@ -32,7 +32,18 @@ gen-include:
 		github.com/planetscale/vtprotobuf/vtproto/ext.proto
 	mv include/github.com/planetscale/vtprotobuf/vtproto/*.go ./vtproto
 
-genall: install gen-include gen-conformance
+gen-testproto:
+	for name in "pool/pool.proto proto3opt/opt.proto"; do \
+		$(PROTOBUF_ROOT)/src/protoc \
+			--proto_path=testproto \
+			--proto_path=include \
+			--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+			--go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+			-I$(PROTOBUF_ROOT)/src \
+			testproto/$${name}; \
+  	done
+
+genall: install gen-include gen-conformance gen-testproto
 
 test: install gen-conformance
 	go test -count=1 ./conformance/...
