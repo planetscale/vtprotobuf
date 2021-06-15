@@ -16,7 +16,8 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Ext *Extensions
+	Ext           *Extensions
+	LocalPackages map[string]bool
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {

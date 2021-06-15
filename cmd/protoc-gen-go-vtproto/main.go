@@ -45,15 +45,15 @@ func main() {
 	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
 
 	protogen.Options{ParamFunc: f.Set}.Run(func(plugin *protogen.Plugin) error {
-		return generateAllFiles(strings.Split(features, "+"), plugin, poolable)
+		return generateAllFiles(plugin, strings.Split(features, "+"), poolable)
 	})
 }
 
 var SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
 
-func generateAllFiles(featureNames []string, plugin *protogen.Plugin, poolable ObjectSet) error {
+func generateAllFiles(plugin *protogen.Plugin, featureNames []string, poolable ObjectSet) error {
 	ext := &generator.Extensions{Poolable: poolable}
-	gen, err := generator.NewGenerator(featureNames, ext)
+	gen, err := generator.NewGenerator(plugin.Files, featureNames, ext)
 	if err != nil {
 		return err
 	}
