@@ -3077,117 +3077,261 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 		n += vtmsg.SizeVT()
 	}
 	if m.OptionalBoolWrapper != nil {
-		l = proto.Size(m.OptionalBoolWrapper)
+		if size, ok := interface{}(m.OptionalBoolWrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalBoolWrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalInt32Wrapper != nil {
-		l = proto.Size(m.OptionalInt32Wrapper)
+		if size, ok := interface{}(m.OptionalInt32Wrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalInt32Wrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalInt64Wrapper != nil {
-		l = proto.Size(m.OptionalInt64Wrapper)
+		if size, ok := interface{}(m.OptionalInt64Wrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalInt64Wrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalUint32Wrapper != nil {
-		l = proto.Size(m.OptionalUint32Wrapper)
+		if size, ok := interface{}(m.OptionalUint32Wrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalUint32Wrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalUint64Wrapper != nil {
-		l = proto.Size(m.OptionalUint64Wrapper)
+		if size, ok := interface{}(m.OptionalUint64Wrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalUint64Wrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalFloatWrapper != nil {
-		l = proto.Size(m.OptionalFloatWrapper)
+		if size, ok := interface{}(m.OptionalFloatWrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalFloatWrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalDoubleWrapper != nil {
-		l = proto.Size(m.OptionalDoubleWrapper)
+		if size, ok := interface{}(m.OptionalDoubleWrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalDoubleWrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalStringWrapper != nil {
-		l = proto.Size(m.OptionalStringWrapper)
+		if size, ok := interface{}(m.OptionalStringWrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalStringWrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalBytesWrapper != nil {
-		l = proto.Size(m.OptionalBytesWrapper)
+		if size, ok := interface{}(m.OptionalBytesWrapper).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalBytesWrapper)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if len(m.RepeatedBoolWrapper) > 0 {
 		for _, e := range m.RepeatedBoolWrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedInt32Wrapper) > 0 {
 		for _, e := range m.RepeatedInt32Wrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedInt64Wrapper) > 0 {
 		for _, e := range m.RepeatedInt64Wrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedUint32Wrapper) > 0 {
 		for _, e := range m.RepeatedUint32Wrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedUint64Wrapper) > 0 {
 		for _, e := range m.RepeatedUint64Wrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedFloatWrapper) > 0 {
 		for _, e := range m.RepeatedFloatWrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedDoubleWrapper) > 0 {
 		for _, e := range m.RepeatedDoubleWrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedStringWrapper) > 0 {
 		for _, e := range m.RepeatedStringWrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedBytesWrapper) > 0 {
 		for _, e := range m.RepeatedBytesWrapper {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if m.OptionalDuration != nil {
-		l = proto.Size(m.OptionalDuration)
+		if size, ok := interface{}(m.OptionalDuration).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalDuration)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalTimestamp != nil {
-		l = proto.Size(m.OptionalTimestamp)
+		if size, ok := interface{}(m.OptionalTimestamp).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalTimestamp)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalFieldMask != nil {
-		l = proto.Size(m.OptionalFieldMask)
+		if size, ok := interface{}(m.OptionalFieldMask).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalFieldMask)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalStruct != nil {
-		l = proto.Size(m.OptionalStruct)
+		if size, ok := interface{}(m.OptionalStruct).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalStruct)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalAny != nil {
-		l = proto.Size(m.OptionalAny)
+		if size, ok := interface{}(m.OptionalAny).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalAny)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalValue != nil {
-		l = proto.Size(m.OptionalValue)
+		if size, ok := interface{}(m.OptionalValue).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OptionalValue)
+		}
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalNullValue != 0 {
@@ -3195,43 +3339,85 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for _, e := range m.RepeatedDuration {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for _, e := range m.RepeatedTimestamp {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedFieldmask) > 0 {
 		for _, e := range m.RepeatedFieldmask {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedAny) > 0 {
 		for _, e := range m.RepeatedAny {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedValue) > 0 {
 		for _, e := range m.RepeatedValue {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for _, e := range m.RepeatedListValue {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedStruct) > 0 {
 		for _, e := range m.RepeatedStruct {
-			l = proto.Size(e)
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 2 + l + sov(uint64(l))
 		}
 	}
