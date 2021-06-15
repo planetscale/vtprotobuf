@@ -88,3 +88,8 @@ func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, point
 	}
 	return goType, pointer
 }
+
+func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
+	pkg := string(message.Desc.ParentFile().Package())
+	return p.LocalPackages[pkg]
+}

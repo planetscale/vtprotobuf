@@ -626,8 +626,7 @@ func (p *marshal) reverseListRange(expression ...string) string {
 }
 
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
-	pkg := string(message.Desc.ParentFile().Package())
-	local := p.LocalPackages[pkg]
+	local := p.IsLocalMessage(message)
 
 	p.P(`{`)
 	if local {

@@ -9268,8 +9268,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalBoolWrapper == nil {
 				m.OptionalBoolWrapper = &wrapperspb.BoolValue{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalBoolWrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalBoolWrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalBoolWrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 202:
@@ -9304,8 +9312,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalInt32Wrapper == nil {
 				m.OptionalInt32Wrapper = &wrapperspb.Int32Value{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalInt32Wrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalInt32Wrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalInt32Wrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 203:
@@ -9340,8 +9356,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalInt64Wrapper == nil {
 				m.OptionalInt64Wrapper = &wrapperspb.Int64Value{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalInt64Wrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalInt64Wrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalInt64Wrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 204:
@@ -9376,8 +9400,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalUint32Wrapper == nil {
 				m.OptionalUint32Wrapper = &wrapperspb.UInt32Value{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalUint32Wrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalUint32Wrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalUint32Wrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 205:
@@ -9412,8 +9444,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalUint64Wrapper == nil {
 				m.OptionalUint64Wrapper = &wrapperspb.UInt64Value{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalUint64Wrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalUint64Wrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalUint64Wrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 206:
@@ -9448,8 +9488,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalFloatWrapper == nil {
 				m.OptionalFloatWrapper = &wrapperspb.FloatValue{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalFloatWrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalFloatWrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalFloatWrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 207:
@@ -9484,8 +9532,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalDoubleWrapper == nil {
 				m.OptionalDoubleWrapper = &wrapperspb.DoubleValue{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalDoubleWrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalDoubleWrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalDoubleWrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 208:
@@ -9520,8 +9576,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalStringWrapper == nil {
 				m.OptionalStringWrapper = &wrapperspb.StringValue{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStringWrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalStringWrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStringWrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 209:
@@ -9556,8 +9620,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalBytesWrapper == nil {
 				m.OptionalBytesWrapper = &wrapperspb.BytesValue{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalBytesWrapper); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalBytesWrapper).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalBytesWrapper); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 211:
@@ -9590,8 +9662,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedBoolWrapper = append(m.RepeatedBoolWrapper, &wrapperspb.BoolValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBoolWrapper[len(m.RepeatedBoolWrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedBoolWrapper[len(m.RepeatedBoolWrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBoolWrapper[len(m.RepeatedBoolWrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 212:
@@ -9624,8 +9704,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedInt32Wrapper = append(m.RepeatedInt32Wrapper, &wrapperspb.Int32Value{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt32Wrapper[len(m.RepeatedInt32Wrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedInt32Wrapper[len(m.RepeatedInt32Wrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt32Wrapper[len(m.RepeatedInt32Wrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 213:
@@ -9658,8 +9746,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedInt64Wrapper = append(m.RepeatedInt64Wrapper, &wrapperspb.Int64Value{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt64Wrapper[len(m.RepeatedInt64Wrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedInt64Wrapper[len(m.RepeatedInt64Wrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedInt64Wrapper[len(m.RepeatedInt64Wrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 214:
@@ -9692,8 +9788,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedUint32Wrapper = append(m.RepeatedUint32Wrapper, &wrapperspb.UInt32Value{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint32Wrapper[len(m.RepeatedUint32Wrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedUint32Wrapper[len(m.RepeatedUint32Wrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint32Wrapper[len(m.RepeatedUint32Wrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 215:
@@ -9726,8 +9830,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedUint64Wrapper = append(m.RepeatedUint64Wrapper, &wrapperspb.UInt64Value{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint64Wrapper[len(m.RepeatedUint64Wrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedUint64Wrapper[len(m.RepeatedUint64Wrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedUint64Wrapper[len(m.RepeatedUint64Wrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 216:
@@ -9760,8 +9872,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedFloatWrapper = append(m.RepeatedFloatWrapper, &wrapperspb.FloatValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFloatWrapper[len(m.RepeatedFloatWrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedFloatWrapper[len(m.RepeatedFloatWrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFloatWrapper[len(m.RepeatedFloatWrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 217:
@@ -9794,8 +9914,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedDoubleWrapper = append(m.RepeatedDoubleWrapper, &wrapperspb.DoubleValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDoubleWrapper[len(m.RepeatedDoubleWrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedDoubleWrapper[len(m.RepeatedDoubleWrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDoubleWrapper[len(m.RepeatedDoubleWrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 218:
@@ -9828,8 +9956,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedStringWrapper = append(m.RepeatedStringWrapper, &wrapperspb.StringValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStringWrapper[len(m.RepeatedStringWrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedStringWrapper[len(m.RepeatedStringWrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStringWrapper[len(m.RepeatedStringWrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 219:
@@ -9862,8 +9998,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedBytesWrapper = append(m.RepeatedBytesWrapper, &wrapperspb.BytesValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBytesWrapper[len(m.RepeatedBytesWrapper)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedBytesWrapper[len(m.RepeatedBytesWrapper)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedBytesWrapper[len(m.RepeatedBytesWrapper)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 301:
@@ -9898,8 +10042,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalDuration == nil {
 				m.OptionalDuration = &durationpb.Duration{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalDuration); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalDuration).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalDuration); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 302:
@@ -9934,8 +10086,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalTimestamp == nil {
 				m.OptionalTimestamp = &timestamppb.Timestamp{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalTimestamp); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalTimestamp).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalTimestamp); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 303:
@@ -9970,8 +10130,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalFieldMask == nil {
 				m.OptionalFieldMask = &fieldmaskpb.FieldMask{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalFieldMask); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalFieldMask).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalFieldMask); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 304:
@@ -10006,8 +10174,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalStruct == nil {
 				m.OptionalStruct = &structpb.Struct{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStruct); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalStruct).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStruct); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 305:
@@ -10042,8 +10218,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalAny == nil {
 				m.OptionalAny = &anypb.Any{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalAny); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalAny).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalAny); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 306:
@@ -10078,8 +10262,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalValue == nil {
 				m.OptionalValue = &structpb.Value{}
 			}
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalValue); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.OptionalValue).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalValue); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 307:
@@ -10131,8 +10323,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedDuration = append(m.RepeatedDuration, &durationpb.Duration{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDuration[len(m.RepeatedDuration)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedDuration[len(m.RepeatedDuration)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedDuration[len(m.RepeatedDuration)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 312:
@@ -10165,8 +10365,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedTimestamp = append(m.RepeatedTimestamp, &timestamppb.Timestamp{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 313:
@@ -10199,8 +10407,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedFieldmask = append(m.RepeatedFieldmask, &fieldmaskpb.FieldMask{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFieldmask[len(m.RepeatedFieldmask)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedFieldmask[len(m.RepeatedFieldmask)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedFieldmask[len(m.RepeatedFieldmask)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 315:
@@ -10233,8 +10449,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedAny = append(m.RepeatedAny, &anypb.Any{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedAny[len(m.RepeatedAny)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedAny[len(m.RepeatedAny)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedAny[len(m.RepeatedAny)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 316:
@@ -10267,8 +10491,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedValue = append(m.RepeatedValue, &structpb.Value{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedValue[len(m.RepeatedValue)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 317:
@@ -10301,8 +10533,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedListValue = append(m.RepeatedListValue, &structpb.ListValue{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedListValue[len(m.RepeatedListValue)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 324:
@@ -10335,8 +10575,16 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedStruct = append(m.RepeatedStruct, &structpb.Struct{})
-			if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.RepeatedStruct[len(m.RepeatedStruct)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 401:
