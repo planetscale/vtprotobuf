@@ -112,14 +112,12 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if m.JspbEncodingOptions != nil {
-		{
-			size, err := m.JspbEncodingOptions.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
+		size, err := m.JspbEncodingOptions.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}

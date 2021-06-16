@@ -628,7 +628,6 @@ func (p *marshal) reverseListRange(expression ...string) string {
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
 	local := p.IsLocalMessage(message)
 
-	p.P(`{`)
 	if local {
 		p.P(`size, err := `, varName, `.MarshalToSizedBufferVT(dAtA[:i])`)
 	} else {
@@ -659,7 +658,6 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 		}
 		p.P(`}`)
 	}
-	p.P(`}`)
 }
 
 func (p *marshal) marshalForward(varName string, varInt bool) {
