@@ -51,6 +51,22 @@ func (p *size) GenerateHelpers() {
 	}`)
 }
 
+func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
+	local := p.IsLocalMessage(message)
+
+	if local {
+		p.P(`l = `, varName, `.`, sizeName, `()`)
+	} else {
+		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
+		p.P(sizeName, `() int`)
+		p.P(`}); ok{`)
+		p.P(`l = size.`, sizeName, `()`)
+		p.P(`} else {`)
+		p.P(`l = `, p.Ident(generator.ProtoPkg, "Size"), `(`, varName, `)`)
+		p.P(`}`)
+	}
+}
+
 func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
 	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic())
@@ -145,8 +161,6 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 	case protoreflect.GroupKind:
 		panic(fmt.Errorf("size does not support group %v", fieldname))
 	case protoreflect.MessageKind:
-		foreign := strings.HasPrefix(string(field.Message.Desc.FullName()), "google.protobuf.")
-
 		if field.Desc.IsMap() {
 			fieldKeySize := generator.KeySize(field.Desc.Number(), generator.ProtoWireType(field.Desc.Kind()))
 			keyKeySize := generator.KeySize(1, generator.ProtoWireType(field.Message.Fields[0].Desc.Kind()))
@@ -196,7 +210,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			case protoreflect.MessageKind:
 				p.P(`l = 0`)
 				p.P(`if v != nil {`)
-				p.P(`l = v.`, sizeName, `()`)
+				p.messageSize("v", sizeName, field.Message.Fields[1].Message)
 				p.P(`}`)
 				p.P(`l += `, strconv.Itoa(valueKeySize), ` + sov(uint64(l))`)
 				sum = append(sum, `l`)
@@ -206,19 +220,11 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`}`)
 		} else if field.Desc.IsList() {
 			p.P(`for _, e := range m.`, fieldname, ` { `)
-			if foreign {
-				p.P(`l=`, p.Ident(generator.ProtoPkg, "Size"), `(e)`)
-			} else {
-				p.P(`l=e.`, sizeName, `()`)
-			}
+			p.messageSize("e", sizeName, field.Message)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
 		} else {
-			if foreign {
-				p.P(`l=`, p.Ident(generator.ProtoPkg, "Size"), `(m.`, fieldname, `)`)
-			} else {
-				p.P(`l=m.`, fieldname, `.`, sizeName, `()`)
-			}
+			p.messageSize("m."+fieldname, sizeName, field.Message)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 		}
 	case protoreflect.BytesKind:

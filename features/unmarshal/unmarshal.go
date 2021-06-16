@@ -125,16 +125,26 @@ func (p *unmarshal) GenerateHelpers() {
 	`)
 }
 
-func (p *unmarshal) decodeMessage(varName, buf string, desc protoreflect.Descriptor) {
-	if strings.HasPrefix(string(desc.FullName()), "google.protobuf.") {
+func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
+	local := p.IsLocalMessage(message)
+
+	if local {
+		p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+	} else {
+		p.P(`if unmarshal, ok := interface{}(`, varName, `).(interface{`)
+		p.P(`UnmarshalVT([]byte) error`)
+		p.P(`}); ok{`)
+		p.P(`if err := unmarshal.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+		p.P(`} else {`)
 		p.P(`if err := `, p.Ident(generator.ProtoPkg, "Unmarshal"), `(`, buf, `, `, varName, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
-		return
+		p.P(`}`)
 	}
-	p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
-	p.P(`return err`)
-	p.P(`}`)
 }
 
 func (p *unmarshal) decodeVarint(varName string, typName string) {
@@ -269,7 +279,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`}`)
 		buf := `dAtA[iNdEx:postmsgIndex]`
 		p.P(varName, ` = &`, p.noStarOrSliceType(field), `{}`)
-		p.decodeMessage(varName, buf, field.Message.Desc)
+		p.decodeMessage(varName, buf, field.Message)
 		p.P(`iNdEx = postmsgIndex`)
 	case protoreflect.BytesKind:
 		p.P(`var mapbyteLen uint64`)
@@ -499,10 +509,10 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			buf := `dAtA[iNdEx:postIndex]`
 			msgname := p.noStarOrSliceType(field)
 			p.P(`if oneof, ok := m.`, fieldname, `.(*`, field.GoIdent, `); ok {`)
-			p.decodeMessage("oneof."+field.GoName, buf, field.Message.Desc)
+			p.decodeMessage("oneof."+field.GoName, buf, field.Message)
 			p.P(`} else {`)
 			p.P(`v := &`, msgname, `{}`)
-			p.decodeMessage("v", buf, field.Message.Desc)
+			p.decodeMessage("v", buf, field.Message)
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{v}`)
 			p.P(`}`)
 		} else if field.Desc.IsMap() {
@@ -558,7 +568,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			}
 			varname := fmt.Sprintf("m.%s[len(m.%s) - 1]", fieldname, fieldname)
 			buf := `dAtA[iNdEx:postIndex]`
-			p.decodeMessage(varname, buf, field.Message.Desc)
+			p.decodeMessage(varname, buf, field.Message)
 		} else {
 			p.P(`if m.`, fieldname, ` == nil {`)
 			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
@@ -567,7 +577,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 				p.P(`m.`, fieldname, ` = &`, field.Message.GoIdent, `{}`)
 			}
 			p.P(`}`)
-			p.decodeMessage("m."+fieldname, "dAtA[iNdEx:postIndex]", field.Message.Desc)
+			p.decodeMessage("m."+fieldname, "dAtA[iNdEx:postIndex]", field.Message)
 		}
 		p.P(`iNdEx = postIndex`)
 

@@ -626,32 +626,38 @@ func (p *marshal) reverseListRange(expression ...string) string {
 }
 
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
-	foreign := strings.HasPrefix(string(message.Desc.FullName()), "google.protobuf.")
+	local := p.IsLocalMessage(message)
 
-	p.P(`{`)
-	if foreign {
-		p.P(`encoded, err := `, p.Ident(generator.ProtoPkg, "Marshal"), `(`, varName, `)`)
-	} else {
+	if local {
 		p.P(`size, err := `, varName, `.MarshalToSizedBufferVT(dAtA[:i])`)
+	} else {
+		p.P(`if marshalto, ok := interface{}(`, varName, `).(interface{`)
+		p.P(`MarshalToSizedBufferVT([]byte) (int, error)`)
+		p.P(`}); ok{`)
+		p.P(`size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])`)
 	}
 
 	p.P(`if err != nil {`)
 	p.P(`return 0, err`)
 	p.P(`}`)
+	p.P(`i -= size`)
+	if varInt {
+		p.encodeVarint(`size`)
+	}
 
-	if foreign {
+	if !local {
+		p.P(`} else {`)
+		p.P(`encoded, err := `, p.Ident(generator.ProtoPkg, "Marshal"), `(`, varName, `)`)
+		p.P(`if err != nil {`)
+		p.P(`return 0, err`)
+		p.P(`}`)
 		p.P(`i -= len(encoded)`)
 		p.P(`copy(dAtA[i:], encoded)`)
 		if varInt {
 			p.encodeVarint(`len(encoded)`)
 		}
-	} else {
-		p.P(`i -= size`)
-		if varInt {
-			p.encodeVarint(`size`)
-		}
+		p.P(`}`)
 	}
-	p.P(`}`)
 }
 
 func (p *marshal) marshalForward(varName string, varInt bool) {

@@ -16,7 +16,8 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Ext *Extensions
+	Ext           *Extensions
+	LocalPackages map[string]bool
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {
@@ -86,4 +87,9 @@ func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, point
 		return fmt.Sprintf("map[%v]%v", keyType, valType), false
 	}
 	return goType, pointer
+}
+
+func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
+	pkg := string(message.Desc.ParentFile().Package())
+	return p.LocalPackages[pkg]
 }
