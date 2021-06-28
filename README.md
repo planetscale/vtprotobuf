@@ -92,7 +92,16 @@ If you're running a complex GRPC service, you may need to support serializing Pr
 
 ### Twirp
 
-I actually have no idea of how to switch encoders in Twirp. Maybe it's not even possible.
+Twirp does not support customizing the Marshalling/Unmarshalling codec by default. In order to support `vtprotobuf`, you'll need to perform a search & replace on the generated Twirp files after running `protoc`. Here's an example:
+
+```sh
+for twirp in $${dir}/*.twirp.go; \
+do \
+  echo 'Updating' $${twirp}; \
+  sed -i '' -e 's/respBytes, err := proto.Marshal(respContent)/respBytes, err := respContent.MarshalVT()/g' $${twirp}; \
+  sed -i '' -e 's/if err = proto.Unmarshal(buf, reqContent); err != nil {/if err = reqContent.UnmarshalVT(buf); err != nil {/g' $${twirp}; \
+done; \
+```
 
 ### DRPC
 
