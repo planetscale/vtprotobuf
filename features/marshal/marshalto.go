@@ -43,8 +43,9 @@ type marshal struct {
 var _ generator.FeatureGenerator = (*marshal)(nil)
 
 func (p *marshal) GenerateFile(file *protogen.File) bool {
+	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(message)
+		p.message(proto3, message)
 	}
 	return p.once
 }
@@ -124,14 +125,20 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 	}
 }
 
-func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
+func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Field) {
 	fieldname := field.GoName
-	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic())
+	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
 		p.P(`if len(m.`, fieldname, `) > 0 {`)
 	} else if nullable {
-		p.P(`if m.`, fieldname, ` != nil {`)
+		if field.Desc.Cardinality() == protoreflect.Required {
+			p.P(`if m.`, fieldname, ` == nil {`)
+			p.P(`return 0, `, p.Ident("fmt", "Errorf"), `("proto: required field `, field.Desc.Name(), ` not set")`)
+			p.P(`} else {`)
+		} else {
+			p.P(`if m.`, fieldname, ` != nil {`)
+		}
 	}
 	packed := field.Desc.IsPacked()
 	wireType := generator.ProtoWireType(field.Desc.Kind())
@@ -157,7 +164,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(*m.`+fieldname, `))`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(m.`, fieldname, `))`)
 			p.encodeKey(fieldNumber, wireType)
@@ -183,7 +190,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(*m.`+fieldname, `))`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(m.`+fieldname, `))`)
 			p.encodeKey(fieldNumber, wireType)
@@ -231,7 +238,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeVarint(`*m.`, fieldname)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeVarint(`m.`, fieldname)
 			p.encodeKey(fieldNumber, wireType)
@@ -255,7 +262,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeFixed64("*m.", fieldname)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeFixed64("m.", fieldname)
 			p.encodeKey(fieldNumber, wireType)
@@ -279,7 +286,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeFixed32("*m." + fieldname)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeFixed32("m." + fieldname)
 			p.encodeKey(fieldNumber, wireType)
@@ -318,7 +325,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 			p.P(`dAtA[i] = 0`)
 			p.P(`}`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` {`)
 			p.P(`i--`)
 			p.P(`if m.`, fieldname, ` {`)
@@ -350,7 +357,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 			p.P(`copy(dAtA[i:], *m.`, fieldname, `)`)
 			p.encodeVarint(`len(*m.`, fieldname, `)`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if len(m.`, fieldname, `) > 0 {`)
 			p.P(`i -= len(m.`, fieldname, `)`)
 			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
@@ -364,7 +371,9 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.GroupKind:
-		panic(fmt.Errorf("marshaler does not support group %v", fieldname))
+		p.encodeKey(fieldNumber, protowire.EndGroupType)
+		p.marshalBackward(`m.`+fieldname, false, field.Message)
+		p.encodeKey(fieldNumber, protowire.StartGroupType)
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
 			goTypK, _ := p.FieldGoType(field.Message.Fields[0])
@@ -419,7 +428,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 			p.encodeVarint(`len(`, val, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
-		} else if proto3 {
+		} else if !oneof && proto3 {
 			p.P(`if len(m.`, fieldname, `) > 0 {`)
 			p.P(`i -= len(m.`, fieldname, `)`)
 			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
@@ -467,7 +476,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeVarint(`(uint32(*m.`, fieldname, `) << 1) ^ uint32((*m.`, fieldname, ` >> 31))`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeVarint(`(uint32(m.`, fieldname, `) << 1) ^ uint32((m.`, fieldname, ` >> 31))`)
 			p.encodeKey(fieldNumber, wireType)
@@ -511,7 +520,7 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 		} else if nullable {
 			p.encodeVarint(`(uint64(*m.`, fieldname, `) << 1) ^ uint64((*m.`, fieldname, ` >> 63))`)
 			p.encodeKey(fieldNumber, wireType)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.encodeVarint(`(uint64(m.`, fieldname, `) << 1) ^ uint64((m.`, fieldname, ` >> 63))`)
 			p.encodeKey(fieldNumber, wireType)
@@ -528,9 +537,9 @@ func (p *marshal) field(proto3 bool, numGen *counter, field *protogen.Field) {
 	}
 }
 
-func (p *marshal) message(message *protogen.Message) {
+func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(nested)
+		p.message(proto3, nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -582,7 +591,7 @@ func (p *marshal) message(message *protogen.Message) {
 		field := message.Fields[i]
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 		if !oneof {
-			p.field(true, &numGen, field)
+			p.field(proto3, false, &numGen, field)
 		} else {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
@@ -613,7 +622,7 @@ func (p *marshal) message(message *protogen.Message) {
 		p.P(``)
 		p.P(`func (m *`, ccTypeName, `) MarshalToSizedBufferVT(dAtA []byte) (int, error) {`)
 		p.P(`i := len(dAtA)`)
-		p.field(false, &numGen, field)
+		p.field(proto3, true, &numGen, field)
 		p.P(`return len(dAtA) - i, nil`)
 		p.P(`}`)
 	}

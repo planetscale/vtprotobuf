@@ -8,7 +8,6 @@ import (
 	"runtime/debug"
 
 	"google.golang.org/protobuf/compiler/protogen"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/runtime/protoimpl"
 )
 
@@ -50,10 +49,6 @@ func NewGenerator(allFiles []*protogen.File, featureNames []string, ext *Extensi
 }
 
 func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.File) bool {
-	if file.Desc.Syntax() != protoreflect.Proto3 {
-		return false
-	}
-
 	p := &GeneratedFile{
 		GeneratedFile: gf,
 		Ext:           gen.ext,

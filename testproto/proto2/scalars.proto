@@ -1,0 +1,120 @@
+syntax = "proto2";
+option go_package = "testproto/proto2";
+
+message DoubleMessage {
+    required double required_field = 1 [default=1];
+    optional double optional_field = 2 [default=2];
+    repeated double repeated_field = 3;
+    repeated double packed_field = 4 [packed=true];
+}
+
+message FloatMessage {
+    required float required_field = 1 [default=1];
+    optional float optional_field = 2 [default=2];
+    repeated float repeated_field = 3;
+    repeated float packed_field = 4 [packed=true];
+}
+
+message Int32Message {
+    required int32 required_field = 1 [default=1];
+    optional int32 optional_field = 2 [default=2];
+    repeated int32 repeated_field = 3;
+    repeated int32 packed_field = 4 [packed=true];
+}
+
+message Int64Message {
+    required int64 required_field = 1 [default=1];
+    optional int64 optional_field = 2 [default=2];
+    repeated int64 repeated_field = 3;
+    repeated int64 packed_field = 4 [packed=true];
+}
+
+message Uint32Message {
+    required uint32 required_field = 1 [default=1];
+    optional uint32 optional_field = 2 [default=2];
+    repeated uint32 repeated_field = 3;
+    repeated uint32 packed_field = 4 [packed=true];
+}
+
+message Uint64Message {
+    required uint64 required_field = 1 [default=1];
+    optional uint64 optional_field = 2 [default=2];
+    repeated uint64 repeated_field = 3;
+    repeated uint64 packed_field = 4 [packed=true];
+}
+
+message Sint32Message {
+    required sint32 required_field = 1 [default=1];
+    optional sint32 optional_field = 2 [default=2];
+    repeated sint32 repeated_field = 3;
+    repeated sint32 packed_field = 4 [packed=true];
+}
+
+message Sint64Message {
+    required sint64 required_field = 1 [default=1];
+    optional sint64 optional_field = 2 [default=2];
+    repeated sint64 repeated_field = 3;
+    repeated sint64 packed_field = 4 [packed=true];
+}
+
+message Fixed32Message {
+    required fixed32 required_field = 1 [default=1];
+    optional fixed32 optional_field = 2 [default=2];
+    repeated fixed32 repeated_field = 3;
+    repeated fixed32 packed_field = 4 [packed=true];
+}
+
+message Fixed64Message {
+    required fixed64 required_field = 1 [default=1];
+    optional fixed64 optional_field = 2 [default=2];
+    repeated fixed64 repeated_field = 3;
+    repeated fixed64 packed_field = 4 [packed=true];
+}
+
+message Sfixed32Message {
+    required sfixed32 required_field = 1 [default=1];
+    optional sfixed32 optional_field = 2 [default=2];
+    repeated sfixed32 repeated_field = 3;
+    repeated sfixed32 packed_field = 4 [packed=true];
+}
+
+message Sfixed64Message {
+    required sfixed64 required_field = 1 [default=1];
+    optional sfixed64 optional_field = 2 [default=2];
+    repeated sfixed64 repeated_field = 3;
+    repeated sfixed64 packed_field = 4 [packed=true];
+}
+
+message BoolMessage {
+    required bool required_field = 1 [default=true];
+    optional bool optional_field = 2;
+    repeated bool repeated_field = 3;
+    repeated bool packed_field = 4 [packed=true];
+}
+
+message StringMessage {
+    required string required_field = 1 [default="req"];
+    optional string optional_field = 2 [default="opt"];
+    repeated string repeated_field = 3;
+}
+
+message BytesMessage {
+    required bytes required_field = 1 [default="req"];
+    optional bytes optional_field = 2 [default="opt"];
+    repeated bytes repeated_field = 3;
+}
+
+message EnumMessage {
+    enum Num {
+        TEN = 10;
+        NINE = 9;
+        EIGHT = 8;
+        SEVEN = 7;
+    }
+
+    required Num required_field = 1 [default=SEVEN];
+    optional Num optional_field = 2;
+    repeated Num repeated_field = 3;
+    repeated Num packed_field = 4 [packed=true];
+}
+
