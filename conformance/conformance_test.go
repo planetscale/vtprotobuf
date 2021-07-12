@@ -66,21 +66,19 @@ func conformanceUnmarshal(b []byte, msg proto.Message) error {
 	type unmarshalvt interface {
 		UnmarshalVT(b []byte) error
 	}
-	if u, ok := msg.(unmarshalvt); ok {
-		if err := u.UnmarshalVT(b); err != nil {
-			return err
-		}
-
-		if !proto.Equal(expected, msg) {
-			fmt.Fprintf(marshalDifflog, "UNMARSHAL\n")
-			fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", prototext.Format(expected))
-			fmt.Fprintf(marshalDifflog, "got:\n%s\n\n", prototext.Format(msg))
-			fmt.Fprintf(marshalDifflog, "raw: %#v\n\n", b)
-			fmt.Fprintf(marshalDifflog, "==============\n\n")
-		}
-		return nil
+	u := msg.(unmarshalvt)
+	if err := u.UnmarshalVT(b); err != nil {
+		return err
 	}
-	return proto.Unmarshal(b, msg)
+
+	if !proto.Equal(expected, msg) {
+		fmt.Fprintf(marshalDifflog, "UNMARSHAL\n")
+		fmt.Fprintf(marshalDifflog, "expected:\n%s\n\n", prototext.Format(expected))
+		fmt.Fprintf(marshalDifflog, "got:\n%s\n\n", prototext.Format(msg))
+		fmt.Fprintf(marshalDifflog, "raw: %#v\n\n", b)
+		fmt.Fprintf(marshalDifflog, "==============\n\n")
+	}
+	return nil
 }
 
 func conformanceMarshal(msg proto.Message) ([]byte, error) {
@@ -115,14 +113,12 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 	type marshalvt interface {
 		MarshalVT() ([]byte, error)
 	}
-	if m, ok := msg.(marshalvt); ok {
-		got, err = m.MarshalVT()
-		if err != nil {
-			return nil, err
-		}
-		return got, nil
+	m := msg.(marshalvt)
+	got, err = m.MarshalVT()
+	if err != nil {
+		return nil, err
 	}
-	return expected, nil
+	return got, nil
 }
 
 func main() {

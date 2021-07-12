@@ -6,7 +6,6 @@
 package size
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -34,8 +33,9 @@ func (p *size) Name() string {
 }
 
 func (p *size) GenerateFile(file *protogen.File) bool {
+	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(message)
+		p.message(proto3, message)
 	}
 
 	return p.once
@@ -67,9 +67,9 @@ func (p *size) messageSize(varName, sizeName string, message *protogen.Message) 
 	}
 }
 
-func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
+func (p *size) field(proto3, oneof bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
-	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic())
+	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
 		p.P(`if len(m.`, fieldname, `) > 0 {`)
@@ -89,7 +89,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)*8))`, `+len(m.`, fieldname, `)*8`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+8), `*len(m.`, fieldname, `)`)
-		} else if proto3 && !nullable {
+		} else if !oneof && !nullable {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key+8))
 			p.P(`}`)
@@ -101,7 +101,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)*4))`, `+len(m.`, fieldname, `)*4`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+4), `*len(m.`, fieldname, `)`)
-		} else if proto3 && !nullable {
+		} else if !oneof && !nullable {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key+4))
 			p.P(`}`)
@@ -121,7 +121,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`}`)
 		} else if nullable {
 			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(*m.`, fieldname, `))`)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(m.`, fieldname, `))`)
 			p.P(`}`)
@@ -133,7 +133,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`n+=`, strconv.Itoa(key), `+sov(uint64(len(m.`, fieldname, `)))`, `+len(m.`, fieldname, `)*1`)
 		} else if repeated {
 			p.P(`n+=`, strconv.Itoa(key+1), `*len(m.`, fieldname, `)`)
-		} else if proto3 && !nullable {
+		} else if !oneof && !nullable {
 			p.P(`if m.`, fieldname, ` {`)
 			p.P(`n+=`, strconv.Itoa(key+1))
 			p.P(`}`)
@@ -149,7 +149,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 		} else if nullable {
 			p.P(`l=len(*m.`, fieldname, `)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`l=len(m.`, fieldname, `)`)
 			p.P(`if l > 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
@@ -159,7 +159,8 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 		}
 	case protoreflect.GroupKind:
-		panic(fmt.Errorf("size does not support group %v", fieldname))
+		p.messageSize("m."+fieldname, sizeName, field.Message)
+		p.P(`n+=l+`, strconv.Itoa(2*key))
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
 			fieldKeySize := generator.KeySize(field.Desc.Number(), generator.ProtoWireType(field.Desc.Kind()))
@@ -233,7 +234,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`l = len(b)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
-		} else if proto3 {
+		} else if !oneof && proto3 {
 			p.P(`l=len(m.`, fieldname, `)`)
 			p.P(`if l > 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
@@ -255,7 +256,7 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 			p.P(`}`)
 		} else if nullable {
 			p.P(`n+=`, strconv.Itoa(key), `+soz(uint64(*m.`, fieldname, `))`)
-		} else if proto3 {
+		} else if !oneof {
 			p.P(`if m.`, fieldname, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+soz(uint64(m.`, fieldname, `))`)
 			p.P(`}`)
@@ -270,9 +271,9 @@ func (p *size) field(proto3 bool, field *protogen.Field, sizeName string) {
 	}
 }
 
-func (p *size) message(message *protogen.Message) {
+func (p *size) message(proto3 bool, message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(nested)
+		p.message(proto3, nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -294,7 +295,7 @@ func (p *size) message(message *protogen.Message) {
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 		if !oneof {
-			p.field(true, field, sizeName)
+			p.field(proto3, false, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
@@ -323,7 +324,7 @@ func (p *size) message(message *protogen.Message) {
 		p.P(`}`)
 		p.P(`var l int`)
 		p.P(`_ = l`)
-		p.field(false, field, sizeName)
+		p.field(proto3, true, field, sizeName)
 		p.P(`return n`)
 		p.P(`}`)
 	}
