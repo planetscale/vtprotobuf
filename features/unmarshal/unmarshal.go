@@ -530,7 +530,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`if oneof, ok := m.`, fieldname, `.(*`, field.GoIdent, `); ok {`)
 			p.decodeMessage("oneof."+field.GoName, buf, field.Message)
 			p.P(`} else {`)
-			if p.ShouldPool(message) {
+			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
 				p.P(`v := `, msgname, `FromVTPool()`)
 			} else {
 				p.P(`v := &`, msgname, `{}`)

@@ -54,7 +54,7 @@ func (p *pool) message(message *protogen.Message) {
 		fieldName := field.GoName
 
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-		if oneof && p.ShouldPool(message) {
+		if oneof && p.ShouldPool(message) && p.ShouldPool(field.Message) {
 			p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
 			p.P(`oneof.` + fieldName + `.ReturnToVTPool()`)
 			p.P(`}`)
