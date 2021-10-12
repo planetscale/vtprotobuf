@@ -587,22 +587,25 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	})
 
 	oneofs := make(map[string]struct{})
+	for i := len(message.Oneofs) - 1; i >= 0; i-- {
+		field := message.Oneofs[i]
+		fieldname := field.GoName
+		if _, ok := oneofs[fieldname]; !ok {
+			oneofs[fieldname] = struct{}{}
+			p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
+			p.P(`MarshalTo([]byte) (int, error)`)
+			p.P(`Size() int`)
+			p.P(`}); ok {`)
+			p.marshalForward("vtmsg", false)
+			p.P(`}`)
+		}
+	}
+
 	for i := len(message.Fields) - 1; i >= 0; i-- {
 		field := message.Fields[i]
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 		if !oneof {
 			p.field(proto3, false, &numGen, field)
-		} else {
-			fieldname := field.Oneof.GoName
-			if _, ok := oneofs[fieldname]; !ok {
-				oneofs[fieldname] = struct{}{}
-				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
-				p.P(`MarshalToVT([]byte) (int, error)`)
-				p.P(`SizeVT() int`)
-				p.P(`}); ok {`)
-				p.marshalForward("vtmsg", false)
-				p.P(`}`)
-			}
 		}
 	}
 	p.P(`return len(dAtA) - i, nil`)
