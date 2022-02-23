@@ -21,6 +21,835 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+func (this *TestAllTypesProto2_NestedMessage) EqualVT(that *TestAllTypesProto2_NestedMessage) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.A, that.A; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if !this.Corecursive.EqualVT(that.Corecursive) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto2_Data) EqualVT(that *TestAllTypesProto2_Data) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.GroupInt32, that.GroupInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.GroupUint32, that.GroupUint32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto2_MessageSetCorrect) EqualVT(that *TestAllTypesProto2_MessageSetCorrect) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto2_MessageSetCorrectExtension1) EqualVT(that *TestAllTypesProto2_MessageSetCorrectExtension1) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.Str, that.Str; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto2_MessageSetCorrectExtension2) EqualVT(that *TestAllTypesProto2_MessageSetCorrectExtension2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.I, that.I; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if this.OneofField == nil && that.OneofField != nil {
+		return false
+	} else if this.OneofField != nil {
+		if that.OneofField == nil {
+			return false
+		}
+		if this.GetOneofUint32() != that.GetOneofUint32() {
+			return false
+		}
+		if !this.GetOneofNestedMessage().EqualVT(that.GetOneofNestedMessage()) {
+			return false
+		}
+		if this.GetOneofString() != that.GetOneofString() {
+			return false
+		}
+		if string(this.GetOneofBytes()) != string(that.GetOneofBytes()) {
+			return false
+		}
+		if this.GetOneofBool() != that.GetOneofBool() {
+			return false
+		}
+		if this.GetOneofUint64() != that.GetOneofUint64() {
+			return false
+		}
+		if this.GetOneofFloat() != that.GetOneofFloat() {
+			return false
+		}
+		if this.GetOneofDouble() != that.GetOneofDouble() {
+			return false
+		}
+		if this.GetOneofEnum() != that.GetOneofEnum() {
+			return false
+		}
+	}
+	if p, q := this.OptionalInt32, that.OptionalInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalInt64, that.OptionalInt64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalUint32, that.OptionalUint32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalUint64, that.OptionalUint64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalSint32, that.OptionalSint32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalSint64, that.OptionalSint64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalFixed32, that.OptionalFixed32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalFixed64, that.OptionalFixed64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalSfixed32, that.OptionalSfixed32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalSfixed64, that.OptionalSfixed64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalFloat, that.OptionalFloat; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalDouble, that.OptionalDouble; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalBool, that.OptionalBool; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalString, that.OptionalString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if string(this.OptionalBytes) != string(that.OptionalBytes) {
+		return false
+	}
+	if !this.OptionalNestedMessage.EqualVT(that.OptionalNestedMessage) {
+		return false
+	}
+	if !this.OptionalForeignMessage.EqualVT(that.OptionalForeignMessage) {
+		return false
+	}
+	if p, q := this.OptionalNestedEnum, that.OptionalNestedEnum; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalForeignEnum, that.OptionalForeignEnum; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalStringPiece, that.OptionalStringPiece; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalCord, that.OptionalCord; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if !this.RecursiveMessage.EqualVT(that.RecursiveMessage) {
+		return false
+	}
+	if len(this.RepeatedInt32) != len(that.RepeatedInt32) {
+		return false
+	}
+	for i := range this.RepeatedInt32 {
+		if this.RepeatedInt32[i] != that.RepeatedInt32[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedInt64) != len(that.RepeatedInt64) {
+		return false
+	}
+	for i := range this.RepeatedInt64 {
+		if this.RepeatedInt64[i] != that.RepeatedInt64[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedUint32) != len(that.RepeatedUint32) {
+		return false
+	}
+	for i := range this.RepeatedUint32 {
+		if this.RepeatedUint32[i] != that.RepeatedUint32[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedUint64) != len(that.RepeatedUint64) {
+		return false
+	}
+	for i := range this.RepeatedUint64 {
+		if this.RepeatedUint64[i] != that.RepeatedUint64[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedSint32) != len(that.RepeatedSint32) {
+		return false
+	}
+	for i := range this.RepeatedSint32 {
+		if this.RepeatedSint32[i] != that.RepeatedSint32[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedSint64) != len(that.RepeatedSint64) {
+		return false
+	}
+	for i := range this.RepeatedSint64 {
+		if this.RepeatedSint64[i] != that.RepeatedSint64[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedFixed32) != len(that.RepeatedFixed32) {
+		return false
+	}
+	for i := range this.RepeatedFixed32 {
+		if this.RepeatedFixed32[i] != that.RepeatedFixed32[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedFixed64) != len(that.RepeatedFixed64) {
+		return false
+	}
+	for i := range this.RepeatedFixed64 {
+		if this.RepeatedFixed64[i] != that.RepeatedFixed64[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedSfixed32) != len(that.RepeatedSfixed32) {
+		return false
+	}
+	for i := range this.RepeatedSfixed32 {
+		if this.RepeatedSfixed32[i] != that.RepeatedSfixed32[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedSfixed64) != len(that.RepeatedSfixed64) {
+		return false
+	}
+	for i := range this.RepeatedSfixed64 {
+		if this.RepeatedSfixed64[i] != that.RepeatedSfixed64[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedFloat) != len(that.RepeatedFloat) {
+		return false
+	}
+	for i := range this.RepeatedFloat {
+		if this.RepeatedFloat[i] != that.RepeatedFloat[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedDouble) != len(that.RepeatedDouble) {
+		return false
+	}
+	for i := range this.RepeatedDouble {
+		if this.RepeatedDouble[i] != that.RepeatedDouble[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedBool) != len(that.RepeatedBool) {
+		return false
+	}
+	for i := range this.RepeatedBool {
+		if this.RepeatedBool[i] != that.RepeatedBool[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedString) != len(that.RepeatedString) {
+		return false
+	}
+	for i := range this.RepeatedString {
+		if this.RepeatedString[i] != that.RepeatedString[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedBytes) != len(that.RepeatedBytes) {
+		return false
+	}
+	for i := range this.RepeatedBytes {
+		if string(this.RepeatedBytes[i]) != string(that.RepeatedBytes[i]) {
+			return false
+		}
+	}
+	if len(this.RepeatedNestedMessage) != len(that.RepeatedNestedMessage) {
+		return false
+	}
+	for i := range this.RepeatedNestedMessage {
+		if !this.RepeatedNestedMessage[i].EqualVT(that.RepeatedNestedMessage[i]) {
+			return false
+		}
+	}
+	if len(this.RepeatedForeignMessage) != len(that.RepeatedForeignMessage) {
+		return false
+	}
+	for i := range this.RepeatedForeignMessage {
+		if !this.RepeatedForeignMessage[i].EqualVT(that.RepeatedForeignMessage[i]) {
+			return false
+		}
+	}
+	if len(this.RepeatedNestedEnum) != len(that.RepeatedNestedEnum) {
+		return false
+	}
+	for i := range this.RepeatedNestedEnum {
+		if this.RepeatedNestedEnum[i] != that.RepeatedNestedEnum[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedForeignEnum) != len(that.RepeatedForeignEnum) {
+		return false
+	}
+	for i := range this.RepeatedForeignEnum {
+		if this.RepeatedForeignEnum[i] != that.RepeatedForeignEnum[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedStringPiece) != len(that.RepeatedStringPiece) {
+		return false
+	}
+	for i := range this.RepeatedStringPiece {
+		if this.RepeatedStringPiece[i] != that.RepeatedStringPiece[i] {
+			return false
+		}
+	}
+	if len(this.RepeatedCord) != len(that.RepeatedCord) {
+		return false
+	}
+	for i := range this.RepeatedCord {
+		if this.RepeatedCord[i] != that.RepeatedCord[i] {
+			return false
+		}
+	}
+	if len(this.MapInt32Int32) != len(that.MapInt32Int32) {
+		return false
+	}
+	for i := range this.MapInt32Int32 {
+		if this.MapInt32Int32[i] != that.MapInt32Int32[i] {
+			return false
+		}
+	}
+	if len(this.MapInt64Int64) != len(that.MapInt64Int64) {
+		return false
+	}
+	for i := range this.MapInt64Int64 {
+		if this.MapInt64Int64[i] != that.MapInt64Int64[i] {
+			return false
+		}
+	}
+	if len(this.MapUint32Uint32) != len(that.MapUint32Uint32) {
+		return false
+	}
+	for i := range this.MapUint32Uint32 {
+		if this.MapUint32Uint32[i] != that.MapUint32Uint32[i] {
+			return false
+		}
+	}
+	if len(this.MapUint64Uint64) != len(that.MapUint64Uint64) {
+		return false
+	}
+	for i := range this.MapUint64Uint64 {
+		if this.MapUint64Uint64[i] != that.MapUint64Uint64[i] {
+			return false
+		}
+	}
+	if len(this.MapSint32Sint32) != len(that.MapSint32Sint32) {
+		return false
+	}
+	for i := range this.MapSint32Sint32 {
+		if this.MapSint32Sint32[i] != that.MapSint32Sint32[i] {
+			return false
+		}
+	}
+	if len(this.MapSint64Sint64) != len(that.MapSint64Sint64) {
+		return false
+	}
+	for i := range this.MapSint64Sint64 {
+		if this.MapSint64Sint64[i] != that.MapSint64Sint64[i] {
+			return false
+		}
+	}
+	if len(this.MapFixed32Fixed32) != len(that.MapFixed32Fixed32) {
+		return false
+	}
+	for i := range this.MapFixed32Fixed32 {
+		if this.MapFixed32Fixed32[i] != that.MapFixed32Fixed32[i] {
+			return false
+		}
+	}
+	if len(this.MapFixed64Fixed64) != len(that.MapFixed64Fixed64) {
+		return false
+	}
+	for i := range this.MapFixed64Fixed64 {
+		if this.MapFixed64Fixed64[i] != that.MapFixed64Fixed64[i] {
+			return false
+		}
+	}
+	if len(this.MapSfixed32Sfixed32) != len(that.MapSfixed32Sfixed32) {
+		return false
+	}
+	for i := range this.MapSfixed32Sfixed32 {
+		if this.MapSfixed32Sfixed32[i] != that.MapSfixed32Sfixed32[i] {
+			return false
+		}
+	}
+	if len(this.MapSfixed64Sfixed64) != len(that.MapSfixed64Sfixed64) {
+		return false
+	}
+	for i := range this.MapSfixed64Sfixed64 {
+		if this.MapSfixed64Sfixed64[i] != that.MapSfixed64Sfixed64[i] {
+			return false
+		}
+	}
+	if len(this.MapInt32Float) != len(that.MapInt32Float) {
+		return false
+	}
+	for i := range this.MapInt32Float {
+		if this.MapInt32Float[i] != that.MapInt32Float[i] {
+			return false
+		}
+	}
+	if len(this.MapInt32Double) != len(that.MapInt32Double) {
+		return false
+	}
+	for i := range this.MapInt32Double {
+		if this.MapInt32Double[i] != that.MapInt32Double[i] {
+			return false
+		}
+	}
+	if len(this.MapBoolBool) != len(that.MapBoolBool) {
+		return false
+	}
+	for i := range this.MapBoolBool {
+		if this.MapBoolBool[i] != that.MapBoolBool[i] {
+			return false
+		}
+	}
+	if len(this.MapStringString) != len(that.MapStringString) {
+		return false
+	}
+	for i := range this.MapStringString {
+		if this.MapStringString[i] != that.MapStringString[i] {
+			return false
+		}
+	}
+	if len(this.MapStringBytes) != len(that.MapStringBytes) {
+		return false
+	}
+	for i := range this.MapStringBytes {
+		if string(this.MapStringBytes[i]) != string(that.MapStringBytes[i]) {
+			return false
+		}
+	}
+	if len(this.MapStringNestedMessage) != len(that.MapStringNestedMessage) {
+		return false
+	}
+	for i := range this.MapStringNestedMessage {
+		if !this.MapStringNestedMessage[i].EqualVT(that.MapStringNestedMessage[i]) {
+			return false
+		}
+	}
+	if len(this.MapStringForeignMessage) != len(that.MapStringForeignMessage) {
+		return false
+	}
+	for i := range this.MapStringForeignMessage {
+		if !this.MapStringForeignMessage[i].EqualVT(that.MapStringForeignMessage[i]) {
+			return false
+		}
+	}
+	if len(this.MapStringNestedEnum) != len(that.MapStringNestedEnum) {
+		return false
+	}
+	for i := range this.MapStringNestedEnum {
+		if this.MapStringNestedEnum[i] != that.MapStringNestedEnum[i] {
+			return false
+		}
+	}
+	if len(this.MapStringForeignEnum) != len(that.MapStringForeignEnum) {
+		return false
+	}
+	for i := range this.MapStringForeignEnum {
+		if this.MapStringForeignEnum[i] != that.MapStringForeignEnum[i] {
+			return false
+		}
+	}
+	if len(this.PackedInt32) != len(that.PackedInt32) {
+		return false
+	}
+	for i := range this.PackedInt32 {
+		if this.PackedInt32[i] != that.PackedInt32[i] {
+			return false
+		}
+	}
+	if len(this.PackedInt64) != len(that.PackedInt64) {
+		return false
+	}
+	for i := range this.PackedInt64 {
+		if this.PackedInt64[i] != that.PackedInt64[i] {
+			return false
+		}
+	}
+	if len(this.PackedUint32) != len(that.PackedUint32) {
+		return false
+	}
+	for i := range this.PackedUint32 {
+		if this.PackedUint32[i] != that.PackedUint32[i] {
+			return false
+		}
+	}
+	if len(this.PackedUint64) != len(that.PackedUint64) {
+		return false
+	}
+	for i := range this.PackedUint64 {
+		if this.PackedUint64[i] != that.PackedUint64[i] {
+			return false
+		}
+	}
+	if len(this.PackedSint32) != len(that.PackedSint32) {
+		return false
+	}
+	for i := range this.PackedSint32 {
+		if this.PackedSint32[i] != that.PackedSint32[i] {
+			return false
+		}
+	}
+	if len(this.PackedSint64) != len(that.PackedSint64) {
+		return false
+	}
+	for i := range this.PackedSint64 {
+		if this.PackedSint64[i] != that.PackedSint64[i] {
+			return false
+		}
+	}
+	if len(this.PackedFixed32) != len(that.PackedFixed32) {
+		return false
+	}
+	for i := range this.PackedFixed32 {
+		if this.PackedFixed32[i] != that.PackedFixed32[i] {
+			return false
+		}
+	}
+	if len(this.PackedFixed64) != len(that.PackedFixed64) {
+		return false
+	}
+	for i := range this.PackedFixed64 {
+		if this.PackedFixed64[i] != that.PackedFixed64[i] {
+			return false
+		}
+	}
+	if len(this.PackedSfixed32) != len(that.PackedSfixed32) {
+		return false
+	}
+	for i := range this.PackedSfixed32 {
+		if this.PackedSfixed32[i] != that.PackedSfixed32[i] {
+			return false
+		}
+	}
+	if len(this.PackedSfixed64) != len(that.PackedSfixed64) {
+		return false
+	}
+	for i := range this.PackedSfixed64 {
+		if this.PackedSfixed64[i] != that.PackedSfixed64[i] {
+			return false
+		}
+	}
+	if len(this.PackedFloat) != len(that.PackedFloat) {
+		return false
+	}
+	for i := range this.PackedFloat {
+		if this.PackedFloat[i] != that.PackedFloat[i] {
+			return false
+		}
+	}
+	if len(this.PackedDouble) != len(that.PackedDouble) {
+		return false
+	}
+	for i := range this.PackedDouble {
+		if this.PackedDouble[i] != that.PackedDouble[i] {
+			return false
+		}
+	}
+	if len(this.PackedBool) != len(that.PackedBool) {
+		return false
+	}
+	for i := range this.PackedBool {
+		if this.PackedBool[i] != that.PackedBool[i] {
+			return false
+		}
+	}
+	if len(this.PackedNestedEnum) != len(that.PackedNestedEnum) {
+		return false
+	}
+	for i := range this.PackedNestedEnum {
+		if this.PackedNestedEnum[i] != that.PackedNestedEnum[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedInt32) != len(that.UnpackedInt32) {
+		return false
+	}
+	for i := range this.UnpackedInt32 {
+		if this.UnpackedInt32[i] != that.UnpackedInt32[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedInt64) != len(that.UnpackedInt64) {
+		return false
+	}
+	for i := range this.UnpackedInt64 {
+		if this.UnpackedInt64[i] != that.UnpackedInt64[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedUint32) != len(that.UnpackedUint32) {
+		return false
+	}
+	for i := range this.UnpackedUint32 {
+		if this.UnpackedUint32[i] != that.UnpackedUint32[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedUint64) != len(that.UnpackedUint64) {
+		return false
+	}
+	for i := range this.UnpackedUint64 {
+		if this.UnpackedUint64[i] != that.UnpackedUint64[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedSint32) != len(that.UnpackedSint32) {
+		return false
+	}
+	for i := range this.UnpackedSint32 {
+		if this.UnpackedSint32[i] != that.UnpackedSint32[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedSint64) != len(that.UnpackedSint64) {
+		return false
+	}
+	for i := range this.UnpackedSint64 {
+		if this.UnpackedSint64[i] != that.UnpackedSint64[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedFixed32) != len(that.UnpackedFixed32) {
+		return false
+	}
+	for i := range this.UnpackedFixed32 {
+		if this.UnpackedFixed32[i] != that.UnpackedFixed32[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedFixed64) != len(that.UnpackedFixed64) {
+		return false
+	}
+	for i := range this.UnpackedFixed64 {
+		if this.UnpackedFixed64[i] != that.UnpackedFixed64[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedSfixed32) != len(that.UnpackedSfixed32) {
+		return false
+	}
+	for i := range this.UnpackedSfixed32 {
+		if this.UnpackedSfixed32[i] != that.UnpackedSfixed32[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedSfixed64) != len(that.UnpackedSfixed64) {
+		return false
+	}
+	for i := range this.UnpackedSfixed64 {
+		if this.UnpackedSfixed64[i] != that.UnpackedSfixed64[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedFloat) != len(that.UnpackedFloat) {
+		return false
+	}
+	for i := range this.UnpackedFloat {
+		if this.UnpackedFloat[i] != that.UnpackedFloat[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedDouble) != len(that.UnpackedDouble) {
+		return false
+	}
+	for i := range this.UnpackedDouble {
+		if this.UnpackedDouble[i] != that.UnpackedDouble[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedBool) != len(that.UnpackedBool) {
+		return false
+	}
+	for i := range this.UnpackedBool {
+		if this.UnpackedBool[i] != that.UnpackedBool[i] {
+			return false
+		}
+	}
+	if len(this.UnpackedNestedEnum) != len(that.UnpackedNestedEnum) {
+		return false
+	}
+	for i := range this.UnpackedNestedEnum {
+		if this.UnpackedNestedEnum[i] != that.UnpackedNestedEnum[i] {
+			return false
+		}
+	}
+	if !this.Data.EqualVT(that.Data) {
+		return false
+	}
+	if p, q := this.Fieldname1, that.Fieldname1; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FieldName2, that.FieldName2; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.XFieldName3, that.XFieldName3; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field_Name4_, that.Field_Name4_; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field0Name5, that.Field0Name5; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field_0Name6, that.Field_0Name6; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FieldName7, that.FieldName7; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FieldName8, that.FieldName8; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field_Name9, that.Field_Name9; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field_Name10, that.Field_Name10; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FIELD_NAME11, that.FIELD_NAME11; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FIELDName12, that.FIELDName12; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.XFieldName13, that.XFieldName13; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.X_FieldName14, that.X_FieldName14; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field_Name15, that.Field_Name15; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.Field__Name16, that.Field__Name16; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FieldName17__, that.FieldName17__; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.FieldName18__, that.FieldName18__; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ForeignMessageProto2) EqualVT(that *ForeignMessageProto2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.C, that.C; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *UnknownToTestAllTypes_OptionalGroup) EqualVT(that *UnknownToTestAllTypes_OptionalGroup) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.A, that.A; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *UnknownToTestAllTypes) EqualVT(that *UnknownToTestAllTypes) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.OptionalInt32, that.OptionalInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.OptionalString, that.OptionalString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if !this.NestedMessage.EqualVT(that.NestedMessage) {
+		return false
+	}
+	if !this.Optionalgroup.EqualVT(that.Optionalgroup) {
+		return false
+	}
+	if p, q := this.OptionalBool, that.OptionalBool; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if len(this.RepeatedInt32) != len(that.RepeatedInt32) {
+		return false
+	}
+	for i := range this.RepeatedInt32 {
+		if this.RepeatedInt32[i] != that.RepeatedInt32[i] {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
 func (m *TestAllTypesProto2_NestedMessage) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
