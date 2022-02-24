@@ -40,7 +40,7 @@ gen-testproto:
 			--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 			--go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 			-I$(PROTOBUF_ROOT)/src \
-			testproto/$${name}; \
+			testproto/$${name} || exit 1; \
   	done
 
 genall: install gen-include gen-conformance gen-testproto

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  ci:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache protobuf build
+      id: protocache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/src/protobuf-3.16.0
+        key: protobuf-3.16.0
+
+    - name: Compile protobuf
+      if: steps.protocache.outputs.cache-hit != 'true'
+      run: |
+        sudo apt-get install -y autoconf automake libtool curl make g++ unzip
+
+        mkdir ~/src
+        curl -#fsSL https://github.com/protocolbuffers/protobuf/releases/download/v3.16.0/protobuf-all-3.16.0.tar.gz | tar -xzvf - -C ~/src
+
+        cd ~/src/protobuf-3.16.0
+        mkdir bin
+        ./configure --prefix=$PWD/bin
+        make
+        make check
+        sudo make install
+        sudo ldconfig # refresh shared library cache.
+        cp bin/bin/protoc ~/src/protobuf-3.16.0/src/
+        make -C conformance
+        ls -lh ~/src/protobuf-3.16.0/conformance/conformance-test-runner
+
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '^1.13'
+
+    - uses: actions/checkout@v2
+
+    - run: make genall
+    # TODO(fenollp): these files shouldn't be modified
+    - run: |
+        git --no-pager diff
+        git checkout -- conformance/internal/conformance/conformance_vtproto.pb.go
+        git checkout -- conformance/internal/conformance/test_messages_proto2_vtproto.pb.go
+        git checkout -- conformance/internal/conformance/test_messages_proto3_vtproto.pb.go
+        git checkout -- testproto/proto3opt/opt_vtproto.pb.go
+    - run: git --no-pager diff --exit-code
+
+    - run: go test -count=1 ./conformance/...
+      env:
+        PROTOBUF_ROOT: /home/runner/src/protobuf-3.16.0
+    - run: git --no-pager diff --exit-code
