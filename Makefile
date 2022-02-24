@@ -6,7 +6,7 @@ export PROTOBUF_ROOT=$(HOME)/src/protobuf-3.16.0
 install:
 	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
 	go install -tags protolegacy ./cmd/protoc-gen-go-vtproto
-	go install -tags protolegacy github.com/gogo/protobuf/protoc-gen-gofast
+# 	go install -tags protolegacy github.com/gogo/protobuf/protoc-gen-gofast
 
 gen-conformance:
 	$(PROTOBUF_ROOT)/src/protoc \
