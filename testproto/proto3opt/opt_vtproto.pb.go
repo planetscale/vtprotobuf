@@ -50,6 +50,198 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if vtmsg, ok := m.XOptionalEnum.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalBytes.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalString.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalBool.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalDouble.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalFloat.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalSfixed64.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalSfixed32.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalFixed64.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalFixed32.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalSint64.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalSint32.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalUint64.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalUint32.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalInt64.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
+	if vtmsg, ok := m.XOptionalInt32.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
 	if m.OptionalEnum != nil {
 		i = encodeVarint(dAtA, i, uint64(*m.OptionalEnum))
 		i--

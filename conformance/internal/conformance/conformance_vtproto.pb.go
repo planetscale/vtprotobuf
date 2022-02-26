@@ -89,6 +89,18 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if vtmsg, ok := m.Payload.(interface {
+		MarshalTo([]byte) (int, error)
+		Size() int
+	}); ok {
+		{
+			size := vtmsg.SizeVT()
+			i -= size
+			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
+				return 0, err
+			}
+		}
+	}
 	if m.PrintUnknownFields {
 		i--
 		if m.PrintUnknownFields {
@@ -98,18 +110,6 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i--
 		dAtA[i] = 0x48
-	}
-	if vtmsg, ok := m.Payload.(interface {
-		MarshalToVT([]byte) (int, error)
-		SizeVT() int
-	}); ok {
-		{
-			size := vtmsg.SizeVT()
-			i -= size
-			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
-				return 0, err
-			}
-		}
 	}
 	if m.JspbEncodingOptions != nil {
 		size, err := m.JspbEncodingOptions.MarshalToSizedBufferVT(dAtA[:i])
@@ -228,8 +228,8 @@ func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.Result.(interface {
-		MarshalToVT([]byte) (int, error)
-		SizeVT() int
+		MarshalTo([]byte) (int, error)
+		Size() int
 	}); ok {
 		{
 			size := vtmsg.SizeVT()

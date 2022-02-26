@@ -44,16 +44,9 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: make genall
-    # TODO(fenollp): these files shouldn't be modified
-    - run: |
-        git --no-pager diff
-        git checkout -- conformance/internal/conformance/conformance_vtproto.pb.go
-        git checkout -- conformance/internal/conformance/test_messages_proto2_vtproto.pb.go
-        git checkout -- conformance/internal/conformance/test_messages_proto3_vtproto.pb.go
-        git checkout -- testproto/proto3opt/opt_vtproto.pb.go
     - run: git --no-pager diff --exit-code
 
-    - run: go test -count=1 ./conformance/...
+    - run: make test
       env:
         PROTOBUF_ROOT: /home/runner/src/protobuf-3.16.0
     - run: git --no-pager diff --exit-code
