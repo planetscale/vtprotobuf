@@ -43,6 +43,8 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    - run: go vet ./...
+
     - run: make genall
     - run: git --no-pager diff --exit-code
 

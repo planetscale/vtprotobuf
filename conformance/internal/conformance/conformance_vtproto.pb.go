@@ -90,8 +90,8 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.Payload.(interface {
-		MarshalTo([]byte) (int, error)
-		Size() int
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
 	}); ok {
 		{
 			size := vtmsg.SizeVT()
@@ -228,8 +228,8 @@ func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.Result.(interface {
-		MarshalTo([]byte) (int, error)
-		Size() int
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
 	}); ok {
 		{
 			size := vtmsg.SizeVT()

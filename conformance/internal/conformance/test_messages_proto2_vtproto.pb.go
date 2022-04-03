@@ -260,8 +260,8 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.OneofField.(interface {
-		MarshalTo([]byte) (int, error)
-		Size() int
+		MarshalToVT([]byte) (int, error)
+		SizeVT() int
 	}); ok {
 		{
 			size := vtmsg.SizeVT()
