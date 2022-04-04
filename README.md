@@ -35,7 +35,7 @@ The following features can be generated:
 1. Install `protoc-gen-go-vtproto`:
 
 ```
-go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto
+go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@latest
 ```
 
 2. Ensure your project is already using the ProtoBuf v2 API (i.e. `google.golang.org/protobuf`). The `vtprotobuf` compiler is not compatible with APIv1 generated code.
