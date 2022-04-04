@@ -586,18 +586,24 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
 	})
 
-	oneofs := make(map[string]struct{})
-	for i := len(message.Oneofs) - 1; i >= 0; i-- {
-		field := message.Oneofs[i]
-		fieldname := field.GoName
-		if _, ok := oneofs[fieldname]; !ok {
-			oneofs[fieldname] = struct{}{}
-			p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
-			p.P(`MarshalTo([]byte) (int, error)`)
-			p.P(`Size() int`)
-			p.P(`}); ok {`)
-			p.marshalForward("vtmsg", false)
-			p.P(`}`)
+	// To match the wire format of proto.Marshal, oneofs have to be marshaled
+	// before fields. See https://github.com/planetscale/vtprotobuf/pull/22
+
+	oneofs := make(map[string]struct{}, len(message.Fields))
+	for i := len(message.Fields) - 1; i >= 0; i-- {
+		field := message.Fields[i]
+		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+		if oneof {
+			fieldname := field.Oneof.GoName
+			if _, ok := oneofs[fieldname]; !ok {
+				oneofs[fieldname] = struct{}{}
+				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
+				p.P(`MarshalToVT([]byte) (int, error)`)
+				p.P(`SizeVT() int`)
+				p.P(`}); ok {`)
+				p.marshalForward("vtmsg", false)
+				p.P(`}`)
+			}
 		}
 	}
 

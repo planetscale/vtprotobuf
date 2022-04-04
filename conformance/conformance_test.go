@@ -105,8 +105,7 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 		}
 	}()
 
-	expected, err = proto.Marshal(msg)
-	if err != nil {
+	if expected, err = proto.Marshal(msg); err != nil {
 		return nil, err
 	}
 
@@ -114,8 +113,7 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 		MarshalVT() ([]byte, error)
 	}
 	m := msg.(marshalvt)
-	got, err = m.MarshalVT()
-	if err != nil {
+	if got, err = m.MarshalVT(); err != nil {
 		return nil, err
 	}
 	return got, nil
@@ -123,8 +121,7 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 
 func main() {
 	var err error
-	marshalDifflog, err = os.Create("marshal.log")
-	if err != nil {
+	if marshalDifflog, err = os.Create("marshal.log"); err != nil {
 		log.Fatalf("failed to init: %v", err)
 	}
 	defer marshalDifflog.Close()
