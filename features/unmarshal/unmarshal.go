@@ -825,6 +825,14 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	if required.Len() > 0 {
 		p.P(`var hasFields [`, strconv.Itoa(1+(required.Len()-1)/64), `]uint64`)
 	}
+	for _, field := range message.Fields {
+		if field.Desc.IsList() {
+			p.P(`m.`, field.GoName, ` = m.`, field.GoName, `[:0]`)
+		} else if field.Desc.HasOptionalKeyword() ||
+			field.Desc.Kind() == protoreflect.MessageKind {
+			p.P(`m.`, field.GoName, ` = nil`)
+		}
+	}
 	p.P(`l := len(dAtA)`)
 	p.P(`iNdEx := 0`)
 	p.P(`for iNdEx < l {`)
