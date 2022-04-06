@@ -33,7 +33,7 @@ gen-include:
 	mv include/github.com/planetscale/vtprotobuf/vtproto/*.go ./vtproto
 
 gen-testproto:
-	for name in "pool/pool.proto proto3opt/opt.proto proto2/scalars.proto"; do \
+	for name in "pool/pool.proto pool/pool_with_slice_reuse.proto proto3opt/opt.proto proto2/scalars.proto"; do \
 		$(PROTOBUF_ROOT)/src/protoc \
 			--proto_path=testproto \
 			--proto_path=include \
