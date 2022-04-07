@@ -45,5 +45,8 @@ gen-testproto:
 
 genall: install gen-include gen-conformance gen-testproto
 
+test-pool: install gen-testproto
+	GOGC="off" go test -count=1 ./testproto/pool/...
+
 test: install gen-conformance
 	go test -count=1 ./conformance/...
