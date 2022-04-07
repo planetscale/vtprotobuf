@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func Test_Pool1(t *testing.T) {
+func Test_Pool_slice_data_override(t *testing.T) {
 
 	dataRequest := Test1{
 		Sl: []string{"a", "b", "c"},
@@ -33,7 +33,7 @@ func Test_Pool1(t *testing.T) {
 	assert.Equal(t, []string{}, req.Sl)
 }
 
-func Test_Pool2(t *testing.T) {
+func Test_Pool_slice_recreation(t *testing.T) {
 
 	var b int32 = 10
 	dataRequest := Test2{
