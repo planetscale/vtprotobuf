@@ -7,7 +7,33 @@ import (
 	"testing"
 )
 
-func Test_Pool(t *testing.T) {
+func Test_Pool1(t *testing.T) {
+
+	dataRequest := Test1{
+		Sl: []string{"a", "b", "c"},
+	}
+	dataReqBytes, err := dataRequest.MarshalVT()
+	require.NoError(t, err)
+
+	nilRequest := Test1{
+		Sl: []string{},
+	}
+	nilReqBytes, err := nilRequest.MarshalVT()
+	require.NoError(t, err)
+
+	req := Test1FromVTPool()
+	err = req.UnmarshalVT(dataReqBytes)
+	require.NoError(t, err)
+	req.ReturnToVTPool()
+
+	req = Test1FromVTPool()
+	err = req.UnmarshalVT(nilReqBytes)
+	require.NoError(t, err)
+
+	assert.Equal(t, []string{}, req.Sl)
+}
+
+func Test_Pool2(t *testing.T) {
 
 	var b int32 = 10
 	dataRequest := Test2{
@@ -21,6 +47,8 @@ func Test_Pool(t *testing.T) {
 				D: &Element2{
 					A: 10,
 				},
+				E: "something",
+				F: 123,
 			},
 		},
 	}
@@ -34,6 +62,8 @@ func Test_Pool(t *testing.T) {
 				B: nil,
 				C: nil,
 				D: nil,
+				E: "",
+				F: 0,
 			},
 		},
 	}
@@ -54,5 +84,7 @@ func Test_Pool(t *testing.T) {
 	assert.Nil(t, req.Sl[0].B)
 	assert.Nil(t, req.Sl[0].D)
 	assert.Nil(t, req.Sl[0].C)
+	assert.Zero(t, req.Sl[0].E)
+	assert.Zero(t, req.Sl[0].F)
 
 }

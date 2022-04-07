@@ -30,20 +30,6 @@ func (p *pool) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
-func (p *pool) isListReusable(field *protogen.Field) bool {
-	for _, f := range field.Message.Fields {
-		if f.Desc.IsList() ||
-			f.Desc.IsMap() ||
-			f.Desc.HasOptionalKeyword() ||
-			f.Desc.Kind() == protoreflect.MessageKind ||
-			f.Desc.Kind() == protoreflect.GroupKind ||
-			f.Desc.Kind() == protoreflect.BytesKind {
-			return false
-		}
-	}
-	return true
-}
-
 func (p *pool) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
 		p.message(nested)
@@ -75,12 +61,10 @@ func (p *pool) message(message *protogen.Message) {
 					p.P(`mm.ResetVT()`)
 					p.P(`}`)
 				}
-				if !p.isListReusable(field) {
-					continue
-				}
+			default:
+				p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
+				saved = append(saved, field)
 			}
-			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
-			saved = append(saved, field)
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:

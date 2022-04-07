@@ -5,18 +5,8 @@ import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 message Test1 {
   option (vtproto.mempool) = true;
-  repeated Slice1 Sl = 1;
+  repeated string Sl = 1;
 }
-message Slice1 {
-  int64 a = 1;
-  string b = 2;
-  fixed64 c = 3;
-  enum e {
-    A = 0;
-    B = 1;
-  };
-}
-
 
 message Test2 {
   option (vtproto.mempool) = true;
@@ -27,6 +17,8 @@ message Slice2 {
   optional int32 b = 2;
   repeated string c = 3;
   Element2 d = 4;
+  string e = 5;
+  int64 f = 6;
 }
 message Element2 {
   int32 a = 1;
