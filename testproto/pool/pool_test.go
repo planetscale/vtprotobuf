@@ -1,14 +1,14 @@
 package pool
 
 import (
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"log"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Pool_slice_data_override(t *testing.T) {
-
 	dataRequest := Test1{
 		Sl: []string{"a", "b", "c"},
 	}
@@ -34,7 +34,6 @@ func Test_Pool_slice_data_override(t *testing.T) {
 }
 
 func Test_Pool_slice_recreation(t *testing.T) {
-
 	var b int32 = 10
 	dataRequest := Test2{
 		Sl: []*Slice2{
