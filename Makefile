@@ -9,7 +9,6 @@ install:
 # 	go install -tags protolegacy github.com/gogo/protobuf/protoc-gen-gofast
 
 gen-conformance:
-	ls -l $(PROTOBUF_ROOT)/
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=$(PROTOBUF_ROOT) \
 		--go_out=conformance --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \

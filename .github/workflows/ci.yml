@@ -10,11 +10,17 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '^1.18'
+
+    - uses: actions/checkout@v2
+
     - name: Cache protobuf build
       id: protocache
       uses: actions/cache@v2
       with:
-        path: ${GITHUB_WORKSPACE}/_vendor/protobuf-3.20.0
+        path: _vendor/protobuf-3.20.0
         key: protobuf-3.20.0
 
     - name: Compile protobuf
@@ -22,19 +28,15 @@ jobs:
       run: |
         sudo apt-get install -y autoconf automake libtool curl make g++ unzip
 
-        mkdir -p ${GITHUB_WORKSPACE}/_vendor
-        curl -#fsSL https://github.com/protocolbuffers/protobuf/releases/download/v3.20.0/protobuf-all-3.20.0.tar.gz | tar -xzvf - -C ${GITHUB_WORKSPACE}/_vendor
+        mkdir -p _vendor
+        curl -#fsSL https://github.com/protocolbuffers/protobuf/releases/download/v3.20.0/protobuf-all-3.20.0.tar.gz | tar -xzvf - -C _vendor
 
-        cd ${GITHUB_WORKSPACE}/_vendor/protobuf-3.20.0
+        cd _vendor/protobuf-3.20.0
         ./configure
         make
         make -C conformance
-
-    - uses: actions/setup-go@v2
-      with:
-        go-version: '^1.18'
-
-    - uses: actions/checkout@v2
+        ls -l src/
+        ls -l conformance/
 
     - run: make install && go mod tidy && go mod verify
     - run: git --no-pager diff --exit-code
