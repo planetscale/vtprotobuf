@@ -1,0 +1,25 @@
+syntax = "proto3";
+option go_package = "testproto/pool";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message Test1 {
+  option (vtproto.mempool) = true;
+  repeated string Sl = 1;
+}
+
+message Test2 {
+  option (vtproto.mempool) = true;
+  repeated Slice2 Sl = 1;
+}
+message Slice2 {
+  map<int64, int64> a = 1;
+  optional int32 b = 2;
+  repeated string c = 3;
+  Element2 d = 4;
+  string e = 5;
+  int64 f = 6;
+}
+message Element2 {
+  int32 a = 1;
+}

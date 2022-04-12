@@ -1,5 +1,5 @@
 export GOBIN=$(PWD)/bin
-export PROTOBUF_ROOT=$(HOME)/src/protobuf-3.16.0
+export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-3.20.0
 
 .PHONY: install test gen-conformance gen-include genall
 
@@ -33,7 +33,7 @@ gen-include:
 	mv include/github.com/planetscale/vtprotobuf/vtproto/*.go ./vtproto
 
 gen-testproto:
-	for name in "pool/pool.proto proto3opt/opt.proto proto2/scalars.proto"; do \
+	for name in "pool/pool.proto pool/pool_with_slice_reuse.proto proto3opt/opt.proto proto2/scalars.proto"; do \
 		$(PROTOBUF_ROOT)/src/protoc \
 			--proto_path=testproto \
 			--proto_path=include \
@@ -48,3 +48,4 @@ genall: install gen-include gen-conformance gen-testproto
 test: install gen-conformance
 	go test -short ./...
 	go test -count=1 ./conformance/...
+	GOGC="off" go test -count=1 ./testproto/pool/...

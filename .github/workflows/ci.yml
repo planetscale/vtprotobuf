@@ -10,38 +10,33 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '^1.18'
+
+    - uses: actions/checkout@v2
+
     - name: Cache protobuf build
       id: protocache
       uses: actions/cache@v2
       with:
-        path: |
-          ~/src/protobuf-3.16.0
-        key: protobuf-3.16.0
+        path: _vendor/protobuf-3.20.0
+        key: protobuf-3.20.0
 
     - name: Compile protobuf
       if: steps.protocache.outputs.cache-hit != 'true'
       run: |
         sudo apt-get install -y autoconf automake libtool curl make g++ unzip
 
-        mkdir ~/src
-        curl -#fsSL https://github.com/protocolbuffers/protobuf/releases/download/v3.16.0/protobuf-all-3.16.0.tar.gz | tar -xzvf - -C ~/src
+        mkdir -p _vendor
+        curl -#fsSL https://github.com/protocolbuffers/protobuf/releases/download/v3.20.0/protobuf-all-3.20.0.tar.gz | tar -xzvf - -C _vendor
 
-        cd ~/src/protobuf-3.16.0
-        mkdir bin
-        ./configure --prefix=$PWD/bin
+        cd _vendor/protobuf-3.20.0
+        ./configure
         make
-        make check
-        sudo make install
-        sudo ldconfig # refresh shared library cache.
-        cp bin/bin/protoc ~/src/protobuf-3.16.0/src/
         make -C conformance
-        ls -lh ~/src/protobuf-3.16.0/conformance/conformance-test-runner
-
-    - uses: actions/setup-go@v2
-      with:
-        go-version: '^1.13'
-
-    - uses: actions/checkout@v2
+        ls -l src/
+        ls -l conformance/
 
     - run: make install && go mod tidy && go mod verify
     - run: git --no-pager diff --exit-code
@@ -52,6 +47,4 @@ jobs:
     - run: git --no-pager diff --exit-code
 
     - run: make test
-      env:
-        PROTOBUF_ROOT: /home/runner/src/protobuf-3.16.0
     - run: git --no-pager diff --exit-code

@@ -737,6 +737,51 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	if !this.Data.EqualVT(that.Data) {
 		return false
 	}
+	if p, q := this.DefaultInt32, that.DefaultInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultInt64, that.DefaultInt64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultUint32, that.DefaultUint32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultUint64, that.DefaultUint64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultSint32, that.DefaultSint32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultSint64, that.DefaultSint64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultFixed32, that.DefaultFixed32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultFixed64, that.DefaultFixed64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultSfixed32, that.DefaultSfixed32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultSfixed64, that.DefaultSfixed64; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultFloat, that.DefaultFloat; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultDouble, that.DefaultDouble; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultBool, that.DefaultBool; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if p, q := this.DefaultString, that.DefaultString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if string(this.DefaultBytes) != string(that.DefaultBytes) {
+		return false
+	}
 	if p, q := this.Fieldname1, that.Fieldname1; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
 	}
@@ -846,6 +891,36 @@ func (this *UnknownToTestAllTypes) EqualVT(that *UnknownToTestAllTypes) bool {
 		if this.RepeatedInt32[i] != that.RepeatedInt32[i] {
 			return false
 		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *NullHypothesisProto2) EqualVT(that *NullHypothesisProto2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *EnumOnlyProto2) EqualVT(that *EnumOnlyProto2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *OneStringProto2) EqualVT(that *OneStringProto2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if p, q := this.Data, that.Data; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
@@ -1223,6 +1298,126 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = encodeVarint(dAtA, i, uint64(*m.Fieldname1))
 		i--
 		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.DefaultBytes != nil {
+		i -= len(m.DefaultBytes)
+		copy(dAtA[i:], m.DefaultBytes)
+		i = encodeVarint(dAtA, i, uint64(len(m.DefaultBytes)))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.DefaultString != nil {
+		i -= len(*m.DefaultString)
+		copy(dAtA[i:], *m.DefaultString)
+		i = encodeVarint(dAtA, i, uint64(len(*m.DefaultString)))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.DefaultBool != nil {
+		i--
+		if *m.DefaultBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xe8
+	}
+	if m.DefaultDouble != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.DefaultDouble))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xe1
+	}
+	if m.DefaultFloat != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.DefaultFloat))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xdd
+	}
+	if m.DefaultSfixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.DefaultSfixed64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xd1
+	}
+	if m.DefaultSfixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.DefaultSfixed32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xcd
+	}
+	if m.DefaultFixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.DefaultFixed64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xc1
+	}
+	if m.DefaultFixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.DefaultFixed32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xbd
+	}
+	if m.DefaultSint64 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.DefaultSint64)<<1)^uint64((*m.DefaultSint64>>63))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.DefaultSint32 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.DefaultSint32)<<1)^uint32((*m.DefaultSint32>>31))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.DefaultUint64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultUint64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.DefaultUint32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultUint32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.DefaultInt64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultInt64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.DefaultInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultInt32))
+		i--
+		dAtA[i] = 0xf
 		i--
 		dAtA[i] = 0x88
 	}
@@ -2693,6 +2888,112 @@ func (m *UnknownToTestAllTypes) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
+func (m *NullHypothesisProto2) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NullHypothesisProto2) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *NullHypothesisProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumOnlyProto2) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumOnlyProto2) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *EnumOnlyProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *OneStringProto2) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OneStringProto2) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *OneStringProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Data != nil {
+		i -= len(*m.Data)
+		copy(dAtA[i:], *m.Data)
+		i = encodeVarint(dAtA, i, uint64(len(*m.Data)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	offset -= sov(v)
 	base := offset
@@ -3256,6 +3557,53 @@ func (m *TestAllTypesProto2) SizeVT() (n int) {
 		l = m.Data.SizeVT()
 		n += l + 4
 	}
+	if m.DefaultInt32 != nil {
+		n += 2 + sov(uint64(*m.DefaultInt32))
+	}
+	if m.DefaultInt64 != nil {
+		n += 2 + sov(uint64(*m.DefaultInt64))
+	}
+	if m.DefaultUint32 != nil {
+		n += 2 + sov(uint64(*m.DefaultUint32))
+	}
+	if m.DefaultUint64 != nil {
+		n += 2 + sov(uint64(*m.DefaultUint64))
+	}
+	if m.DefaultSint32 != nil {
+		n += 2 + soz(uint64(*m.DefaultSint32))
+	}
+	if m.DefaultSint64 != nil {
+		n += 2 + soz(uint64(*m.DefaultSint64))
+	}
+	if m.DefaultFixed32 != nil {
+		n += 6
+	}
+	if m.DefaultFixed64 != nil {
+		n += 10
+	}
+	if m.DefaultSfixed32 != nil {
+		n += 6
+	}
+	if m.DefaultSfixed64 != nil {
+		n += 10
+	}
+	if m.DefaultFloat != nil {
+		n += 6
+	}
+	if m.DefaultDouble != nil {
+		n += 10
+	}
+	if m.DefaultBool != nil {
+		n += 3
+	}
+	if m.DefaultString != nil {
+		l = len(*m.DefaultString)
+		n += 2 + l + sov(uint64(l))
+	}
+	if m.DefaultBytes != nil {
+		l = len(m.DefaultBytes)
+		n += 2 + l + sov(uint64(l))
+	}
 	if m.Fieldname1 != nil {
 		n += 2 + sov(uint64(*m.Fieldname1))
 	}
@@ -3460,6 +3808,46 @@ func (m *UnknownToTestAllTypes) SizeVT() (n int) {
 		for _, e := range m.RepeatedInt32 {
 			n += 2 + sov(uint64(e))
 		}
+	}
+	if m.unknownFields != nil {
+		n += len(m.unknownFields)
+	}
+	return n
+}
+
+func (m *NullHypothesisProto2) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		n += len(m.unknownFields)
+	}
+	return n
+}
+
+func (m *EnumOnlyProto2) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		n += len(m.unknownFields)
+	}
+	return n
+}
+
+func (m *OneStringProto2) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Data != nil {
+		l = len(*m.Data)
+		n += 1 + l + sov(uint64(l))
 	}
 	if m.unknownFields != nil {
 		n += len(m.unknownFields)
@@ -9620,6 +10008,285 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 				}
 				iNdEx += skippy
 			}
+		case 241:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultInt32", wireType)
+			}
+			var v int32
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.DefaultInt32 = &v
+		case 242:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultInt64", wireType)
+			}
+			var v int64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.DefaultInt64 = &v
+		case 243:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultUint32", wireType)
+			}
+			var v uint32
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.DefaultUint32 = &v
+		case 244:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultUint64", wireType)
+			}
+			var v uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.DefaultUint64 = &v
+		case 245:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultSint32", wireType)
+			}
+			var v int32
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			v = int32((uint32(v) >> 1) ^ uint32(((v&1)<<31)>>31))
+			m.DefaultSint32 = &v
+		case 246:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultSint64", wireType)
+			}
+			var v uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			v = (v >> 1) ^ uint64((int64(v&1)<<63)>>63)
+			v2 := int64(v)
+			m.DefaultSint64 = &v2
+		case 247:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultFixed32", wireType)
+			}
+			var v uint32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			m.DefaultFixed32 = &v
+		case 248:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultFixed64", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.DefaultFixed64 = &v
+		case 249:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultSfixed32", wireType)
+			}
+			var v int32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = int32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			m.DefaultSfixed32 = &v
+		case 250:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultSfixed64", wireType)
+			}
+			var v int64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = int64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.DefaultSfixed64 = &v
+		case 251:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultFloat", wireType)
+			}
+			var v uint32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			v2 := float32(math.Float32frombits(v))
+			m.DefaultFloat = &v2
+		case 252:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultDouble", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			v2 := float64(math.Float64frombits(v))
+			m.DefaultDouble = &v2
+		case 253:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultBool", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			b := bool(v != 0)
+			m.DefaultBool = &b
+		case 254:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultString", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			s := string(dAtA[iNdEx:postIndex])
+			m.DefaultString = &s
+			iNdEx = postIndex
+		case 255:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DefaultBytes", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.DefaultBytes = append(m.DefaultBytes[:0], dAtA[iNdEx:postIndex]...)
+			if m.DefaultBytes == nil {
+				m.DefaultBytes = []byte{}
+			}
+			iNdEx = postIndex
 		case 401:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Fieldname1", wireType)
@@ -10405,6 +11072,192 @@ func (m *UnknownToTestAllTypes) UnmarshalVT(dAtA []byte) error {
 			} else {
 				return fmt.Errorf("proto: wrong wireType = %d for field RepeatedInt32", wireType)
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NullHypothesisProto2) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NullHypothesisProto2: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NullHypothesisProto2: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EnumOnlyProto2) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EnumOnlyProto2: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EnumOnlyProto2: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *OneStringProto2) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: OneStringProto2: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: OneStringProto2: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			s := string(dAtA[iNdEx:postIndex])
+			m.Data = &s
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skip(dAtA[iNdEx:])
