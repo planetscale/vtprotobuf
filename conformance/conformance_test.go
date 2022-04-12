@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -40,7 +41,7 @@ var (
 )
 
 func Test(t *testing.T) {
-	if !*execute {
+	if !*execute || testing.Short() {
 		t.SkipNow()
 	}
 	binPath := filepath.Join(*protoRoot, "conformance", "conformance-test-runner")
@@ -119,6 +120,57 @@ func conformanceMarshal(msg proto.Message) ([]byte, error) {
 	return got, nil
 }
 
+func conformanceEqual(msg proto.Message) (err error) {
+	isNaN := func(w interface{}) bool {
+		f32, ok32 := w.(float32)
+		f64, ok64 := w.(float64)
+		return (ok32 && math.IsNaN(float64(f32))) || (ok64 && math.IsNaN(f64))
+	}
+
+	switch msg := msg.(type) {
+	case *pb.TestAllTypesProto2:
+		cloned := proto.Clone(msg).(*pb.TestAllTypesProto2)
+
+		eq := interface{}(msg).(interface {
+			EqualVT(*pb.TestAllTypesProto2) bool
+		})
+		if !eq.EqualVT(cloned) {
+			return fmt.Errorf("msg %#v is not EqualVT() to itself %#v", msg, cloned)
+		}
+
+		pb.MutateFields(cloned)
+		if cloned.EqualVT(msg) || msg.EqualVT(cloned) {
+			return fmt.Errorf("these %T should not be equal:\nmsg = %+v\ncloned = %+v", msg, msg, cloned)
+		}
+
+	case *pb.TestAllTypesProto3:
+		cloned := proto.Clone(msg).(*pb.TestAllTypesProto3)
+
+		eq := interface{}(msg).(interface {
+			EqualVT(*pb.TestAllTypesProto3) bool
+		})
+		same := eq.EqualVT(cloned)
+		if pb.VisitWithPredicate(msg, isNaN) {
+			if same {
+				return fmt.Errorf("msg %T %+v contains NaN thus should not EqualVT() to itself %+v", msg, msg, cloned)
+			}
+		} else {
+			if !same {
+				return fmt.Errorf("msg %#v is not EqualVT() to itself %#v", msg, cloned)
+			}
+		}
+
+		pb.MutateFields(cloned)
+		if cloned.EqualVT(msg) || msg.EqualVT(cloned) {
+			return fmt.Errorf("these %T should not be equal:\nmsg = %+v\ncloned = %+v", msg, msg, cloned)
+		}
+
+	default:
+		return fmt.Errorf("unhandled %T", msg)
+	}
+	return nil
+}
+
 func main() {
 	var err error
 	if marshalDifflog, err = os.Create("marshal.log"); err != nil {
@@ -193,6 +245,14 @@ func handle(req *pb.ConformanceRequest) (res *pb.ConformanceResponse) {
 		return &pb.ConformanceResponse{
 			Result: &pb.ConformanceResponse_ParseError{
 				ParseError: err.Error(),
+			},
+		}
+	}
+
+	if err = conformanceEqual(msg); err != nil {
+		return &pb.ConformanceResponse{
+			Result: &pb.ConformanceResponse_RuntimeError{
+				RuntimeError: err.Error(),
 			},
 		}
 	}
