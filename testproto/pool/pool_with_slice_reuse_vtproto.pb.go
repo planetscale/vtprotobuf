@@ -18,6 +18,89 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+func (this *Test1) EqualVT(that *Test1) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if len(this.Sl) != len(that.Sl) {
+		return false
+	}
+	for i := range this.Sl {
+		if this.Sl[i] != that.Sl[i] {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *Test2) EqualVT(that *Test2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if len(this.Sl) != len(that.Sl) {
+		return false
+	}
+	for i := range this.Sl {
+		if !this.Sl[i].EqualVT(that.Sl[i]) {
+			return false
+		}
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *Slice2) EqualVT(that *Slice2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if len(this.A) != len(that.A) {
+		return false
+	}
+	for i := range this.A {
+		if this.A[i] != that.A[i] {
+			return false
+		}
+	}
+	if p, q := this.B, that.B; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
+		return false
+	}
+	if len(this.C) != len(that.C) {
+		return false
+	}
+	for i := range this.C {
+		if this.C[i] != that.C[i] {
+			return false
+		}
+	}
+	if !this.D.EqualVT(that.D) {
+		return false
+	}
+	if this.E != that.E {
+		return false
+	}
+	if this.F != that.F {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *Element2) EqualVT(that *Element2) bool {
+	if this == nil {
+		return that == nil || fmt.Sprintf("%v", that) == ""
+	} else if that == nil {
+		return fmt.Sprintf("%v", this) == ""
+	}
+	if this.A != that.A {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
 func (m *Test1) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
