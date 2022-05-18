@@ -1213,16 +1213,13 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.OneofField.(interface {
-		MarshalToVT([]byte) (int, error)
-		SizeVT() int
+		MarshalToSizedBufferVT([]byte) (int, error)
 	}); ok {
-		{
-			size := vtmsg.SizeVT()
-			i -= size
-			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
-				return 0, err
-			}
+		size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
 	}
 	if m.FieldName18__ != 0 {
 		i = encodeVarint(dAtA, i, uint64(m.FieldName18__))
@@ -1352,10 +1349,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedStruct) > 0 {
 		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedStruct[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedStruct[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1378,10 +1375,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedListValue[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedListValue[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1404,10 +1401,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedValue) > 0 {
 		for iNdEx := len(m.RepeatedValue) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedValue[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedValue[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1430,10 +1427,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedAny) > 0 {
 		for iNdEx := len(m.RepeatedAny) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedAny[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedAny[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1456,10 +1453,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedFieldmask) > 0 {
 		for iNdEx := len(m.RepeatedFieldmask) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedFieldmask[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedFieldmask[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1482,10 +1479,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedTimestamp[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedTimestamp[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1508,10 +1505,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedDuration[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedDuration[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1540,10 +1537,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x98
 	}
 	if m.OptionalValue != nil {
-		if marshalto, ok := interface{}(m.OptionalValue).(interface {
+		if vtmsg, ok := interface{}(m.OptionalValue).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1564,10 +1561,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x92
 	}
 	if m.OptionalAny != nil {
-		if marshalto, ok := interface{}(m.OptionalAny).(interface {
+		if vtmsg, ok := interface{}(m.OptionalAny).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1588,10 +1585,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x8a
 	}
 	if m.OptionalStruct != nil {
-		if marshalto, ok := interface{}(m.OptionalStruct).(interface {
+		if vtmsg, ok := interface{}(m.OptionalStruct).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1612,10 +1609,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x82
 	}
 	if m.OptionalFieldMask != nil {
-		if marshalto, ok := interface{}(m.OptionalFieldMask).(interface {
+		if vtmsg, ok := interface{}(m.OptionalFieldMask).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1636,10 +1633,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalTimestamp != nil {
-		if marshalto, ok := interface{}(m.OptionalTimestamp).(interface {
+		if vtmsg, ok := interface{}(m.OptionalTimestamp).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1660,10 +1657,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalDuration != nil {
-		if marshalto, ok := interface{}(m.OptionalDuration).(interface {
+		if vtmsg, ok := interface{}(m.OptionalDuration).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1685,10 +1682,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedBytesWrapper) > 0 {
 		for iNdEx := len(m.RepeatedBytesWrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedBytesWrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedBytesWrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1711,10 +1708,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedStringWrapper) > 0 {
 		for iNdEx := len(m.RepeatedStringWrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedStringWrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedStringWrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1737,10 +1734,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedDoubleWrapper) > 0 {
 		for iNdEx := len(m.RepeatedDoubleWrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedDoubleWrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedDoubleWrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1763,10 +1760,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedFloatWrapper) > 0 {
 		for iNdEx := len(m.RepeatedFloatWrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedFloatWrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedFloatWrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1789,10 +1786,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedUint64Wrapper) > 0 {
 		for iNdEx := len(m.RepeatedUint64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedUint64Wrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedUint64Wrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1815,10 +1812,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedUint32Wrapper) > 0 {
 		for iNdEx := len(m.RepeatedUint32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedUint32Wrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedUint32Wrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1841,10 +1838,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedInt64Wrapper) > 0 {
 		for iNdEx := len(m.RepeatedInt64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedInt64Wrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedInt64Wrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1867,10 +1864,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedInt32Wrapper) > 0 {
 		for iNdEx := len(m.RepeatedInt32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedInt32Wrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedInt32Wrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1893,10 +1890,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedBoolWrapper) > 0 {
 		for iNdEx := len(m.RepeatedBoolWrapper) - 1; iNdEx >= 0; iNdEx-- {
-			if marshalto, ok := interface{}(m.RepeatedBoolWrapper[iNdEx]).(interface {
+			if vtmsg, ok := interface{}(m.RepeatedBoolWrapper[iNdEx]).(interface {
 				MarshalToSizedBufferVT([]byte) (int, error)
 			}); ok {
-				size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -1918,10 +1915,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 	}
 	if m.OptionalBytesWrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalBytesWrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalBytesWrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1942,10 +1939,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x8a
 	}
 	if m.OptionalStringWrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalStringWrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalStringWrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1966,10 +1963,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x82
 	}
 	if m.OptionalDoubleWrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalDoubleWrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalDoubleWrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -1990,10 +1987,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalFloatWrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalFloatWrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalFloatWrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -2014,10 +2011,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalUint64Wrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalUint64Wrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalUint64Wrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -2038,10 +2035,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xea
 	}
 	if m.OptionalUint32Wrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalUint32Wrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalUint32Wrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -2062,10 +2059,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xe2
 	}
 	if m.OptionalInt64Wrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalInt64Wrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalInt64Wrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -2086,10 +2083,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xda
 	}
 	if m.OptionalInt32Wrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalInt32Wrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalInt32Wrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -2110,10 +2107,10 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xd2
 	}
 	if m.OptionalBoolWrapper != nil {
-		if marshalto, ok := interface{}(m.OptionalBoolWrapper).(interface {
+		if vtmsg, ok := interface{}(m.OptionalBoolWrapper).(interface {
 			MarshalToSizedBufferVT([]byte) (int, error)
 		}); ok {
-			size, err := marshalto.MarshalToSizedBufferVT(dAtA[:i])
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}

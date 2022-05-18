@@ -202,16 +202,13 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.Payload.(interface {
-		MarshalToVT([]byte) (int, error)
-		SizeVT() int
+		MarshalToSizedBufferVT([]byte) (int, error)
 	}); ok {
-		{
-			size := vtmsg.SizeVT()
-			i -= size
-			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
-				return 0, err
-			}
+		size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
 	}
 	if m.PrintUnknownFields {
 		i--
@@ -340,16 +337,13 @@ func (m *ConformanceResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if vtmsg, ok := m.Result.(interface {
-		MarshalToVT([]byte) (int, error)
-		SizeVT() int
+		MarshalToSizedBufferVT([]byte) (int, error)
 	}); ok {
-		{
-			size := vtmsg.SizeVT()
-			i -= size
-			if _, err := vtmsg.MarshalToVT(dAtA[i:]); err != nil {
-				return 0, err
-			}
+		size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
 	}
 	return len(dAtA) - i, nil
 }
