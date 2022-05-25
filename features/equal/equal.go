@@ -52,9 +52,9 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 	p.P(`func (this *`, ccTypeName, `) `, equalName, `(that *`, ccTypeName, `) bool {`)
 
 	p.P(`if this == nil {`)
-	p.P(`	return that == nil || `, p.Ident("fmt", "Sprintf"), `("%v", that) == ""`)
+	p.P(`	return that == nil || that.String() == ""`)
 	p.P(`} else if that == nil {`)
-	p.P(`	return `, p.Ident("fmt", "Sprintf"), `("%v", this) == ""`)
+	p.P(`	return this.String() == ""`)
 	p.P(`}`)
 
 	sort.Slice(message.Fields, func(i, j int) bool {
