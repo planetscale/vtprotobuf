@@ -20,9 +20,9 @@ const (
 
 func (this *Test1) EqualVT(that *Test1) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if len(this.Sl) != len(that.Sl) {
 		return false
@@ -37,9 +37,9 @@ func (this *Test1) EqualVT(that *Test1) bool {
 
 func (this *Test2) EqualVT(that *Test2) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if len(this.Sl) != len(that.Sl) {
 		return false
@@ -54,9 +54,9 @@ func (this *Test2) EqualVT(that *Test2) bool {
 
 func (this *Slice2) EqualVT(that *Slice2) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if len(this.A) != len(that.A) {
 		return false
@@ -91,9 +91,9 @@ func (this *Slice2) EqualVT(that *Slice2) bool {
 
 func (this *Element2) EqualVT(that *Element2) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.A != that.A {
 		return false

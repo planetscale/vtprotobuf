@@ -28,9 +28,9 @@ const (
 
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.A != that.A {
 		return false
@@ -43,9 +43,9 @@ func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_N
 
 func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.OneofField == nil && that.OneofField != nil {
 		return false
@@ -1106,9 +1106,9 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 
 func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.C != that.C {
 		return false
@@ -1118,18 +1118,18 @@ func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 
 func (this *NullHypothesisProto3) EqualVT(that *NullHypothesisProto3) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *EnumOnlyProto3) EqualVT(that *EnumOnlyProto3) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
