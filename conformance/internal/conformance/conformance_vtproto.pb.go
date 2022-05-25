@@ -515,9 +515,7 @@ func (m *FailureSet) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -547,9 +545,7 @@ func (m *ConformanceRequest) SizeVT() (n int) {
 	if m.PrintUnknownFields {
 		n += 2
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -602,9 +598,7 @@ func (m *ConformanceResponse) SizeVT() (n int) {
 	if vtmsg, ok := m.Result.(interface{ SizeVT() int }); ok {
 		n += vtmsg.SizeVT()
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -697,9 +691,7 @@ func (m *JspbEncodingConfig) SizeVT() (n int) {
 	if m.UseJspbArrayAnyFormat {
 		n += 2
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 

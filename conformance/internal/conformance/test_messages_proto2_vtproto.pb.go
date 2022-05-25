@@ -3015,9 +3015,7 @@ func (m *TestAllTypesProto2_NestedMessage) SizeVT() (n int) {
 		l = m.Corecursive.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3033,9 +3031,7 @@ func (m *TestAllTypesProto2_Data) SizeVT() (n int) {
 	if m.GroupUint32 != nil {
 		n += 2 + sov(uint64(*m.GroupUint32))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3045,9 +3041,7 @@ func (m *TestAllTypesProto2_MessageSetCorrect) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3061,9 +3055,7 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension1) SizeVT() (n int) {
 		l = len(*m.Str)
 		n += 2 + l + sov(uint64(l))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3076,9 +3068,7 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension2) SizeVT() (n int) {
 	if m.I != nil {
 		n += 1 + sov(uint64(*m.I))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3655,9 +3645,7 @@ func (m *TestAllTypesProto2) SizeVT() (n int) {
 	if m.FieldName18__ != nil {
 		n += 2 + sov(uint64(*m.FieldName18__))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3756,9 +3744,7 @@ func (m *ForeignMessageProto2) SizeVT() (n int) {
 	if m.C != nil {
 		n += 1 + sov(uint64(*m.C))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3771,9 +3757,7 @@ func (m *UnknownToTestAllTypes_OptionalGroup) SizeVT() (n int) {
 	if m.A != nil {
 		n += 1 + sov(uint64(*m.A))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3806,9 +3790,7 @@ func (m *UnknownToTestAllTypes) SizeVT() (n int) {
 			n += 2 + sov(uint64(e))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3818,9 +3800,7 @@ func (m *NullHypothesisProto2) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3830,9 +3810,7 @@ func (m *EnumOnlyProto2) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -3846,9 +3824,7 @@ func (m *OneStringProto2) SizeVT() (n int) {
 		l = len(*m.Data)
 		n += 1 + l + sov(uint64(l))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
