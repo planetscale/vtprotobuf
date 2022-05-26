@@ -122,9 +122,7 @@ func (m *MemoryPoolExtension) SizeVT() (n int) {
 	if m.Foo2 != 0 {
 		n += 1 + sov(uint64(m.Foo2))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 

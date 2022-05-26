@@ -3662,9 +3662,7 @@ func (m *TestAllTypesProto3_NestedMessage) SizeVT() (n int) {
 		l = m.Corecursive.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -4554,9 +4552,7 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	if m.FieldName18__ != 0 {
 		n += 2 + sov(uint64(m.FieldName18__))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -4664,9 +4660,7 @@ func (m *ForeignMessage) SizeVT() (n int) {
 	if m.C != 0 {
 		n += 1 + sov(uint64(m.C))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -4676,9 +4670,7 @@ func (m *NullHypothesisProto3) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -4688,9 +4680,7 @@ func (m *EnumOnlyProto3) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 

@@ -278,9 +278,7 @@ func (m *OptionalFieldInProto3) SizeVT() (n int) {
 	if m.OptionalEnum != nil {
 		n += 2 + sov(uint64(*m.OptionalEnum))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 

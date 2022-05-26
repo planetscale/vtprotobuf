@@ -1624,9 +1624,7 @@ func (m *DoubleMessage) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*8)) + len(m.PackedField)*8
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1648,9 +1646,7 @@ func (m *FloatMessage) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*4)) + len(m.PackedField)*4
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1678,9 +1674,7 @@ func (m *Int32Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1708,9 +1702,7 @@ func (m *Int64Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1738,9 +1730,7 @@ func (m *Uint32Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1768,9 +1758,7 @@ func (m *Uint64Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1798,9 +1786,7 @@ func (m *Sint32Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1828,9 +1814,7 @@ func (m *Sint64Message) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1852,9 +1836,7 @@ func (m *Fixed32Message) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*4)) + len(m.PackedField)*4
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1876,9 +1858,7 @@ func (m *Fixed64Message) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*8)) + len(m.PackedField)*8
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1900,9 +1880,7 @@ func (m *Sfixed32Message) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*4)) + len(m.PackedField)*4
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1924,9 +1902,7 @@ func (m *Sfixed64Message) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField)*8)) + len(m.PackedField)*8
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1948,9 +1924,7 @@ func (m *BoolMessage) SizeVT() (n int) {
 	if len(m.PackedField) > 0 {
 		n += 1 + sov(uint64(len(m.PackedField))) + len(m.PackedField)*1
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -1974,9 +1948,7 @@ func (m *StringMessage) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -2000,9 +1972,7 @@ func (m *BytesMessage) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -2030,9 +2000,7 @@ func (m *EnumMessage) SizeVT() (n int) {
 		}
 		n += 1 + sov(uint64(l)) + l
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 

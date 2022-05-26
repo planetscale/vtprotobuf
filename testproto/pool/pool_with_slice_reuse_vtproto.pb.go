@@ -361,9 +361,7 @@ func (m *Test1) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -379,9 +377,7 @@ func (m *Test2) SizeVT() (n int) {
 			n += 1 + l + sov(uint64(l))
 		}
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -419,9 +415,7 @@ func (m *Slice2) SizeVT() (n int) {
 	if m.F != 0 {
 		n += 1 + sov(uint64(m.F))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
@@ -434,9 +428,7 @@ func (m *Element2) SizeVT() (n int) {
 	if m.A != 0 {
 		n += 1 + sov(uint64(m.A))
 	}
-	if m.unknownFields != nil {
-		n += len(m.unknownFields)
-	}
+	n += len(m.unknownFields)
 	return n
 }
 
