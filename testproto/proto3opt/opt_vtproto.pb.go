@@ -22,9 +22,9 @@ const (
 
 func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if p, q := this.OptionalInt32, that.OptionalInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false

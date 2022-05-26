@@ -19,9 +19,9 @@ const (
 
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if len(this.Failure) != len(that.Failure) {
 		return false
@@ -36,9 +36,9 @@ func (this *FailureSet) EqualVT(that *FailureSet) bool {
 
 func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.Payload == nil && that.Payload != nil {
 		return false
@@ -79,9 +79,9 @@ func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 
 func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.Result == nil && that.Result != nil {
 		return false
@@ -119,9 +119,9 @@ func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 
 func (this *JspbEncodingConfig) EqualVT(that *JspbEncodingConfig) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.UseJspbArrayAnyFormat != that.UseJspbArrayAnyFormat {
 		return false

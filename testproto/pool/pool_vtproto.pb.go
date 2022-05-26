@@ -21,9 +21,9 @@ const (
 
 func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
 	if this == nil {
-		return that == nil || fmt.Sprintf("%v", that) == ""
+		return that == nil || that.String() == ""
 	} else if that == nil {
-		return fmt.Sprintf("%v", this) == ""
+		return this.String() == ""
 	}
 	if this.Foo1 != that.Foo1 {
 		return false
