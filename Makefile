@@ -33,15 +33,18 @@ gen-include:
 	mv include/github.com/planetscale/vtprotobuf/vtproto/*.go ./vtproto
 
 gen-testproto:
-	for name in "pool/pool.proto pool/pool_with_slice_reuse.proto proto3opt/opt.proto proto2/scalars.proto"; do \
-		$(PROTOBUF_ROOT)/src/protoc \
-			--proto_path=testproto \
-			--proto_path=include \
-			--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
-			--go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
-			-I$(PROTOBUF_ROOT)/src \
-			testproto/$${name} || exit 1; \
-  	done
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		-I$(PROTOBUF_ROOT)/src \
+		testproto/empty/empty.proto \
+		testproto/pool/pool.proto \
+		testproto/pool/pool_with_slice_reuse.proto \
+		testproto/proto3opt/opt.proto \
+		testproto/proto2/scalars.proto \
+		|| exit 1;
 
 genall: install gen-include gen-conformance gen-testproto
 
