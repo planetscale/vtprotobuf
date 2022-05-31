@@ -53,7 +53,12 @@ func (p *pool) message(message *protogen.Message) {
 	for _, field := range message.Fields {
 		fieldName := field.GoName
 
-		if field.Desc.IsList() {
+		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+		if oneof && p.ShouldPool(message) && p.ShouldPool(field.Message) {
+			p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
+			p.P(`oneof.` + fieldName + `.ReturnToVTPool()`)
+			p.P(`}`)
+		} else if field.Desc.IsList() {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
 				if p.ShouldPool(field.Message) {
