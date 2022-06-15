@@ -60,6 +60,8 @@ func (p *pool) message(message *protogen.Message) {
 					p.P(`for _, mm := range m.`, fieldName, `{`)
 					p.P(`mm.ResetVT()`)
 					p.P(`}`)
+					p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
+					saved = append(saved, field)
 				}
 			default:
 				p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
