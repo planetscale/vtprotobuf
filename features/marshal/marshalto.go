@@ -20,7 +20,10 @@ import (
 
 func init() {
 	generator.RegisterFeature("marshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
-		return &marshal{GeneratedFile: gen, Stable: false}
+		return &marshal{GeneratedFile: gen, Stable: false, strict: false}
+	})
+	generator.RegisterFeature("marshal_strict", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &marshal{GeneratedFile: gen, Stable: false, strict: true}
 	})
 }
 
@@ -37,7 +40,7 @@ func (cnt *counter) Current() string {
 
 type marshal struct {
 	*generator.GeneratedFile
-	Stable, once bool
+	Stable, once, strict bool
 }
 
 var _ generator.FeatureGenerator = (*marshal)(nil)
@@ -50,8 +53,18 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
+// need different names to generate helpers for marshal and marshal_strict features independently
+func (p *marshal) encodeVarintMeth() string {
+	switch {
+	case p.strict:
+		return "encodeVarintForStrict"
+	default:
+		return "encodeVarint"
+	}
+}
+
 func (p *marshal) GenerateHelpers() {
-	p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
+	p.P(`func `, p.encodeVarintMeth(), `(dAtA []byte, offset int, v uint64) int {`)
 	p.P(`offset -= sov(v)`)
 	p.P(`base := offset`)
 	p.P(`for v >= 1<<7 {`)
@@ -75,7 +88,7 @@ func (p *marshal) encodeFixed32(varName ...string) {
 }
 
 func (p *marshal) encodeVarint(varName ...string) {
-	p.P(`i = encodeVarint(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
+	p.P(`i = `, p.encodeVarintMeth(), `(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
 }
 
 func (p *marshal) encodeKey(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) {
@@ -537,6 +550,33 @@ func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Fie
 	}
 }
 
+func (p *marshal) marshalToSizedBufferMeth() string {
+	switch {
+	case p.strict:
+		return "MarshalToSizedBufferVTStrict"
+	default:
+		return "MarshalToSizedBufferVT"
+	}
+}
+
+func (p *marshal) marshalToVTMeth() string {
+	switch {
+	case p.strict:
+		return "MarshalToVTStrict"
+	default:
+		return "MarshalToVT"
+	}
+}
+
+func (p *marshal) marshalVTMeth() string {
+	switch {
+	case p.strict:
+		return "MarshalVTStrict"
+	default:
+		return "MarshalVT"
+	}
+}
+
 func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	for _, nested := range message.Messages {
 		p.message(proto3, nested)
@@ -551,25 +591,25 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	var numGen counter
 	ccTypeName := message.GoIdent
 
-	p.P(`func (m *`, ccTypeName, `) MarshalVT() (dAtA []byte, err error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.marshalVTMeth(), `() (dAtA []byte, err error) {`)
 	p.P(`if m == nil {`)
 	p.P(`return nil, nil`)
 	p.P(`}`)
 	p.P(`size := m.SizeVT()`)
 	p.P(`dAtA = make([]byte, size)`)
-	p.P(`n, err := m.MarshalToSizedBufferVT(dAtA[:size])`)
+	p.P(`n, err := m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
 	p.P(`if err != nil {`)
 	p.P(`return nil, err`)
 	p.P(`}`)
 	p.P(`return dAtA[:n], nil`)
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) MarshalToVT(dAtA []byte) (int, error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.marshalToVTMeth(), `(dAtA []byte) (int, error) {`)
 	p.P(`size := m.SizeVT()`)
-	p.P(`return m.MarshalToSizedBufferVT(dAtA[:size])`)
+	p.P(`return m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) MarshalToSizedBufferVT(dAtA []byte) (int, error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.marshalToSizedBufferMeth(), `(dAtA []byte) (int, error) {`)
 	p.P(`if m == nil {`)
 	p.P(`return 0, nil`)
 	p.P(`}`)
@@ -586,37 +626,56 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
 	})
 
-	// To match the wire format of proto.Marshal, oneofs have to be marshaled
-	// before fields. See https://github.com/planetscale/vtprotobuf/pull/22
+	marshalForwardOneOf := func(varname string) {
+		p.P(`size, err := `, varname, `.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
+		p.P(`if err != nil {`)
+		p.P(`return 0, err`)
+		p.P(`}`)
+		p.P(`i -= size`)
+	}
 
-	oneofs := make(map[string]struct{}, len(message.Fields))
-	for i := len(message.Fields) - 1; i >= 0; i-- {
-		field := message.Fields[i]
-		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-		if oneof {
-			fieldname := field.Oneof.GoName
-			if _, ok := oneofs[fieldname]; !ok {
-				oneofs[fieldname] = struct{}{}
-				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
-				p.P(`MarshalToSizedBufferVT([]byte) (int, error)`)
-				p.P(`}); ok {`)
-				p.P(`size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])`)
-				p.P(`if err != nil {`)
-				p.P(`return 0, err`)
+	if p.strict {
+		for i := len(message.Fields) - 1; i >= 0; i-- {
+			field := message.Fields[i]
+			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+			if !oneof {
+				p.field(proto3, false, &numGen, field)
+			} else {
+				p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
+				marshalForwardOneOf("msg")
 				p.P(`}`)
-				p.P(`i -= size`)
-				p.P(`}`)
+			}
+		}
+	} else {
+		// To match the wire format of proto.Marshal, oneofs have to be marshaled
+		// before fields. See https://github.com/planetscale/vtprotobuf/pull/22
+
+		oneofs := make(map[string]struct{}, len(message.Fields))
+		for i := len(message.Fields) - 1; i >= 0; i-- {
+			field := message.Fields[i]
+			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+			if oneof {
+				fieldname := field.Oneof.GoName
+				if _, ok := oneofs[fieldname]; !ok {
+					oneofs[fieldname] = struct{}{}
+					p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
+					p.P(p.marshalToSizedBufferMeth(), ` ([]byte) (int, error)`)
+					p.P(`}); ok {`)
+					marshalForwardOneOf("vtmsg")
+					p.P(`}`)
+				}
+			}
+		}
+
+		for i := len(message.Fields) - 1; i >= 0; i-- {
+			field := message.Fields[i]
+			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+			if !oneof {
+				p.field(proto3, false, &numGen, field)
 			}
 		}
 	}
 
-	for i := len(message.Fields) - 1; i >= 0; i-- {
-		field := message.Fields[i]
-		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-		if !oneof {
-			p.field(proto3, false, &numGen, field)
-		}
-	}
 	p.P(`return len(dAtA) - i, nil`)
 	p.P(`}`)
 	p.P()
@@ -627,12 +686,12 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 			continue
 		}
 		ccTypeName := field.GoIdent
-		p.P(`func (m *`, ccTypeName, `) MarshalToVT(dAtA []byte) (int, error) {`)
+		p.P(`func (m *`, ccTypeName, `) `, p.marshalToVTMeth(), `(dAtA []byte) (int, error) {`)
 		p.P(`size := m.SizeVT()`)
-		p.P(`return m.MarshalToSizedBufferVT(dAtA[:size])`)
+		p.P(`return m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
 		p.P(`}`)
 		p.P(``)
-		p.P(`func (m *`, ccTypeName, `) MarshalToSizedBufferVT(dAtA []byte) (int, error) {`)
+		p.P(`func (m *`, ccTypeName, `) `, p.marshalToSizedBufferMeth(), `(dAtA []byte) (int, error) {`)
 		p.P(`i := len(dAtA)`)
 		p.field(proto3, true, &numGen, field)
 		p.P(`return len(dAtA) - i, nil`)
@@ -650,12 +709,12 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 	local := p.IsLocalMessage(message)
 
 	if local {
-		p.P(`size, err := `, varName, `.MarshalToSizedBufferVT(dAtA[:i])`)
+		p.P(`size, err := `, varName, `.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
 	} else {
 		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
-		p.P(`MarshalToSizedBufferVT([]byte) (int, error)`)
+		p.P(p.marshalToSizedBufferMeth(), `([]byte) (int, error)`)
 		p.P(`}); ok{`)
-		p.P(`size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])`)
+		p.P(`size, err := vtmsg.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
 	}
 
 	p.P(`if err != nil {`)
