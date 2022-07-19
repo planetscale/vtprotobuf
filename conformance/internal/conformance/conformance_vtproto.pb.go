@@ -838,7 +838,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			v := make([]byte, postIndex-iNdEx)
 			copy(v, dAtA[iNdEx:postIndex])
-			m.Payload = &ConformanceRequest_ProtobufPayload{v}
+			m.Payload = &ConformanceRequest_ProtobufPayload{ProtobufPayload: v}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -870,7 +870,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JsonPayload{string(dAtA[iNdEx:postIndex])}
+			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
@@ -1008,7 +1008,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JspbPayload{string(dAtA[iNdEx:postIndex])}
+			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -1040,7 +1040,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_TextPayload{string(dAtA[iNdEx:postIndex])}
+			m.Payload = &ConformanceRequest_TextPayload{TextPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 9:
 			if wireType != 0 {
@@ -1143,7 +1143,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_ParseError{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_ParseError{ParseError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -1175,7 +1175,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_RuntimeError{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -1208,7 +1208,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			v := make([]byte, postIndex-iNdEx)
 			copy(v, dAtA[iNdEx:postIndex])
-			m.Result = &ConformanceResponse_ProtobufPayload{v}
+			m.Result = &ConformanceResponse_ProtobufPayload{ProtobufPayload: v}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -1240,7 +1240,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JsonPayload{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -1272,7 +1272,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_Skipped{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_Skipped{Skipped: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -1304,7 +1304,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_SerializeError{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_SerializeError{SerializeError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
@@ -1336,7 +1336,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JspbPayload{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -1368,7 +1368,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_TextPayload{string(dAtA[iNdEx:postIndex])}
+			m.Result = &ConformanceResponse_TextPayload{TextPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
