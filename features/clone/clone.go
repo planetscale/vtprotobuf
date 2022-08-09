@@ -6,12 +6,14 @@
 package clone
 
 import (
-	"github.com/planetscale/vtprotobuf/generator"
-	"google.golang.org/protobuf/compiler/protogen"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"path"
 	"regexp"
 	"strings"
+
+	"github.com/planetscale/vtprotobuf/generator"
+
+	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 const (

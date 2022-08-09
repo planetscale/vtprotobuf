@@ -2,11 +2,12 @@ package conformance
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
-	"testing"
 )
 
 func TestCloneVTNil(t *testing.T) {
