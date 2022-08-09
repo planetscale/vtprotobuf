@@ -7,6 +7,7 @@ package proto2
 import (
 	binary "encoding/binary"
 	fmt "fmt"
+	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	math "math"
@@ -19,6 +20,482 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+func (m *DoubleMessage) CloneVT() *DoubleMessage {
+	if m == nil {
+		return (*DoubleMessage)(nil)
+	}
+	r := &DoubleMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]float64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]float64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *DoubleMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *FloatMessage) CloneVT() *FloatMessage {
+	if m == nil {
+		return (*FloatMessage)(nil)
+	}
+	r := &FloatMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]float32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]float32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *FloatMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Int32Message) CloneVT() *Int32Message {
+	if m == nil {
+		return (*Int32Message)(nil)
+	}
+	r := &Int32Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Int32Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Int64Message) CloneVT() *Int64Message {
+	if m == nil {
+		return (*Int64Message)(nil)
+	}
+	r := &Int64Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Int64Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Uint32Message) CloneVT() *Uint32Message {
+	if m == nil {
+		return (*Uint32Message)(nil)
+	}
+	r := &Uint32Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Uint32Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Uint64Message) CloneVT() *Uint64Message {
+	if m == nil {
+		return (*Uint64Message)(nil)
+	}
+	r := &Uint64Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Uint64Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Sint32Message) CloneVT() *Sint32Message {
+	if m == nil {
+		return (*Sint32Message)(nil)
+	}
+	r := &Sint32Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Sint32Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Sint64Message) CloneVT() *Sint64Message {
+	if m == nil {
+		return (*Sint64Message)(nil)
+	}
+	r := &Sint64Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Sint64Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Fixed32Message) CloneVT() *Fixed32Message {
+	if m == nil {
+		return (*Fixed32Message)(nil)
+	}
+	r := &Fixed32Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Fixed32Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Fixed64Message) CloneVT() *Fixed64Message {
+	if m == nil {
+		return (*Fixed64Message)(nil)
+	}
+	r := &Fixed64Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Fixed64Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
+	if m == nil {
+		return (*Sfixed32Message)(nil)
+	}
+	r := &Sfixed32Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Sfixed32Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
+	if m == nil {
+		return (*Sfixed64Message)(nil)
+	}
+	r := &Sfixed64Message{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *Sfixed64Message) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *BoolMessage) CloneVT() *BoolMessage {
+	if m == nil {
+		return (*BoolMessage)(nil)
+	}
+	r := &BoolMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]bool, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]bool, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *BoolMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *StringMessage) CloneVT() *StringMessage {
+	if m == nil {
+		return (*StringMessage)(nil)
+	}
+	r := &StringMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	return r
+}
+
+func (m *StringMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *BytesMessage) CloneVT() *BytesMessage {
+	if m == nil {
+		return (*BytesMessage)(nil)
+	}
+	r := &BytesMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.RequiredField = tmpBytes
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.OptionalField = tmpBytes
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([][]byte, len(rhs))
+		for k, v := range rhs {
+			tmpBytes := make([]byte, len(v))
+			copy(tmpBytes, v)
+			tmpContainer[k] = tmpBytes
+		}
+		r.RepeatedField = tmpContainer
+	}
+	return r
+}
+
+func (m *BytesMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *EnumMessage) CloneVT() *EnumMessage {
+	if m == nil {
+		return (*EnumMessage)(nil)
+	}
+	r := &EnumMessage{}
+	if rhs := m.RequiredField; rhs != nil {
+		tmpVal := *rhs
+		r.RequiredField = &tmpVal
+	}
+	if rhs := m.OptionalField; rhs != nil {
+		tmpVal := *rhs
+		r.OptionalField = &tmpVal
+	}
+	if rhs := m.RepeatedField; rhs != nil {
+		tmpContainer := make([]EnumMessage_Num, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedField = tmpContainer
+	}
+	if rhs := m.PackedField; rhs != nil {
+		tmpContainer := make([]EnumMessage_Num, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedField = tmpContainer
+	}
+	return r
+}
+
+func (m *EnumMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
 
 func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {
 	if this == nil {

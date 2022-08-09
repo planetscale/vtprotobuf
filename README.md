@@ -32,6 +32,12 @@ The following features can be generated:
 
     - `func YourProtoFromVTPool() *YourProto`: this function returns a `YourProto` message from a local memory pool, or allocates a new one if the pool is currently empty. The returned message is always empty and ready to be used (e.g. by calling `UnmarshalVT` on it). Once the message has been processed, it must be returned to the memory pool by calling `ReturnToVTPool()` on it. Returning the message to the pool is not mandatory (it does not leak memory), but if you don't return it, that defeats the whole point of memory pooling.
 
+- `clone`: generates the following helper methods
+
+    - `func (p *YourProto) CloneVT() *YourProto`: this function behaves similarly to calling `proto.Clone(p)` on the message, except the cloning is performed by unrolled codegen without using reflection. If the receiver `p` is `nil` a typed `nil` is returned.
+
+    - `func (p *YourProto) CloneGenericVT() proto.Message`: this function behaves like the above `p.CloneVT()`, but provides a uniform signature in order to be accessible via type assertions even if the type is not known at compile time. This allows implementing a generic `func CloneVT(proto.Message)` without reflection. If the receiver `p` is `nil`, a typed `nil` pointer of the message type will be returned inside a `proto.Message` interface.
+
 ## Usage
 
 1. Install `protoc-gen-go-vtproto`:
