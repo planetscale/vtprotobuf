@@ -223,9 +223,9 @@ func (x *FailureSet) GetFailure() []string {
 
 // Represents a single test case's input.  The testee should:
 //
-//   1. parse this proto (which should always succeed)
-//   2. parse the protobuf or JSON payload in "payload" (which may fail)
-//   3. if the parse succeeded, serialize the message in the requested format.
+//  1. parse this proto (which should always succeed)
+//  2. parse the protobuf or JSON payload in "payload" (which may fail)
+//  3. if the parse succeeded, serialize the message in the requested format.
 type ConformanceRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -240,6 +240,7 @@ type ConformanceRequest struct {
 	// protobuf_test_messages.google.protobuf.TestAllTypes message instead.
 	//
 	// Types that are assignable to Payload:
+	//
 	//	*ConformanceRequest_ProtobufPayload
 	//	*ConformanceRequest_JsonPayload
 	//	*ConformanceRequest_JspbPayload
@@ -400,6 +401,7 @@ type ConformanceResponse struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Result:
+	//
 	//	*ConformanceResponse_ParseError
 	//	*ConformanceResponse_SerializeError
 	//	*ConformanceResponse_RuntimeError

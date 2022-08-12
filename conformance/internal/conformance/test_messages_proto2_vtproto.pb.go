@@ -9753,7 +9753,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
-			m.OneofField = &TestAllTypesProto2_OneofUint32{v}
+			m.OneofField = &TestAllTypesProto2_OneofUint32{OneofUint32: v}
 		case 112:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OneofNestedMessage", wireType)
@@ -9792,7 +9792,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.OneofField = &TestAllTypesProto2_OneofNestedMessage{v}
+				m.OneofField = &TestAllTypesProto2_OneofNestedMessage{OneofNestedMessage: v}
 			}
 			iNdEx = postIndex
 		case 113:
@@ -9825,7 +9825,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OneofField = &TestAllTypesProto2_OneofString{string(dAtA[iNdEx:postIndex])}
+			m.OneofField = &TestAllTypesProto2_OneofString{OneofString: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 114:
 			if wireType != 2 {
@@ -9858,7 +9858,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 			}
 			v := make([]byte, postIndex-iNdEx)
 			copy(v, dAtA[iNdEx:postIndex])
-			m.OneofField = &TestAllTypesProto2_OneofBytes{v}
+			m.OneofField = &TestAllTypesProto2_OneofBytes{OneofBytes: v}
 			iNdEx = postIndex
 		case 115:
 			if wireType != 0 {
@@ -9880,7 +9880,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			b := bool(v != 0)
-			m.OneofField = &TestAllTypesProto2_OneofBool{b}
+			m.OneofField = &TestAllTypesProto2_OneofBool{OneofBool: b}
 		case 116:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OneofUint64", wireType)
@@ -9900,7 +9900,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
-			m.OneofField = &TestAllTypesProto2_OneofUint64{v}
+			m.OneofField = &TestAllTypesProto2_OneofUint64{OneofUint64: v}
 		case 117:
 			if wireType != 5 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OneofFloat", wireType)
@@ -9911,7 +9911,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 			}
 			v = uint32(binary.LittleEndian.Uint32(dAtA[iNdEx:]))
 			iNdEx += 4
-			m.OneofField = &TestAllTypesProto2_OneofFloat{float32(math.Float32frombits(v))}
+			m.OneofField = &TestAllTypesProto2_OneofFloat{OneofFloat: float32(math.Float32frombits(v))}
 		case 118:
 			if wireType != 1 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OneofDouble", wireType)
@@ -9922,7 +9922,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 			}
 			v = uint64(binary.LittleEndian.Uint64(dAtA[iNdEx:]))
 			iNdEx += 8
-			m.OneofField = &TestAllTypesProto2_OneofDouble{float64(math.Float64frombits(v))}
+			m.OneofField = &TestAllTypesProto2_OneofDouble{OneofDouble: float64(math.Float64frombits(v))}
 		case 119:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field OneofEnum", wireType)
@@ -9942,7 +9942,7 @@ func (m *TestAllTypesProto2) UnmarshalVT(dAtA []byte) error {
 					break
 				}
 			}
-			m.OneofField = &TestAllTypesProto2_OneofEnum{v}
+			m.OneofField = &TestAllTypesProto2_OneofEnum{OneofEnum: v}
 		case 201:
 			if wireType != 3 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Data", wireType)
