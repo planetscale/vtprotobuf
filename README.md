@@ -75,7 +75,7 @@ To use `vtprotobuf` with the new versions of GRPC, you need to register the code
 package servenv
 
 import (
-    "github.com/planetscale/vtprotobuf/codec/grpc"
+	"github.com/planetscale/vtprotobuf/codec/grpc"
 	"google.golang.org/grpc/encoding"
 	_ "google.golang.org/grpc/encoding/proto"
 )
