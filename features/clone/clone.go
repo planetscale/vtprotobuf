@@ -6,12 +6,7 @@
 package clone
 
 import (
-	"path"
-	"regexp"
-	"strings"
-
 	"github.com/planetscale/vtprotobuf/generator"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -22,10 +17,7 @@ const (
 )
 
 var (
-	protoPkg   = protogen.GoImportPath("google.golang.org/protobuf/proto")
-	reflectPkg = protogen.GoImportPath("reflect")
-
-	nonAlphaNum = regexp.MustCompile(`[^a-zA-Z0-9_]`)
+	protoPkg = protogen.GoImportPath("google.golang.org/protobuf/proto")
 )
 
 func init() {
@@ -37,13 +29,6 @@ func init() {
 type clone struct {
 	*generator.GeneratedFile
 	once bool
-
-	// prefix allows to introduce dynamically named symbols without clashing with declarations in other
-	// generated files.
-	prefix string
-	// cloneHelperFuncNames tracks the message types for which clone helper functions are required, along
-	// with the name by which they are referenced.
-	cloneHelperFuncNames map[*protogen.Message]string
 }
 
 var _ generator.FeatureGenerator = (*clone)(nil)
@@ -54,13 +39,10 @@ func (p *clone) Name() string {
 
 func (p *clone) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
-	p.prefix = nonAlphaNum.ReplaceAllString(strings.TrimSuffix(path.Base(file.Desc.Path()), ".proto"), "_")
 
 	for _, message := range file.Messages {
 		p.processMessage(proto3, message)
 	}
-
-	p.generateCloneHelperFuncs()
 
 	return p.once
 }
@@ -86,8 +68,13 @@ func (p *clone) cloneFieldSingular(lhs, rhs string, kind protoreflect.Kind, mess
 		if p.IsLocalMessage(message) {
 			p.P(lhs, ` = `, rhs, `.`, cloneName, `()`)
 		} else {
-			cloneHelper := p.lookupCloneHelper(message)
-			p.P(lhs, ` = `, cloneHelper, `(`, rhs, `)`)
+			// rhs is a concrete type, we need to first convert it to an interface in order to use an interface
+			// type assertion.
+			p.P(`if vtpb, ok := interface{}(`, rhs, `).(interface{ `, cloneName, `() *`, message.GoIdent, ` }); ok {`)
+			p.P(lhs, ` = vtpb.`, cloneName, `()`)
+			p.P(`} else {`)
+			p.P(lhs, ` = `, protoPkg.Ident("Clone"), `(`, rhs, `).(*`, message.GoIdent, `)`)
+			p.P(`}`)
 		}
 	case kind == protoreflect.BytesKind:
 		p.P(`tmpBytes := make([]byte, len(`, rhs, `))`)
@@ -200,13 +187,8 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protog
 		}
 		// Shortcut: for types where we know that an optimized clone method exists, we can call it directly as it is
 		// nil-safe.
-		if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil {
-			if p.IsLocalMessage(field.Message) {
-				p.P(field.GoName, `: m.`, field.GoName, `.`, cloneName, `(),`)
-			} else {
-				cloneHelper := p.lookupCloneHelper(field.Message)
-				p.P(field.GoName, `: `, cloneHelper, `(m.`, field.GoName, `),`)
-			}
+		if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil && p.IsLocalMessage(field.Message) {
+			p.P(field.GoName, `: m.`, field.GoName, `.`, cloneName, `(),`)
 			continue
 		}
 		refFields = append(refFields, field)
@@ -259,54 +241,6 @@ func (p *clone) processMessage(proto3 bool, message *protogen.Message) {
 
 	p.generateCloneMethodsForMessage(proto3, message)
 	p.processMessageOneofs(message)
-}
-
-// lookupCloneHelper retrieves the name of the helper function to clone a message of the given type,
-// and tracks the type for later code generation in generateCloneHelperFuncs.
-func (p *clone) lookupCloneHelper(message *protogen.Message) string {
-	helperName := p.cloneHelperFuncNames[message]
-	if helperName == "" {
-		if p.cloneHelperFuncNames == nil {
-			p.cloneHelperFuncNames = make(map[*protogen.Message]string)
-		}
-		helperName = "vt_clone_helper__" + p.prefix + "__" + nonAlphaNum.ReplaceAllString(string(message.Desc.FullName()), "_")
-		p.cloneHelperFuncNames[message] = helperName
-	}
-	return helperName
-}
-
-// generateCloneHelperFuncs introduces function-typed variables for cloning non-local messages.
-// These variables either point to the CloneVT method, if one exists for the type, or a wrapper using
-// proto.Clone and a cast.
-func (p *clone) generateCloneHelperFuncs() {
-	if len(p.cloneHelperFuncNames) == 0 {
-		return
-	}
-	p.P(`var (`)
-	for msg, helperName := range p.cloneHelperFuncNames {
-		ccTypeName := p.QualifiedGoIdent(msg.GoIdent)
-		p.P(helperName, ` func(*`, ccTypeName, `) *`, ccTypeName)
-	}
-	p.P(`)`)
-	p.P()
-	p.P(`func init() {`)
-	for msg, helperName := range p.cloneHelperFuncNames {
-		ccTypeName := p.QualifiedGoIdent(msg.GoIdent)
-		// Use interface type assertions + reflection _once_ to retrieve the typed CloneVT func.
-		p.P(`if _, ok := `, protoPkg.Ident("Message"), `((*`, ccTypeName, `)(nil)).(interface{ `, cloneName, `() *`, ccTypeName, ` }); ok {`)
-		p.P(`m, _ := `, reflectPkg.Ident("TypeOf"), `((*`, ccTypeName, `)(nil)).MethodByName("`, cloneName, `")`)
-		p.P(helperName, ` = m.Func.Interface().(func(*`, ccTypeName, `) *`, ccTypeName, `)`)
-		p.P(`} else {`)
-		p.P(helperName, ` = func(m *`, ccTypeName, `) *`, ccTypeName, ` {`)
-		p.P(`if m == nil {`)
-		p.P(`return nil`)
-		p.P(`}`)
-		p.P(`return `, protoPkg.Ident("Clone"), `(m).(*`, ccTypeName, `)`)
-		p.P(`}`)
-		p.P(`}`)
-	}
-	p.P(`}`)
-	p.P()
 }
 
 // isReference checks whether the Go equivalent of the given field is of reference type, i.e., can be nil.
