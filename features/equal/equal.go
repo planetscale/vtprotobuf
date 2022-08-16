@@ -106,11 +106,11 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 		if !oneof {
 			continue
 		}
-		p.oneof(field, false)
+		p.oneof(field)
 	}
 }
 
-func (p *equal) oneof(field *protogen.Field, nullable bool) {
+func (p *equal) oneof(field *protogen.Field) {
 	ccTypeName := field.GoIdent.GoName
 	ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
 	fieldname := field.GoName
@@ -132,7 +132,7 @@ func (p *equal) oneof(field *protogen.Field, nullable bool) {
 	kind := field.Desc.Kind()
 	switch {
 	case isScalar(kind):
-		p.compareScalar(lhs, rhs, nullable)
+		p.compareScalar(lhs, rhs, false)
 	case kind == protoreflect.BytesKind:
 		p.compareBytes(lhs, rhs)
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
