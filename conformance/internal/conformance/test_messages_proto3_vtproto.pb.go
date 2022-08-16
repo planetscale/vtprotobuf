@@ -958,34 +958,9 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 		if that.OneofField == nil {
 			return false
 		}
-		if this.GetOneofUint32() != that.GetOneofUint32() {
-			return false
-		}
-		if !this.GetOneofNestedMessage().EqualVT(that.GetOneofNestedMessage()) {
-			return false
-		}
-		if this.GetOneofString() != that.GetOneofString() {
-			return false
-		}
-		if string(this.GetOneofBytes()) != string(that.GetOneofBytes()) {
-			return false
-		}
-		if this.GetOneofBool() != that.GetOneofBool() {
-			return false
-		}
-		if this.GetOneofUint64() != that.GetOneofUint64() {
-			return false
-		}
-		if this.GetOneofFloat() != that.GetOneofFloat() {
-			return false
-		}
-		if this.GetOneofDouble() != that.GetOneofDouble() {
-			return false
-		}
-		if this.GetOneofEnum() != that.GetOneofEnum() {
-			return false
-		}
-		if this.GetOneofNullValue() != that.GetOneofNullValue() {
+		if !this.OneofField.(interface {
+			EqualVT(isTestAllTypesProto3_OneofField) bool
+		}).EqualVT(that.OneofField) {
 			return false
 		}
 	}
@@ -2148,6 +2123,176 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestAllTypesProto3_OneofUint32) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofUint32)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofUint32 != that.OneofUint32 {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofNestedMessage) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofNestedMessage)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if !this.OneofNestedMessage.EqualVT(that.OneofNestedMessage) {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofString) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofString)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofString != that.OneofString {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofBytes) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofBytes)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if string(this.OneofBytes) != string(that.OneofBytes) {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofBool) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofBool)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofBool != that.OneofBool {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofUint64) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofUint64)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofUint64 != that.OneofUint64 {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofFloat) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofFloat)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofFloat != that.OneofFloat {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofDouble) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofDouble)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofDouble != that.OneofDouble {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofEnum) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofEnum)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofEnum != that.OneofEnum {
+		return false
+	}
+	return true
+}
+
+func (this *TestAllTypesProto3_OneofNullValue) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
+	that, ok := thatIface.(*TestAllTypesProto3_OneofNullValue)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.OneofNullValue != that.OneofNullValue {
+		return false
+	}
+	return true
 }
 
 func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {

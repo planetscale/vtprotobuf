@@ -245,16 +245,9 @@ func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 		if that.Payload == nil {
 			return false
 		}
-		if string(this.GetProtobufPayload()) != string(that.GetProtobufPayload()) {
-			return false
-		}
-		if this.GetJsonPayload() != that.GetJsonPayload() {
-			return false
-		}
-		if this.GetJspbPayload() != that.GetJspbPayload() {
-			return false
-		}
-		if this.GetTextPayload() != that.GetTextPayload() {
+		if !this.Payload.(interface {
+			EqualVT(isConformanceRequest_Payload) bool
+		}).EqualVT(that.Payload) {
 			return false
 		}
 	}
@@ -276,6 +269,74 @@ func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *ConformanceRequest_ProtobufPayload) EqualVT(thatIface isConformanceRequest_Payload) bool {
+	that, ok := thatIface.(*ConformanceRequest_ProtobufPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if string(this.ProtobufPayload) != string(that.ProtobufPayload) {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceRequest_JsonPayload) EqualVT(thatIface isConformanceRequest_Payload) bool {
+	that, ok := thatIface.(*ConformanceRequest_JsonPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.JsonPayload != that.JsonPayload {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceRequest_JspbPayload) EqualVT(thatIface isConformanceRequest_Payload) bool {
+	that, ok := thatIface.(*ConformanceRequest_JspbPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.JspbPayload != that.JspbPayload {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceRequest_TextPayload) EqualVT(thatIface isConformanceRequest_Payload) bool {
+	that, ok := thatIface.(*ConformanceRequest_TextPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.TextPayload != that.TextPayload {
+		return false
+	}
+	return true
+}
+
 func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 	if this == nil {
 		return that == nil || that.String() == ""
@@ -288,32 +349,149 @@ func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 		if that.Result == nil {
 			return false
 		}
-		if this.GetParseError() != that.GetParseError() {
-			return false
-		}
-		if this.GetRuntimeError() != that.GetRuntimeError() {
-			return false
-		}
-		if string(this.GetProtobufPayload()) != string(that.GetProtobufPayload()) {
-			return false
-		}
-		if this.GetJsonPayload() != that.GetJsonPayload() {
-			return false
-		}
-		if this.GetSkipped() != that.GetSkipped() {
-			return false
-		}
-		if this.GetSerializeError() != that.GetSerializeError() {
-			return false
-		}
-		if this.GetJspbPayload() != that.GetJspbPayload() {
-			return false
-		}
-		if this.GetTextPayload() != that.GetTextPayload() {
+		if !this.Result.(interface {
+			EqualVT(isConformanceResponse_Result) bool
+		}).EqualVT(that.Result) {
 			return false
 		}
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *ConformanceResponse_ParseError) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_ParseError)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.ParseError != that.ParseError {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_RuntimeError) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_RuntimeError)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.RuntimeError != that.RuntimeError {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_ProtobufPayload) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_ProtobufPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if string(this.ProtobufPayload) != string(that.ProtobufPayload) {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_JsonPayload) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_JsonPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.JsonPayload != that.JsonPayload {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_Skipped) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_Skipped)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.Skipped != that.Skipped {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_SerializeError) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_SerializeError)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.SerializeError != that.SerializeError {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_JspbPayload) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_JspbPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.JspbPayload != that.JspbPayload {
+		return false
+	}
+	return true
+}
+
+func (this *ConformanceResponse_TextPayload) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_TextPayload)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.TextPayload != that.TextPayload {
+		return false
+	}
+	return true
 }
 
 func (this *JspbEncodingConfig) EqualVT(that *JspbEncodingConfig) bool {

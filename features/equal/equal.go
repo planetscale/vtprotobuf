@@ -63,27 +63,28 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 
 	{
 		oneofs := make(map[string]struct{}, len(message.Fields))
-		scoped := false
 		for _, field := range message.Fields {
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-			nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
-			if oneof {
-				fieldname := field.Oneof.GoName
-				if _, ok := oneofs[fieldname]; !ok {
-					oneofs[fieldname] = struct{}{}
-					p.P(`if this.`, fieldname, ` == nil && that.`, fieldname, ` != nil {`)
-					p.P(`	return false`)
-					p.P(`} else if this.`, fieldname, ` != nil {`)
-					p.P(`	if that.`, fieldname, ` == nil {`)
-					p.P(`		return false`)
-					p.P(`	}`)
-					scoped = true
-				}
-
-				p.oneof(field, nullable)
+			if !oneof {
+				continue
 			}
-		}
-		if scoped {
+
+			fieldname := field.Oneof.GoName
+			if _, ok := oneofs[fieldname]; ok {
+				continue
+			}
+			oneofs[fieldname] = struct{}{}
+
+			p.P(`if this.`, fieldname, ` == nil && that.`, fieldname, ` != nil {`)
+			p.P(`	return false`)
+			p.P(`} else if this.`, fieldname, ` != nil {`)
+			p.P(`	if that.`, fieldname, ` == nil {`)
+			p.P(`		return false`)
+			p.P(`	}`)
+			ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
+			p.P(`if !this.`, fieldname, `.(interface{ `, equalName, `(`, ccInterfaceName, `) bool }).`, equalName, `(that.`, fieldname, `) {`)
+			p.P(`return false`)
+			p.P(`}`)
 			p.P(`}`)
 		}
 	}
@@ -99,15 +100,35 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 	p.P(`return string(this.unknownFields) == string(that.unknownFields)`)
 	p.P(`}`)
 	p.P()
+
+	for _, field := range message.Fields {
+		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+		if !oneof {
+			continue
+		}
+		p.oneof(field, false)
+	}
 }
 
 func (p *equal) oneof(field *protogen.Field, nullable bool) {
+	ccTypeName := field.GoIdent.GoName
+	ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
 	fieldname := field.GoName
 
-	getter := fmt.Sprintf("Get%s()", fieldname)
-	lhs := fmt.Sprintf("this.%s", getter)
-	rhs := fmt.Sprintf("that.%s", getter)
+	p.P(`func (this *`, ccTypeName, `) `, equalName, `(thatIface `, ccInterfaceName, `) bool {`)
+	p.P(`that, ok := thatIface.(*`, ccTypeName, `)`)
+	p.P(`if !ok {`)
+	p.P(`return false`)
+	p.P(`}`)
+	p.P(`if this == that {`)
+	p.P(`return true`)
+	p.P(`}`)
+	p.P(`if this == nil && that != nil || this != nil && that == nil {`)
+	p.P(`return false`)
+	p.P(`}`)
 
+	lhs := fmt.Sprintf("this.%s", fieldname)
+	rhs := fmt.Sprintf("that.%s", fieldname)
 	kind := field.Desc.Kind()
 	switch {
 	case isScalar(kind):
@@ -120,6 +141,9 @@ func (p *equal) oneof(field *protogen.Field, nullable bool) {
 	default:
 		panic("not implemented")
 	}
+	p.P(`return true`)
+	p.P(`}`)
+	p.P()
 }
 
 func (p *equal) field(field *protogen.Field, nullable bool) {
