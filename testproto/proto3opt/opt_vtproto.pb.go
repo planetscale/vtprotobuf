@@ -146,7 +146,7 @@ func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
 	if p, q := this.OptionalString, that.OptionalString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
 	}
-	if string(this.OptionalBytes) != string(that.OptionalBytes) {
+	if p, q := this.OptionalBytes, that.OptionalBytes; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
 	}
 	if p, q := this.OptionalEnum, that.OptionalEnum; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {

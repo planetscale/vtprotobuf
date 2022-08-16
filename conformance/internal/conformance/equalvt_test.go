@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/planetscale/vtprotobuf/testproto/proto3opt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -212,6 +213,96 @@ func TestEqualVT_Oneof_AbsenceVsZeroValue(t *testing.T) {
 
 	if a.EqualVT(b) {
 		assert.JSONEq(t, string(aJson), string(bJson))
+		err := fmt.Errorf("these %T should not be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
+		require.NoError(t, err)
+	}
+}
+
+func TestEqualVT_Proto2_BytesPresence(t *testing.T) {
+	a := &TestAllTypesProto2{
+		OptionalBytes: nil,
+	}
+	b := &TestAllTypesProto2{
+		OptionalBytes: []byte{},
+	}
+
+	require.False(t, proto.Equal(a, b))
+
+	aJson, err := protojson.Marshal(a)
+	require.NoError(t, err)
+	bJson, err := protojson.Marshal(b)
+	require.NoError(t, err)
+
+	if a.EqualVT(b) {
+		assert.JSONEq(t, string(aJson), string(bJson))
+		err := fmt.Errorf("these %T should not be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
+		require.NoError(t, err)
+	}
+}
+
+func TestEqualVT_Proto3_BytesPresence(t *testing.T) {
+	a := &proto3opt.OptionalFieldInProto3{
+		OptionalBytes: nil,
+	}
+	b := &proto3opt.OptionalFieldInProto3{
+		OptionalBytes: []byte{},
+	}
+
+	require.False(t, proto.Equal(a, b))
+
+	aJson, err := protojson.Marshal(a)
+	require.NoError(t, err)
+	bJson, err := protojson.Marshal(b)
+	require.NoError(t, err)
+
+	if a.EqualVT(b) {
+		assert.JSONEq(t, string(aJson), string(bJson))
+		err := fmt.Errorf("these %T should not be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
+		require.NoError(t, err)
+	}
+}
+
+func TestEqualVT_Proto2_BytesNoPresence(t *testing.T) {
+	a := &TestAllTypesProto2{
+		RepeatedBytes: [][]byte{nil},
+		OneofField: &TestAllTypesProto2_OneofBytes{
+			OneofBytes: nil,
+		},
+	}
+	b := &TestAllTypesProto2{
+		RepeatedBytes: [][]byte{{}},
+		OneofField: &TestAllTypesProto2_OneofBytes{
+			OneofBytes: []byte{},
+		},
+	}
+
+	require.True(t, proto.Equal(a, b))
+
+	if !a.EqualVT(b) {
+		err := fmt.Errorf("these %T should be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
+		require.NoError(t, err)
+	}
+}
+
+func TestEqualVT_Proto3_BytesNoPresence(t *testing.T) {
+	a := &TestAllTypesProto3{
+		RepeatedBytes: [][]byte{nil},
+		OneofField: &TestAllTypesProto3_OneofBytes{
+			OneofBytes: nil,
+		},
+		OptionalBytes: nil,
+	}
+	b := &TestAllTypesProto3{
+		RepeatedBytes: [][]byte{{}},
+		OneofField: &TestAllTypesProto3_OneofBytes{
+			OneofBytes: []byte{},
+		},
+		OptionalBytes: []byte{},
+	}
+
+	require.True(t, proto.Equal(a, b))
+
+	if !a.EqualVT(b) {
 		err := fmt.Errorf("these %T should not be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
 		require.NoError(t, err)
 	}
