@@ -6,6 +6,7 @@ package pool
 
 import (
 	fmt "fmt"
+	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	bits "math/bits"
@@ -18,6 +19,21 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+func (m *MemoryPoolExtension) CloneVT() *MemoryPoolExtension {
+	if m == nil {
+		return (*MemoryPoolExtension)(nil)
+	}
+	r := &MemoryPoolExtension{
+		Foo1: m.Foo1,
+		Foo2: m.Foo2,
+	}
+	return r
+}
+
+func (m *MemoryPoolExtension) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
 
 func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
 	if this == nil {

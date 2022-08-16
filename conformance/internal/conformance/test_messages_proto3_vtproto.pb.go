@@ -26,6 +26,911 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+func (m *TestAllTypesProto3_NestedMessage) CloneVT() *TestAllTypesProto3_NestedMessage {
+	if m == nil {
+		return (*TestAllTypesProto3_NestedMessage)(nil)
+	}
+	r := &TestAllTypesProto3_NestedMessage{
+		A:           m.A,
+		Corecursive: m.Corecursive.CloneVT(),
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_NestedMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
+	if m == nil {
+		return (*TestAllTypesProto3)(nil)
+	}
+	r := &TestAllTypesProto3{
+		OptionalInt32:          m.OptionalInt32,
+		OptionalInt64:          m.OptionalInt64,
+		OptionalUint32:         m.OptionalUint32,
+		OptionalUint64:         m.OptionalUint64,
+		OptionalSint32:         m.OptionalSint32,
+		OptionalSint64:         m.OptionalSint64,
+		OptionalFixed32:        m.OptionalFixed32,
+		OptionalFixed64:        m.OptionalFixed64,
+		OptionalSfixed32:       m.OptionalSfixed32,
+		OptionalSfixed64:       m.OptionalSfixed64,
+		OptionalFloat:          m.OptionalFloat,
+		OptionalDouble:         m.OptionalDouble,
+		OptionalBool:           m.OptionalBool,
+		OptionalString:         m.OptionalString,
+		OptionalNestedMessage:  m.OptionalNestedMessage.CloneVT(),
+		OptionalForeignMessage: m.OptionalForeignMessage.CloneVT(),
+		OptionalNestedEnum:     m.OptionalNestedEnum,
+		OptionalForeignEnum:    m.OptionalForeignEnum,
+		OptionalAliasedEnum:    m.OptionalAliasedEnum,
+		OptionalStringPiece:    m.OptionalStringPiece,
+		OptionalCord:           m.OptionalCord,
+		RecursiveMessage:       m.RecursiveMessage.CloneVT(),
+		OptionalNullValue:      m.OptionalNullValue,
+		Fieldname1:             m.Fieldname1,
+		FieldName2:             m.FieldName2,
+		XFieldName3:            m.XFieldName3,
+		Field_Name4_:           m.Field_Name4_,
+		Field0Name5:            m.Field0Name5,
+		Field_0Name6:           m.Field_0Name6,
+		FieldName7:             m.FieldName7,
+		FieldName8:             m.FieldName8,
+		Field_Name9:            m.Field_Name9,
+		Field_Name10:           m.Field_Name10,
+		FIELD_NAME11:           m.FIELD_NAME11,
+		FIELDName12:            m.FIELDName12,
+		XFieldName13:           m.XFieldName13,
+		X_FieldName14:          m.X_FieldName14,
+		Field_Name15:           m.Field_Name15,
+		Field__Name16:          m.Field__Name16,
+		FieldName17__:          m.FieldName17__,
+		FieldName18__:          m.FieldName18__,
+	}
+	if rhs := m.OptionalBytes; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.OptionalBytes = tmpBytes
+	}
+	if rhs := m.RepeatedInt32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedInt32 = tmpContainer
+	}
+	if rhs := m.RepeatedInt64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedInt64 = tmpContainer
+	}
+	if rhs := m.RepeatedUint32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedUint32 = tmpContainer
+	}
+	if rhs := m.RepeatedUint64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedUint64 = tmpContainer
+	}
+	if rhs := m.RepeatedSint32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedSint32 = tmpContainer
+	}
+	if rhs := m.RepeatedSint64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedSint64 = tmpContainer
+	}
+	if rhs := m.RepeatedFixed32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedFixed32 = tmpContainer
+	}
+	if rhs := m.RepeatedFixed64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedFixed64 = tmpContainer
+	}
+	if rhs := m.RepeatedSfixed32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedSfixed32 = tmpContainer
+	}
+	if rhs := m.RepeatedSfixed64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedSfixed64 = tmpContainer
+	}
+	if rhs := m.RepeatedFloat; rhs != nil {
+		tmpContainer := make([]float32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedFloat = tmpContainer
+	}
+	if rhs := m.RepeatedDouble; rhs != nil {
+		tmpContainer := make([]float64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedDouble = tmpContainer
+	}
+	if rhs := m.RepeatedBool; rhs != nil {
+		tmpContainer := make([]bool, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedBool = tmpContainer
+	}
+	if rhs := m.RepeatedString; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedString = tmpContainer
+	}
+	if rhs := m.RepeatedBytes; rhs != nil {
+		tmpContainer := make([][]byte, len(rhs))
+		for k, v := range rhs {
+			tmpBytes := make([]byte, len(v))
+			copy(tmpBytes, v)
+			tmpContainer[k] = tmpBytes
+		}
+		r.RepeatedBytes = tmpContainer
+	}
+	if rhs := m.RepeatedNestedMessage; rhs != nil {
+		tmpContainer := make([]*TestAllTypesProto3_NestedMessage, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.RepeatedNestedMessage = tmpContainer
+	}
+	if rhs := m.RepeatedForeignMessage; rhs != nil {
+		tmpContainer := make([]*ForeignMessage, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.RepeatedForeignMessage = tmpContainer
+	}
+	if rhs := m.RepeatedNestedEnum; rhs != nil {
+		tmpContainer := make([]TestAllTypesProto3_NestedEnum, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedNestedEnum = tmpContainer
+	}
+	if rhs := m.RepeatedForeignEnum; rhs != nil {
+		tmpContainer := make([]ForeignEnum, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedForeignEnum = tmpContainer
+	}
+	if rhs := m.RepeatedStringPiece; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedStringPiece = tmpContainer
+	}
+	if rhs := m.RepeatedCord; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.RepeatedCord = tmpContainer
+	}
+	if rhs := m.PackedInt32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedInt32 = tmpContainer
+	}
+	if rhs := m.PackedInt64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedInt64 = tmpContainer
+	}
+	if rhs := m.PackedUint32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedUint32 = tmpContainer
+	}
+	if rhs := m.PackedUint64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedUint64 = tmpContainer
+	}
+	if rhs := m.PackedSint32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedSint32 = tmpContainer
+	}
+	if rhs := m.PackedSint64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedSint64 = tmpContainer
+	}
+	if rhs := m.PackedFixed32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedFixed32 = tmpContainer
+	}
+	if rhs := m.PackedFixed64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedFixed64 = tmpContainer
+	}
+	if rhs := m.PackedSfixed32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedSfixed32 = tmpContainer
+	}
+	if rhs := m.PackedSfixed64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedSfixed64 = tmpContainer
+	}
+	if rhs := m.PackedFloat; rhs != nil {
+		tmpContainer := make([]float32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedFloat = tmpContainer
+	}
+	if rhs := m.PackedDouble; rhs != nil {
+		tmpContainer := make([]float64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedDouble = tmpContainer
+	}
+	if rhs := m.PackedBool; rhs != nil {
+		tmpContainer := make([]bool, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedBool = tmpContainer
+	}
+	if rhs := m.PackedNestedEnum; rhs != nil {
+		tmpContainer := make([]TestAllTypesProto3_NestedEnum, len(rhs))
+		copy(tmpContainer, rhs)
+		r.PackedNestedEnum = tmpContainer
+	}
+	if rhs := m.UnpackedInt32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedInt32 = tmpContainer
+	}
+	if rhs := m.UnpackedInt64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedInt64 = tmpContainer
+	}
+	if rhs := m.UnpackedUint32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedUint32 = tmpContainer
+	}
+	if rhs := m.UnpackedUint64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedUint64 = tmpContainer
+	}
+	if rhs := m.UnpackedSint32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedSint32 = tmpContainer
+	}
+	if rhs := m.UnpackedSint64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedSint64 = tmpContainer
+	}
+	if rhs := m.UnpackedFixed32; rhs != nil {
+		tmpContainer := make([]uint32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedFixed32 = tmpContainer
+	}
+	if rhs := m.UnpackedFixed64; rhs != nil {
+		tmpContainer := make([]uint64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedFixed64 = tmpContainer
+	}
+	if rhs := m.UnpackedSfixed32; rhs != nil {
+		tmpContainer := make([]int32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedSfixed32 = tmpContainer
+	}
+	if rhs := m.UnpackedSfixed64; rhs != nil {
+		tmpContainer := make([]int64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedSfixed64 = tmpContainer
+	}
+	if rhs := m.UnpackedFloat; rhs != nil {
+		tmpContainer := make([]float32, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedFloat = tmpContainer
+	}
+	if rhs := m.UnpackedDouble; rhs != nil {
+		tmpContainer := make([]float64, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedDouble = tmpContainer
+	}
+	if rhs := m.UnpackedBool; rhs != nil {
+		tmpContainer := make([]bool, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedBool = tmpContainer
+	}
+	if rhs := m.UnpackedNestedEnum; rhs != nil {
+		tmpContainer := make([]TestAllTypesProto3_NestedEnum, len(rhs))
+		copy(tmpContainer, rhs)
+		r.UnpackedNestedEnum = tmpContainer
+	}
+	if rhs := m.MapInt32Int32; rhs != nil {
+		tmpContainer := make(map[int32]int32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapInt32Int32 = tmpContainer
+	}
+	if rhs := m.MapInt64Int64; rhs != nil {
+		tmpContainer := make(map[int64]int64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapInt64Int64 = tmpContainer
+	}
+	if rhs := m.MapUint32Uint32; rhs != nil {
+		tmpContainer := make(map[uint32]uint32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapUint32Uint32 = tmpContainer
+	}
+	if rhs := m.MapUint64Uint64; rhs != nil {
+		tmpContainer := make(map[uint64]uint64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapUint64Uint64 = tmpContainer
+	}
+	if rhs := m.MapSint32Sint32; rhs != nil {
+		tmpContainer := make(map[int32]int32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapSint32Sint32 = tmpContainer
+	}
+	if rhs := m.MapSint64Sint64; rhs != nil {
+		tmpContainer := make(map[int64]int64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapSint64Sint64 = tmpContainer
+	}
+	if rhs := m.MapFixed32Fixed32; rhs != nil {
+		tmpContainer := make(map[uint32]uint32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapFixed32Fixed32 = tmpContainer
+	}
+	if rhs := m.MapFixed64Fixed64; rhs != nil {
+		tmpContainer := make(map[uint64]uint64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapFixed64Fixed64 = tmpContainer
+	}
+	if rhs := m.MapSfixed32Sfixed32; rhs != nil {
+		tmpContainer := make(map[int32]int32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapSfixed32Sfixed32 = tmpContainer
+	}
+	if rhs := m.MapSfixed64Sfixed64; rhs != nil {
+		tmpContainer := make(map[int64]int64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapSfixed64Sfixed64 = tmpContainer
+	}
+	if rhs := m.MapInt32Float; rhs != nil {
+		tmpContainer := make(map[int32]float32, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapInt32Float = tmpContainer
+	}
+	if rhs := m.MapInt32Double; rhs != nil {
+		tmpContainer := make(map[int32]float64, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapInt32Double = tmpContainer
+	}
+	if rhs := m.MapBoolBool; rhs != nil {
+		tmpContainer := make(map[bool]bool, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapBoolBool = tmpContainer
+	}
+	if rhs := m.MapStringString; rhs != nil {
+		tmpContainer := make(map[string]string, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapStringString = tmpContainer
+	}
+	if rhs := m.MapStringBytes; rhs != nil {
+		tmpContainer := make(map[string][]byte, len(rhs))
+		for k, v := range rhs {
+			tmpBytes := make([]byte, len(v))
+			copy(tmpBytes, v)
+			tmpContainer[k] = tmpBytes
+		}
+		r.MapStringBytes = tmpContainer
+	}
+	if rhs := m.MapStringNestedMessage; rhs != nil {
+		tmpContainer := make(map[string]*TestAllTypesProto3_NestedMessage, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.MapStringNestedMessage = tmpContainer
+	}
+	if rhs := m.MapStringForeignMessage; rhs != nil {
+		tmpContainer := make(map[string]*ForeignMessage, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.MapStringForeignMessage = tmpContainer
+	}
+	if rhs := m.MapStringNestedEnum; rhs != nil {
+		tmpContainer := make(map[string]TestAllTypesProto3_NestedEnum, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapStringNestedEnum = tmpContainer
+	}
+	if rhs := m.MapStringForeignEnum; rhs != nil {
+		tmpContainer := make(map[string]ForeignEnum, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v
+		}
+		r.MapStringForeignEnum = tmpContainer
+	}
+	if m.OneofField != nil {
+		r.OneofField = m.OneofField.(interface {
+			CloneVT() isTestAllTypesProto3_OneofField
+		}).CloneVT()
+	}
+	if rhs := m.OptionalBoolWrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrapperspb.BoolValue }); ok {
+			r.OptionalBoolWrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalBoolWrapper = proto.Clone(rhs).(*wrapperspb.BoolValue)
+		}
+	}
+	if rhs := m.OptionalInt32Wrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrapperspb.Int32Value }); ok {
+			r.OptionalInt32Wrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalInt32Wrapper = proto.Clone(rhs).(*wrapperspb.Int32Value)
+		}
+	}
+	if rhs := m.OptionalInt64Wrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrapperspb.Int64Value }); ok {
+			r.OptionalInt64Wrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalInt64Wrapper = proto.Clone(rhs).(*wrapperspb.Int64Value)
+		}
+	}
+	if rhs := m.OptionalUint32Wrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface {
+			CloneVT() *wrapperspb.UInt32Value
+		}); ok {
+			r.OptionalUint32Wrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalUint32Wrapper = proto.Clone(rhs).(*wrapperspb.UInt32Value)
+		}
+	}
+	if rhs := m.OptionalUint64Wrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface {
+			CloneVT() *wrapperspb.UInt64Value
+		}); ok {
+			r.OptionalUint64Wrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalUint64Wrapper = proto.Clone(rhs).(*wrapperspb.UInt64Value)
+		}
+	}
+	if rhs := m.OptionalFloatWrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrapperspb.FloatValue }); ok {
+			r.OptionalFloatWrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalFloatWrapper = proto.Clone(rhs).(*wrapperspb.FloatValue)
+		}
+	}
+	if rhs := m.OptionalDoubleWrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface {
+			CloneVT() *wrapperspb.DoubleValue
+		}); ok {
+			r.OptionalDoubleWrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalDoubleWrapper = proto.Clone(rhs).(*wrapperspb.DoubleValue)
+		}
+	}
+	if rhs := m.OptionalStringWrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface {
+			CloneVT() *wrapperspb.StringValue
+		}); ok {
+			r.OptionalStringWrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalStringWrapper = proto.Clone(rhs).(*wrapperspb.StringValue)
+		}
+	}
+	if rhs := m.OptionalBytesWrapper; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrapperspb.BytesValue }); ok {
+			r.OptionalBytesWrapper = vtpb.CloneVT()
+		} else {
+			r.OptionalBytesWrapper = proto.Clone(rhs).(*wrapperspb.BytesValue)
+		}
+	}
+	if rhs := m.RepeatedBoolWrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.BoolValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *wrapperspb.BoolValue }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.BoolValue)
+			}
+		}
+		r.RepeatedBoolWrapper = tmpContainer
+	}
+	if rhs := m.RepeatedInt32Wrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.Int32Value, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *wrapperspb.Int32Value }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.Int32Value)
+			}
+		}
+		r.RepeatedInt32Wrapper = tmpContainer
+	}
+	if rhs := m.RepeatedInt64Wrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.Int64Value, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *wrapperspb.Int64Value }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.Int64Value)
+			}
+		}
+		r.RepeatedInt64Wrapper = tmpContainer
+	}
+	if rhs := m.RepeatedUint32Wrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.UInt32Value, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface {
+				CloneVT() *wrapperspb.UInt32Value
+			}); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.UInt32Value)
+			}
+		}
+		r.RepeatedUint32Wrapper = tmpContainer
+	}
+	if rhs := m.RepeatedUint64Wrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.UInt64Value, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface {
+				CloneVT() *wrapperspb.UInt64Value
+			}); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.UInt64Value)
+			}
+		}
+		r.RepeatedUint64Wrapper = tmpContainer
+	}
+	if rhs := m.RepeatedFloatWrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.FloatValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *wrapperspb.FloatValue }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.FloatValue)
+			}
+		}
+		r.RepeatedFloatWrapper = tmpContainer
+	}
+	if rhs := m.RepeatedDoubleWrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.DoubleValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface {
+				CloneVT() *wrapperspb.DoubleValue
+			}); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.DoubleValue)
+			}
+		}
+		r.RepeatedDoubleWrapper = tmpContainer
+	}
+	if rhs := m.RepeatedStringWrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.StringValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface {
+				CloneVT() *wrapperspb.StringValue
+			}); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.StringValue)
+			}
+		}
+		r.RepeatedStringWrapper = tmpContainer
+	}
+	if rhs := m.RepeatedBytesWrapper; rhs != nil {
+		tmpContainer := make([]*wrapperspb.BytesValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *wrapperspb.BytesValue }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*wrapperspb.BytesValue)
+			}
+		}
+		r.RepeatedBytesWrapper = tmpContainer
+	}
+	if rhs := m.OptionalDuration; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *durationpb.Duration }); ok {
+			r.OptionalDuration = vtpb.CloneVT()
+		} else {
+			r.OptionalDuration = proto.Clone(rhs).(*durationpb.Duration)
+		}
+	}
+	if rhs := m.OptionalTimestamp; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *timestamppb.Timestamp }); ok {
+			r.OptionalTimestamp = vtpb.CloneVT()
+		} else {
+			r.OptionalTimestamp = proto.Clone(rhs).(*timestamppb.Timestamp)
+		}
+	}
+	if rhs := m.OptionalFieldMask; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *fieldmaskpb.FieldMask }); ok {
+			r.OptionalFieldMask = vtpb.CloneVT()
+		} else {
+			r.OptionalFieldMask = proto.Clone(rhs).(*fieldmaskpb.FieldMask)
+		}
+	}
+	if rhs := m.OptionalStruct; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
+			r.OptionalStruct = vtpb.CloneVT()
+		} else {
+			r.OptionalStruct = proto.Clone(rhs).(*structpb.Struct)
+		}
+	}
+	if rhs := m.OptionalAny; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *anypb.Any }); ok {
+			r.OptionalAny = vtpb.CloneVT()
+		} else {
+			r.OptionalAny = proto.Clone(rhs).(*anypb.Any)
+		}
+	}
+	if rhs := m.OptionalValue; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Value }); ok {
+			r.OptionalValue = vtpb.CloneVT()
+		} else {
+			r.OptionalValue = proto.Clone(rhs).(*structpb.Value)
+		}
+	}
+	if rhs := m.RepeatedDuration; rhs != nil {
+		tmpContainer := make([]*durationpb.Duration, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *durationpb.Duration }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*durationpb.Duration)
+			}
+		}
+		r.RepeatedDuration = tmpContainer
+	}
+	if rhs := m.RepeatedTimestamp; rhs != nil {
+		tmpContainer := make([]*timestamppb.Timestamp, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *timestamppb.Timestamp }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*timestamppb.Timestamp)
+			}
+		}
+		r.RepeatedTimestamp = tmpContainer
+	}
+	if rhs := m.RepeatedFieldmask; rhs != nil {
+		tmpContainer := make([]*fieldmaskpb.FieldMask, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *fieldmaskpb.FieldMask }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*fieldmaskpb.FieldMask)
+			}
+		}
+		r.RepeatedFieldmask = tmpContainer
+	}
+	if rhs := m.RepeatedStruct; rhs != nil {
+		tmpContainer := make([]*structpb.Struct, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.Struct }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*structpb.Struct)
+			}
+		}
+		r.RepeatedStruct = tmpContainer
+	}
+	if rhs := m.RepeatedAny; rhs != nil {
+		tmpContainer := make([]*anypb.Any, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *anypb.Any }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*anypb.Any)
+			}
+		}
+		r.RepeatedAny = tmpContainer
+	}
+	if rhs := m.RepeatedValue; rhs != nil {
+		tmpContainer := make([]*structpb.Value, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.Value }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*structpb.Value)
+			}
+		}
+		r.RepeatedValue = tmpContainer
+	}
+	if rhs := m.RepeatedListValue; rhs != nil {
+		tmpContainer := make([]*structpb.ListValue, len(rhs))
+		for k, v := range rhs {
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.ListValue }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*structpb.ListValue)
+			}
+		}
+		r.RepeatedListValue = tmpContainer
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *TestAllTypesProto3_OneofUint32) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofUint32)(nil)
+	}
+	r := &TestAllTypesProto3_OneofUint32{
+		OneofUint32: m.OneofUint32,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofNestedMessage) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofNestedMessage)(nil)
+	}
+	r := &TestAllTypesProto3_OneofNestedMessage{
+		OneofNestedMessage: m.OneofNestedMessage.CloneVT(),
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofString) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofString)(nil)
+	}
+	r := &TestAllTypesProto3_OneofString{
+		OneofString: m.OneofString,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofBytes) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofBytes)(nil)
+	}
+	r := &TestAllTypesProto3_OneofBytes{}
+	if rhs := m.OneofBytes; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.OneofBytes = tmpBytes
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofBool) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofBool)(nil)
+	}
+	r := &TestAllTypesProto3_OneofBool{
+		OneofBool: m.OneofBool,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofUint64) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofUint64)(nil)
+	}
+	r := &TestAllTypesProto3_OneofUint64{
+		OneofUint64: m.OneofUint64,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofFloat) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofFloat)(nil)
+	}
+	r := &TestAllTypesProto3_OneofFloat{
+		OneofFloat: m.OneofFloat,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofDouble) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofDouble)(nil)
+	}
+	r := &TestAllTypesProto3_OneofDouble{
+		OneofDouble: m.OneofDouble,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofEnum) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofEnum)(nil)
+	}
+	r := &TestAllTypesProto3_OneofEnum{
+		OneofEnum: m.OneofEnum,
+	}
+	return r
+}
+
+func (m *TestAllTypesProto3_OneofNullValue) CloneVT() isTestAllTypesProto3_OneofField {
+	if m == nil {
+		return (*TestAllTypesProto3_OneofNullValue)(nil)
+	}
+	r := &TestAllTypesProto3_OneofNullValue{
+		OneofNullValue: m.OneofNullValue,
+	}
+	return r
+}
+
+func (m *ForeignMessage) CloneVT() *ForeignMessage {
+	if m == nil {
+		return (*ForeignMessage)(nil)
+	}
+	r := &ForeignMessage{
+		C: m.C,
+	}
+	return r
+}
+
+func (m *ForeignMessage) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
+	if m == nil {
+		return (*NullHypothesisProto3)(nil)
+	}
+	r := &NullHypothesisProto3{}
+	return r
+}
+
+func (m *NullHypothesisProto3) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
+	if m == nil {
+		return (*EnumOnlyProto3)(nil)
+	}
+	r := &EnumOnlyProto3{}
+	return r
+}
+
+func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {
 	if this == nil {
 		return that == nil || that.String() == ""

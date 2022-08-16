@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	_ "github.com/planetscale/vtprotobuf/features/clone"
 	_ "github.com/planetscale/vtprotobuf/features/equal"
 	_ "github.com/planetscale/vtprotobuf/features/grpc"
 	_ "github.com/planetscale/vtprotobuf/features/marshal"

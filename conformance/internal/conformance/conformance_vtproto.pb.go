@@ -6,6 +6,7 @@ package conformance
 
 import (
 	fmt "fmt"
+	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 )
@@ -16,6 +17,203 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+func (m *FailureSet) CloneVT() *FailureSet {
+	if m == nil {
+		return (*FailureSet)(nil)
+	}
+	r := &FailureSet{}
+	if rhs := m.Failure; rhs != nil {
+		tmpContainer := make([]string, len(rhs))
+		copy(tmpContainer, rhs)
+		r.Failure = tmpContainer
+	}
+	return r
+}
+
+func (m *FailureSet) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
+	if m == nil {
+		return (*ConformanceRequest)(nil)
+	}
+	r := &ConformanceRequest{
+		RequestedOutputFormat: m.RequestedOutputFormat,
+		MessageType:           m.MessageType,
+		TestCategory:          m.TestCategory,
+		JspbEncodingOptions:   m.JspbEncodingOptions.CloneVT(),
+		PrintUnknownFields:    m.PrintUnknownFields,
+	}
+	if m.Payload != nil {
+		r.Payload = m.Payload.(interface {
+			CloneVT() isConformanceRequest_Payload
+		}).CloneVT()
+	}
+	return r
+}
+
+func (m *ConformanceRequest) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *ConformanceRequest_ProtobufPayload) CloneVT() isConformanceRequest_Payload {
+	if m == nil {
+		return (*ConformanceRequest_ProtobufPayload)(nil)
+	}
+	r := &ConformanceRequest_ProtobufPayload{}
+	if rhs := m.ProtobufPayload; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.ProtobufPayload = tmpBytes
+	}
+	return r
+}
+
+func (m *ConformanceRequest_JsonPayload) CloneVT() isConformanceRequest_Payload {
+	if m == nil {
+		return (*ConformanceRequest_JsonPayload)(nil)
+	}
+	r := &ConformanceRequest_JsonPayload{
+		JsonPayload: m.JsonPayload,
+	}
+	return r
+}
+
+func (m *ConformanceRequest_JspbPayload) CloneVT() isConformanceRequest_Payload {
+	if m == nil {
+		return (*ConformanceRequest_JspbPayload)(nil)
+	}
+	r := &ConformanceRequest_JspbPayload{
+		JspbPayload: m.JspbPayload,
+	}
+	return r
+}
+
+func (m *ConformanceRequest_TextPayload) CloneVT() isConformanceRequest_Payload {
+	if m == nil {
+		return (*ConformanceRequest_TextPayload)(nil)
+	}
+	r := &ConformanceRequest_TextPayload{
+		TextPayload: m.TextPayload,
+	}
+	return r
+}
+
+func (m *ConformanceResponse) CloneVT() *ConformanceResponse {
+	if m == nil {
+		return (*ConformanceResponse)(nil)
+	}
+	r := &ConformanceResponse{}
+	if m.Result != nil {
+		r.Result = m.Result.(interface {
+			CloneVT() isConformanceResponse_Result
+		}).CloneVT()
+	}
+	return r
+}
+
+func (m *ConformanceResponse) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *ConformanceResponse_ParseError) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_ParseError)(nil)
+	}
+	r := &ConformanceResponse_ParseError{
+		ParseError: m.ParseError,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_SerializeError) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_SerializeError)(nil)
+	}
+	r := &ConformanceResponse_SerializeError{
+		SerializeError: m.SerializeError,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_RuntimeError) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_RuntimeError)(nil)
+	}
+	r := &ConformanceResponse_RuntimeError{
+		RuntimeError: m.RuntimeError,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_ProtobufPayload) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_ProtobufPayload)(nil)
+	}
+	r := &ConformanceResponse_ProtobufPayload{}
+	if rhs := m.ProtobufPayload; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.ProtobufPayload = tmpBytes
+	}
+	return r
+}
+
+func (m *ConformanceResponse_JsonPayload) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_JsonPayload)(nil)
+	}
+	r := &ConformanceResponse_JsonPayload{
+		JsonPayload: m.JsonPayload,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_Skipped) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_Skipped)(nil)
+	}
+	r := &ConformanceResponse_Skipped{
+		Skipped: m.Skipped,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_JspbPayload) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_JspbPayload)(nil)
+	}
+	r := &ConformanceResponse_JspbPayload{
+		JspbPayload: m.JspbPayload,
+	}
+	return r
+}
+
+func (m *ConformanceResponse_TextPayload) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_TextPayload)(nil)
+	}
+	r := &ConformanceResponse_TextPayload{
+		TextPayload: m.TextPayload,
+	}
+	return r
+}
+
+func (m *JspbEncodingConfig) CloneVT() *JspbEncodingConfig {
+	if m == nil {
+		return (*JspbEncodingConfig)(nil)
+	}
+	r := &JspbEncodingConfig{
+		UseJspbArrayAnyFormat: m.UseJspbArrayAnyFormat,
+	}
+	return r
+}
+
+func (m *JspbEncodingConfig) CloneGenericVT() proto.Message {
+	return m.CloneVT()
+}
 
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	if this == nil {
