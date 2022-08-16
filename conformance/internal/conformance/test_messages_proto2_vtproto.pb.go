@@ -193,544 +193,669 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	if len(this.RepeatedInt32) != len(that.RepeatedInt32) {
 		return false
 	}
-	for i := range this.RepeatedInt32 {
-		if this.RepeatedInt32[i] != that.RepeatedInt32[i] {
+	for i, vx := range this.RepeatedInt32 {
+		vy := that.RepeatedInt32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedInt64) != len(that.RepeatedInt64) {
 		return false
 	}
-	for i := range this.RepeatedInt64 {
-		if this.RepeatedInt64[i] != that.RepeatedInt64[i] {
+	for i, vx := range this.RepeatedInt64 {
+		vy := that.RepeatedInt64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedUint32) != len(that.RepeatedUint32) {
 		return false
 	}
-	for i := range this.RepeatedUint32 {
-		if this.RepeatedUint32[i] != that.RepeatedUint32[i] {
+	for i, vx := range this.RepeatedUint32 {
+		vy := that.RepeatedUint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedUint64) != len(that.RepeatedUint64) {
 		return false
 	}
-	for i := range this.RepeatedUint64 {
-		if this.RepeatedUint64[i] != that.RepeatedUint64[i] {
+	for i, vx := range this.RepeatedUint64 {
+		vy := that.RepeatedUint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedSint32) != len(that.RepeatedSint32) {
 		return false
 	}
-	for i := range this.RepeatedSint32 {
-		if this.RepeatedSint32[i] != that.RepeatedSint32[i] {
+	for i, vx := range this.RepeatedSint32 {
+		vy := that.RepeatedSint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedSint64) != len(that.RepeatedSint64) {
 		return false
 	}
-	for i := range this.RepeatedSint64 {
-		if this.RepeatedSint64[i] != that.RepeatedSint64[i] {
+	for i, vx := range this.RepeatedSint64 {
+		vy := that.RepeatedSint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedFixed32) != len(that.RepeatedFixed32) {
 		return false
 	}
-	for i := range this.RepeatedFixed32 {
-		if this.RepeatedFixed32[i] != that.RepeatedFixed32[i] {
+	for i, vx := range this.RepeatedFixed32 {
+		vy := that.RepeatedFixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedFixed64) != len(that.RepeatedFixed64) {
 		return false
 	}
-	for i := range this.RepeatedFixed64 {
-		if this.RepeatedFixed64[i] != that.RepeatedFixed64[i] {
+	for i, vx := range this.RepeatedFixed64 {
+		vy := that.RepeatedFixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedSfixed32) != len(that.RepeatedSfixed32) {
 		return false
 	}
-	for i := range this.RepeatedSfixed32 {
-		if this.RepeatedSfixed32[i] != that.RepeatedSfixed32[i] {
+	for i, vx := range this.RepeatedSfixed32 {
+		vy := that.RepeatedSfixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedSfixed64) != len(that.RepeatedSfixed64) {
 		return false
 	}
-	for i := range this.RepeatedSfixed64 {
-		if this.RepeatedSfixed64[i] != that.RepeatedSfixed64[i] {
+	for i, vx := range this.RepeatedSfixed64 {
+		vy := that.RepeatedSfixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedFloat) != len(that.RepeatedFloat) {
 		return false
 	}
-	for i := range this.RepeatedFloat {
-		if this.RepeatedFloat[i] != that.RepeatedFloat[i] {
+	for i, vx := range this.RepeatedFloat {
+		vy := that.RepeatedFloat[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedDouble) != len(that.RepeatedDouble) {
 		return false
 	}
-	for i := range this.RepeatedDouble {
-		if this.RepeatedDouble[i] != that.RepeatedDouble[i] {
+	for i, vx := range this.RepeatedDouble {
+		vy := that.RepeatedDouble[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedBool) != len(that.RepeatedBool) {
 		return false
 	}
-	for i := range this.RepeatedBool {
-		if this.RepeatedBool[i] != that.RepeatedBool[i] {
+	for i, vx := range this.RepeatedBool {
+		vy := that.RepeatedBool[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedString) != len(that.RepeatedString) {
 		return false
 	}
-	for i := range this.RepeatedString {
-		if this.RepeatedString[i] != that.RepeatedString[i] {
+	for i, vx := range this.RepeatedString {
+		vy := that.RepeatedString[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedBytes) != len(that.RepeatedBytes) {
 		return false
 	}
-	for i := range this.RepeatedBytes {
-		if string(this.RepeatedBytes[i]) != string(that.RepeatedBytes[i]) {
+	for i, vx := range this.RepeatedBytes {
+		vy := that.RepeatedBytes[i]
+		if string(vx) != string(vy) {
 			return false
 		}
 	}
 	if len(this.RepeatedNestedMessage) != len(that.RepeatedNestedMessage) {
 		return false
 	}
-	for i := range this.RepeatedNestedMessage {
-		if !this.RepeatedNestedMessage[i].EqualVT(that.RepeatedNestedMessage[i]) {
+	for i, vx := range this.RepeatedNestedMessage {
+		vy := that.RepeatedNestedMessage[i]
+		if !vx.EqualVT(vy) {
 			return false
 		}
 	}
 	if len(this.RepeatedForeignMessage) != len(that.RepeatedForeignMessage) {
 		return false
 	}
-	for i := range this.RepeatedForeignMessage {
-		if !this.RepeatedForeignMessage[i].EqualVT(that.RepeatedForeignMessage[i]) {
+	for i, vx := range this.RepeatedForeignMessage {
+		vy := that.RepeatedForeignMessage[i]
+		if !vx.EqualVT(vy) {
 			return false
 		}
 	}
 	if len(this.RepeatedNestedEnum) != len(that.RepeatedNestedEnum) {
 		return false
 	}
-	for i := range this.RepeatedNestedEnum {
-		if this.RepeatedNestedEnum[i] != that.RepeatedNestedEnum[i] {
+	for i, vx := range this.RepeatedNestedEnum {
+		vy := that.RepeatedNestedEnum[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedForeignEnum) != len(that.RepeatedForeignEnum) {
 		return false
 	}
-	for i := range this.RepeatedForeignEnum {
-		if this.RepeatedForeignEnum[i] != that.RepeatedForeignEnum[i] {
+	for i, vx := range this.RepeatedForeignEnum {
+		vy := that.RepeatedForeignEnum[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedStringPiece) != len(that.RepeatedStringPiece) {
 		return false
 	}
-	for i := range this.RepeatedStringPiece {
-		if this.RepeatedStringPiece[i] != that.RepeatedStringPiece[i] {
+	for i, vx := range this.RepeatedStringPiece {
+		vy := that.RepeatedStringPiece[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.RepeatedCord) != len(that.RepeatedCord) {
 		return false
 	}
-	for i := range this.RepeatedCord {
-		if this.RepeatedCord[i] != that.RepeatedCord[i] {
+	for i, vx := range this.RepeatedCord {
+		vy := that.RepeatedCord[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapInt32Int32) != len(that.MapInt32Int32) {
 		return false
 	}
-	for i := range this.MapInt32Int32 {
-		if this.MapInt32Int32[i] != that.MapInt32Int32[i] {
+	for i, vx := range this.MapInt32Int32 {
+		vy, ok := that.MapInt32Int32[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapInt64Int64) != len(that.MapInt64Int64) {
 		return false
 	}
-	for i := range this.MapInt64Int64 {
-		if this.MapInt64Int64[i] != that.MapInt64Int64[i] {
+	for i, vx := range this.MapInt64Int64 {
+		vy, ok := that.MapInt64Int64[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapUint32Uint32) != len(that.MapUint32Uint32) {
 		return false
 	}
-	for i := range this.MapUint32Uint32 {
-		if this.MapUint32Uint32[i] != that.MapUint32Uint32[i] {
+	for i, vx := range this.MapUint32Uint32 {
+		vy, ok := that.MapUint32Uint32[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapUint64Uint64) != len(that.MapUint64Uint64) {
 		return false
 	}
-	for i := range this.MapUint64Uint64 {
-		if this.MapUint64Uint64[i] != that.MapUint64Uint64[i] {
+	for i, vx := range this.MapUint64Uint64 {
+		vy, ok := that.MapUint64Uint64[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapSint32Sint32) != len(that.MapSint32Sint32) {
 		return false
 	}
-	for i := range this.MapSint32Sint32 {
-		if this.MapSint32Sint32[i] != that.MapSint32Sint32[i] {
+	for i, vx := range this.MapSint32Sint32 {
+		vy, ok := that.MapSint32Sint32[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapSint64Sint64) != len(that.MapSint64Sint64) {
 		return false
 	}
-	for i := range this.MapSint64Sint64 {
-		if this.MapSint64Sint64[i] != that.MapSint64Sint64[i] {
+	for i, vx := range this.MapSint64Sint64 {
+		vy, ok := that.MapSint64Sint64[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapFixed32Fixed32) != len(that.MapFixed32Fixed32) {
 		return false
 	}
-	for i := range this.MapFixed32Fixed32 {
-		if this.MapFixed32Fixed32[i] != that.MapFixed32Fixed32[i] {
+	for i, vx := range this.MapFixed32Fixed32 {
+		vy, ok := that.MapFixed32Fixed32[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapFixed64Fixed64) != len(that.MapFixed64Fixed64) {
 		return false
 	}
-	for i := range this.MapFixed64Fixed64 {
-		if this.MapFixed64Fixed64[i] != that.MapFixed64Fixed64[i] {
+	for i, vx := range this.MapFixed64Fixed64 {
+		vy, ok := that.MapFixed64Fixed64[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapSfixed32Sfixed32) != len(that.MapSfixed32Sfixed32) {
 		return false
 	}
-	for i := range this.MapSfixed32Sfixed32 {
-		if this.MapSfixed32Sfixed32[i] != that.MapSfixed32Sfixed32[i] {
+	for i, vx := range this.MapSfixed32Sfixed32 {
+		vy, ok := that.MapSfixed32Sfixed32[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapSfixed64Sfixed64) != len(that.MapSfixed64Sfixed64) {
 		return false
 	}
-	for i := range this.MapSfixed64Sfixed64 {
-		if this.MapSfixed64Sfixed64[i] != that.MapSfixed64Sfixed64[i] {
+	for i, vx := range this.MapSfixed64Sfixed64 {
+		vy, ok := that.MapSfixed64Sfixed64[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapInt32Float) != len(that.MapInt32Float) {
 		return false
 	}
-	for i := range this.MapInt32Float {
-		if this.MapInt32Float[i] != that.MapInt32Float[i] {
+	for i, vx := range this.MapInt32Float {
+		vy, ok := that.MapInt32Float[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapInt32Double) != len(that.MapInt32Double) {
 		return false
 	}
-	for i := range this.MapInt32Double {
-		if this.MapInt32Double[i] != that.MapInt32Double[i] {
+	for i, vx := range this.MapInt32Double {
+		vy, ok := that.MapInt32Double[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapBoolBool) != len(that.MapBoolBool) {
 		return false
 	}
-	for i := range this.MapBoolBool {
-		if this.MapBoolBool[i] != that.MapBoolBool[i] {
+	for i, vx := range this.MapBoolBool {
+		vy, ok := that.MapBoolBool[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapStringString) != len(that.MapStringString) {
 		return false
 	}
-	for i := range this.MapStringString {
-		if this.MapStringString[i] != that.MapStringString[i] {
+	for i, vx := range this.MapStringString {
+		vy, ok := that.MapStringString[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapStringBytes) != len(that.MapStringBytes) {
 		return false
 	}
-	for i := range this.MapStringBytes {
-		if string(this.MapStringBytes[i]) != string(that.MapStringBytes[i]) {
+	for i, vx := range this.MapStringBytes {
+		vy, ok := that.MapStringBytes[i]
+		if !ok {
+			return false
+		}
+		if string(vx) != string(vy) {
 			return false
 		}
 	}
 	if len(this.MapStringNestedMessage) != len(that.MapStringNestedMessage) {
 		return false
 	}
-	for i := range this.MapStringNestedMessage {
-		if !this.MapStringNestedMessage[i].EqualVT(that.MapStringNestedMessage[i]) {
+	for i, vx := range this.MapStringNestedMessage {
+		vy, ok := that.MapStringNestedMessage[i]
+		if !ok {
+			return false
+		}
+		if !vx.EqualVT(vy) {
 			return false
 		}
 	}
 	if len(this.MapStringForeignMessage) != len(that.MapStringForeignMessage) {
 		return false
 	}
-	for i := range this.MapStringForeignMessage {
-		if !this.MapStringForeignMessage[i].EqualVT(that.MapStringForeignMessage[i]) {
+	for i, vx := range this.MapStringForeignMessage {
+		vy, ok := that.MapStringForeignMessage[i]
+		if !ok {
+			return false
+		}
+		if !vx.EqualVT(vy) {
 			return false
 		}
 	}
 	if len(this.MapStringNestedEnum) != len(that.MapStringNestedEnum) {
 		return false
 	}
-	for i := range this.MapStringNestedEnum {
-		if this.MapStringNestedEnum[i] != that.MapStringNestedEnum[i] {
+	for i, vx := range this.MapStringNestedEnum {
+		vy, ok := that.MapStringNestedEnum[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.MapStringForeignEnum) != len(that.MapStringForeignEnum) {
 		return false
 	}
-	for i := range this.MapStringForeignEnum {
-		if this.MapStringForeignEnum[i] != that.MapStringForeignEnum[i] {
+	for i, vx := range this.MapStringForeignEnum {
+		vy, ok := that.MapStringForeignEnum[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedInt32) != len(that.PackedInt32) {
 		return false
 	}
-	for i := range this.PackedInt32 {
-		if this.PackedInt32[i] != that.PackedInt32[i] {
+	for i, vx := range this.PackedInt32 {
+		vy := that.PackedInt32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedInt64) != len(that.PackedInt64) {
 		return false
 	}
-	for i := range this.PackedInt64 {
-		if this.PackedInt64[i] != that.PackedInt64[i] {
+	for i, vx := range this.PackedInt64 {
+		vy := that.PackedInt64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedUint32) != len(that.PackedUint32) {
 		return false
 	}
-	for i := range this.PackedUint32 {
-		if this.PackedUint32[i] != that.PackedUint32[i] {
+	for i, vx := range this.PackedUint32 {
+		vy := that.PackedUint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedUint64) != len(that.PackedUint64) {
 		return false
 	}
-	for i := range this.PackedUint64 {
-		if this.PackedUint64[i] != that.PackedUint64[i] {
+	for i, vx := range this.PackedUint64 {
+		vy := that.PackedUint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedSint32) != len(that.PackedSint32) {
 		return false
 	}
-	for i := range this.PackedSint32 {
-		if this.PackedSint32[i] != that.PackedSint32[i] {
+	for i, vx := range this.PackedSint32 {
+		vy := that.PackedSint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedSint64) != len(that.PackedSint64) {
 		return false
 	}
-	for i := range this.PackedSint64 {
-		if this.PackedSint64[i] != that.PackedSint64[i] {
+	for i, vx := range this.PackedSint64 {
+		vy := that.PackedSint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedFixed32) != len(that.PackedFixed32) {
 		return false
 	}
-	for i := range this.PackedFixed32 {
-		if this.PackedFixed32[i] != that.PackedFixed32[i] {
+	for i, vx := range this.PackedFixed32 {
+		vy := that.PackedFixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedFixed64) != len(that.PackedFixed64) {
 		return false
 	}
-	for i := range this.PackedFixed64 {
-		if this.PackedFixed64[i] != that.PackedFixed64[i] {
+	for i, vx := range this.PackedFixed64 {
+		vy := that.PackedFixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedSfixed32) != len(that.PackedSfixed32) {
 		return false
 	}
-	for i := range this.PackedSfixed32 {
-		if this.PackedSfixed32[i] != that.PackedSfixed32[i] {
+	for i, vx := range this.PackedSfixed32 {
+		vy := that.PackedSfixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedSfixed64) != len(that.PackedSfixed64) {
 		return false
 	}
-	for i := range this.PackedSfixed64 {
-		if this.PackedSfixed64[i] != that.PackedSfixed64[i] {
+	for i, vx := range this.PackedSfixed64 {
+		vy := that.PackedSfixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedFloat) != len(that.PackedFloat) {
 		return false
 	}
-	for i := range this.PackedFloat {
-		if this.PackedFloat[i] != that.PackedFloat[i] {
+	for i, vx := range this.PackedFloat {
+		vy := that.PackedFloat[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedDouble) != len(that.PackedDouble) {
 		return false
 	}
-	for i := range this.PackedDouble {
-		if this.PackedDouble[i] != that.PackedDouble[i] {
+	for i, vx := range this.PackedDouble {
+		vy := that.PackedDouble[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedBool) != len(that.PackedBool) {
 		return false
 	}
-	for i := range this.PackedBool {
-		if this.PackedBool[i] != that.PackedBool[i] {
+	for i, vx := range this.PackedBool {
+		vy := that.PackedBool[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.PackedNestedEnum) != len(that.PackedNestedEnum) {
 		return false
 	}
-	for i := range this.PackedNestedEnum {
-		if this.PackedNestedEnum[i] != that.PackedNestedEnum[i] {
+	for i, vx := range this.PackedNestedEnum {
+		vy := that.PackedNestedEnum[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedInt32) != len(that.UnpackedInt32) {
 		return false
 	}
-	for i := range this.UnpackedInt32 {
-		if this.UnpackedInt32[i] != that.UnpackedInt32[i] {
+	for i, vx := range this.UnpackedInt32 {
+		vy := that.UnpackedInt32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedInt64) != len(that.UnpackedInt64) {
 		return false
 	}
-	for i := range this.UnpackedInt64 {
-		if this.UnpackedInt64[i] != that.UnpackedInt64[i] {
+	for i, vx := range this.UnpackedInt64 {
+		vy := that.UnpackedInt64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedUint32) != len(that.UnpackedUint32) {
 		return false
 	}
-	for i := range this.UnpackedUint32 {
-		if this.UnpackedUint32[i] != that.UnpackedUint32[i] {
+	for i, vx := range this.UnpackedUint32 {
+		vy := that.UnpackedUint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedUint64) != len(that.UnpackedUint64) {
 		return false
 	}
-	for i := range this.UnpackedUint64 {
-		if this.UnpackedUint64[i] != that.UnpackedUint64[i] {
+	for i, vx := range this.UnpackedUint64 {
+		vy := that.UnpackedUint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedSint32) != len(that.UnpackedSint32) {
 		return false
 	}
-	for i := range this.UnpackedSint32 {
-		if this.UnpackedSint32[i] != that.UnpackedSint32[i] {
+	for i, vx := range this.UnpackedSint32 {
+		vy := that.UnpackedSint32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedSint64) != len(that.UnpackedSint64) {
 		return false
 	}
-	for i := range this.UnpackedSint64 {
-		if this.UnpackedSint64[i] != that.UnpackedSint64[i] {
+	for i, vx := range this.UnpackedSint64 {
+		vy := that.UnpackedSint64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedFixed32) != len(that.UnpackedFixed32) {
 		return false
 	}
-	for i := range this.UnpackedFixed32 {
-		if this.UnpackedFixed32[i] != that.UnpackedFixed32[i] {
+	for i, vx := range this.UnpackedFixed32 {
+		vy := that.UnpackedFixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedFixed64) != len(that.UnpackedFixed64) {
 		return false
 	}
-	for i := range this.UnpackedFixed64 {
-		if this.UnpackedFixed64[i] != that.UnpackedFixed64[i] {
+	for i, vx := range this.UnpackedFixed64 {
+		vy := that.UnpackedFixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedSfixed32) != len(that.UnpackedSfixed32) {
 		return false
 	}
-	for i := range this.UnpackedSfixed32 {
-		if this.UnpackedSfixed32[i] != that.UnpackedSfixed32[i] {
+	for i, vx := range this.UnpackedSfixed32 {
+		vy := that.UnpackedSfixed32[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedSfixed64) != len(that.UnpackedSfixed64) {
 		return false
 	}
-	for i := range this.UnpackedSfixed64 {
-		if this.UnpackedSfixed64[i] != that.UnpackedSfixed64[i] {
+	for i, vx := range this.UnpackedSfixed64 {
+		vy := that.UnpackedSfixed64[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedFloat) != len(that.UnpackedFloat) {
 		return false
 	}
-	for i := range this.UnpackedFloat {
-		if this.UnpackedFloat[i] != that.UnpackedFloat[i] {
+	for i, vx := range this.UnpackedFloat {
+		vy := that.UnpackedFloat[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedDouble) != len(that.UnpackedDouble) {
 		return false
 	}
-	for i := range this.UnpackedDouble {
-		if this.UnpackedDouble[i] != that.UnpackedDouble[i] {
+	for i, vx := range this.UnpackedDouble {
+		vy := that.UnpackedDouble[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedBool) != len(that.UnpackedBool) {
 		return false
 	}
-	for i := range this.UnpackedBool {
-		if this.UnpackedBool[i] != that.UnpackedBool[i] {
+	for i, vx := range this.UnpackedBool {
+		vy := that.UnpackedBool[i]
+		if vx != vy {
 			return false
 		}
 	}
 	if len(this.UnpackedNestedEnum) != len(that.UnpackedNestedEnum) {
 		return false
 	}
-	for i := range this.UnpackedNestedEnum {
-		if this.UnpackedNestedEnum[i] != that.UnpackedNestedEnum[i] {
+	for i, vx := range this.UnpackedNestedEnum {
+		vy := that.UnpackedNestedEnum[i]
+		if vx != vy {
 			return false
 		}
 	}
@@ -887,8 +1012,9 @@ func (this *UnknownToTestAllTypes) EqualVT(that *UnknownToTestAllTypes) bool {
 	if len(this.RepeatedInt32) != len(that.RepeatedInt32) {
 		return false
 	}
-	for i := range this.RepeatedInt32 {
-		if this.RepeatedInt32[i] != that.RepeatedInt32[i] {
+	for i, vx := range this.RepeatedInt32 {
+		vy := that.RepeatedInt32[i]
+		if vx != vy {
 			return false
 		}
 	}

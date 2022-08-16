@@ -105,15 +105,18 @@ func (p *equal) oneof(field *protogen.Field, nullable bool) {
 	fieldname := field.GoName
 
 	getter := fmt.Sprintf("Get%s()", fieldname)
+	lhs := fmt.Sprintf("this.%s", getter)
+	rhs := fmt.Sprintf("that.%s", getter)
+
 	kind := field.Desc.Kind()
 	switch {
 	case isScalar(kind):
-		p.compareScalar(getter, nullable)
+		p.compareScalar(lhs, rhs, nullable)
 	case kind == protoreflect.BytesKind:
-		p.compareBytes(getter)
+		p.compareBytes(lhs, rhs)
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
 		goTyp, _ := p.FieldGoType(field)
-		p.compareCall(getter, "", goTyp, field.Message)
+		p.compareCall(lhs, rhs, goTyp, field.Message)
 	default:
 		panic("not implemented")
 	}
@@ -123,96 +126,79 @@ func (p *equal) field(field *protogen.Field, nullable bool) {
 	fieldname := field.GoName
 
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
+	lhs := fmt.Sprintf("this.%s", fieldname)
+	rhs := fmt.Sprintf("that.%s", fieldname)
+
 	if repeated {
-		p.P(`if len(this.`, fieldname, `) != len(that.`, fieldname, `) {`)
+		p.P(`if len(`, lhs, `) != len(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
+		p.P(`for i, vx := range `, lhs, ` {`)
+		if field.Desc.IsMap() {
+			p.P(`vy, ok := `, rhs, `[i]`)
+			p.P(`if !ok {`)
+			p.P(`return false`)
+			p.P(`}`)
+
+			field = field.Message.Fields[1]
+		} else {
+			p.P(`vy := `, rhs, `[i]`)
+		}
+		lhs, rhs = "vx", "vy"
+		nullable = false
 	}
 
 	kind := field.Desc.Kind()
 	switch {
 	case isScalar(kind):
-		if !repeated {
-			p.compareScalar(fieldname, nullable)
-			return
-		}
-		p.P(`for i := range this.`, fieldname, ` {`)
-		p.compareScalar(fieldname+"[i]", false)
-		p.P(`}`)
+		p.compareScalar(lhs, rhs, nullable)
 
 	case kind == protoreflect.BytesKind:
-		if !repeated {
-			p.compareBytes(fieldname)
-			return
-		}
-		p.P(`for i := range this.`, fieldname, ` {`)
-		p.compareBytes(fieldname + "[i]")
-		p.P(`}`)
+		p.compareBytes(lhs, rhs)
 
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
-		if !repeated {
-			goTyp, _ := p.FieldGoType(field)
-			p.compareCall(field.GoName, "", goTyp, field.Message)
-			return
-		}
-		p.P(`for i := range this.`, fieldname, ` {`)
-		if mv := field.Desc.MapValue(); mv != nil {
-			kind := mv.Kind()
-			switch {
-			case isScalar(kind):
-				p.compareScalar(fieldname+"[i]", false)
-			case kind == protoreflect.BytesKind:
-				p.compareBytes(fieldname + "[i]")
-			case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
-				valueField := field.Message.Fields[1]
-				goTypV, _ := p.FieldGoType(valueField)
-				p.compareCall(field.GoName, "[i]", goTypV, valueField.Message)
-			default:
-				panic("not implemented")
-			}
-		} else {
-			goTyp, _ := p.FieldGoType(field)
-			if field.Desc.IsList() {
-				goTyp = goTyp[len("[]"):]
-			}
-			p.compareCall(field.GoName, "[i]", goTyp, field.Message)
-		}
-		p.P(`}`)
+		goTyp := fmt.Sprintf("*%s", p.QualifiedGoIdent(field.Message.GoIdent))
+		p.compareCall(lhs, rhs, goTyp, field.Message)
 
 	default:
 		panic("not implemented")
 	}
+
+	if repeated {
+		// close for loop
+		p.P(`}`)
+	}
 }
 
-func (p *equal) compareScalar(fieldname string, nullable bool) {
+func (p *equal) compareScalar(lhs, rhs string, nullable bool) {
 	if nullable {
-		p.P(`if p, q := this.`, fieldname, `, that.`, fieldname, `; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {`)
+		p.P(`if p, q := `, lhs, `, `, rhs, `; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {`)
 	} else {
-		p.P(`if this.`, fieldname, ` != that.`, fieldname, ` {`)
+		p.P(`if `, lhs, ` != `, rhs, ` {`)
 	}
 	p.P(`	return false`)
 	p.P(`}`)
 }
 
-func (p *equal) compareBytes(fieldname string) {
+func (p *equal) compareBytes(lhs, rhs string) {
 	// Inlined call to bytes.Equal()
-	p.P(`if string(this.`, fieldname, `) != string(that.`, fieldname, `) {`)
+	p.P(`if string(`, lhs, `) != string(`, rhs, `) {`)
 	p.P(`	return false`)
 	p.P(`}`)
 }
 
-func (p *equal) compareCall(fieldname string, suffix, ccTypeName string, msg *protogen.Message) {
+func (p *equal) compareCall(lhs, rhs string, ccTypeName string, msg *protogen.Message) {
 	if msg != nil && msg.Desc != nil && msg.Desc.ParentFile() != nil && p.IsLocalMessage(msg) {
-		p.P(`if !this.`, fieldname, suffix, `.`, equalName, `(that.`, fieldname, suffix, `) {`)
+		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
 		return
 	}
-	p.P(`if equal, ok := interface{}(this.`, fieldname, suffix, `).(interface { `, equalName, `(`, ccTypeName, `) bool }); ok {`)
-	p.P(`	if !equal.`, equalName, `(that.`, fieldname, suffix, `) {`)
+	p.P(`if equal, ok := interface{}(`, lhs, `).(interface { `, equalName, `(`, ccTypeName, `) bool }); ok {`)
+	p.P(`	if !equal.`, equalName, `(`, rhs, `) {`)
 	p.P(`		return false`)
 	p.P(`	}`)
-	p.P(`} else if !`, p.Ident("google.golang.org/protobuf/proto", "Equal"), `(this.`, fieldname, suffix, `, that.`, fieldname, suffix, `) {`)
+	p.P(`} else if !`, p.Ident("google.golang.org/protobuf/proto", "Equal"), `(`, lhs, `, `, rhs, `) {`)
 	p.P(`	return false`)
 	p.P(`}`)
 }
