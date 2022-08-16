@@ -110,8 +110,9 @@ func (this *Test1) EqualVT(that *Test1) bool {
 	if len(this.Sl) != len(that.Sl) {
 		return false
 	}
-	for i := range this.Sl {
-		if this.Sl[i] != that.Sl[i] {
+	for i, vx := range this.Sl {
+		vy := that.Sl[i]
+		if vx != vy {
 			return false
 		}
 	}
@@ -127,8 +128,9 @@ func (this *Test2) EqualVT(that *Test2) bool {
 	if len(this.Sl) != len(that.Sl) {
 		return false
 	}
-	for i := range this.Sl {
-		if !this.Sl[i].EqualVT(that.Sl[i]) {
+	for i, vx := range this.Sl {
+		vy := that.Sl[i]
+		if !vx.EqualVT(vy) {
 			return false
 		}
 	}
@@ -144,8 +146,12 @@ func (this *Slice2) EqualVT(that *Slice2) bool {
 	if len(this.A) != len(that.A) {
 		return false
 	}
-	for i := range this.A {
-		if this.A[i] != that.A[i] {
+	for i, vx := range this.A {
+		vy, ok := that.A[i]
+		if !ok {
+			return false
+		}
+		if vx != vy {
 			return false
 		}
 	}
@@ -155,8 +161,9 @@ func (this *Slice2) EqualVT(that *Slice2) bool {
 	if len(this.C) != len(that.C) {
 		return false
 	}
-	for i := range this.C {
-		if this.C[i] != that.C[i] {
+	for i, vx := range this.C {
+		vy := that.C[i]
+		if vx != vy {
 			return false
 		}
 	}

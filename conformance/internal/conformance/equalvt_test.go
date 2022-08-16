@@ -166,3 +166,29 @@ func TestEqualVT3(t *testing.T) {
 		require.NoError(t, err)
 	}
 }
+
+func TestEqualVT_Map_AbsenceVsZeroValue(t *testing.T) {
+	a := &TestAllTypesProto3{
+		MapInt32Int32: map[int32]int32{
+			1: 0,
+			2: 37,
+		},
+	}
+	b := &TestAllTypesProto3{
+		MapInt32Int32: map[int32]int32{
+			2: 37,
+			3: 42,
+		},
+	}
+
+	aJson, err := protojson.Marshal(a)
+	require.NoError(t, err)
+	bJson, err := protojson.Marshal(b)
+	require.NoError(t, err)
+
+	if a.EqualVT(b) {
+		assert.JSONEq(t, string(aJson), string(bJson))
+		err := fmt.Errorf("these %T should not be equal:\nmsg = %+v\noriginal = %+v", a, a, b)
+		require.NoError(t, err)
+	}
+}

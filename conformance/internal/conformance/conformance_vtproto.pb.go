@@ -224,8 +224,9 @@ func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	if len(this.Failure) != len(that.Failure) {
 		return false
 	}
-	for i := range this.Failure {
-		if this.Failure[i] != that.Failure[i] {
+	for i, vx := range this.Failure {
+		vy := that.Failure[i]
+		if vx != vy {
 			return false
 		}
 	}
