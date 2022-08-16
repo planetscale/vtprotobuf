@@ -1043,7 +1043,7 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	if p, q := this.OptionalString, that.OptionalString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
 	}
-	if string(this.OptionalBytes) != string(that.OptionalBytes) {
+	if p, q := this.OptionalBytes, that.OptionalBytes; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
 	}
 	if !this.OptionalNestedMessage.EqualVT(that.OptionalNestedMessage) {
@@ -1781,7 +1781,7 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	if p, q := this.DefaultString, that.DefaultString; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
 	}
-	if string(this.DefaultBytes) != string(that.DefaultBytes) {
+	if p, q := this.DefaultBytes, that.DefaultBytes; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
 	}
 	if p, q := this.Fieldname1, that.Fieldname1; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {

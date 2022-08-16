@@ -134,7 +134,7 @@ func (p *equal) oneof(field *protogen.Field) {
 	case isScalar(kind):
 		p.compareScalar(lhs, rhs, false)
 	case kind == protoreflect.BytesKind:
-		p.compareBytes(lhs, rhs)
+		p.compareBytes(lhs, rhs, false)
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
 		goTyp, _ := p.FieldGoType(field)
 		p.compareCall(lhs, rhs, goTyp, field.Message)
@@ -178,7 +178,7 @@ func (p *equal) field(field *protogen.Field, nullable bool) {
 		p.compareScalar(lhs, rhs, nullable)
 
 	case kind == protoreflect.BytesKind:
-		p.compareBytes(lhs, rhs)
+		p.compareBytes(lhs, rhs, nullable)
 
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
 		goTyp := fmt.Sprintf("*%s", p.QualifiedGoIdent(field.Message.GoIdent))
@@ -204,9 +204,13 @@ func (p *equal) compareScalar(lhs, rhs string, nullable bool) {
 	p.P(`}`)
 }
 
-func (p *equal) compareBytes(lhs, rhs string) {
-	// Inlined call to bytes.Equal()
-	p.P(`if string(`, lhs, `) != string(`, rhs, `) {`)
+func (p *equal) compareBytes(lhs, rhs string, nullable bool) {
+	if nullable {
+		p.P(`if p, q := `, lhs, `, `, rhs, `; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {`)
+	} else {
+		// Inlined call to bytes.Equal()
+		p.P(`if string(`, lhs, `) != string(`, rhs, `) {`)
+	}
 	p.P(`	return false`)
 	p.P(`}`)
 }

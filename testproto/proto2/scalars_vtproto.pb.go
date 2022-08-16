@@ -956,10 +956,10 @@ func (this *BytesMessage) EqualVT(that *BytesMessage) bool {
 	} else if that == nil {
 		return this.String() == ""
 	}
-	if string(this.RequiredField) != string(that.RequiredField) {
+	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
 	}
-	if string(this.OptionalField) != string(that.OptionalField) {
+	if p, q := this.OptionalField, that.OptionalField; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
 	}
 	if len(this.RepeatedField) != len(that.RepeatedField) {
