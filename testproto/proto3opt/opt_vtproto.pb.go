@@ -91,6 +91,10 @@ func (m *OptionalFieldInProto3) CloneVT() *OptionalFieldInProto3 {
 		tmpVal := *rhs
 		r.OptionalEnum = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 

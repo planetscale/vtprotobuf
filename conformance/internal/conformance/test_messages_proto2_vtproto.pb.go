@@ -32,6 +32,10 @@ func (m *TestAllTypesProto2_NestedMessage) CloneVT() *TestAllTypesProto2_NestedM
 		tmpVal := *rhs
 		r.A = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -52,6 +56,10 @@ func (m *TestAllTypesProto2_Data) CloneVT() *TestAllTypesProto2_Data {
 		tmpVal := *rhs
 		r.GroupUint32 = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -64,6 +72,10 @@ func (m *TestAllTypesProto2_MessageSetCorrect) CloneVT() *TestAllTypesProto2_Mes
 		return (*TestAllTypesProto2_MessageSetCorrect)(nil)
 	}
 	r := &TestAllTypesProto2_MessageSetCorrect{}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -80,6 +92,10 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension1) CloneVT() *TestAllTypes
 		tmpVal := *rhs
 		r.Str = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -95,6 +111,10 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension2) CloneVT() *TestAllTypes
 	if rhs := m.I; rhs != nil {
 		tmpVal := *rhs
 		r.I = &tmpVal
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -716,6 +736,10 @@ func (m *TestAllTypesProto2) CloneVT() *TestAllTypesProto2 {
 		tmpVal := *rhs
 		r.FieldName18__ = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -825,6 +849,10 @@ func (m *ForeignMessageProto2) CloneVT() *ForeignMessageProto2 {
 		tmpVal := *rhs
 		r.C = &tmpVal
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -840,6 +868,10 @@ func (m *UnknownToTestAllTypes_OptionalGroup) CloneVT() *UnknownToTestAllTypes_O
 	if rhs := m.A; rhs != nil {
 		tmpVal := *rhs
 		r.A = &tmpVal
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -873,6 +905,10 @@ func (m *UnknownToTestAllTypes) CloneVT() *UnknownToTestAllTypes {
 		copy(tmpContainer, rhs)
 		r.RepeatedInt32 = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -885,6 +921,10 @@ func (m *NullHypothesisProto2) CloneVT() *NullHypothesisProto2 {
 		return (*NullHypothesisProto2)(nil)
 	}
 	r := &NullHypothesisProto2{}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -897,6 +937,10 @@ func (m *EnumOnlyProto2) CloneVT() *EnumOnlyProto2 {
 		return (*EnumOnlyProto2)(nil)
 	}
 	r := &EnumOnlyProto2{}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -912,6 +956,10 @@ func (m *OneStringProto2) CloneVT() *OneStringProto2 {
 	if rhs := m.Data; rhs != nil {
 		tmpVal := *rhs
 		r.Data = &tmpVal
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }

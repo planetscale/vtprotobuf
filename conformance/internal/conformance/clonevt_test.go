@@ -2,6 +2,8 @@ package conformance
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
+	"google.golang.org/protobuf/encoding/protowire"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -96,4 +98,30 @@ func TestCloneVT3(t *testing.T) {
 	MutateFields(clone)
 	require.False(t, clone.EqualVT(msg), "cloned message unchanged after mutation")
 	require.True(t, orig.EqualVT(msg), "mutating cloned %T mutated original:\nmsg = %+v\nafter clone = %+v\n", msg, msg, orig)
+}
+
+func TestCloneVT_UnknownFields(t *testing.T) {
+	msg := &TestAllTypesProto3{
+		OptionalInt32: 42,
+	}
+
+	const unknownFieldNumber = 1337
+	require.Nil(t, msg.ProtoReflect().Descriptor().Fields().ByNumber(unknownFieldNumber),
+		"if this assertion fails, please change the above constant to a field number not used in the proto")
+	data, err := msg.MarshalVT()
+	require.NoError(t, err)
+
+	data = protowire.AppendTag(data, unknownFieldNumber, protowire.BytesType)
+	data = protowire.AppendString(data, "foo bar baz")
+
+	unmarshaled := new(TestAllTypesProto3)
+	require.NoError(t, unmarshaled.UnmarshalVT(data), "unmarshaling should succeed")
+
+	cloned := unmarshaled.CloneVT()
+	assert.Truef(t, proto.Equal(unmarshaled, cloned), "expected %T to be equal:\nunmarshaled = %+v\ncloned = %+v\n", unmarshaled, unmarshaled, cloned)
+
+	protoCloned := proto.Clone(unmarshaled).(*TestAllTypesProto3)
+	require.True(t, proto.Equal(unmarshaled, protoCloned), "proto.Clone is misbehaving")
+
+	assert.Truef(t, proto.Equal(cloned, protoCloned), "expected %T to be equal:\ncloned = %+v\nprotoCloned = %+v\n", cloned, cloned, protoCloned)
 }

@@ -34,6 +34,10 @@ func (m *TestAllTypesProto3_NestedMessage) CloneVT() *TestAllTypesProto3_NestedM
 		A:           m.A,
 		Corecursive: m.Corecursive.CloneVT(),
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -783,6 +787,10 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 		}
 		r.RepeatedListValue = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -900,6 +908,10 @@ func (m *ForeignMessage) CloneVT() *ForeignMessage {
 	r := &ForeignMessage{
 		C: m.C,
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -912,6 +924,10 @@ func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
 		return (*NullHypothesisProto3)(nil)
 	}
 	r := &NullHypothesisProto3{}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -924,6 +940,10 @@ func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
 		return (*EnumOnlyProto3)(nil)
 	}
 	r := &EnumOnlyProto3{}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 

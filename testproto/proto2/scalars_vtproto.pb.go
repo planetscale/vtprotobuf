@@ -44,6 +44,10 @@ func (m *DoubleMessage) CloneVT() *DoubleMessage {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -73,6 +77,10 @@ func (m *FloatMessage) CloneVT() *FloatMessage {
 		tmpContainer := make([]float32, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -104,6 +112,10 @@ func (m *Int32Message) CloneVT() *Int32Message {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -133,6 +145,10 @@ func (m *Int64Message) CloneVT() *Int64Message {
 		tmpContainer := make([]int64, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -164,6 +180,10 @@ func (m *Uint32Message) CloneVT() *Uint32Message {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -193,6 +213,10 @@ func (m *Uint64Message) CloneVT() *Uint64Message {
 		tmpContainer := make([]uint64, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -224,6 +248,10 @@ func (m *Sint32Message) CloneVT() *Sint32Message {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -253,6 +281,10 @@ func (m *Sint64Message) CloneVT() *Sint64Message {
 		tmpContainer := make([]int64, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -284,6 +316,10 @@ func (m *Fixed32Message) CloneVT() *Fixed32Message {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -313,6 +349,10 @@ func (m *Fixed64Message) CloneVT() *Fixed64Message {
 		tmpContainer := make([]uint64, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -344,6 +384,10 @@ func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -373,6 +417,10 @@ func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
 		tmpContainer := make([]int64, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -404,6 +452,10 @@ func (m *BoolMessage) CloneVT() *BoolMessage {
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -428,6 +480,10 @@ func (m *StringMessage) CloneVT() *StringMessage {
 		tmpContainer := make([]string, len(rhs))
 		copy(tmpContainer, rhs)
 		r.RepeatedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -460,6 +516,10 @@ func (m *BytesMessage) CloneVT() *BytesMessage {
 		}
 		r.RepeatedField = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -489,6 +549,10 @@ func (m *EnumMessage) CloneVT() *EnumMessage {
 		tmpContainer := make([]EnumMessage_Num, len(rhs))
 		copy(tmpContainer, rhs)
 		r.PackedField = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
