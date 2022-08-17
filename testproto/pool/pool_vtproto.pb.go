@@ -28,6 +28,10 @@ func (m *MemoryPoolExtension) CloneVT() *MemoryPoolExtension {
 		Foo1: m.Foo1,
 		Foo2: m.Foo2,
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 

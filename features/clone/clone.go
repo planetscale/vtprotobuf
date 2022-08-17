@@ -144,7 +144,7 @@ func (p *clone) cloneField(lhsBase, rhsBase string, allFieldsNullable bool, fiel
 func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent.GoName
 	p.P(`func (m *`, ccTypeName, `) `, cloneName, `() *`, ccTypeName, ` {`)
-	p.body(!proto3, ccTypeName, message.Fields)
+	p.body(!proto3, ccTypeName, message.Fields, true)
 	p.P(`}`)
 	p.P()
 	p.P(`func (m *`, ccTypeName, `) `, cloneGenericName, `() `, protoPkg.Ident("Message"), ` {`)
@@ -156,7 +156,7 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 // body generates the code for the actual cloning logic of a structure containing the given fields.
 // In practice, those can be the fields of a message, or of a oneof struct.
 // The object to be cloned is assumed to be called "m".
-func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protogen.Field) {
+func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protogen.Field, cloneUnknownFields bool) {
 	// The method body for a message or a oneof wrapper always starts with a nil check.
 	p.P(`if m == nil {`)
 	// We use an explicitly typed nil to avoid returning the nil interface in the oneof wrapper
@@ -200,6 +200,14 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protog
 		p.cloneField("r", "m", allFieldsNullable, field)
 	}
 
+	if cloneUnknownFields {
+		// Clone unknown fields, if any
+		p.P(`if len(m.unknownFields) > 0 {`)
+		p.P(`r.unknownFields = make([]byte, len(m.unknownFields))`)
+		p.P(`copy(r.unknownFields, m.unknownFields)`)
+		p.P(`}`)
+	}
+
 	p.P(`return r`)
 }
 
@@ -214,7 +222,7 @@ func (p *clone) generateCloneMethodsForOneof(field *protogen.Field) {
 	fieldInOneof := *field
 	fieldInOneof.Oneof = nil
 	// If we have a scalar field in a oneof, that field is never nullable, even when using proto2
-	p.body(false, ccTypeName, []*protogen.Field{&fieldInOneof})
+	p.body(false, ccTypeName, []*protogen.Field{&fieldInOneof}, false)
 	p.P(`}`)
 	p.P()
 }

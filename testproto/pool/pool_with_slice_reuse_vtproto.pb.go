@@ -29,6 +29,10 @@ func (m *Test1) CloneVT() *Test1 {
 		copy(tmpContainer, rhs)
 		r.Sl = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -47,6 +51,10 @@ func (m *Test2) CloneVT() *Test2 {
 			tmpContainer[k] = v.CloneVT()
 		}
 		r.Sl = tmpContainer
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -80,6 +88,10 @@ func (m *Slice2) CloneVT() *Slice2 {
 		copy(tmpContainer, rhs)
 		r.C = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -93,6 +105,10 @@ func (m *Element2) CloneVT() *Element2 {
 	}
 	r := &Element2{
 		A: m.A,
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }

@@ -28,6 +28,10 @@ func (m *FailureSet) CloneVT() *FailureSet {
 		copy(tmpContainer, rhs)
 		r.Failure = tmpContainer
 	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
 	return r
 }
 
@@ -50,6 +54,10 @@ func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
 		r.Payload = m.Payload.(interface {
 			CloneVT() isConformanceRequest_Payload
 		}).CloneVT()
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -110,6 +118,10 @@ func (m *ConformanceResponse) CloneVT() *ConformanceResponse {
 		r.Result = m.Result.(interface {
 			CloneVT() isConformanceResponse_Result
 		}).CloneVT()
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
@@ -207,6 +219,10 @@ func (m *JspbEncodingConfig) CloneVT() *JspbEncodingConfig {
 	}
 	r := &JspbEncodingConfig{
 		UseJspbArrayAnyFormat: m.UseJspbArrayAnyFormat,
+	}
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
 	}
 	return r
 }
