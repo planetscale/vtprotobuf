@@ -37,9 +37,9 @@ func (m *MemoryPoolExtension) CloneGenericVT() proto.Message {
 
 func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.Foo1 != that.Foo1 {
 		return false

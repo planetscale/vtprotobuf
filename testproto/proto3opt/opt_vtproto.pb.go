@@ -100,9 +100,9 @@ func (m *OptionalFieldInProto3) CloneGenericVT() proto.Message {
 
 func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.OptionalInt32, that.OptionalInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false

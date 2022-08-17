@@ -933,9 +933,9 @@ func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
 
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.A != that.A {
 		return false
@@ -948,9 +948,9 @@ func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_N
 
 func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.OneofField == nil && that.OneofField != nil {
 		return false
@@ -1173,8 +1173,16 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedNestedMessage {
 		vy := that.RepeatedNestedMessage[i]
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &TestAllTypesProto3_NestedMessage{}
+			}
+			if q == nil {
+				q = &TestAllTypesProto3_NestedMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.RepeatedForeignMessage) != len(that.RepeatedForeignMessage) {
@@ -1182,8 +1190,16 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedForeignMessage {
 		vy := that.RepeatedForeignMessage[i]
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &ForeignMessage{}
+			}
+			if q == nil {
+				q = &ForeignMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.RepeatedNestedEnum) != len(that.RepeatedNestedEnum) {
@@ -1410,8 +1426,16 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 		if !ok {
 			return false
 		}
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &TestAllTypesProto3_NestedMessage{}
+			}
+			if q == nil {
+				q = &TestAllTypesProto3_NestedMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.MapStringForeignMessage) != len(that.MapStringForeignMessage) {
@@ -1422,8 +1446,16 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 		if !ok {
 			return false
 		}
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &ForeignMessage{}
+			}
+			if q == nil {
+				q = &ForeignMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.MapStringNestedEnum) != len(that.MapStringNestedEnum) {
@@ -1788,14 +1820,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedBoolWrapper {
 		vy := that.RepeatedBoolWrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.BoolValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.BoolValue{}
+			}
+			if q == nil {
+				q = &wrapperspb.BoolValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.BoolValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedInt32Wrapper) != len(that.RepeatedInt32Wrapper) {
@@ -1803,14 +1843,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedInt32Wrapper {
 		vy := that.RepeatedInt32Wrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.Int32Value) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.Int32Value{}
+			}
+			if q == nil {
+				q = &wrapperspb.Int32Value{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.Int32Value) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedInt64Wrapper) != len(that.RepeatedInt64Wrapper) {
@@ -1818,14 +1866,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedInt64Wrapper {
 		vy := that.RepeatedInt64Wrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.Int64Value) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.Int64Value{}
+			}
+			if q == nil {
+				q = &wrapperspb.Int64Value{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.Int64Value) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedUint32Wrapper) != len(that.RepeatedUint32Wrapper) {
@@ -1833,14 +1889,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedUint32Wrapper {
 		vy := that.RepeatedUint32Wrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.UInt32Value) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.UInt32Value{}
+			}
+			if q == nil {
+				q = &wrapperspb.UInt32Value{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.UInt32Value) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedUint64Wrapper) != len(that.RepeatedUint64Wrapper) {
@@ -1848,14 +1912,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedUint64Wrapper {
 		vy := that.RepeatedUint64Wrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.UInt64Value) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.UInt64Value{}
+			}
+			if q == nil {
+				q = &wrapperspb.UInt64Value{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.UInt64Value) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedFloatWrapper) != len(that.RepeatedFloatWrapper) {
@@ -1863,14 +1935,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedFloatWrapper {
 		vy := that.RepeatedFloatWrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.FloatValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.FloatValue{}
+			}
+			if q == nil {
+				q = &wrapperspb.FloatValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.FloatValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedDoubleWrapper) != len(that.RepeatedDoubleWrapper) {
@@ -1878,14 +1958,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedDoubleWrapper {
 		vy := that.RepeatedDoubleWrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.DoubleValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.DoubleValue{}
+			}
+			if q == nil {
+				q = &wrapperspb.DoubleValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.DoubleValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedStringWrapper) != len(that.RepeatedStringWrapper) {
@@ -1893,14 +1981,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedStringWrapper {
 		vy := that.RepeatedStringWrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.StringValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.StringValue{}
+			}
+			if q == nil {
+				q = &wrapperspb.StringValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.StringValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedBytesWrapper) != len(that.RepeatedBytesWrapper) {
@@ -1908,14 +2004,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedBytesWrapper {
 		vy := that.RepeatedBytesWrapper[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*wrapperspb.BytesValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &wrapperspb.BytesValue{}
+			}
+			if q == nil {
+				q = &wrapperspb.BytesValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*wrapperspb.BytesValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if equal, ok := interface{}(this.OptionalDuration).(interface {
@@ -1974,14 +2078,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedDuration {
 		vy := that.RepeatedDuration[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*durationpb.Duration) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &durationpb.Duration{}
+			}
+			if q == nil {
+				q = &durationpb.Duration{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*durationpb.Duration) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedTimestamp) != len(that.RepeatedTimestamp) {
@@ -1989,14 +2101,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedTimestamp {
 		vy := that.RepeatedTimestamp[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*timestamppb.Timestamp) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &timestamppb.Timestamp{}
+			}
+			if q == nil {
+				q = &timestamppb.Timestamp{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*timestamppb.Timestamp) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedFieldmask) != len(that.RepeatedFieldmask) {
@@ -2004,14 +2124,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedFieldmask {
 		vy := that.RepeatedFieldmask[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*fieldmaskpb.FieldMask) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &fieldmaskpb.FieldMask{}
+			}
+			if q == nil {
+				q = &fieldmaskpb.FieldMask{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*fieldmaskpb.FieldMask) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedAny) != len(that.RepeatedAny) {
@@ -2019,12 +2147,20 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedAny {
 		vy := that.RepeatedAny[i]
-		if equal, ok := interface{}(vx).(interface{ EqualVT(*anypb.Any) bool }); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &anypb.Any{}
+			}
+			if q == nil {
+				q = &anypb.Any{}
+			}
+			if equal, ok := interface{}(p).(interface{ EqualVT(*anypb.Any) bool }); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedValue) != len(that.RepeatedValue) {
@@ -2032,12 +2168,20 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedValue {
 		vy := that.RepeatedValue[i]
-		if equal, ok := interface{}(vx).(interface{ EqualVT(*structpb.Value) bool }); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &structpb.Value{}
+			}
+			if q == nil {
+				q = &structpb.Value{}
+			}
+			if equal, ok := interface{}(p).(interface{ EqualVT(*structpb.Value) bool }); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedListValue) != len(that.RepeatedListValue) {
@@ -2045,14 +2189,22 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedListValue {
 		vy := that.RepeatedListValue[i]
-		if equal, ok := interface{}(vx).(interface {
-			EqualVT(*structpb.ListValue) bool
-		}); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &structpb.ListValue{}
+			}
+			if q == nil {
+				q = &structpb.ListValue{}
+			}
+			if equal, ok := interface{}(p).(interface {
+				EqualVT(*structpb.ListValue) bool
+			}); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if len(this.RepeatedStruct) != len(that.RepeatedStruct) {
@@ -2060,12 +2212,20 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	}
 	for i, vx := range this.RepeatedStruct {
 		vy := that.RepeatedStruct[i]
-		if equal, ok := interface{}(vx).(interface{ EqualVT(*structpb.Struct) bool }); ok {
-			if !equal.EqualVT(vy) {
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &structpb.Struct{}
+			}
+			if q == nil {
+				q = &structpb.Struct{}
+			}
+			if equal, ok := interface{}(p).(interface{ EqualVT(*structpb.Struct) bool }); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
-		} else if !proto.Equal(vx, vy) {
-			return false
 		}
 	}
 	if this.Fieldname1 != that.Fieldname1 {
@@ -2153,8 +2313,16 @@ func (this *TestAllTypesProto3_OneofNestedMessage) EqualVT(thatIface isTestAllTy
 	if this == nil && that != nil || this != nil && that == nil {
 		return false
 	}
-	if !this.OneofNestedMessage.EqualVT(that.OneofNestedMessage) {
-		return false
+	if p, q := this.OneofNestedMessage, that.OneofNestedMessage; p != q {
+		if p == nil {
+			p = &TestAllTypesProto3_NestedMessage{}
+		}
+		if q == nil {
+			q = &TestAllTypesProto3_NestedMessage{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
 	}
 	return true
 }
@@ -2297,9 +2465,9 @@ func (this *TestAllTypesProto3_OneofNullValue) EqualVT(thatIface isTestAllTypesP
 
 func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.C != that.C {
 		return false
@@ -2309,18 +2477,18 @@ func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 
 func (this *NullHypothesisProto3) EqualVT(that *NullHypothesisProto3) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *EnumOnlyProto3) EqualVT(that *EnumOnlyProto3) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }

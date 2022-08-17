@@ -217,9 +217,9 @@ func (m *JspbEncodingConfig) CloneGenericVT() proto.Message {
 
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if len(this.Failure) != len(that.Failure) {
 		return false
@@ -235,9 +235,9 @@ func (this *FailureSet) EqualVT(that *FailureSet) bool {
 
 func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.Payload == nil && that.Payload != nil {
 		return false
@@ -339,9 +339,9 @@ func (this *ConformanceRequest_TextPayload) EqualVT(thatIface isConformanceReque
 
 func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.Result == nil && that.Result != nil {
 		return false
@@ -496,9 +496,9 @@ func (this *ConformanceResponse_TextPayload) EqualVT(thatIface isConformanceResp
 
 func (this *JspbEncodingConfig) EqualVT(that *JspbEncodingConfig) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.UseJspbArrayAnyFormat != that.UseJspbArrayAnyFormat {
 		return false

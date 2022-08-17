@@ -922,9 +922,9 @@ func (m *OneStringProto2) CloneGenericVT() proto.Message {
 
 func (this *TestAllTypesProto2_NestedMessage) EqualVT(that *TestAllTypesProto2_NestedMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.A, that.A; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -937,9 +937,9 @@ func (this *TestAllTypesProto2_NestedMessage) EqualVT(that *TestAllTypesProto2_N
 
 func (this *TestAllTypesProto2_Data) EqualVT(that *TestAllTypesProto2_Data) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.GroupInt32, that.GroupInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -952,18 +952,18 @@ func (this *TestAllTypesProto2_Data) EqualVT(that *TestAllTypesProto2_Data) bool
 
 func (this *TestAllTypesProto2_MessageSetCorrect) EqualVT(that *TestAllTypesProto2_MessageSetCorrect) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *TestAllTypesProto2_MessageSetCorrectExtension1) EqualVT(that *TestAllTypesProto2_MessageSetCorrectExtension1) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.Str, that.Str; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -973,9 +973,9 @@ func (this *TestAllTypesProto2_MessageSetCorrectExtension1) EqualVT(that *TestAl
 
 func (this *TestAllTypesProto2_MessageSetCorrectExtension2) EqualVT(that *TestAllTypesProto2_MessageSetCorrectExtension2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.I, that.I; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -985,9 +985,9 @@ func (this *TestAllTypesProto2_MessageSetCorrectExtension2) EqualVT(that *TestAl
 
 func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if this.OneofField == nil && that.OneofField != nil {
 		return false
@@ -1207,8 +1207,16 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	}
 	for i, vx := range this.RepeatedNestedMessage {
 		vy := that.RepeatedNestedMessage[i]
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &TestAllTypesProto2_NestedMessage{}
+			}
+			if q == nil {
+				q = &TestAllTypesProto2_NestedMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.RepeatedForeignMessage) != len(that.RepeatedForeignMessage) {
@@ -1216,8 +1224,16 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 	}
 	for i, vx := range this.RepeatedForeignMessage {
 		vy := that.RepeatedForeignMessage[i]
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &ForeignMessageProto2{}
+			}
+			if q == nil {
+				q = &ForeignMessageProto2{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.RepeatedNestedEnum) != len(that.RepeatedNestedEnum) {
@@ -1444,8 +1460,16 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 		if !ok {
 			return false
 		}
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &TestAllTypesProto2_NestedMessage{}
+			}
+			if q == nil {
+				q = &TestAllTypesProto2_NestedMessage{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.MapStringForeignMessage) != len(that.MapStringForeignMessage) {
@@ -1456,8 +1480,16 @@ func (this *TestAllTypesProto2) EqualVT(that *TestAllTypesProto2) bool {
 		if !ok {
 			return false
 		}
-		if !vx.EqualVT(vy) {
-			return false
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &ForeignMessageProto2{}
+			}
+			if q == nil {
+				q = &ForeignMessageProto2{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	if len(this.MapStringNestedEnum) != len(that.MapStringNestedEnum) {
@@ -1869,8 +1901,16 @@ func (this *TestAllTypesProto2_OneofNestedMessage) EqualVT(thatIface isTestAllTy
 	if this == nil && that != nil || this != nil && that == nil {
 		return false
 	}
-	if !this.OneofNestedMessage.EqualVT(that.OneofNestedMessage) {
-		return false
+	if p, q := this.OneofNestedMessage, that.OneofNestedMessage; p != q {
+		if p == nil {
+			p = &TestAllTypesProto2_NestedMessage{}
+		}
+		if q == nil {
+			q = &TestAllTypesProto2_NestedMessage{}
+		}
+		if !p.EqualVT(q) {
+			return false
+		}
 	}
 	return true
 }
@@ -1996,9 +2036,9 @@ func (this *TestAllTypesProto2_OneofEnum) EqualVT(thatIface isTestAllTypesProto2
 
 func (this *ForeignMessageProto2) EqualVT(that *ForeignMessageProto2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.C, that.C; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -2008,9 +2048,9 @@ func (this *ForeignMessageProto2) EqualVT(that *ForeignMessageProto2) bool {
 
 func (this *UnknownToTestAllTypes_OptionalGroup) EqualVT(that *UnknownToTestAllTypes_OptionalGroup) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.A, that.A; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -2020,9 +2060,9 @@ func (this *UnknownToTestAllTypes_OptionalGroup) EqualVT(that *UnknownToTestAllT
 
 func (this *UnknownToTestAllTypes) EqualVT(that *UnknownToTestAllTypes) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.OptionalInt32, that.OptionalInt32; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -2053,27 +2093,27 @@ func (this *UnknownToTestAllTypes) EqualVT(that *UnknownToTestAllTypes) bool {
 
 func (this *NullHypothesisProto2) EqualVT(that *NullHypothesisProto2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *EnumOnlyProto2) EqualVT(that *EnumOnlyProto2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *OneStringProto2) EqualVT(that *OneStringProto2) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.Data, that.Data; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false

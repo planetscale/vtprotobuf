@@ -52,9 +52,9 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 	p.P(`func (this *`, ccTypeName, `) `, equalName, `(that *`, ccTypeName, `) bool {`)
 
 	p.P(`if this == nil {`)
-	p.P(`	return that == nil || that.String() == ""`)
+	p.P(`	return that == nil`)
 	p.P(`} else if that == nil {`)
-	p.P(`	return this.String() == ""`)
+	p.P(`	return false`)
 	p.P(`}`)
 
 	sort.Slice(message.Fields, func(i, j int) bool {
@@ -136,8 +136,7 @@ func (p *equal) oneof(field *protogen.Field) {
 	case kind == protoreflect.BytesKind:
 		p.compareBytes(lhs, rhs, false)
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
-		goTyp, _ := p.FieldGoType(field)
-		p.compareCall(lhs, rhs, goTyp, field.Message)
+		p.compareCall(lhs, rhs, field.Message, false)
 	default:
 		panic("not implemented")
 	}
@@ -181,8 +180,7 @@ func (p *equal) field(field *protogen.Field, nullable bool) {
 		p.compareBytes(lhs, rhs, nullable)
 
 	case kind == protoreflect.MessageKind || kind == protoreflect.GroupKind:
-		goTyp := fmt.Sprintf("*%s", p.QualifiedGoIdent(field.Message.GoIdent))
-		p.compareCall(lhs, rhs, goTyp, field.Message)
+		p.compareCall(lhs, rhs, field.Message, nullable)
 
 	default:
 		panic("not implemented")
@@ -215,14 +213,26 @@ func (p *equal) compareBytes(lhs, rhs string, nullable bool) {
 	p.P(`}`)
 }
 
-func (p *equal) compareCall(lhs, rhs string, ccTypeName string, msg *protogen.Message) {
+func (p *equal) compareCall(lhs, rhs string, msg *protogen.Message, nullable bool) {
+	if !nullable {
+		p.P(`if p, q := `, lhs, `, `, rhs, `; p != q {`)
+		defer p.P(`}`)
+
+		p.P(`if p == nil {`)
+		p.P(`p = &`, p.QualifiedGoIdent(msg.GoIdent), `{}`)
+		p.P(`}`)
+		p.P(`if q == nil {`)
+		p.P(`q = &`, p.QualifiedGoIdent(msg.GoIdent), `{}`)
+		p.P(`}`)
+		lhs, rhs = "p", "q"
+	}
 	if msg != nil && msg.Desc != nil && msg.Desc.ParentFile() != nil && p.IsLocalMessage(msg) {
 		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
 		return
 	}
-	p.P(`if equal, ok := interface{}(`, lhs, `).(interface { `, equalName, `(`, ccTypeName, `) bool }); ok {`)
+	p.P(`if equal, ok := interface{}(`, lhs, `).(interface { `, equalName, `(*`, p.QualifiedGoIdent(msg.GoIdent), `) bool }); ok {`)
 	p.P(`	if !equal.`, equalName, `(`, rhs, `) {`)
 	p.P(`		return false`)
 	p.P(`	}`)
