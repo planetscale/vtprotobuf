@@ -307,3 +307,63 @@ func TestEqualVT_Proto3_BytesNoPresence(t *testing.T) {
 		require.NoError(t, err)
 	}
 }
+
+func TestEqualVT_NilVsEmpty(t *testing.T) {
+	cases := map[string][2]*TestAllTypesProto3{
+		"nil and empty should not be equal": {
+			&TestAllTypesProto3{},
+			(*TestAllTypesProto3)(nil),
+		},
+		"nil and empty message field should not be equal": {
+			&TestAllTypesProto3{
+				OptionalNestedMessage: &TestAllTypesProto3_NestedMessage{},
+			},
+			&TestAllTypesProto3{
+				OptionalNestedMessage: nil,
+			},
+		},
+		"nil and empty message should be equal in slice": {
+			&TestAllTypesProto3{
+				RepeatedNestedMessage: []*TestAllTypesProto3_NestedMessage{{}},
+			},
+			&TestAllTypesProto3{
+				RepeatedNestedMessage: []*TestAllTypesProto3_NestedMessage{nil},
+			},
+		},
+		"nil and empty message should be equal in map value": {
+			&TestAllTypesProto3{
+				MapStringNestedMessage: map[string]*TestAllTypesProto3_NestedMessage{
+					"": {},
+				},
+			},
+			&TestAllTypesProto3{
+				MapStringNestedMessage: map[string]*TestAllTypesProto3_NestedMessage{
+					"": nil,
+				},
+			},
+		},
+		"nil and empty message should be equal in oneof": {
+			&TestAllTypesProto3{
+				OneofField: &TestAllTypesProto3_OneofNestedMessage{
+					OneofNestedMessage: &TestAllTypesProto3_NestedMessage{},
+				},
+			},
+			&TestAllTypesProto3{
+				OneofField: &TestAllTypesProto3_OneofNestedMessage{
+					OneofNestedMessage: nil,
+				},
+			},
+		},
+	}
+
+	for name, c := range cases {
+		cc := c // avoid loop closure bug
+		t.Run(name, func(t *testing.T) {
+			if proto.Equal(cc[0], cc[1]) {
+				assert.Truef(t, cc[0].EqualVT(cc[1]), "these %T should be equal:\nfirst = %+v\nsecond = %+v\n", cc[0], cc[0], cc[1])
+			} else {
+				assert.Falsef(t, cc[0].EqualVT(cc[1]), "these %T should not be equal:\nfirst = %+v\nsecond = %+v\n", cc[0], cc[0], cc[1])
+			}
+		})
+	}
+}

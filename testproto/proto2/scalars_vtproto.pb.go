@@ -499,9 +499,9 @@ func (m *EnumMessage) CloneGenericVT() proto.Message {
 
 func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -532,9 +532,9 @@ func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {
 
 func (this *FloatMessage) EqualVT(that *FloatMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -565,9 +565,9 @@ func (this *FloatMessage) EqualVT(that *FloatMessage) bool {
 
 func (this *Int32Message) EqualVT(that *Int32Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -598,9 +598,9 @@ func (this *Int32Message) EqualVT(that *Int32Message) bool {
 
 func (this *Int64Message) EqualVT(that *Int64Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -631,9 +631,9 @@ func (this *Int64Message) EqualVT(that *Int64Message) bool {
 
 func (this *Uint32Message) EqualVT(that *Uint32Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -664,9 +664,9 @@ func (this *Uint32Message) EqualVT(that *Uint32Message) bool {
 
 func (this *Uint64Message) EqualVT(that *Uint64Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -697,9 +697,9 @@ func (this *Uint64Message) EqualVT(that *Uint64Message) bool {
 
 func (this *Sint32Message) EqualVT(that *Sint32Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -730,9 +730,9 @@ func (this *Sint32Message) EqualVT(that *Sint32Message) bool {
 
 func (this *Sint64Message) EqualVT(that *Sint64Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -763,9 +763,9 @@ func (this *Sint64Message) EqualVT(that *Sint64Message) bool {
 
 func (this *Fixed32Message) EqualVT(that *Fixed32Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -796,9 +796,9 @@ func (this *Fixed32Message) EqualVT(that *Fixed32Message) bool {
 
 func (this *Fixed64Message) EqualVT(that *Fixed64Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -829,9 +829,9 @@ func (this *Fixed64Message) EqualVT(that *Fixed64Message) bool {
 
 func (this *Sfixed32Message) EqualVT(that *Sfixed32Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -862,9 +862,9 @@ func (this *Sfixed32Message) EqualVT(that *Sfixed32Message) bool {
 
 func (this *Sfixed64Message) EqualVT(that *Sfixed64Message) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -895,9 +895,9 @@ func (this *Sfixed64Message) EqualVT(that *Sfixed64Message) bool {
 
 func (this *BoolMessage) EqualVT(that *BoolMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -928,9 +928,9 @@ func (this *BoolMessage) EqualVT(that *BoolMessage) bool {
 
 func (this *StringMessage) EqualVT(that *StringMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
@@ -952,9 +952,9 @@ func (this *StringMessage) EqualVT(that *StringMessage) bool {
 
 func (this *BytesMessage) EqualVT(that *BytesMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && q == nil) || string(p) != string(q) {
 		return false
@@ -976,9 +976,9 @@ func (this *BytesMessage) EqualVT(that *BytesMessage) bool {
 
 func (this *EnumMessage) EqualVT(that *EnumMessage) bool {
 	if this == nil {
-		return that == nil || that.String() == ""
+		return that == nil
 	} else if that == nil {
-		return this.String() == ""
+		return false
 	}
 	if p, q := this.RequiredField, that.RequiredField; (p == nil && q != nil) || (p != nil && (q == nil || *p != *q)) {
 		return false
