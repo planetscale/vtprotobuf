@@ -215,6 +215,9 @@ func (p *equal) compareBytes(lhs, rhs string, nullable bool) {
 
 func (p *equal) compareCall(lhs, rhs string, msg *protogen.Message, nullable bool) {
 	if !nullable {
+		// The p != q check is mostly intended to catch the lhs = nil, rhs = nil case in which we would pointlessly
+		// allocate not just one but two empty values. However, it also provides us with an extra scope to establish
+		// our p and q variables.
 		p.P(`if p, q := `, lhs, `, `, rhs, `; p != q {`)
 		defer p.P(`}`)
 
