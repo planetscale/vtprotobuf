@@ -98,8 +98,13 @@ func (m *OptionalFieldInProto3) CloneVT() *OptionalFieldInProto3 {
 	return r
 }
 
-func (m *OptionalFieldInProto3) CloneGenericVT() proto.Message {
+func (m *OptionalFieldInProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *OptionalFieldInProto3) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
@@ -159,6 +164,13 @@ func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *OptionalFieldInProto3) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*OptionalFieldInProto3)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *OptionalFieldInProto3) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

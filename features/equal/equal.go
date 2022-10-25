@@ -18,6 +18,10 @@ func init() {
 	})
 }
 
+var (
+	protoPkg = protogen.GoImportPath("google.golang.org/protobuf/proto")
+)
+
 type equal struct {
 	*generator.GeneratedFile
 	once bool
@@ -36,6 +40,7 @@ func (p *equal) GenerateFile(file *protogen.File) bool {
 }
 
 const equalName = "EqualVT"
+const equalMessageName = "EqualMessageVT"
 
 func (p *equal) message(proto3 bool, message *protogen.Message) {
 	for _, nested := range message.Messages {
@@ -100,6 +105,14 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 	p.P(`return string(this.unknownFields) == string(that.unknownFields)`)
 	p.P(`}`)
 	p.P()
+
+	p.P(`func (this *`, ccTypeName, `) `, equalMessageName, `(thatMsg `, protoPkg.Ident("Message"), `) bool {`)
+	p.P(`that, ok := thatMsg.(*`, ccTypeName, `)`)
+	p.P(`if !ok {`)
+	p.P(`return false`)
+	p.P(`}`)
+	p.P(`return this.`, equalName, `(that)`)
+	p.P(`}`)
 
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()

@@ -36,8 +36,13 @@ func (m *Test1) CloneVT() *Test1 {
 	return r
 }
 
-func (m *Test1) CloneGenericVT() proto.Message {
+func (m *Test1) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Test1) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Test2) CloneVT() *Test2 {
@@ -59,8 +64,13 @@ func (m *Test2) CloneVT() *Test2 {
 	return r
 }
 
-func (m *Test2) CloneGenericVT() proto.Message {
+func (m *Test2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Test2) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Slice2) CloneVT() *Slice2 {
@@ -95,8 +105,13 @@ func (m *Slice2) CloneVT() *Slice2 {
 	return r
 }
 
-func (m *Slice2) CloneGenericVT() proto.Message {
+func (m *Slice2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Slice2) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Element2) CloneVT() *Element2 {
@@ -113,8 +128,13 @@ func (m *Element2) CloneVT() *Element2 {
 	return r
 }
 
-func (m *Element2) CloneGenericVT() proto.Message {
+func (m *Element2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Element2) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *Test1) EqualVT(that *Test1) bool {
@@ -135,6 +155,13 @@ func (this *Test1) EqualVT(that *Test1) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Test1) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Test1)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Test2) EqualVT(that *Test2) bool {
 	if this == nil {
 		return that == nil
@@ -161,6 +188,13 @@ func (this *Test2) EqualVT(that *Test2) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Test2) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Test2)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Slice2) EqualVT(that *Slice2) bool {
 	if this == nil {
 		return that == nil
@@ -203,6 +237,13 @@ func (this *Slice2) EqualVT(that *Slice2) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Slice2) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Slice2)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Element2) EqualVT(that *Element2) bool {
 	if this == nil {
 		return that == nil
@@ -215,6 +256,13 @@ func (this *Element2) EqualVT(that *Element2) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Element2) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Element2)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *Test1) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

@@ -13,6 +13,7 @@ import (
 
 const (
 	cloneName        = "CloneVT"
+	cloneMessageName = "CloneMessageVT"
 	cloneGenericName = "CloneGenericVT"
 )
 
@@ -147,8 +148,13 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 	p.body(!proto3, ccTypeName, message.Fields, true)
 	p.P(`}`)
 	p.P()
-	p.P(`func (m *`, ccTypeName, `) `, cloneGenericName, `() `, protoPkg.Ident("Message"), ` {`)
+	p.P(`func (m *`, ccTypeName, `) `, cloneMessageName, `() `, protoPkg.Ident("Message"), ` {`)
 	p.P(`return m.`, cloneName, `()`)
+	p.P(`}`)
+	p.P()
+	p.P(`// Deprecated: use `, cloneMessageName, ` instead`)
+	p.P(`func (m *`, ccTypeName, `) `, cloneGenericName, `() `, protoPkg.Ident("Message"), ` {`)
+	p.P(`return m.`, cloneMessageName, `()`)
 	p.P(`}`)
 	p.P()
 }
