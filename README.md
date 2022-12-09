@@ -121,3 +121,36 @@ Example:
 protoc --go_out=. --go-vtproto_out=. --go-drpc_out=. --go-drpc_opt=protolib=github.com/planetscale/vtprotobuf/codec/drpc
 ```
 
+### Connect
+To use `vtprotobuf` with Connect simply pass in `connect.WithCodec(grpc.Codec{})` as a connect option to the client and handler constructors.
+
+```go
+package main
+
+import (
+	"net/http"
+
+	"github.com/bufbuild/connect-go"
+	"github.com/foo/bar/pingv1connect"
+	"github.com/planetscale/vtprotobuf/codec/grpc"
+)
+
+func main() {
+	mux := http.NewServeMux()
+	mux.Handle(pingv1connect.NewPingServiceHandler(
+		&PingServer{},
+		connect.WithCodec(grpc.Codec{}), // Add connect option to handler.
+	))
+	// handler serving ...
+
+	client := pingv1connect.NewPingServiceClient(
+		http.DefaultClient,
+		"http://localhost:8080",
+		connect.WithCodec(grpc.Codec{}), // Add connect option to client.
+	)
+	/// client code here ...
+}
+```
+
+
+
