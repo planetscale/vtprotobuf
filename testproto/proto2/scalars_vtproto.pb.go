@@ -1642,7 +1642,7 @@ func (m *DoubleMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*8))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -1708,7 +1708,7 @@ func (m *FloatMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f1))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*4))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -1785,26 +1785,26 @@ func (m *Int32Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(num)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
-			i = encodeVarintForStrict(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalField))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalField))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.RequiredField))
+		i = encodeVarint(dAtA, i, uint64(*m.RequiredField))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -1858,26 +1858,26 @@ func (m *Int64Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(num)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
-			i = encodeVarintForStrict(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalField))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalField))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.RequiredField))
+		i = encodeVarint(dAtA, i, uint64(*m.RequiredField))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -1930,26 +1930,26 @@ func (m *Uint32Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(num)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
-			i = encodeVarintForStrict(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalField))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalField))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.RequiredField))
+		i = encodeVarint(dAtA, i, uint64(*m.RequiredField))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -2002,26 +2002,26 @@ func (m *Uint64Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(num)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
-			i = encodeVarintForStrict(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalField))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalField))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.RequiredField))
+		i = encodeVarint(dAtA, i, uint64(*m.RequiredField))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -2075,27 +2075,27 @@ func (m *Sint32Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(x3)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
 			x4 := (uint32(m.RepeatedField[iNdEx]) << 1) ^ uint32((m.RepeatedField[iNdEx] >> 31))
-			i = encodeVarintForStrict(dAtA, i, uint64(x4))
+			i = encodeVarint(dAtA, i, uint64(x4))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint32(*m.OptionalField)<<1)^uint32((*m.OptionalField>>31))))
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.OptionalField)<<1)^uint32((*m.OptionalField>>31))))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint32(*m.RequiredField)<<1)^uint32((*m.RequiredField>>31))))
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.RequiredField)<<1)^uint32((*m.RequiredField>>31))))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -2149,27 +2149,27 @@ func (m *Sint64Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(x3)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
 			x4 := (uint64(m.RepeatedField[iNdEx]) << 1) ^ uint64((m.RepeatedField[iNdEx] >> 63))
-			i = encodeVarintForStrict(dAtA, i, uint64(x4))
+			i = encodeVarint(dAtA, i, uint64(x4))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint64(*m.OptionalField)<<1)^uint64((*m.OptionalField>>63))))
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.OptionalField)<<1)^uint64((*m.OptionalField>>63))))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint64(*m.RequiredField)<<1)^uint64((*m.RequiredField>>63))))
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.RequiredField)<<1)^uint64((*m.RequiredField>>63))))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -2211,7 +2211,7 @@ func (m *Fixed32Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) 
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*4))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -2275,7 +2275,7 @@ func (m *Fixed64Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) 
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*8))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -2339,7 +2339,7 @@ func (m *Sfixed32Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error)
 			i -= 4
 			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*4))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -2403,7 +2403,7 @@ func (m *Sfixed64Message) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error)
 			i -= 8
 			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)*8))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -2471,7 +2471,7 @@ func (m *BoolMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 				dAtA[i] = 0
 			}
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.PackedField)))
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedField)))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -2546,7 +2546,7 @@ func (m *StringMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.RepeatedField[iNdEx])
 			copy(dAtA[i:], m.RepeatedField[iNdEx])
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -2554,7 +2554,7 @@ func (m *StringMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	if m.OptionalField != nil {
 		i -= len(*m.OptionalField)
 		copy(dAtA[i:], *m.OptionalField)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(*m.OptionalField)))
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalField)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2563,7 +2563,7 @@ func (m *StringMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	} else {
 		i -= len(*m.RequiredField)
 		copy(dAtA[i:], *m.RequiredField)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(*m.RequiredField)))
+		i = encodeVarint(dAtA, i, uint64(len(*m.RequiredField)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2604,7 +2604,7 @@ func (m *BytesMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.RepeatedField[iNdEx])
 			copy(dAtA[i:], m.RepeatedField[iNdEx])
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
 			i--
 			dAtA[i] = 0x1a
 		}
@@ -2612,7 +2612,7 @@ func (m *BytesMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	if m.OptionalField != nil {
 		i -= len(m.OptionalField)
 		copy(dAtA[i:], m.OptionalField)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.OptionalField)))
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalField)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2621,7 +2621,7 @@ func (m *BytesMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	} else {
 		i -= len(m.RequiredField)
 		copy(dAtA[i:], m.RequiredField)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.RequiredField)))
+		i = encodeVarint(dAtA, i, uint64(len(m.RequiredField)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -2675,43 +2675,32 @@ func (m *EnumMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			dAtA[j1] = uint8(num)
 			j1++
 		}
-		i = encodeVarintForStrict(dAtA, i, uint64(pksize2))
+		i = encodeVarint(dAtA, i, uint64(pksize2))
 		i--
 		dAtA[i] = 0x22
 	}
 	if len(m.RepeatedField) > 0 {
 		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
-			i = encodeVarintForStrict(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
 			i--
 			dAtA[i] = 0x18
 		}
 	}
 	if m.OptionalField != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalField))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalField))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.RequiredField == nil {
 		return 0, fmt.Errorf("proto: required field required_field not set")
 	} else {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.RequiredField))
+		i = encodeVarint(dAtA, i, uint64(*m.RequiredField))
 		i--
 		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
 
-func encodeVarintForStrict(dAtA []byte, offset int, v uint64) int {
-	offset -= sov(v)
-	base := offset
-	for v >= 1<<7 {
-		dAtA[offset] = uint8(v&0x7f | 0x80)
-		v >>= 7
-		offset++
-	}
-	dAtA[offset] = uint8(v)
-	return base
-}
 func (m *DoubleMessage) SizeVT() (n int) {
 	if m == nil {
 		return 0

@@ -16,8 +16,9 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Ext           *Extensions
-	LocalPackages map[string]bool
+	Ext               *Extensions
+	LocalPackages     map[string]bool
+	HelpersDupChecker map[string]bool
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {

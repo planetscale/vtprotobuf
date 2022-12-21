@@ -344,6 +344,7 @@ type TestAllTypesProto2 struct {
 	MapStringNestedEnum     map[string]TestAllTypesProto2_NestedEnum     `protobuf:"bytes,73,rep,name=map_string_nested_enum,json=mapStringNestedEnum" json:"map_string_nested_enum,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value,enum=protobuf_test_messages.proto2.TestAllTypesProto2_NestedEnum"`
 	MapStringForeignEnum    map[string]ForeignEnumProto2                 `protobuf:"bytes,74,rep,name=map_string_foreign_enum,json=mapStringForeignEnum" json:"map_string_foreign_enum,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value,enum=protobuf_test_messages.proto2.ForeignEnumProto2"`
 	// Types that are assignable to OneofField:
+	//
 	//	*TestAllTypesProto2_OneofUint32
 	//	*TestAllTypesProto2_OneofNestedMessage
 	//	*TestAllTypesProto2_OneofString

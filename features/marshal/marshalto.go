@@ -53,28 +53,21 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
-// need different names to generate helpers for marshal and marshal_strict features independently
-func (p *marshal) encodeVarintMeth() string {
-	switch {
-	case p.strict:
-		return "encodeVarintForStrict"
-	default:
-		return "encodeVarint"
-	}
-}
-
 func (p *marshal) GenerateHelpers() {
-	p.P(`func `, p.encodeVarintMeth(), `(dAtA []byte, offset int, v uint64) int {`)
-	p.P(`offset -= sov(v)`)
-	p.P(`base := offset`)
-	p.P(`for v >= 1<<7 {`)
-	p.P(`dAtA[offset] = uint8(v&0x7f|0x80)`)
-	p.P(`v >>= 7`)
-	p.P(`offset++`)
-	p.P(`}`)
-	p.P(`dAtA[offset] = uint8(v)`)
-	p.P(`return base`)
-	p.P(`}`)
+	if !p.HelpersDupChecker["encodeVarint"] {
+		p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
+		p.P(`offset -= sov(v)`)
+		p.P(`base := offset`)
+		p.P(`for v >= 1<<7 {`)
+		p.P(`dAtA[offset] = uint8(v&0x7f|0x80)`)
+		p.P(`v >>= 7`)
+		p.P(`offset++`)
+		p.P(`}`)
+		p.P(`dAtA[offset] = uint8(v)`)
+		p.P(`return base`)
+		p.P(`}`)
+		p.HelpersDupChecker["encodeVarint"] = true
+	}
 }
 
 func (p *marshal) encodeFixed64(varName ...string) {
@@ -88,7 +81,7 @@ func (p *marshal) encodeFixed32(varName ...string) {
 }
 
 func (p *marshal) encodeVarint(varName ...string) {
-	p.P(`i = `, p.encodeVarintMeth(), `(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
+	p.P(`i = encodeVarint(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
 }
 
 func (p *marshal) encodeKey(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) {

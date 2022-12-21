@@ -537,7 +537,7 @@ func (m *FailureSet) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Failure[iNdEx])
 			copy(dAtA[i:], m.Failure[iNdEx])
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.Failure[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -605,24 +605,24 @@ func (m *ConformanceRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			return 0, err
 		}
 		i -= size
-		i = encodeVarintForStrict(dAtA, i, uint64(size))
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.TestCategory != 0 {
-		i = encodeVarintForStrict(dAtA, i, uint64(m.TestCategory))
+		i = encodeVarint(dAtA, i, uint64(m.TestCategory))
 		i--
 		dAtA[i] = 0x28
 	}
 	if len(m.MessageType) > 0 {
 		i -= len(m.MessageType)
 		copy(dAtA[i:], m.MessageType)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.MessageType)))
+		i = encodeVarint(dAtA, i, uint64(len(m.MessageType)))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.RequestedOutputFormat != 0 {
-		i = encodeVarintForStrict(dAtA, i, uint64(m.RequestedOutputFormat))
+		i = encodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -652,7 +652,7 @@ func (m *ConformanceRequest_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA [
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -666,7 +666,7 @@ func (m *ConformanceRequest_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.JsonPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -680,7 +680,7 @@ func (m *ConformanceRequest_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.JspbPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -694,7 +694,7 @@ func (m *ConformanceRequest_TextPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.TextPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -797,7 +797,7 @@ func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.ParseError)
 	copy(dAtA[i:], m.ParseError)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.ParseError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ParseError)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -811,7 +811,7 @@ func (m *ConformanceResponse_RuntimeError) MarshalToSizedBufferVTStrict(dAtA []b
 	i := len(dAtA)
 	i -= len(m.RuntimeError)
 	copy(dAtA[i:], m.RuntimeError)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.RuntimeError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -825,7 +825,7 @@ func (m *ConformanceResponse_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA 
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0x1a
 	return len(dAtA) - i, nil
@@ -839,7 +839,7 @@ func (m *ConformanceResponse_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.JsonPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x22
 	return len(dAtA) - i, nil
@@ -853,7 +853,7 @@ func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVTStrict(dAtA []byte) 
 	i := len(dAtA)
 	i -= len(m.Skipped)
 	copy(dAtA[i:], m.Skipped)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.Skipped)))
+	i = encodeVarint(dAtA, i, uint64(len(m.Skipped)))
 	i--
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
@@ -867,7 +867,7 @@ func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVTStrict(dAtA [
 	i := len(dAtA)
 	i -= len(m.SerializeError)
 	copy(dAtA[i:], m.SerializeError)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.SerializeError)))
+	i = encodeVarint(dAtA, i, uint64(len(m.SerializeError)))
 	i--
 	dAtA[i] = 0x32
 	return len(dAtA) - i, nil
@@ -881,7 +881,7 @@ func (m *ConformanceResponse_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.JspbPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -895,7 +895,7 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarintForStrict(dAtA, i, uint64(len(m.TextPayload)))
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil

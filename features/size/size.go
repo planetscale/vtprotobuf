@@ -42,13 +42,20 @@ func (p *size) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *size) GenerateHelpers() {
-	p.P(`
-	func sov(x uint64) (n int) {
-                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
-	}`)
-	p.P(`func soz(x uint64) (n int) {
+	if !p.HelpersDupChecker["sov"] {
+		p.P(`
+		func sov(x uint64) (n int) {
+					return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+		}`)
+		p.HelpersDupChecker["sov"] = true
+	}
+
+	if !p.HelpersDupChecker["soz"] {
+		p.P(`func soz(x uint64) (n int) {
 		return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-	}`)
+		}`)
+		p.HelpersDupChecker["soz"] = true
+	}
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {

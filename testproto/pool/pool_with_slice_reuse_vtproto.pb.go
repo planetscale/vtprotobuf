@@ -344,7 +344,7 @@ func (m *Test1) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Sl) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Sl[iNdEx])
 			copy(dAtA[i:], m.Sl[iNdEx])
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.Sl[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.Sl[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -389,7 +389,7 @@ func (m *Test2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 				return 0, err
 			}
 			i -= size
-			i = encodeVarintForStrict(dAtA, i, uint64(size))
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -428,14 +428,14 @@ func (m *Slice2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if m.F != 0 {
-		i = encodeVarintForStrict(dAtA, i, uint64(m.F))
+		i = encodeVarint(dAtA, i, uint64(m.F))
 		i--
 		dAtA[i] = 0x30
 	}
 	if len(m.E) > 0 {
 		i -= len(m.E)
 		copy(dAtA[i:], m.E)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(m.E)))
+		i = encodeVarint(dAtA, i, uint64(len(m.E)))
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -445,7 +445,7 @@ func (m *Slice2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
-		i = encodeVarintForStrict(dAtA, i, uint64(size))
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -453,13 +453,13 @@ func (m *Slice2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.C) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.C[iNdEx])
 			copy(dAtA[i:], m.C[iNdEx])
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.C[iNdEx])))
+			i = encodeVarint(dAtA, i, uint64(len(m.C[iNdEx])))
 			i--
 			dAtA[i] = 0x1a
 		}
 	}
 	if m.B != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.B))
+		i = encodeVarint(dAtA, i, uint64(*m.B))
 		i--
 		dAtA[i] = 0x10
 	}
@@ -467,13 +467,13 @@ func (m *Slice2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for k := range m.A {
 			v := m.A[k]
 			baseI := i
-			i = encodeVarintForStrict(dAtA, i, uint64(v))
+			i = encodeVarint(dAtA, i, uint64(v))
 			i--
 			dAtA[i] = 0x10
-			i = encodeVarintForStrict(dAtA, i, uint64(k))
+			i = encodeVarint(dAtA, i, uint64(k))
 			i--
 			dAtA[i] = 0x8
-			i = encodeVarintForStrict(dAtA, i, uint64(baseI-i))
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -512,7 +512,7 @@ func (m *Element2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if m.A != 0 {
-		i = encodeVarintForStrict(dAtA, i, uint64(m.A))
+		i = encodeVarint(dAtA, i, uint64(m.A))
 		i--
 		dAtA[i] = 0x8
 	}

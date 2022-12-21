@@ -251,7 +251,7 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if m.OptionalEnum != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalEnum))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalEnum))
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -261,7 +261,7 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		if len(m.OptionalBytes) > 0 {
 			i -= len(m.OptionalBytes)
 			copy(dAtA[i:], m.OptionalBytes)
-			i = encodeVarintForStrict(dAtA, i, uint64(len(m.OptionalBytes)))
+			i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
 			i--
 			dAtA[i] = 0x7a
 		}
@@ -269,7 +269,7 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 	if m.OptionalString != nil {
 		i -= len(*m.OptionalString)
 		copy(dAtA[i:], *m.OptionalString)
-		i = encodeVarintForStrict(dAtA, i, uint64(len(*m.OptionalString)))
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalString)))
 		i--
 		dAtA[i] = 0x72
 	}
@@ -320,49 +320,38 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		dAtA[i] = 0x3d
 	}
 	if m.OptionalSint64 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint64(*m.OptionalSint64)<<1)^uint64((*m.OptionalSint64>>63))))
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.OptionalSint64)<<1)^uint64((*m.OptionalSint64>>63))))
 		i--
 		dAtA[i] = 0x30
 	}
 	if m.OptionalSint32 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64((uint32(*m.OptionalSint32)<<1)^uint32((*m.OptionalSint32>>31))))
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.OptionalSint32)<<1)^uint32((*m.OptionalSint32>>31))))
 		i--
 		dAtA[i] = 0x28
 	}
 	if m.OptionalUint64 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalUint64))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint64))
 		i--
 		dAtA[i] = 0x20
 	}
 	if m.OptionalUint32 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalUint32))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint32))
 		i--
 		dAtA[i] = 0x18
 	}
 	if m.OptionalInt64 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalInt64))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt64))
 		i--
 		dAtA[i] = 0x10
 	}
 	if m.OptionalInt32 != nil {
-		i = encodeVarintForStrict(dAtA, i, uint64(*m.OptionalInt32))
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt32))
 		i--
 		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
 
-func encodeVarintForStrict(dAtA []byte, offset int, v uint64) int {
-	offset -= sov(v)
-	base := offset
-	for v >= 1<<7 {
-		dAtA[offset] = uint8(v&0x7f | 0x80)
-		v >>= 7
-		offset++
-	}
-	dAtA[offset] = uint8(v)
-	return base
-}
 func (m *OptionalFieldInProto3) SizeVT() (n int) {
 	if m == nil {
 		return 0
