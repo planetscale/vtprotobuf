@@ -41,8 +41,13 @@ func (m *TestAllTypesProto3_NestedMessage) CloneVT() *TestAllTypesProto3_NestedM
 	return r
 }
 
-func (m *TestAllTypesProto3_NestedMessage) CloneGenericVT() proto.Message {
+func (m *TestAllTypesProto3_NestedMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *TestAllTypesProto3_NestedMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
@@ -794,8 +799,13 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	return r
 }
 
-func (m *TestAllTypesProto3) CloneGenericVT() proto.Message {
+func (m *TestAllTypesProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *TestAllTypesProto3) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *TestAllTypesProto3_OneofUint32) CloneVT() isTestAllTypesProto3_OneofField {
@@ -915,8 +925,13 @@ func (m *ForeignMessage) CloneVT() *ForeignMessage {
 	return r
 }
 
-func (m *ForeignMessage) CloneGenericVT() proto.Message {
+func (m *ForeignMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *ForeignMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
@@ -931,8 +946,13 @@ func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
 	return r
 }
 
-func (m *NullHypothesisProto3) CloneGenericVT() proto.Message {
+func (m *NullHypothesisProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *NullHypothesisProto3) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
@@ -947,8 +967,13 @@ func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
 	return r
 }
 
-func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
+func (m *EnumOnlyProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {
@@ -966,6 +991,13 @@ func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_N
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *TestAllTypesProto3_NestedMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*TestAllTypesProto3_NestedMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	if this == that {
 		return true
@@ -2305,6 +2337,13 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *TestAllTypesProto3) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*TestAllTypesProto3)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *TestAllTypesProto3_OneofUint32) EqualVT(thatIface isTestAllTypesProto3_OneofField) bool {
 	that, ok := thatIface.(*TestAllTypesProto3_OneofUint32)
 	if !ok {
@@ -2495,6 +2534,13 @@ func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *ForeignMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ForeignMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *NullHypothesisProto3) EqualVT(that *NullHypothesisProto3) bool {
 	if this == that {
 		return true
@@ -2504,6 +2550,13 @@ func (this *NullHypothesisProto3) EqualVT(that *NullHypothesisProto3) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *NullHypothesisProto3) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*NullHypothesisProto3)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *EnumOnlyProto3) EqualVT(that *EnumOnlyProto3) bool {
 	if this == that {
 		return true
@@ -2513,6 +2566,13 @@ func (this *EnumOnlyProto3) EqualVT(that *EnumOnlyProto3) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *EnumOnlyProto3) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*EnumOnlyProto3)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *TestAllTypesProto3_NestedMessage) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

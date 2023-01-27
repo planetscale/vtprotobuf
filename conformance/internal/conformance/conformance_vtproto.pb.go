@@ -35,8 +35,13 @@ func (m *FailureSet) CloneVT() *FailureSet {
 	return r
 }
 
-func (m *FailureSet) CloneGenericVT() proto.Message {
+func (m *FailureSet) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *FailureSet) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
@@ -62,8 +67,13 @@ func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
 	return r
 }
 
-func (m *ConformanceRequest) CloneGenericVT() proto.Message {
+func (m *ConformanceRequest) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *ConformanceRequest) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *ConformanceRequest_ProtobufPayload) CloneVT() isConformanceRequest_Payload {
@@ -126,8 +136,13 @@ func (m *ConformanceResponse) CloneVT() *ConformanceResponse {
 	return r
 }
 
-func (m *ConformanceResponse) CloneGenericVT() proto.Message {
+func (m *ConformanceResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *ConformanceResponse) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *ConformanceResponse_ParseError) CloneVT() isConformanceResponse_Result {
@@ -227,8 +242,13 @@ func (m *JspbEncodingConfig) CloneVT() *JspbEncodingConfig {
 	return r
 }
 
-func (m *JspbEncodingConfig) CloneGenericVT() proto.Message {
+func (m *JspbEncodingConfig) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *JspbEncodingConfig) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
@@ -249,6 +269,13 @@ func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *FailureSet) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*FailureSet)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 	if this == that {
 		return true
@@ -285,6 +312,13 @@ func (this *ConformanceRequest) EqualVT(that *ConformanceRequest) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *ConformanceRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ConformanceRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *ConformanceRequest_ProtobufPayload) EqualVT(thatIface isConformanceRequest_Payload) bool {
 	that, ok := thatIface.(*ConformanceRequest_ProtobufPayload)
 	if !ok {
@@ -374,6 +408,13 @@ func (this *ConformanceResponse) EqualVT(that *ConformanceResponse) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *ConformanceResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*ConformanceResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *ConformanceResponse_ParseError) EqualVT(thatIface isConformanceResponse_Result) bool {
 	that, ok := thatIface.(*ConformanceResponse_ParseError)
 	if !ok {
@@ -522,6 +563,13 @@ func (this *JspbEncodingConfig) EqualVT(that *JspbEncodingConfig) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *JspbEncodingConfig) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*JspbEncodingConfig)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *FailureSet) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

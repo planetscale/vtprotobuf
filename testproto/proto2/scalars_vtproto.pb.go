@@ -51,8 +51,13 @@ func (m *DoubleMessage) CloneVT() *DoubleMessage {
 	return r
 }
 
-func (m *DoubleMessage) CloneGenericVT() proto.Message {
+func (m *DoubleMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *DoubleMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *FloatMessage) CloneVT() *FloatMessage {
@@ -85,8 +90,13 @@ func (m *FloatMessage) CloneVT() *FloatMessage {
 	return r
 }
 
-func (m *FloatMessage) CloneGenericVT() proto.Message {
+func (m *FloatMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *FloatMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Int32Message) CloneVT() *Int32Message {
@@ -119,8 +129,13 @@ func (m *Int32Message) CloneVT() *Int32Message {
 	return r
 }
 
-func (m *Int32Message) CloneGenericVT() proto.Message {
+func (m *Int32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Int32Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Int64Message) CloneVT() *Int64Message {
@@ -153,8 +168,13 @@ func (m *Int64Message) CloneVT() *Int64Message {
 	return r
 }
 
-func (m *Int64Message) CloneGenericVT() proto.Message {
+func (m *Int64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Int64Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Uint32Message) CloneVT() *Uint32Message {
@@ -187,8 +207,13 @@ func (m *Uint32Message) CloneVT() *Uint32Message {
 	return r
 }
 
-func (m *Uint32Message) CloneGenericVT() proto.Message {
+func (m *Uint32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Uint32Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Uint64Message) CloneVT() *Uint64Message {
@@ -221,8 +246,13 @@ func (m *Uint64Message) CloneVT() *Uint64Message {
 	return r
 }
 
-func (m *Uint64Message) CloneGenericVT() proto.Message {
+func (m *Uint64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Uint64Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Sint32Message) CloneVT() *Sint32Message {
@@ -255,8 +285,13 @@ func (m *Sint32Message) CloneVT() *Sint32Message {
 	return r
 }
 
-func (m *Sint32Message) CloneGenericVT() proto.Message {
+func (m *Sint32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Sint32Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Sint64Message) CloneVT() *Sint64Message {
@@ -289,8 +324,13 @@ func (m *Sint64Message) CloneVT() *Sint64Message {
 	return r
 }
 
-func (m *Sint64Message) CloneGenericVT() proto.Message {
+func (m *Sint64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Sint64Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Fixed32Message) CloneVT() *Fixed32Message {
@@ -323,8 +363,13 @@ func (m *Fixed32Message) CloneVT() *Fixed32Message {
 	return r
 }
 
-func (m *Fixed32Message) CloneGenericVT() proto.Message {
+func (m *Fixed32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Fixed32Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Fixed64Message) CloneVT() *Fixed64Message {
@@ -357,8 +402,13 @@ func (m *Fixed64Message) CloneVT() *Fixed64Message {
 	return r
 }
 
-func (m *Fixed64Message) CloneGenericVT() proto.Message {
+func (m *Fixed64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Fixed64Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
@@ -391,8 +441,13 @@ func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
 	return r
 }
 
-func (m *Sfixed32Message) CloneGenericVT() proto.Message {
+func (m *Sfixed32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Sfixed32Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
@@ -425,8 +480,13 @@ func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
 	return r
 }
 
-func (m *Sfixed64Message) CloneGenericVT() proto.Message {
+func (m *Sfixed64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *Sfixed64Message) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *BoolMessage) CloneVT() *BoolMessage {
@@ -459,8 +519,13 @@ func (m *BoolMessage) CloneVT() *BoolMessage {
 	return r
 }
 
-func (m *BoolMessage) CloneGenericVT() proto.Message {
+func (m *BoolMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *BoolMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *StringMessage) CloneVT() *StringMessage {
@@ -488,8 +553,13 @@ func (m *StringMessage) CloneVT() *StringMessage {
 	return r
 }
 
-func (m *StringMessage) CloneGenericVT() proto.Message {
+func (m *StringMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *StringMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *BytesMessage) CloneVT() *BytesMessage {
@@ -523,8 +593,13 @@ func (m *BytesMessage) CloneVT() *BytesMessage {
 	return r
 }
 
-func (m *BytesMessage) CloneGenericVT() proto.Message {
+func (m *BytesMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *BytesMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (m *EnumMessage) CloneVT() *EnumMessage {
@@ -557,8 +632,13 @@ func (m *EnumMessage) CloneVT() *EnumMessage {
 	return r
 }
 
-func (m *EnumMessage) CloneGenericVT() proto.Message {
+func (m *EnumMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *EnumMessage) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {
@@ -594,6 +674,13 @@ func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *DoubleMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*DoubleMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *FloatMessage) EqualVT(that *FloatMessage) bool {
 	if this == that {
 		return true
@@ -627,6 +714,13 @@ func (this *FloatMessage) EqualVT(that *FloatMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *FloatMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*FloatMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Int32Message) EqualVT(that *Int32Message) bool {
 	if this == that {
 		return true
@@ -660,6 +754,13 @@ func (this *Int32Message) EqualVT(that *Int32Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Int32Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Int32Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Int64Message) EqualVT(that *Int64Message) bool {
 	if this == that {
 		return true
@@ -693,6 +794,13 @@ func (this *Int64Message) EqualVT(that *Int64Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Int64Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Int64Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Uint32Message) EqualVT(that *Uint32Message) bool {
 	if this == that {
 		return true
@@ -726,6 +834,13 @@ func (this *Uint32Message) EqualVT(that *Uint32Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Uint32Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Uint32Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Uint64Message) EqualVT(that *Uint64Message) bool {
 	if this == that {
 		return true
@@ -759,6 +874,13 @@ func (this *Uint64Message) EqualVT(that *Uint64Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Uint64Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Uint64Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Sint32Message) EqualVT(that *Sint32Message) bool {
 	if this == that {
 		return true
@@ -792,6 +914,13 @@ func (this *Sint32Message) EqualVT(that *Sint32Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Sint32Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Sint32Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Sint64Message) EqualVT(that *Sint64Message) bool {
 	if this == that {
 		return true
@@ -825,6 +954,13 @@ func (this *Sint64Message) EqualVT(that *Sint64Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Sint64Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Sint64Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Fixed32Message) EqualVT(that *Fixed32Message) bool {
 	if this == that {
 		return true
@@ -858,6 +994,13 @@ func (this *Fixed32Message) EqualVT(that *Fixed32Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Fixed32Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Fixed32Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Fixed64Message) EqualVT(that *Fixed64Message) bool {
 	if this == that {
 		return true
@@ -891,6 +1034,13 @@ func (this *Fixed64Message) EqualVT(that *Fixed64Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Fixed64Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Fixed64Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Sfixed32Message) EqualVT(that *Sfixed32Message) bool {
 	if this == that {
 		return true
@@ -924,6 +1074,13 @@ func (this *Sfixed32Message) EqualVT(that *Sfixed32Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Sfixed32Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Sfixed32Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *Sfixed64Message) EqualVT(that *Sfixed64Message) bool {
 	if this == that {
 		return true
@@ -957,6 +1114,13 @@ func (this *Sfixed64Message) EqualVT(that *Sfixed64Message) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *Sfixed64Message) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*Sfixed64Message)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *BoolMessage) EqualVT(that *BoolMessage) bool {
 	if this == that {
 		return true
@@ -990,6 +1154,13 @@ func (this *BoolMessage) EqualVT(that *BoolMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *BoolMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BoolMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *StringMessage) EqualVT(that *StringMessage) bool {
 	if this == that {
 		return true
@@ -1014,6 +1185,13 @@ func (this *StringMessage) EqualVT(that *StringMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *StringMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*StringMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *BytesMessage) EqualVT(that *BytesMessage) bool {
 	if this == that {
 		return true
@@ -1038,6 +1216,13 @@ func (this *BytesMessage) EqualVT(that *BytesMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *BytesMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*BytesMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *EnumMessage) EqualVT(that *EnumMessage) bool {
 	if this == that {
 		return true
@@ -1071,6 +1256,13 @@ func (this *EnumMessage) EqualVT(that *EnumMessage) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *EnumMessage) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*EnumMessage)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *DoubleMessage) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil

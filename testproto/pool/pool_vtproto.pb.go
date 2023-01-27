@@ -35,8 +35,13 @@ func (m *MemoryPoolExtension) CloneVT() *MemoryPoolExtension {
 	return r
 }
 
-func (m *MemoryPoolExtension) CloneGenericVT() proto.Message {
+func (m *MemoryPoolExtension) CloneMessageVT() proto.Message {
 	return m.CloneVT()
+}
+
+// Deprecated: use CloneMessageVT instead
+func (m *MemoryPoolExtension) CloneGenericVT() proto.Message {
+	return m.CloneMessageVT()
 }
 
 func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
@@ -54,6 +59,13 @@ func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
+func (this *MemoryPoolExtension) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*MemoryPoolExtension)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (m *MemoryPoolExtension) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
