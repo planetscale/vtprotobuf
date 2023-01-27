@@ -952,9 +952,9 @@ func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
 }
 
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {
-	if this == nil {
-		return that == nil
-	} else if that == nil {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
 		return false
 	}
 	if this.A != that.A {
@@ -967,9 +967,9 @@ func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_N
 }
 
 func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
-	if this == nil {
-		return that == nil
-	} else if that == nil {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
 		return false
 	}
 	if this.OneofField == nil && that.OneofField != nil {
@@ -2484,9 +2484,9 @@ func (this *TestAllTypesProto3_OneofNullValue) EqualVT(thatIface isTestAllTypesP
 }
 
 func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
-	if this == nil {
-		return that == nil
-	} else if that == nil {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
 		return false
 	}
 	if this.C != that.C {
@@ -2496,18 +2496,18 @@ func (this *ForeignMessage) EqualVT(that *ForeignMessage) bool {
 }
 
 func (this *NullHypothesisProto3) EqualVT(that *NullHypothesisProto3) bool {
-	if this == nil {
-		return that == nil
-	} else if that == nil {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
 }
 
 func (this *EnumOnlyProto3) EqualVT(that *EnumOnlyProto3) bool {
-	if this == nil {
-		return that == nil
-	} else if that == nil {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)

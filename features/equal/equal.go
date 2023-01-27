@@ -51,9 +51,9 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent
 	p.P(`func (this *`, ccTypeName, `) `, equalName, `(that *`, ccTypeName, `) bool {`)
 
-	p.P(`if this == nil {`)
-	p.P(`	return that == nil`)
-	p.P(`} else if that == nil {`)
+	p.P(`if this == that {`)
+	p.P(`	return true`)
+	p.P(`} else if this == nil || that == nil {`)
 	p.P(`	return false`)
 	p.P(`}`)
 
