@@ -10,10 +10,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
+
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
@@ -39,8 +40,9 @@ func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *unmarshal) GenerateHelpers() {
-	if !p.HelpersDupChecker["skip"] {
-		p.P(`func skip(dAtA []byte) (n int, err error) {
+	p.Helper("skip", func(p *generator.GeneratedFile) {
+		p.P(`
+			func skip(dAtA []byte) (n int, err error) {
 				l := len(dAtA)
 				iNdEx := 0
 				depth := 0
@@ -117,10 +119,8 @@ func (p *unmarshal) GenerateHelpers() {
 					}
 				}
 				return 0, `, p.Ident("io", "ErrUnexpectedEOF"),
-			`}`,
-		)
-		p.HelpersDupChecker["skip"] = true
-	}
+			`}`)
+	})
 
 	p.P(`
 		var (

@@ -16,9 +16,18 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Ext               *Extensions
-	LocalPackages     map[string]bool
-	HelpersDupChecker map[string]bool
+	Ext           *Extensions
+	LocalPackages map[string]bool
+
+	helpers map[string]bool
+}
+
+func (p *GeneratedFile) Helper(name string, generate func(p *GeneratedFile)) {
+	if p.helpers[name] {
+		return
+	}
+	generate(p)
+	p.helpers[name] = true
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {

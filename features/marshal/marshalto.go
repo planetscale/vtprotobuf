@@ -54,7 +54,7 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *marshal) GenerateHelpers() {
-	if !p.HelpersDupChecker["encodeVarint"] {
+	p.Helper("encodeVarint", func(p *generator.GeneratedFile) {
 		p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
 		p.P(`offset -= sov(v)`)
 		p.P(`base := offset`)
@@ -66,8 +66,7 @@ func (p *marshal) GenerateHelpers() {
 		p.P(`dAtA[offset] = uint8(v)`)
 		p.P(`return base`)
 		p.P(`}`)
-		p.HelpersDupChecker["encodeVarint"] = true
-	}
+	})
 }
 
 func (p *marshal) encodeFixed64(varName ...string) {
