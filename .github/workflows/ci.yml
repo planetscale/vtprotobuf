@@ -18,7 +18,7 @@ jobs:
 
     - name: Cache protobuf build
       id: protocache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: _vendor/protobuf-21.12
         key: protobuf-21.12
