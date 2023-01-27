@@ -542,7 +542,7 @@ func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Fie
 	}
 }
 
-func (p *marshal) marshalToSizedBufferMeth() string {
+func (p *marshal) methodMarshalToSizedBuffer() string {
 	switch {
 	case p.strict:
 		return "MarshalToSizedBufferVTStrict"
@@ -551,7 +551,7 @@ func (p *marshal) marshalToSizedBufferMeth() string {
 	}
 }
 
-func (p *marshal) marshalToVTMeth() string {
+func (p *marshal) methodMarshalTo() string {
 	switch {
 	case p.strict:
 		return "MarshalToVTStrict"
@@ -560,7 +560,7 @@ func (p *marshal) marshalToVTMeth() string {
 	}
 }
 
-func (p *marshal) marshalVTMeth() string {
+func (p *marshal) methodMarshal() string {
 	switch {
 	case p.strict:
 		return "MarshalVTStrict"
@@ -583,25 +583,25 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	var numGen counter
 	ccTypeName := message.GoIdent
 
-	p.P(`func (m *`, ccTypeName, `) `, p.marshalVTMeth(), `() (dAtA []byte, err error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshal(), `() (dAtA []byte, err error) {`)
 	p.P(`if m == nil {`)
 	p.P(`return nil, nil`)
 	p.P(`}`)
 	p.P(`size := m.SizeVT()`)
 	p.P(`dAtA = make([]byte, size)`)
-	p.P(`n, err := m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
+	p.P(`n, err := m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
 	p.P(`if err != nil {`)
 	p.P(`return nil, err`)
 	p.P(`}`)
 	p.P(`return dAtA[:n], nil`)
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) `, p.marshalToVTMeth(), `(dAtA []byte) (int, error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalTo(), `(dAtA []byte) (int, error) {`)
 	p.P(`size := m.SizeVT()`)
-	p.P(`return m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
+	p.P(`return m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) `, p.marshalToSizedBufferMeth(), `(dAtA []byte) (int, error) {`)
+	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalToSizedBuffer(), `(dAtA []byte) (int, error) {`)
 	p.P(`if m == nil {`)
 	p.P(`return 0, nil`)
 	p.P(`}`)
@@ -619,7 +619,7 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 	})
 
 	marshalForwardOneOf := func(varname string) {
-		p.P(`size, err := `, varname, `.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
+		p.P(`size, err := `, varname, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
 		p.P(`if err != nil {`)
 		p.P(`return 0, err`)
 		p.P(`}`)
@@ -651,7 +651,7 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 				if _, ok := oneofs[fieldname]; !ok {
 					oneofs[fieldname] = struct{}{}
 					p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
-					p.P(p.marshalToSizedBufferMeth(), ` ([]byte) (int, error)`)
+					p.P(p.methodMarshalToSizedBuffer(), ` ([]byte) (int, error)`)
 					p.P(`}); ok {`)
 					marshalForwardOneOf("vtmsg")
 					p.P(`}`)
@@ -678,12 +678,12 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 			continue
 		}
 		ccTypeName := field.GoIdent
-		p.P(`func (m *`, ccTypeName, `) `, p.marshalToVTMeth(), `(dAtA []byte) (int, error) {`)
+		p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalTo(), `(dAtA []byte) (int, error) {`)
 		p.P(`size := m.SizeVT()`)
-		p.P(`return m.`, p.marshalToSizedBufferMeth(), `(dAtA[:size])`)
+		p.P(`return m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
 		p.P(`}`)
 		p.P(``)
-		p.P(`func (m *`, ccTypeName, `) `, p.marshalToSizedBufferMeth(), `(dAtA []byte) (int, error) {`)
+		p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalToSizedBuffer(), `(dAtA []byte) (int, error) {`)
 		p.P(`i := len(dAtA)`)
 		p.field(proto3, true, &numGen, field)
 		p.P(`return len(dAtA) - i, nil`)
@@ -701,12 +701,12 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 	local := p.IsLocalMessage(message)
 
 	if local {
-		p.P(`size, err := `, varName, `.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
+		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
 	} else {
 		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
-		p.P(p.marshalToSizedBufferMeth(), `([]byte) (int, error)`)
+		p.P(p.methodMarshalToSizedBuffer(), `([]byte) (int, error)`)
 		p.P(`}); ok{`)
-		p.P(`size, err := vtmsg.`, p.marshalToSizedBufferMeth(), `(dAtA[:i])`)
+		p.P(`size, err := vtmsg.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
 	}
 
 	p.P(`if err != nil {`)
