@@ -204,13 +204,11 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 		dAtA[i] = 0x80
 	}
 	if m.OptionalBytes != nil {
-		if len(m.OptionalBytes) > 0 {
-			i -= len(m.OptionalBytes)
-			copy(dAtA[i:], m.OptionalBytes)
-			i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
-			i--
-			dAtA[i] = 0x7a
-		}
+		i -= len(m.OptionalBytes)
+		copy(dAtA[i:], m.OptionalBytes)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+		i--
+		dAtA[i] = 0x7a
 	}
 	if m.OptionalString != nil {
 		i -= len(*m.OptionalString)
@@ -347,13 +345,11 @@ func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		dAtA[i] = 0x80
 	}
 	if m.OptionalBytes != nil {
-		if len(m.OptionalBytes) > 0 {
-			i -= len(m.OptionalBytes)
-			copy(dAtA[i:], m.OptionalBytes)
-			i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
-			i--
-			dAtA[i] = 0x7a
-		}
+		i -= len(m.OptionalBytes)
+		copy(dAtA[i:], m.OptionalBytes)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+		i--
+		dAtA[i] = 0x7a
 	}
 	if m.OptionalString != nil {
 		i -= len(*m.OptionalString)
@@ -492,9 +488,7 @@ func (m *OptionalFieldInProto3) SizeVT() (n int) {
 	}
 	if m.OptionalBytes != nil {
 		l = len(m.OptionalBytes)
-		if l > 0 {
-			n += 1 + l + sov(uint64(l))
-		}
+		n += 1 + l + sov(uint64(l))
 	}
 	if m.OptionalEnum != nil {
 		n += 2 + sov(uint64(*m.OptionalEnum))

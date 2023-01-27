@@ -74,7 +74,7 @@ func (p *size) messageSize(varName, sizeName string, message *protogen.Message) 
 
 func (p *size) field(proto3, oneof bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
-	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
+	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
 		p.P(`if len(m.`, fieldname, `) > 0 {`)
@@ -239,7 +239,7 @@ func (p *size) field(proto3, oneof bool, field *protogen.Field, sizeName string)
 			p.P(`l = len(b)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)
 			p.P(`}`)
-		} else if !oneof && proto3 {
+		} else if !oneof && !field.Desc.HasPresence() {
 			p.P(`l=len(m.`, fieldname, `)`)
 			p.P(`if l > 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+sov(uint64(l))`)

@@ -132,7 +132,7 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 
 func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Field) {
 	fieldname := field.GoName
-	nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
+	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
 		p.P(`if len(m.`, fieldname, `) > 0 {`)
@@ -433,7 +433,7 @@ func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Fie
 			p.encodeVarint(`len(`, val, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
-		} else if !oneof && proto3 {
+		} else if !oneof && !field.Desc.HasPresence() {
 			p.P(`if len(m.`, fieldname, `) > 0 {`)
 			p.P(`i -= len(m.`, fieldname, `)`)
 			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
