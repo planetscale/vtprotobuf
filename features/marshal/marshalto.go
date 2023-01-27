@@ -46,9 +46,8 @@ type marshal struct {
 var _ generator.FeatureGenerator = (*marshal)(nil)
 
 func (p *marshal) GenerateFile(file *protogen.File) bool {
-	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(proto3, message)
+		p.message(message)
 	}
 	return p.once
 }
@@ -130,7 +129,7 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 	}
 }
 
-func (p *marshal) field(proto3, oneof bool, numGen *counter, field *protogen.Field) {
+func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 	fieldname := field.GoName
 	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -569,9 +568,9 @@ func (p *marshal) methodMarshal() string {
 	}
 }
 
-func (p *marshal) message(proto3 bool, message *protogen.Message) {
+func (p *marshal) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(proto3, nested)
+		p.message(nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -631,7 +630,7 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 			field := message.Fields[i]
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if !oneof {
-				p.field(proto3, false, &numGen, field)
+				p.field(false, &numGen, field)
 			} else {
 				p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
 				marshalForwardOneOf("msg")
@@ -663,7 +662,7 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 			field := message.Fields[i]
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if !oneof {
-				p.field(proto3, false, &numGen, field)
+				p.field(false, &numGen, field)
 			}
 		}
 	}
@@ -685,7 +684,7 @@ func (p *marshal) message(proto3 bool, message *protogen.Message) {
 		p.P(``)
 		p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalToSizedBuffer(), `(dAtA []byte) (int, error) {`)
 		p.P(`i := len(dAtA)`)
-		p.field(proto3, true, &numGen, field)
+		p.field(true, &numGen, field)
 		p.P(`return len(dAtA) - i, nil`)
 		p.P(`}`)
 	}

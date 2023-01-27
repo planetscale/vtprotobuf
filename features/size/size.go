@@ -34,9 +34,8 @@ func (p *size) Name() string {
 }
 
 func (p *size) GenerateFile(file *protogen.File) bool {
-	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(proto3, message)
+		p.message(message)
 	}
 
 	return p.once
@@ -72,7 +71,7 @@ func (p *size) messageSize(varName, sizeName string, message *protogen.Message) 
 	}
 }
 
-func (p *size) field(proto3, oneof bool, field *protogen.Field, sizeName string) {
+func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	fieldname := field.GoName
 	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -276,9 +275,9 @@ func (p *size) field(proto3, oneof bool, field *protogen.Field, sizeName string)
 	}
 }
 
-func (p *size) message(proto3 bool, message *protogen.Message) {
+func (p *size) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(proto3, nested)
+		p.message(nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -300,7 +299,7 @@ func (p *size) message(proto3 bool, message *protogen.Message) {
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 		if !oneof {
-			p.field(proto3, false, field, sizeName)
+			p.field(false, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
 			if _, ok := oneofs[fieldname]; !ok {
@@ -327,7 +326,7 @@ func (p *size) message(proto3 bool, message *protogen.Message) {
 		p.P(`}`)
 		p.P(`var l int`)
 		p.P(`_ = l`)
-		p.field(proto3, true, field, sizeName)
+		p.field(true, field, sizeName)
 		p.P(`return n`)
 		p.P(`}`)
 	}
