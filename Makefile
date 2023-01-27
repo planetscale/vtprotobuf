@@ -1,5 +1,5 @@
 export GOBIN=$(PWD)/bin
-export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-3.20.0
+export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-21.12
 
 .PHONY: install test gen-conformance gen-include genall
 
