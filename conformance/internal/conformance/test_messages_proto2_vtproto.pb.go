@@ -4390,6 +4390,2126 @@ func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *TestAllTypesProto2_NestedMessage) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2_NestedMessage) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_NestedMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Corecursive != nil {
+		size, err := m.Corecursive.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.A != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2_Data) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2_Data) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_Data) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.GroupUint32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.GroupUint32))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd8
+	}
+	if m.GroupInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.GroupInt32))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd0
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrect) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrect) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrect) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension1) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension1) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension1) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Str != nil {
+		i -= len(*m.Str)
+		copy(dAtA[i:], *m.Str)
+		i = encodeVarint(dAtA, i, uint64(len(*m.Str)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xca
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_MessageSetCorrectExtension2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.I != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.I))
+		i--
+		dAtA[i] = 0x48
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.FieldName18__ != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FieldName18__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.FieldName17__ != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FieldName17__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.Field__Name16 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field__Name16))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x80
+	}
+	if m.Field_Name15 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field_Name15))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf8
+	}
+	if m.X_FieldName14 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.X_FieldName14))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf0
+	}
+	if m.XFieldName13 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.XFieldName13))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe8
+	}
+	if m.FIELDName12 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FIELDName12))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe0
+	}
+	if m.FIELD_NAME11 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FIELD_NAME11))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd8
+	}
+	if m.Field_Name10 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field_Name10))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd0
+	}
+	if m.Field_Name9 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field_Name9))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc8
+	}
+	if m.FieldName8 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FieldName8))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc0
+	}
+	if m.FieldName7 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FieldName7))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.Field_0Name6 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field_0Name6))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.Field0Name5 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field0Name5))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.Field_Name4_ != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Field_Name4_))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.XFieldName3 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.XFieldName3))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.FieldName2 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.FieldName2))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.Fieldname1 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.Fieldname1))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.DefaultBytes != nil {
+		i -= len(m.DefaultBytes)
+		copy(dAtA[i:], m.DefaultBytes)
+		i = encodeVarint(dAtA, i, uint64(len(m.DefaultBytes)))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.DefaultString != nil {
+		i -= len(*m.DefaultString)
+		copy(dAtA[i:], *m.DefaultString)
+		i = encodeVarint(dAtA, i, uint64(len(*m.DefaultString)))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.DefaultBool != nil {
+		i--
+		if *m.DefaultBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xe8
+	}
+	if m.DefaultDouble != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.DefaultDouble))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xe1
+	}
+	if m.DefaultFloat != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.DefaultFloat))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xdd
+	}
+	if m.DefaultSfixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.DefaultSfixed64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xd1
+	}
+	if m.DefaultSfixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.DefaultSfixed32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xcd
+	}
+	if m.DefaultFixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.DefaultFixed64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xc1
+	}
+	if m.DefaultFixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.DefaultFixed32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xbd
+	}
+	if m.DefaultSint64 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.DefaultSint64)<<1)^uint64((*m.DefaultSint64>>63))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.DefaultSint32 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.DefaultSint32)<<1)^uint32((*m.DefaultSint32>>31))))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.DefaultUint64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultUint64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.DefaultUint32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultUint32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.DefaultInt64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultInt64))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.DefaultInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.DefaultInt32))
+		i--
+		dAtA[i] = 0xf
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.Data != nil {
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xcc
+		size, err := m.Data.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xcb
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofEnum); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofDouble); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofFloat); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofUint64); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofBool); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofBytes); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofString); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofNestedMessage); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto2_OneofUint32); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if len(m.UnpackedNestedEnum) > 0 {
+		for iNdEx := len(m.UnpackedNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.UnpackedNestedEnum[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xb0
+		}
+	}
+	if len(m.UnpackedBool) > 0 {
+		for iNdEx := len(m.UnpackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.UnpackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa8
+		}
+	}
+	if len(m.UnpackedDouble) > 0 {
+		for iNdEx := len(m.UnpackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float64bits(float64(m.UnpackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa1
+		}
+	}
+	if len(m.UnpackedFloat) > 0 {
+		for iNdEx := len(m.UnpackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float32bits(float32(m.UnpackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f2))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x9d
+		}
+	}
+	if len(m.UnpackedSfixed64) > 0 {
+		for iNdEx := len(m.UnpackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedSfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x91
+		}
+	}
+	if len(m.UnpackedSfixed32) > 0 {
+		for iNdEx := len(m.UnpackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedSfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x8d
+		}
+	}
+	if len(m.UnpackedFixed64) > 0 {
+		for iNdEx := len(m.UnpackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedFixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x81
+		}
+	}
+	if len(m.UnpackedFixed32) > 0 {
+		for iNdEx := len(m.UnpackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedFixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xfd
+		}
+	}
+	if len(m.UnpackedSint64) > 0 {
+		for iNdEx := len(m.UnpackedSint64) - 1; iNdEx >= 0; iNdEx-- {
+			x3 := (uint64(m.UnpackedSint64[iNdEx]) << 1) ^ uint64((m.UnpackedSint64[iNdEx] >> 63))
+			i = encodeVarint(dAtA, i, uint64(x3))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xf0
+		}
+	}
+	if len(m.UnpackedSint32) > 0 {
+		for iNdEx := len(m.UnpackedSint32) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint32(m.UnpackedSint32[iNdEx]) << 1) ^ uint32((m.UnpackedSint32[iNdEx] >> 31))
+			i = encodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe8
+		}
+	}
+	if len(m.UnpackedUint64) > 0 {
+		for iNdEx := len(m.UnpackedUint64) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.UnpackedUint64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe0
+		}
+	}
+	if len(m.UnpackedUint32) > 0 {
+		for iNdEx := len(m.UnpackedUint32) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.UnpackedUint32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd8
+		}
+	}
+	if len(m.UnpackedInt64) > 0 {
+		for iNdEx := len(m.UnpackedInt64) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.UnpackedInt64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd0
+		}
+	}
+	if len(m.UnpackedInt32) > 0 {
+		for iNdEx := len(m.UnpackedInt32) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.UnpackedInt32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xc8
+		}
+	}
+	if len(m.PackedNestedEnum) > 0 {
+		var pksize6 int
+		for _, num := range m.PackedNestedEnum {
+			pksize6 += sov(uint64(num))
+		}
+		i -= pksize6
+		j5 := i
+		for _, num1 := range m.PackedNestedEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j5] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j5++
+			}
+			dAtA[j5] = uint8(num)
+			j5++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize6))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.PackedBool) > 0 {
+		for iNdEx := len(m.PackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.PackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedBool)))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.PackedDouble) > 0 {
+		for iNdEx := len(m.PackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f7 := math.Float64bits(float64(m.PackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f7))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedDouble)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.PackedFloat) > 0 {
+		for iNdEx := len(m.PackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f8 := math.Float32bits(float32(m.PackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f8))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedFloat)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.PackedSfixed64) > 0 {
+		for iNdEx := len(m.PackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedSfixed64[iNdEx]))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedSfixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.PackedSfixed32) > 0 {
+		for iNdEx := len(m.PackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedSfixed32[iNdEx]))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedSfixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.PackedFixed64) > 0 {
+		for iNdEx := len(m.PackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedFixed64[iNdEx]))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedFixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.PackedFixed32) > 0 {
+		for iNdEx := len(m.PackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedFixed32[iNdEx]))
+		}
+		i = encodeVarint(dAtA, i, uint64(len(m.PackedFixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x8a
+	}
+	if len(m.PackedSint64) > 0 {
+		var pksize10 int
+		for _, num := range m.PackedSint64 {
+			pksize10 += soz(uint64(num))
+		}
+		i -= pksize10
+		j9 := i
+		for _, num := range m.PackedSint64 {
+			x11 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x11 >= 1<<7 {
+				dAtA[j9] = uint8(uint64(x11)&0x7f | 0x80)
+				j9++
+				x11 >>= 7
+			}
+			dAtA[j9] = uint8(x11)
+			j9++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize10))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.PackedSint32) > 0 {
+		var pksize13 int
+		for _, num := range m.PackedSint32 {
+			pksize13 += soz(uint64(num))
+		}
+		i -= pksize13
+		j12 := i
+		for _, num := range m.PackedSint32 {
+			x14 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x14 >= 1<<7 {
+				dAtA[j12] = uint8(uint64(x14)&0x7f | 0x80)
+				j12++
+				x14 >>= 7
+			}
+			dAtA[j12] = uint8(x14)
+			j12++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize13))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xfa
+	}
+	if len(m.PackedUint64) > 0 {
+		var pksize16 int
+		for _, num := range m.PackedUint64 {
+			pksize16 += sov(uint64(num))
+		}
+		i -= pksize16
+		j15 := i
+		for _, num := range m.PackedUint64 {
+			for num >= 1<<7 {
+				dAtA[j15] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j15++
+			}
+			dAtA[j15] = uint8(num)
+			j15++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize16))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xf2
+	}
+	if len(m.PackedUint32) > 0 {
+		var pksize18 int
+		for _, num := range m.PackedUint32 {
+			pksize18 += sov(uint64(num))
+		}
+		i -= pksize18
+		j17 := i
+		for _, num := range m.PackedUint32 {
+			for num >= 1<<7 {
+				dAtA[j17] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j17++
+			}
+			dAtA[j17] = uint8(num)
+			j17++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize18))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xea
+	}
+	if len(m.PackedInt64) > 0 {
+		var pksize20 int
+		for _, num := range m.PackedInt64 {
+			pksize20 += sov(uint64(num))
+		}
+		i -= pksize20
+		j19 := i
+		for _, num1 := range m.PackedInt64 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j19] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j19++
+			}
+			dAtA[j19] = uint8(num)
+			j19++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize20))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xe2
+	}
+	if len(m.PackedInt32) > 0 {
+		var pksize22 int
+		for _, num := range m.PackedInt32 {
+			pksize22 += sov(uint64(num))
+		}
+		i -= pksize22
+		j21 := i
+		for _, num1 := range m.PackedInt32 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j21] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j21++
+			}
+			dAtA[j21] = uint8(num)
+			j21++
+		}
+		i = encodeVarint(dAtA, i, uint64(pksize22))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.MapStringForeignEnum) > 0 {
+		for k := range m.MapStringForeignEnum {
+			v := m.MapStringForeignEnum[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapStringNestedEnum) > 0 {
+		for k := range m.MapStringNestedEnum {
+			v := m.MapStringNestedEnum[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapStringForeignMessage) > 0 {
+		for k := range m.MapStringForeignMessage {
+			v := m.MapStringForeignMessage[k]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.MapStringNestedMessage) > 0 {
+		for k := range m.MapStringNestedMessage {
+			v := m.MapStringNestedMessage[k]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.MapStringBytes) > 0 {
+		for k := range m.MapStringBytes {
+			v := m.MapStringBytes[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.MapStringString) > 0 {
+		for k := range m.MapStringString {
+			v := m.MapStringString[k]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = encodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(k)
+			copy(dAtA[i:], k)
+			i = encodeVarint(dAtA, i, uint64(len(k)))
+			i--
+			dAtA[i] = 0xa
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.MapBoolBool) > 0 {
+		for k := range m.MapBoolBool {
+			v := m.MapBoolBool[k]
+			baseI := i
+			i--
+			if v {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x10
+			i--
+			if k {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.MapInt32Double) > 0 {
+		for k := range m.MapInt32Double {
+			v := m.MapInt32Double[k]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
+			i--
+			dAtA[i] = 0x11
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if len(m.MapInt32Float) > 0 {
+		for k := range m.MapInt32Float {
+			v := m.MapInt32Float[k]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
+			i--
+			dAtA[i] = 0x15
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x92
+		}
+	}
+	if len(m.MapSfixed64Sfixed64) > 0 {
+		for k := range m.MapSfixed64Sfixed64 {
+			v := m.MapSfixed64Sfixed64[k]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
+			i--
+			dAtA[i] = 0x9
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.MapSfixed32Sfixed32) > 0 {
+		for k := range m.MapSfixed32Sfixed32 {
+			v := m.MapSfixed32Sfixed32[k]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
+			i--
+			dAtA[i] = 0xd
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.MapFixed64Fixed64) > 0 {
+		for k := range m.MapFixed64Fixed64 {
+			v := m.MapFixed64Fixed64[k]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(k))
+			i--
+			dAtA[i] = 0x9
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xfa
+		}
+	}
+	if len(m.MapFixed32Fixed32) > 0 {
+		for k := range m.MapFixed32Fixed32 {
+			v := m.MapFixed32Fixed32[k]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(k))
+			i--
+			dAtA[i] = 0xd
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xf2
+		}
+	}
+	if len(m.MapSint64Sint64) > 0 {
+		for k := range m.MapSint64Sint64 {
+			v := m.MapSint64Sint64[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64((uint64(k)<<1)^uint64((k>>63))))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.MapSint32Sint32) > 0 {
+		for k := range m.MapSint32Sint32 {
+			v := m.MapSint32Sint32[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64((uint32(k)<<1)^uint32((k>>31))))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.MapUint64Uint64) > 0 {
+		for k := range m.MapUint64Uint64 {
+			v := m.MapUint64Uint64[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.MapUint32Uint32) > 0 {
+		for k := range m.MapUint32Uint32 {
+			v := m.MapUint32Uint32[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapInt64Int64) > 0 {
+		for k := range m.MapInt64Int64 {
+			v := m.MapInt64Int64[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapInt32Int32) > 0 {
+		for k := range m.MapInt32Int32 {
+			v := m.MapInt32Int32[k]
+			baseI := i
+			i = encodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = encodeVarint(dAtA, i, uint64(k))
+			i--
+			dAtA[i] = 0x8
+			i = encodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedCord) > 0 {
+		for iNdEx := len(m.RepeatedCord) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedCord[iNdEx])
+			copy(dAtA[i:], m.RepeatedCord[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedCord[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.RepeatedStringPiece) > 0 {
+		for iNdEx := len(m.RepeatedStringPiece) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedStringPiece[iNdEx])
+			copy(dAtA[i:], m.RepeatedStringPiece[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedStringPiece[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.RepeatedForeignEnum) > 0 {
+		for iNdEx := len(m.RepeatedForeignEnum) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedForeignEnum[iNdEx]))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xa0
+		}
+	}
+	if len(m.RepeatedNestedEnum) > 0 {
+		for iNdEx := len(m.RepeatedNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedNestedEnum[iNdEx]))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x98
+		}
+	}
+	if len(m.RepeatedForeignMessage) > 0 {
+		for iNdEx := len(m.RepeatedForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedForeignMessage[iNdEx].MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.RepeatedNestedMessage) > 0 {
+		for iNdEx := len(m.RepeatedNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedNestedMessage[iNdEx].MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.RepeatedBytes) > 0 {
+		for iNdEx := len(m.RepeatedBytes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedBytes[iNdEx])
+			copy(dAtA[i:], m.RepeatedBytes[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedBytes[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.RepeatedString) > 0 {
+		for iNdEx := len(m.RepeatedString) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedString[iNdEx])
+			copy(dAtA[i:], m.RepeatedString[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.RepeatedString[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.RepeatedBool) > 0 {
+		for iNdEx := len(m.RepeatedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.RepeatedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xd8
+		}
+	}
+	if len(m.RepeatedDouble) > 0 {
+		for iNdEx := len(m.RepeatedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f23 := math.Float64bits(float64(m.RepeatedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f23))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xd1
+		}
+	}
+	if len(m.RepeatedFloat) > 0 {
+		for iNdEx := len(m.RepeatedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f24 := math.Float32bits(float32(m.RepeatedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f24))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xcd
+		}
+	}
+	if len(m.RepeatedSfixed64) > 0 {
+		for iNdEx := len(m.RepeatedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedSfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xc1
+		}
+	}
+	if len(m.RepeatedSfixed32) > 0 {
+		for iNdEx := len(m.RepeatedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedSfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xbd
+		}
+	}
+	if len(m.RepeatedFixed64) > 0 {
+		for iNdEx := len(m.RepeatedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedFixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xb1
+		}
+	}
+	if len(m.RepeatedFixed32) > 0 {
+		for iNdEx := len(m.RepeatedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedFixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xad
+		}
+	}
+	if len(m.RepeatedSint64) > 0 {
+		for iNdEx := len(m.RepeatedSint64) - 1; iNdEx >= 0; iNdEx-- {
+			x25 := (uint64(m.RepeatedSint64[iNdEx]) << 1) ^ uint64((m.RepeatedSint64[iNdEx] >> 63))
+			i = encodeVarint(dAtA, i, uint64(x25))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xa0
+		}
+	}
+	if len(m.RepeatedSint32) > 0 {
+		for iNdEx := len(m.RepeatedSint32) - 1; iNdEx >= 0; iNdEx-- {
+			x26 := (uint32(m.RepeatedSint32[iNdEx]) << 1) ^ uint32((m.RepeatedSint32[iNdEx] >> 31))
+			i = encodeVarint(dAtA, i, uint64(x26))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0x98
+		}
+	}
+	if len(m.RepeatedUint64) > 0 {
+		for iNdEx := len(m.RepeatedUint64) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedUint64[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0x90
+		}
+	}
+	if len(m.RepeatedUint32) > 0 {
+		for iNdEx := len(m.RepeatedUint32) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedUint32[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0x88
+		}
+	}
+	if len(m.RepeatedInt64) > 0 {
+		for iNdEx := len(m.RepeatedInt64) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedInt64[iNdEx]))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0x80
+		}
+	}
+	if len(m.RepeatedInt32) > 0 {
+		for iNdEx := len(m.RepeatedInt32) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedInt32[iNdEx]))
+			i--
+			dAtA[i] = 0x1
+			i--
+			dAtA[i] = 0xf8
+		}
+	}
+	if m.RecursiveMessage != nil {
+		size, err := m.RecursiveMessage.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.OptionalCord != nil {
+		i -= len(*m.OptionalCord)
+		copy(dAtA[i:], *m.OptionalCord)
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalCord)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xca
+	}
+	if m.OptionalStringPiece != nil {
+		i -= len(*m.OptionalStringPiece)
+		copy(dAtA[i:], *m.OptionalStringPiece)
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalStringPiece)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.OptionalForeignEnum != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalForeignEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.OptionalNestedEnum != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalNestedEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.OptionalForeignMessage != nil {
+		size, err := m.OptionalForeignMessage.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x9a
+	}
+	if m.OptionalNestedMessage != nil {
+		size, err := m.OptionalNestedMessage.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x92
+	}
+	if m.OptionalBytes != nil {
+		i -= len(m.OptionalBytes)
+		copy(dAtA[i:], m.OptionalBytes)
+		i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+		i--
+		dAtA[i] = 0x7a
+	}
+	if m.OptionalString != nil {
+		i -= len(*m.OptionalString)
+		copy(dAtA[i:], *m.OptionalString)
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalString)))
+		i--
+		dAtA[i] = 0x72
+	}
+	if m.OptionalBool != nil {
+		i--
+		if *m.OptionalBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.OptionalDouble != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.OptionalDouble))))
+		i--
+		dAtA[i] = 0x61
+	}
+	if m.OptionalFloat != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.OptionalFloat))))
+		i--
+		dAtA[i] = 0x5d
+	}
+	if m.OptionalSfixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalSfixed64))
+		i--
+		dAtA[i] = 0x51
+	}
+	if m.OptionalSfixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalSfixed32))
+		i--
+		dAtA[i] = 0x4d
+	}
+	if m.OptionalFixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalFixed64))
+		i--
+		dAtA[i] = 0x41
+	}
+	if m.OptionalFixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalFixed32))
+		i--
+		dAtA[i] = 0x3d
+	}
+	if m.OptionalSint64 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.OptionalSint64)<<1)^uint64((*m.OptionalSint64>>63))))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.OptionalSint32 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.OptionalSint32)<<1)^uint32((*m.OptionalSint32>>31))))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.OptionalUint64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint64))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.OptionalUint32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint32))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.OptionalInt64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt64))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.OptionalInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt32))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto2_OneofUint32) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofUint32) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = encodeVarint(dAtA, i, uint64(m.OneofUint32))
+	i--
+	dAtA[i] = 0x6
+	i--
+	dAtA[i] = 0xf8
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.OneofNestedMessage != nil {
+		size, err := m.OneofNestedMessage.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x7
+		i--
+		dAtA[i] = 0x82
+	}
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofString) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofString) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofString)
+	copy(dAtA[i:], m.OneofString)
+	i = encodeVarint(dAtA, i, uint64(len(m.OneofString)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x8a
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofBytes) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofBytes) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofBytes)
+	copy(dAtA[i:], m.OneofBytes)
+	i = encodeVarint(dAtA, i, uint64(len(m.OneofBytes)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x92
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofBool) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofBool) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.OneofBool {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x98
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofUint64) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofUint64) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = encodeVarint(dAtA, i, uint64(m.OneofUint64))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xa0
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofFloat) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofFloat) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 4
+	binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.OneofFloat))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xad
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofDouble) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofDouble) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.OneofDouble))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb1
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto2_OneofEnum) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto2_OneofEnum) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = encodeVarint(dAtA, i, uint64(m.OneofEnum))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb8
+	return len(dAtA) - i, nil
+}
+func (m *ForeignMessageProto2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ForeignMessageProto2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ForeignMessageProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.C != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.C))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UnknownToTestAllTypes_OptionalGroup) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UnknownToTestAllTypes_OptionalGroup) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *UnknownToTestAllTypes_OptionalGroup) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.A != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *UnknownToTestAllTypes) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *UnknownToTestAllTypes) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *UnknownToTestAllTypes) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.RepeatedInt32) > 0 {
+		for iNdEx := len(m.RepeatedInt32) - 1; iNdEx >= 0; iNdEx-- {
+			i = encodeVarint(dAtA, i, uint64(m.RepeatedInt32[iNdEx]))
+			i--
+			dAtA[i] = 0x3f
+			i--
+			dAtA[i] = 0x98
+		}
+	}
+	if m.OptionalBool != nil {
+		i--
+		if *m.OptionalBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xf0
+	}
+	if m.Optionalgroup != nil {
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xe4
+		size, err := m.Optionalgroup.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xe3
+	}
+	if m.NestedMessage != nil {
+		size, err := m.NestedMessage.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.OptionalString != nil {
+		i -= len(*m.OptionalString)
+		copy(dAtA[i:], *m.OptionalString)
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalString)))
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xd2
+	}
+	if m.OptionalInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt32))
+		i--
+		dAtA[i] = 0x3e
+		i--
+		dAtA[i] = 0xc8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NullHypothesisProto2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NullHypothesisProto2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *NullHypothesisProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumOnlyProto2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumOnlyProto2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *EnumOnlyProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *OneStringProto2) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OneStringProto2) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *OneStringProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Data != nil {
+		i -= len(*m.Data)
+		copy(dAtA[i:], *m.Data)
+		i = encodeVarint(dAtA, i, uint64(len(*m.Data)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TestAllTypesProto2_NestedMessage) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -12641,6 +14761,7 @@ func (m *OneStringProto2) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skip(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

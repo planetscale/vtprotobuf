@@ -314,6 +314,138 @@ func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
+func (m *OptionalFieldInProto3) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *OptionalFieldInProto3) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *OptionalFieldInProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.OptionalEnum != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x80
+	}
+	if m.OptionalBytes != nil {
+		if len(m.OptionalBytes) > 0 {
+			i -= len(m.OptionalBytes)
+			copy(dAtA[i:], m.OptionalBytes)
+			i = encodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+			i--
+			dAtA[i] = 0x7a
+		}
+	}
+	if m.OptionalString != nil {
+		i -= len(*m.OptionalString)
+		copy(dAtA[i:], *m.OptionalString)
+		i = encodeVarint(dAtA, i, uint64(len(*m.OptionalString)))
+		i--
+		dAtA[i] = 0x72
+	}
+	if m.OptionalBool != nil {
+		i--
+		if *m.OptionalBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.OptionalDouble != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.OptionalDouble))))
+		i--
+		dAtA[i] = 0x61
+	}
+	if m.OptionalFloat != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.OptionalFloat))))
+		i--
+		dAtA[i] = 0x5d
+	}
+	if m.OptionalSfixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalSfixed64))
+		i--
+		dAtA[i] = 0x51
+	}
+	if m.OptionalSfixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalSfixed32))
+		i--
+		dAtA[i] = 0x4d
+	}
+	if m.OptionalFixed64 != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalFixed64))
+		i--
+		dAtA[i] = 0x41
+	}
+	if m.OptionalFixed32 != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalFixed32))
+		i--
+		dAtA[i] = 0x3d
+	}
+	if m.OptionalSint64 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint64(*m.OptionalSint64)<<1)^uint64((*m.OptionalSint64>>63))))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.OptionalSint32 != nil {
+		i = encodeVarint(dAtA, i, uint64((uint32(*m.OptionalSint32)<<1)^uint32((*m.OptionalSint32>>31))))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.OptionalUint64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint64))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.OptionalUint32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalUint32))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.OptionalInt64 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt64))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.OptionalInt32 != nil {
+		i = encodeVarint(dAtA, i, uint64(*m.OptionalInt32))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *OptionalFieldInProto3) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -732,6 +864,7 @@ func (m *OptionalFieldInProto3) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skip(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

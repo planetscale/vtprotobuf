@@ -944,6 +944,446 @@ func (m *JspbEncodingConfig) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *FailureSet) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FailureSet) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *FailureSet) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Failure) > 0 {
+		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Failure[iNdEx])
+			copy(dAtA[i:], m.Failure[iNdEx])
+			i = encodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ConformanceRequest) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ConformanceRequest) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.PrintUnknownFields {
+		i--
+		if m.PrintUnknownFields {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x48
+	}
+	if msg, ok := m.Payload.(*ConformanceRequest_TextPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Payload.(*ConformanceRequest_JspbPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m.JspbEncodingOptions != nil {
+		size, err := m.JspbEncodingOptions.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.TestCategory != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.TestCategory))
+		i--
+		dAtA[i] = 0x28
+	}
+	if len(m.MessageType) > 0 {
+		i -= len(m.MessageType)
+		copy(dAtA[i:], m.MessageType)
+		i = encodeVarint(dAtA, i, uint64(len(m.MessageType)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if m.RequestedOutputFormat != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
+		i--
+		dAtA[i] = 0x18
+	}
+	if msg, ok := m.Payload.(*ConformanceRequest_JsonPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Payload.(*ConformanceRequest_ProtobufPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ConformanceRequest_ProtobufPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceRequest_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.ProtobufPayload)
+	copy(dAtA[i:], m.ProtobufPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceRequest_JsonPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceRequest_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.JsonPayload)
+	copy(dAtA[i:], m.JsonPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i--
+	dAtA[i] = 0x12
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceRequest_JspbPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceRequest_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.JspbPayload)
+	copy(dAtA[i:], m.JspbPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i--
+	dAtA[i] = 0x3a
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceRequest_TextPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceRequest_TextPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.TextPayload)
+	copy(dAtA[i:], m.TextPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i--
+	dAtA[i] = 0x42
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ConformanceResponse) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_TextPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_JspbPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_SerializeError); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_Skipped); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_JsonPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_ProtobufPayload); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_RuntimeError); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.Result.(*ConformanceResponse_ParseError); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *ConformanceResponse_ParseError) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.ParseError)
+	copy(dAtA[i:], m.ParseError)
+	i = encodeVarint(dAtA, i, uint64(len(m.ParseError)))
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_RuntimeError) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_RuntimeError) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.RuntimeError)
+	copy(dAtA[i:], m.RuntimeError)
+	i = encodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
+	i--
+	dAtA[i] = 0x12
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_ProtobufPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.ProtobufPayload)
+	copy(dAtA[i:], m.ProtobufPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i--
+	dAtA[i] = 0x1a
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_JsonPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.JsonPayload)
+	copy(dAtA[i:], m.JsonPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i--
+	dAtA[i] = 0x22
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_Skipped) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.Skipped)
+	copy(dAtA[i:], m.Skipped)
+	i = encodeVarint(dAtA, i, uint64(len(m.Skipped)))
+	i--
+	dAtA[i] = 0x2a
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_SerializeError) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.SerializeError)
+	copy(dAtA[i:], m.SerializeError)
+	i = encodeVarint(dAtA, i, uint64(len(m.SerializeError)))
+	i--
+	dAtA[i] = 0x32
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_JspbPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.JspbPayload)
+	copy(dAtA[i:], m.JspbPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i--
+	dAtA[i] = 0x3a
+	return len(dAtA) - i, nil
+}
+func (m *ConformanceResponse_TextPayload) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.TextPayload)
+	copy(dAtA[i:], m.TextPayload)
+	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i--
+	dAtA[i] = 0x42
+	return len(dAtA) - i, nil
+}
+func (m *JspbEncodingConfig) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *JspbEncodingConfig) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *JspbEncodingConfig) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.UseJspbArrayAnyFormat {
+		i--
+		if m.UseJspbArrayAnyFormat {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *FailureSet) SizeVT() (n int) {
 	if m == nil {
 		return 0

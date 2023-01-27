@@ -26,6 +26,15 @@ The following features can be generated:
 
     - `func (p *YourProto) MarshalToSizedBufferVT(data []byte) (int, error)`: this function behaves like `MarshalTo` but expects that the input buffer has the exact size required to hold the message, otherwise it will panic.
 
+- `marshal_strict`: generates the following helper methods
+
+    - `func (p *YourProto) MarshalVTStrict() ([]byte, error)`: this function behaves like `MarshalVT`, except fields are marshalled in a strict order by field's numbers they were declared in .proto file.
+
+    - `func (p *YourProto) MarshalToVTStrict(data []byte) (int, error)`: this function behaves like `MarshalToVT`, except fields are marshalled in a strict order by field's numbers they were declared in .proto file.
+
+    - `func (p *YourProto) MarshalToSizedBufferVTStrict(data []byte) (int, error)`: this function behaves like `MarshalToSizedBufferVT`, except fields are marshalled in a strict order by field's numbers they were declared in .proto file.
+
+
 - `unmarshal`: generates a `func (p *YourProto) UnmarshalVT(data []byte)` that behaves similarly to calling `proto.Unmarshal(data, p)` on the message, except the unmarshalling is performed by unrolled codegen without using reflection and allocating as little memory as possible. If the receiver `p` is **not** fully zeroed-out, the unmarshal call will actually behave like `proto.Merge(data, p)`. This is because the `proto.Unmarshal` in the ProtoBuf API is implemented by resetting the destionation message and then calling `proto.Merge` on it. To ensure proper `Unmarshal` semantics, ensure you've called `proto.Reset` on your message before calling `UnmarshalVT`, or that your message has been newly allocated.
 
 - `pool`: generates the following helper methods

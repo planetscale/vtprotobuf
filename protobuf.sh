@@ -1,26 +1,24 @@
-#/bin/bash
+#!/bin/bash
+
 set -e
 
-if [ "$#" -ne 1 ]; then
-    echo "need to provide the directory to use" >&2
-    exit 2
+PROTOBUF_VERSION=21.12
+ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+PROTOBUF_PATH="${ROOT}/_vendor/protobuf-${PROTOBUF_VERSION}"
+
+if [ -f "$PROTOBUF_PATH/protoc" ]; then
+    echo "protoc found in $PROTOBUF_PATH"
+    exit 0
 fi
 
-DEST=$1
+curl -sS -L -o "$ROOT/_vendor/pb.tar.gz" http://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-all-${PROTOBUF_VERSION}.tar.gz
 
-curl -sS -L -o "$DEST/protobuf-all-3.16.0.tar.gz" http://github.com/protocolbuffers/protobuf/releases/download/v3.16.0/protobuf-all-3.16.0.tar.gz
+cd "$ROOT/_vendor"
+tar zxf pb.tar.gz
 
-cd "$DEST"
-
-tar zxf protobuf-all-3.16.0.tar.gz
-cd protobuf-3.16.0
+cd protobuf-${PROTOBUF_VERSION}
 ./configure --quiet
-
 make
+cd conformance/ && make
 
-cd conformance/
-make
-
-echo "Dowloaded and compiled protobuf 3.16.0 to $DEST"
-
-exit 0
+echo "Dowloaded and compiled protobuf $PROTOBUF_VERSION to $PROTOBUF_PATH"

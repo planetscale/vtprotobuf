@@ -9,10 +9,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
+
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
@@ -42,13 +43,17 @@ func (p *size) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *size) GenerateHelpers() {
-	p.P(`
-	func sov(x uint64) (n int) {
-                return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
-	}`)
-	p.P(`func soz(x uint64) (n int) {
-		return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-	}`)
+	p.Helper("sov", func(p *generator.GeneratedFile) {
+		p.P(`
+		func sov(x uint64) (n int) {
+			return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+		}`)
+	})
+	p.Helper("soz", func(p *generator.GeneratedFile) {
+		p.P(`func soz(x uint64) (n int) {
+			return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+		}`)
+	})
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
