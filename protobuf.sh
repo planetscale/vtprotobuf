@@ -11,14 +11,17 @@ if [ -f "$PROTOBUF_PATH/protoc" ]; then
     exit 0
 fi
 
+mkdir -p _vendor
 curl -sS -L -o "$ROOT/_vendor/pb.tar.gz" http://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-all-${PROTOBUF_VERSION}.tar.gz
 
 cd "$ROOT/_vendor"
 tar zxf pb.tar.gz
 
 cd protobuf-${PROTOBUF_VERSION}
-./configure --quiet
+./configure
 make
-cd conformance/ && make
+make -C conformance
 
 echo "Dowloaded and compiled protobuf $PROTOBUF_VERSION to $PROTOBUF_PATH"
+ls -l src/
+ls -l conformance/
