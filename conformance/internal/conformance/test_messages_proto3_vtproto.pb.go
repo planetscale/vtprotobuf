@@ -45,11 +45,6 @@ func (m *TestAllTypesProto3_NestedMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *TestAllTypesProto3_NestedMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	if m == nil {
 		return (*TestAllTypesProto3)(nil)
@@ -803,11 +798,6 @@ func (m *TestAllTypesProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *TestAllTypesProto3) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *TestAllTypesProto3_OneofUint32) CloneVT() isTestAllTypesProto3_OneofField {
 	if m == nil {
 		return (*TestAllTypesProto3_OneofUint32)(nil)
@@ -929,11 +919,6 @@ func (m *ForeignMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *ForeignMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
 	if m == nil {
 		return (*NullHypothesisProto3)(nil)
@@ -950,11 +935,6 @@ func (m *NullHypothesisProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *NullHypothesisProto3) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
 	if m == nil {
 		return (*EnumOnlyProto3)(nil)
@@ -969,11 +949,6 @@ func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
 
 func (m *EnumOnlyProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *EnumOnlyProto3) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (this *TestAllTypesProto3_NestedMessage) EqualVT(that *TestAllTypesProto3_NestedMessage) bool {

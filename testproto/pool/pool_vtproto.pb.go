@@ -39,11 +39,6 @@ func (m *MemoryPoolExtension) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *MemoryPoolExtension) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (this *MemoryPoolExtension) EqualVT(that *MemoryPoolExtension) bool {
 	if this == that {
 		return true

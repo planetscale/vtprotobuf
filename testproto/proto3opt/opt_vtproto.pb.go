@@ -102,11 +102,6 @@ func (m *OptionalFieldInProto3) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *OptionalFieldInProto3) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (this *OptionalFieldInProto3) EqualVT(that *OptionalFieldInProto3) bool {
 	if this == that {
 		return true

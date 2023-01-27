@@ -55,11 +55,6 @@ func (m *DoubleMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *DoubleMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *FloatMessage) CloneVT() *FloatMessage {
 	if m == nil {
 		return (*FloatMessage)(nil)
@@ -92,11 +87,6 @@ func (m *FloatMessage) CloneVT() *FloatMessage {
 
 func (m *FloatMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *FloatMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Int32Message) CloneVT() *Int32Message {
@@ -133,11 +123,6 @@ func (m *Int32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Int32Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Int64Message) CloneVT() *Int64Message {
 	if m == nil {
 		return (*Int64Message)(nil)
@@ -170,11 +155,6 @@ func (m *Int64Message) CloneVT() *Int64Message {
 
 func (m *Int64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Int64Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Uint32Message) CloneVT() *Uint32Message {
@@ -211,11 +191,6 @@ func (m *Uint32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Uint32Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Uint64Message) CloneVT() *Uint64Message {
 	if m == nil {
 		return (*Uint64Message)(nil)
@@ -248,11 +223,6 @@ func (m *Uint64Message) CloneVT() *Uint64Message {
 
 func (m *Uint64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Uint64Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Sint32Message) CloneVT() *Sint32Message {
@@ -289,11 +259,6 @@ func (m *Sint32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Sint32Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Sint64Message) CloneVT() *Sint64Message {
 	if m == nil {
 		return (*Sint64Message)(nil)
@@ -326,11 +291,6 @@ func (m *Sint64Message) CloneVT() *Sint64Message {
 
 func (m *Sint64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Sint64Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Fixed32Message) CloneVT() *Fixed32Message {
@@ -367,11 +327,6 @@ func (m *Fixed32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Fixed32Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Fixed64Message) CloneVT() *Fixed64Message {
 	if m == nil {
 		return (*Fixed64Message)(nil)
@@ -404,11 +359,6 @@ func (m *Fixed64Message) CloneVT() *Fixed64Message {
 
 func (m *Fixed64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Fixed64Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
@@ -445,11 +395,6 @@ func (m *Sfixed32Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Sfixed32Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
 	if m == nil {
 		return (*Sfixed64Message)(nil)
@@ -482,11 +427,6 @@ func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
 
 func (m *Sfixed64Message) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Sfixed64Message) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *BoolMessage) CloneVT() *BoolMessage {
@@ -523,11 +463,6 @@ func (m *BoolMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *BoolMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *StringMessage) CloneVT() *StringMessage {
 	if m == nil {
 		return (*StringMessage)(nil)
@@ -555,11 +490,6 @@ func (m *StringMessage) CloneVT() *StringMessage {
 
 func (m *StringMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *StringMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *BytesMessage) CloneVT() *BytesMessage {
@@ -597,11 +527,6 @@ func (m *BytesMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *BytesMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *EnumMessage) CloneVT() *EnumMessage {
 	if m == nil {
 		return (*EnumMessage)(nil)
@@ -634,11 +559,6 @@ func (m *EnumMessage) CloneVT() *EnumMessage {
 
 func (m *EnumMessage) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *EnumMessage) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (this *DoubleMessage) EqualVT(that *DoubleMessage) bool {

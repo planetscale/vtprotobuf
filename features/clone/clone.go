@@ -6,15 +6,15 @@
 package clone
 
 import (
-	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
+
+	"github.com/planetscale/vtprotobuf/generator"
 )
 
 const (
 	cloneName        = "CloneVT"
 	cloneMessageName = "CloneMessageVT"
-	cloneGenericName = "CloneGenericVT"
 )
 
 var (
@@ -150,11 +150,6 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 	p.P()
 	p.P(`func (m *`, ccTypeName, `) `, cloneMessageName, `() `, protoPkg.Ident("Message"), ` {`)
 	p.P(`return m.`, cloneName, `()`)
-	p.P(`}`)
-	p.P()
-	p.P(`// Deprecated: use `, cloneMessageName, ` instead`)
-	p.P(`func (m *`, ccTypeName, `) `, cloneGenericName, `() `, protoPkg.Ident("Message"), ` {`)
-	p.P(`return m.`, cloneMessageName, `()`)
 	p.P(`}`)
 	p.P()
 }

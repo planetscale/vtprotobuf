@@ -40,11 +40,6 @@ func (m *Test1) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Test1) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Test2) CloneVT() *Test2 {
 	if m == nil {
 		return (*Test2)(nil)
@@ -66,11 +61,6 @@ func (m *Test2) CloneVT() *Test2 {
 
 func (m *Test2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Test2) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *Slice2) CloneVT() *Slice2 {
@@ -109,11 +99,6 @@ func (m *Slice2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *Slice2) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *Element2) CloneVT() *Element2 {
 	if m == nil {
 		return (*Element2)(nil)
@@ -130,11 +115,6 @@ func (m *Element2) CloneVT() *Element2 {
 
 func (m *Element2) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *Element2) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (this *Test1) EqualVT(that *Test1) bool {

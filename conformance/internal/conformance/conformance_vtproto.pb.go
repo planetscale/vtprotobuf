@@ -39,11 +39,6 @@ func (m *FailureSet) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
-// Deprecated: use CloneMessageVT instead
-func (m *FailureSet) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
-}
-
 func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
 	if m == nil {
 		return (*ConformanceRequest)(nil)
@@ -69,11 +64,6 @@ func (m *ConformanceRequest) CloneVT() *ConformanceRequest {
 
 func (m *ConformanceRequest) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *ConformanceRequest) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *ConformanceRequest_ProtobufPayload) CloneVT() isConformanceRequest_Payload {
@@ -138,11 +128,6 @@ func (m *ConformanceResponse) CloneVT() *ConformanceResponse {
 
 func (m *ConformanceResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *ConformanceResponse) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (m *ConformanceResponse_ParseError) CloneVT() isConformanceResponse_Result {
@@ -244,11 +229,6 @@ func (m *JspbEncodingConfig) CloneVT() *JspbEncodingConfig {
 
 func (m *JspbEncodingConfig) CloneMessageVT() proto.Message {
 	return m.CloneVT()
-}
-
-// Deprecated: use CloneMessageVT instead
-func (m *JspbEncodingConfig) CloneGenericVT() proto.Message {
-	return m.CloneMessageVT()
 }
 
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
