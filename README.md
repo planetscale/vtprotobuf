@@ -165,5 +165,69 @@ func main() {
 }
 ```
 
+### setup vtprotobuf for [buf](http://github.com/bufbuild/buf)
+
+ how to use vtprotobuf in bufbuild/buf guide:
+
+in macOS
+
+
+#### step 1:
+set up PATH
+```
+export GOBIN=/Users/xxxx/go/bin
+export PATH=$PATH:$GOBIN:
+```
+
+#### step 2:
+check out README, install vtprotobuf
+```
+go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@latest
+```
+
+#### step 3:
+check out [https://docs.buf.build/installation](https://docs.buf.build/installation) 
+to install buf in macOS, like this
+```
+brew install bufbuild/buf/buf
+```
+#### step 4:
+
+add vtprotobuf to buf.gen.yaml
+```
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/your/grpc-project
+plugins:
+  - plugin: buf.build/bufbuild/connect-go
+    out: ./
+    opt: paths=source_relative
+  - plugin: buf.build/protocolbuffers/go
+    out: ./
+    opt: paths=source_relative
+  - plugin: go-vtproto
+    out: ./
+    opt: paths=source_relative
+```
+
+here is
+```
+  - plugin: go-vtproto
+    out: ./
+    opt: paths=source_relative
+```
+add to buf generate plugins
+
+####  final , generate proto to support vtprobuf
+
+```
+buf generate
+```
+
+
+that's all done
+
 
 
