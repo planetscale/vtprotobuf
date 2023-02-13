@@ -37,6 +37,8 @@ The following features can be generated:
 
 - `unmarshal`: generates a `func (p *YourProto) UnmarshalVT(data []byte)` that behaves similarly to calling `proto.Unmarshal(data, p)` on the message, except the unmarshalling is performed by unrolled codegen without using reflection and allocating as little memory as possible. If the receiver `p` is **not** fully zeroed-out, the unmarshal call will actually behave like `proto.Merge(data, p)`. This is because the `proto.Unmarshal` in the ProtoBuf API is implemented by resetting the destionation message and then calling `proto.Merge` on it. To ensure proper `Unmarshal` semantics, ensure you've called `proto.Reset` on your message before calling `UnmarshalVT`, or that your message has been newly allocated.
 
+- `unmarshal_alias` generates a `func (p *YourProto) UnmarshalAliasVT(data []byte) error` that behaves like UnmarshalVT, but aliases bytes fields to slices of data instead of copying or appending to them.
+
 - `pool`: generates the following helper methods
 
     - `func (p *YourProto) ResetVT()`: this function behaves similarly to `proto.Reset(p)`, except it keeps as much memory as possible available on the message, so that further calls to `UnmarshalVT` on the same message will need to allocate less memory. This an API meant to be used with memory pools and does not need to be used directly.

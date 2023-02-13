@@ -21,11 +21,16 @@ func init() {
 	generator.RegisterFeature("unmarshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen}
 	})
+
+	generator.RegisterFeature("unmarshal_alias", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &unmarshal{GeneratedFile: gen, alias: true}
+	})
 }
 
 type unmarshal struct {
 	*generator.GeneratedFile
-	once bool
+	alias bool
+	once  bool
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
@@ -122,27 +127,38 @@ func (p *unmarshal) GenerateHelpers() {
 			`}`)
 	})
 
-	p.P(`
+	p.Helper("err", func(p *generator.GeneratedFile) {
+		p.P(`
 		var (
 			ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
 			ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
 			ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
 		)
 	`)
+	})
+}
+
+func (p *unmarshal) methodUnmarshal() string {
+	switch {
+	case p.alias:
+		return "UnmarshalAliasVT"
+	default:
+		return "UnmarshalVT"
+	}
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
 	local := p.IsLocalMessage(message)
 
 	if local {
-		p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`if err := `, varName, `.`+p.methodUnmarshal()+`(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 	} else {
 		p.P(`if unmarshal, ok := interface{}(`, varName, `).(interface{`)
-		p.P(`UnmarshalVT([]byte) error`)
+		p.P(p.methodUnmarshal() + `([]byte) error`)
 		p.P(`}); ok{`)
-		p.P(`if err := unmarshal.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`if err := unmarshal.`+p.methodUnmarshal()+`(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 		p.P(`} else {`)
@@ -301,8 +317,12 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`if postbytesIndex > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(varName, ` = make([]byte, mapbyteLen)`)
-		p.P(`copy(`, varName, `, dAtA[iNdEx:postbytesIndex])`)
+		if p.alias {
+			p.P(varName, ` = dAtA[iNdEx:postbytesIndex]`)
+		} else {
+			p.P(varName, ` = make([]byte, mapbyteLen)`)
+			p.P(`copy(`, varName, `, dAtA[iNdEx:postbytesIndex])`)
+		}
 		p.P(`iNdEx = postbytesIndex`)
 	case protoreflect.Uint32Kind:
 		p.decodeVarint(varName, "uint32")
@@ -619,17 +639,29 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		if oneof {
-			p.P(`v := make([]byte, postIndex-iNdEx)`)
-			p.P(`copy(v, dAtA[iNdEx:postIndex])`)
+			if p.alias {
+				p.P(`v := dAtA[iNdEx:postIndex]`)
+			} else {
+				p.P(`v := make([]byte, postIndex-iNdEx)`)
+				p.P(`copy(v, dAtA[iNdEx:postIndex])`)
+			}
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
 		} else if repeated {
-			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, make([]byte, postIndex-iNdEx))`)
-			p.P(`copy(m.`, fieldname, `[len(m.`, fieldname, `)-1], dAtA[iNdEx:postIndex])`)
+			if p.alias {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, dAtA[iNdEx:postIndex])`)
+			} else {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, make([]byte, postIndex-iNdEx))`)
+				p.P(`copy(m.`, fieldname, `[len(m.`, fieldname, `)-1], dAtA[iNdEx:postIndex])`)
+			}
 		} else {
-			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `[:0] , dAtA[iNdEx:postIndex]...)`)
-			p.P(`if m.`, fieldname, ` == nil {`)
-			p.P(`m.`, fieldname, ` = []byte{}`)
-			p.P(`}`)
+			if p.alias {
+				p.P(`m.`, fieldname, ` = dAtA[iNdEx:postIndex]`)
+			} else {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `[:0] , dAtA[iNdEx:postIndex]...)`)
+				p.P(`if m.`, fieldname, ` == nil {`)
+				p.P(`m.`, fieldname, ` = []byte{}`)
+				p.P(`}`)
+			}
 		}
 		p.P(`iNdEx = postIndex`)
 	case protoreflect.Uint32Kind:
@@ -826,7 +858,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent
 	required := message.Desc.RequiredNumbers()
 
-	p.P(`func (m *`, ccTypeName, `) UnmarshalVT(dAtA []byte) error {`)
+	p.P(`func (m *`, ccTypeName, `) `+p.methodUnmarshal()+`(dAtA []byte) error {`)
 	if required.Len() > 0 {
 		p.P(`var hasFields [`, strconv.Itoa(1+(required.Len()-1)/64), `]uint64`)
 	}
