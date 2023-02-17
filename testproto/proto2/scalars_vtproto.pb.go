@@ -9,7 +9,6 @@ import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
 	math "math"
 	bits "math/bits"
@@ -2293,23 +2292,6 @@ func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func marshalGoogleProtobufTimestamp(dAtA []byte, v *timestamppb.Timestamp) (int, error) {
-	if v == nil {
-		return 0, nil
-	}
-	i := len(dAtA)
-	if v.Nanos != 0 {
-		i = encodeVarint(dAtA, i, uint64(v.Nanos))
-		i--
-		dAtA[i] = 0x10
-	}
-	if v.Seconds != 0 {
-		i = encodeVarint(dAtA, i, uint64(v.Seconds))
-		i--
-		dAtA[i] = 0x8
-	}
-	return len(dAtA) - i, nil
-}
 func (m *DoubleMessage) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -3805,18 +3787,6 @@ func (m *EnumMessage) SizeVT() (n int) {
 
 func soz(x uint64) (n int) {
 	return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-}
-func sizeGoogleProtobufTimestamp(v *timestamppb.Timestamp) (n int) {
-	if v == nil {
-		return 0
-	}
-	if v.Seconds != 0 {
-		n += 1 + sov(uint64(v.Seconds))
-	}
-	if v.Nanos != 0 {
-		n += 1 + sov(uint64(v.Nanos))
-	}
-	return n
 }
 func (m *DoubleMessage) UnmarshalVT(dAtA []byte) error {
 	var hasFields [1]uint64

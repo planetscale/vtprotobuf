@@ -323,7 +323,6 @@ func (m *Test2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0xa
 		}
@@ -380,7 +379,6 @@ func (m *Slice2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x22
 	}
@@ -534,7 +532,6 @@ func (m *Test2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0xa
 		}
@@ -591,7 +588,6 @@ func (m *Slice2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x22
 	}

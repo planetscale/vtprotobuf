@@ -2,8 +2,14 @@ syntax = "proto3";
 option go_package = "testproto/wellknown";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 message WellKnownFields {
     google.protobuf.Timestamp timestamp = 1;
-    repeated google.protobuf.Timestamp repeated_timestamp = 2;
+    google.protobuf.Duration duration = 2;
+
+    oneof oneof_field {
+        google.protobuf.Timestamp oneof_timestamp = 3;
+        google.protobuf.Duration oneof_duration = 4;
+    }
 }

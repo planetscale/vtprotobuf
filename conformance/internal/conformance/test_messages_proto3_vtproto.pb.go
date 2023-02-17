@@ -2585,7 +2585,6 @@ func (m *TestAllTypesProto3_NestedMessage) MarshalToSizedBufferVT(dAtA []byte) (
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2782,7 +2781,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x14
 			i--
@@ -2809,7 +2807,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2836,7 +2833,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2863,7 +2859,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2890,7 +2885,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2899,13 +2893,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshalGoogleProtobufTimestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
+			size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
 			if err != nil {
 				return 0, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2914,25 +2907,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedDuration[iNdEx]).(interface {
-				MarshalToSizedBufferVT([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedDuration[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := marshal_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
+			if err != nil {
+				return 0, err
 			}
-			// 3
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2965,7 +2945,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -2990,7 +2969,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -3015,7 +2993,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -3040,45 +3017,30 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x12
 		i--
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalTimestamp != nil {
-		size, err := marshalGoogleProtobufTimestamp(dAtA[:i], m.OptionalTimestamp)
+		size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x12
 		i--
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalDuration != nil {
-		if vtmsg, ok := interface{}(m.OptionalDuration).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalDuration)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := marshal_durationpb_Duration(dAtA[:i], m.OptionalDuration)
+		if err != nil {
+			return 0, err
 		}
-		// 4
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 		i--
@@ -3104,7 +3066,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3131,7 +3092,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3158,7 +3118,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3185,7 +3144,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3212,7 +3170,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3239,7 +3196,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3266,7 +3222,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3293,7 +3248,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3320,7 +3274,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -3346,7 +3299,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xd
 		i--
@@ -3371,7 +3323,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xd
 		i--
@@ -3396,7 +3347,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3421,7 +3371,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3446,7 +3395,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3471,7 +3419,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3496,7 +3443,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3521,7 +3467,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3546,7 +3491,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3983,7 +3927,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -4008,7 +3951,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -4382,7 +4324,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -4397,7 +4338,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -4652,7 +4592,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -4704,7 +4643,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -4717,7 +4655,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -4844,7 +4781,6 @@ func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToSizedBufferVT(dAtA []by
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x7
 		i--
@@ -5079,6 +5015,48 @@ func (m *EnumOnlyProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func marshal_timestamppb_Timestamp(dAtA []byte, m *timestamppb.Timestamp) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Nanos != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Seconds != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func marshal_durationpb_Duration(dAtA []byte, m *durationpb.Duration) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Nanos != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Seconds != 0 {
+		i = encodeVarint(dAtA, i, uint64(m.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *TestAllTypesProto3_NestedMessage) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -5116,7 +5094,6 @@ func (m *TestAllTypesProto3_NestedMessage) MarshalToSizedBufferVTStrict(dAtA []b
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x12
 	}
@@ -5304,7 +5281,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x14
 			i--
@@ -5331,7 +5307,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5358,7 +5333,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5385,7 +5359,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5412,7 +5385,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5421,13 +5393,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshalGoogleProtobufTimestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
+			size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
 			if err != nil {
 				return 0, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5436,25 +5407,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedDuration[iNdEx]).(interface {
-				MarshalToSizedBufferVTStrict([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedDuration[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := marshal_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
+			if err != nil {
+				return 0, err
 			}
-			// 3
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -5487,7 +5445,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -5512,7 +5469,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -5537,7 +5493,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -5562,45 +5517,30 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0x12
 		i--
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalTimestamp != nil {
-		size, err := marshalGoogleProtobufTimestamp(dAtA[:i], m.OptionalTimestamp)
+		size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x12
 		i--
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalDuration != nil {
-		if vtmsg, ok := interface{}(m.OptionalDuration).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalDuration)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := marshal_durationpb_Duration(dAtA[:i], m.OptionalDuration)
+		if err != nil {
+			return 0, err
 		}
-		// 4
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 		i--
@@ -5626,7 +5566,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5653,7 +5592,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5680,7 +5618,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5707,7 +5644,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5734,7 +5670,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5761,7 +5696,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5788,7 +5722,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5815,7 +5748,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5842,7 +5774,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 				copy(dAtA[i:], encoded)
 				i = encodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			// 3
 			i--
 			dAtA[i] = 0xd
 			i--
@@ -5868,7 +5799,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xd
 		i--
@@ -5893,7 +5823,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xd
 		i--
@@ -5918,7 +5847,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -5943,7 +5871,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -5968,7 +5895,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -5993,7 +5919,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -6018,7 +5943,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -6043,7 +5967,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -6068,7 +5991,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			copy(dAtA[i:], encoded)
 			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		// 4
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -6575,7 +6497,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -6600,7 +6521,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -6974,7 +6894,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -6989,7 +6908,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
-			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -7244,7 +7162,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -7296,7 +7213,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -7309,7 +7225,6 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -7436,7 +7351,6 @@ func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToSizedBufferVTStrict(dAt
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
-		// 4
 		i--
 		dAtA[i] = 0x7
 		i--
@@ -8374,17 +8288,11 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 		}
 	}
 	if m.OptionalDuration != nil {
-		if size, ok := interface{}(m.OptionalDuration).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.OptionalDuration)
-		}
+		l = size_durationpb_Duration(m.OptionalDuration)
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalTimestamp != nil {
-		l = sizeGoogleProtobufTimestamp(m.OptionalTimestamp)
+		l = size_timestamppb_Timestamp(m.OptionalTimestamp)
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalFieldMask != nil {
@@ -8432,19 +8340,13 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for _, e := range m.RepeatedDuration {
-			if size, ok := interface{}(e).(interface {
-				SizeVT() int
-			}); ok {
-				l = size.SizeVT()
-			} else {
-				l = proto.Size(e)
-			}
+			l = size_durationpb_Duration(e)
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for _, e := range m.RepeatedTimestamp {
-			l = sizeGoogleProtobufTimestamp(e)
+			l = size_timestamppb_Timestamp(e)
 			n += 2 + l + sov(uint64(l))
 		}
 	}
@@ -8691,6 +8593,36 @@ func (m *EnumOnlyProto3) SizeVT() (n int) {
 	var l int
 	_ = l
 	n += len(m.unknownFields)
+	return n
+}
+
+func size_durationpb_Duration(m *durationpb.Duration) (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Seconds != 0 {
+		n += 1 + sov(uint64(m.Seconds))
+	}
+	if m.Nanos != 0 {
+		n += 1 + sov(uint64(m.Nanos))
+	}
+	return n
+}
+
+func size_timestamppb_Timestamp(m *timestamppb.Timestamp) (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Seconds != 0 {
+		n += 1 + sov(uint64(m.Seconds))
+	}
+	if m.Nanos != 0 {
+		n += 1 + sov(uint64(m.Nanos))
+	}
 	return n
 }
 

@@ -6,6 +6,7 @@
 package size
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -26,6 +27,8 @@ func init() {
 type size struct {
 	*generator.GeneratedFile
 	once bool
+
+	externals []*protogen.Message
 }
 
 var _ generator.FeatureGenerator = (*size)(nil)
@@ -39,20 +42,25 @@ func (p *size) GenerateFile(file *protogen.File) bool {
 		p.message(message)
 	}
 
+	for _, m := range p.externals {
+		ident, _ := p.MapWellKnown(m)
+		p.generateForExternal(m, ident)
+	}
+
 	return p.once
 }
 
 func (p *size) GenerateHelpers() {
 	common.HelperSOV(p.GeneratedFile)
 	common.HelperSOZ(p.GeneratedFile)
-	common.HelperSizeGoogleProtobufTimestamp(p.GeneratedFile)
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
 	if p.IsLocalMessage(message) {
 		p.P(`l = `, varName, `.`, sizeName, `()`)
-	} else if p.IsWellKnownMessage(message) {
-		p.P(`l = `, p.functionSizeWellKnown(message), `(`, varName, `)`)
+	} else if wellknownIdent, wellknown := p.MapWellKnown(message); wellknown {
+		p.P(`l = size_`, common.ConvertIdent(wellknownIdent), `(`, varName, `)`)
+		p.externals = append(p.externals, message)
 	} else {
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
 		p.P(sizeName, `() int`)
@@ -325,11 +333,51 @@ func (p *size) message(message *protogen.Message) {
 	}
 }
 
-func (p *size) functionSizeWellKnown(message *protogen.Message) string {
-	switch id := p.MessageID(message); id {
-	case "google.protobuf.Timestamp":
-		return "sizeGoogleProtobufTimestamp"
-	default:
-		panic(id)
-	}
+func (p *size) generateForExternal(message *protogen.Message, ident string) {
+	m := p
+
+	const sizeName = "SizeVT"
+
+	p.Helper(fmt.Sprintf("size_%s", common.ConvertIdent(ident)), func(p *generator.GeneratedFile) {
+		p.P(`func size_`, common.ConvertIdent(ident), `(m *`, ident, `) (n int) {`)
+		p.P(`if m == nil {`)
+		p.P(`return 0`)
+		p.P(`}`)
+		p.P(`var l int`)
+		p.P(`_ = l`)
+		oneofs := make(map[string]struct{})
+		for _, field := range message.Fields {
+			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+			if !oneof {
+				m.field(false, field, sizeName)
+			} else {
+				fieldname := field.Oneof.GoName
+				if _, ok := oneofs[fieldname]; !ok {
+					oneofs[fieldname] = struct{}{}
+					p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{ SizeVT() int }); ok {`)
+					p.P(`n+=vtmsg.`, sizeName, `()`)
+					p.P(`}`)
+				}
+			}
+		}
+		p.P(`return n`)
+		p.P(`}`)
+		p.P()
+
+		for _, field := range message.Fields {
+			if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
+				continue
+			}
+			ccTypeName := field.GoIdent
+			p.P(`func (m *`, ccTypeName, `) `, sizeName, `() (n int) {`)
+			p.P(`if m == nil {`)
+			p.P(`return 0`)
+			p.P(`}`)
+			p.P(`var l int`)
+			p.P(`_ = l`)
+			m.field(true, field, sizeName)
+			p.P(`return n`)
+			p.P(`}`)
+		}
+	})
 }

@@ -109,6 +109,17 @@ func (p *GeneratedFile) IsWellKnownMessage(message *protogen.Message) bool {
 	return wellknown[p.MessageID(message)]
 }
 
+func (p *GeneratedFile) MapWellKnown(message *protogen.Message) (string, bool) {
+	switch id := p.MessageID(message); id {
+	case "google.protobuf.Timestamp":
+		return p.Ident("google.golang.org/protobuf/types/known/timestamppb", "Timestamp"), true
+	case "google.protobuf.Duration":
+		return p.Ident("google.golang.org/protobuf/types/known/durationpb", "Duration"), true
+	default:
+		return "", false
+	}
+}
+
 func (p *GeneratedFile) MessageID(message *protogen.Message) string {
 	return fmt.Sprintf("%s.%s", message.Desc.ParentFile().Package(), message.Desc.Name())
 }

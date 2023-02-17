@@ -13,7 +13,6 @@ import (
 
 	"github.com/planetscale/vtprotobuf/features/common"
 	"github.com/planetscale/vtprotobuf/generator"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -42,6 +41,8 @@ func (cnt *counter) Current() string {
 type marshal struct {
 	*generator.GeneratedFile
 	Stable, once, strict bool
+
+	externals []*protogen.Message
 }
 
 var _ generator.FeatureGenerator = (*marshal)(nil)
@@ -50,31 +51,19 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
 	}
+
+	var numGen counter
+	for _, m := range p.externals {
+		ident, _ := p.MapWellKnown(m)
+		p.generateForExternal(m, &numGen, ident)
+	}
+
 	return p.once
 }
 
 func (p *marshal) GenerateHelpers() {
 	common.HelperSOV(p.GeneratedFile)
 	common.HelperEncodeVarint(p.GeneratedFile)
-
-	orig := p
-	p.Helper("marshalGoogleProtobufTimestamp", func(p *generator.GeneratedFile) {
-		p.P(`func marshalGoogleProtobufTimestamp(dAtA []byte, v *`, p.Ident("google.golang.org/protobuf/types/known/timestamppb", "Timestamp"), `) (int, error) {`)
-		p.P(`if v == nil {`)
-		p.P(`return 0, nil`)
-		p.P(`}`)
-		p.P(`i := len(dAtA)`)
-		p.P(`if v.Nanos != 0 {`)
-		p.P(`i = encodeVarint(dAtA, i, uint64(v.Nanos))`)
-		orig.encodeKey(protoreflect.FieldNumber(2), protowire.VarintType)
-		p.P(`}`)
-		p.P(`if v.Seconds != 0 {`)
-		p.P(`i = encodeVarint(dAtA, i, uint64(v.Seconds))`)
-		orig.encodeKey(protoreflect.FieldNumber(1), protowire.VarintType)
-		p.P(`}`)
-		p.P(`return len(dAtA) - i, nil`)
-		p.P(`}`)
-	})
 }
 
 func (p *marshal) encodeFixed64(varName ...string) {
@@ -135,7 +124,6 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 		p.encodeVarint(`(uint64(`, varName, `) << 1) ^ uint64((`, varName, ` >> 63))`)
 	case protoreflect.MessageKind:
 		p.marshalBackward(varName, true, kvField.Message)
-		p.P(`// 1`)
 	}
 }
 
@@ -387,7 +375,6 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 	case protoreflect.GroupKind:
 		p.encodeKey(fieldNumber, protowire.EndGroupType)
 		p.marshalBackward(`m.`+fieldname, false, field.Message)
-		p.P(`// 2`)
 		p.encodeKey(fieldNumber, protowire.StartGroupType)
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
@@ -429,12 +416,10 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 		} else if repeated {
 			val := p.reverseListRange(`m.`, fieldname)
 			p.marshalBackward(val, true, field.Message)
-			p.P(`// 3`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
 			p.marshalBackward(`m.`+fieldname, true, field.Message)
-			p.P(`// 4`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.BytesKind:
@@ -720,12 +705,13 @@ func (p *marshal) reverseListRange(expression ...string) string {
 
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
 	local := p.IsLocalMessage(message)
-	wellknown := p.IsWellKnownMessage(message)
+	wellknownIdent, wellknown := p.MapWellKnown(message)
 
 	if local {
 		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
 	} else if wellknown {
-		p.P(`size, err := `, p.functionMarshalWellKnown(message), `(dAtA[:i], `, varName, `)`)
+		p.P(`size, err := marshal_`, common.ConvertIdent(wellknownIdent), `(dAtA[:i], `, varName, `)`)
+		p.externals = append(p.externals, message)
 	} else {
 		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
 		p.P(p.methodMarshalToSizedBuffer(), `([]byte) (int, error)`)
@@ -754,4 +740,76 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 		}
 		p.P(`}`)
 	}
+}
+
+func (p *marshal) generateForExternal(message *protogen.Message, numGen *counter, ident string) {
+	m := p
+	p.Helper(fmt.Sprintf("marshal_%s", common.ConvertIdent(ident)), func(p *generator.GeneratedFile) {
+		p.P(`func marshal_`, common.ConvertIdent(ident), `(dAtA []byte, m *`, ident, `) (int, error) {`)
+		p.P(`if m == nil {`)
+		p.P(`return 0, nil`)
+		p.P(`}`)
+		p.P(`i := len(dAtA)`)
+		p.P(`_ = i`)
+		p.P(`var l int`)
+		p.P(`_ = l`)
+
+		sort.Slice(message.Fields, func(i, j int) bool {
+			return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
+		})
+
+		marshalForwardOneOf := func(varname string) {
+			p.P(`size, err := `, varname, `.`, m.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+			p.P(`if err != nil {`)
+			p.P(`return 0, err`)
+			p.P(`}`)
+			p.P(`i -= size`)
+		}
+
+		if m.strict {
+			for i := len(message.Fields) - 1; i >= 0; i-- {
+				field := message.Fields[i]
+				oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+				if !oneof {
+					m.field(false, numGen, field)
+				} else {
+					p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
+					marshalForwardOneOf("msg")
+					p.P(`}`)
+				}
+			}
+		} else {
+			// To match the wire format of proto.Marshal, oneofs have to be marshaled
+			// before fields. See https://github.com/planetscale/vtprotobuf/pull/22
+
+			oneofs := make(map[string]struct{}, len(message.Fields))
+			for i := len(message.Fields) - 1; i >= 0; i-- {
+				field := message.Fields[i]
+				oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+				if oneof {
+					fieldname := field.Oneof.GoName
+					if _, ok := oneofs[fieldname]; !ok {
+						oneofs[fieldname] = struct{}{}
+						p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
+						p.P(m.methodMarshalToSizedBuffer(), ` ([]byte) (int, error)`)
+						p.P(`}); ok {`)
+						marshalForwardOneOf("vtmsg")
+						p.P(`}`)
+					}
+				}
+			}
+
+			for i := len(message.Fields) - 1; i >= 0; i-- {
+				field := message.Fields[i]
+				oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
+				if !oneof {
+					m.field(false, numGen, field)
+				}
+			}
+		}
+
+		p.P(`return len(dAtA) - i, nil`)
+		p.P(`}`)
+		p.P()
+	})
 }

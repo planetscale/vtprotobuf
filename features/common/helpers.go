@@ -38,20 +38,3 @@ func HelperSOZ(p *generator.GeneratedFile) {
 		}`)
 	})
 }
-
-func HelperSizeGoogleProtobufTimestamp(p *generator.GeneratedFile) {
-	p.Helper("sizeGoogleProtobufTimestamp", func(p *generator.GeneratedFile) {
-		p.P(`func sizeGoogleProtobufTimestamp(v *`, p.Ident("google.golang.org/protobuf/types/known/timestamppb", "Timestamp"), `) (n int) {`)
-		p.P(`if v == nil {`)
-		p.P(`return 0`)
-		p.P(`}`)
-		p.P(`if v.Seconds != 0 {`)
-		p.P(`n += 1 + sov(uint64(v.Seconds))`)
-		p.P(`}`)
-		p.P(`if v.Nanos != 0 {`)
-		p.P(`n += 1 + sov(uint64(v.Nanos))`)
-		p.P(`}`)
-		p.P(`return n`)
-		p.P(`}`)
-	})
-}
