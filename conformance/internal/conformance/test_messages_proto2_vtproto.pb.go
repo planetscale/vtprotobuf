@@ -9,6 +9,7 @@ import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
 	math "math"
 	bits "math/bits"
@@ -2290,6 +2291,7 @@ func (m *TestAllTypesProto2_NestedMessage) MarshalToSizedBufferVT(dAtA []byte) (
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x12
 	}
@@ -2756,6 +2758,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
+		// 2
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -3192,6 +3195,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -3216,6 +3220,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -3561,6 +3566,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -3575,6 +3581,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -3742,6 +3749,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -3786,6 +3794,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -3798,6 +3807,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -3924,6 +3934,7 @@ func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToSizedBufferVT(dAtA []by
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x7
 		i--
@@ -4177,6 +4188,7 @@ func (m *UnknownToTestAllTypes) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 			return 0, err
 		}
 		i -= size
+		// 2
 		i--
 		dAtA[i] = 0x3e
 		i--
@@ -4189,6 +4201,7 @@ func (m *UnknownToTestAllTypes) MarshalToSizedBufferVT(dAtA []byte) (int, error)
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x3e
 		i--
@@ -4319,6 +4332,9 @@ func (m *OneStringProto2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func sov(x uint64) (n int) {
+	return (bits.Len64(x|1) + 6) / 7
+}
 func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	offset -= sov(v)
 	base := offset
@@ -4329,6 +4345,23 @@ func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	}
 	dAtA[offset] = uint8(v)
 	return base
+}
+func marshalGoogleProtobufTimestamp(dAtA []byte, v *timestamppb.Timestamp) (int, error) {
+	if v == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	if v.Nanos != 0 {
+		i = encodeVarint(dAtA, i, uint64(v.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if v.Seconds != 0 {
+		i = encodeVarint(dAtA, i, uint64(v.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 func (m *TestAllTypesProto2_NestedMessage) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
@@ -4367,6 +4400,7 @@ func (m *TestAllTypesProto2_NestedMessage) MarshalToSizedBufferVTStrict(dAtA []b
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x12
 	}
@@ -4824,6 +4858,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			return 0, err
 		}
 		i -= size
+		// 2
 		i--
 		dAtA[i] = 0xc
 		i--
@@ -5323,6 +5358,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -5347,6 +5383,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 1
 			i--
 			dAtA[i] = 0x12
 			i -= len(k)
@@ -5692,6 +5729,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -5706,6 +5744,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			}
 			i -= size
 			i = encodeVarint(dAtA, i, uint64(size))
+			// 3
 			i--
 			dAtA[i] = 0x3
 			i--
@@ -5873,6 +5912,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -5917,6 +5957,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -5929,6 +5970,7 @@ func (m *TestAllTypesProto2) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x1
 		i--
@@ -6055,6 +6097,7 @@ func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToSizedBufferVTStrict(dAt
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x7
 		i--
@@ -6308,6 +6351,7 @@ func (m *UnknownToTestAllTypes) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 			return 0, err
 		}
 		i -= size
+		// 2
 		i--
 		dAtA[i] = 0x3e
 		i--
@@ -6320,6 +6364,7 @@ func (m *UnknownToTestAllTypes) MarshalToSizedBufferVTStrict(dAtA []byte) (int, 
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x3e
 		i--
@@ -7276,11 +7321,20 @@ func (m *OneStringProto2) SizeVT() (n int) {
 	return n
 }
 
-func sov(x uint64) (n int) {
-	return (bits.Len64(x|1) + 6) / 7
-}
 func soz(x uint64) (n int) {
 	return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func sizeGoogleProtobufTimestamp(v *timestamppb.Timestamp) (n int) {
+	if v == nil {
+		return 0
+	}
+	if v.Seconds != 0 {
+		n += 1 + sov(uint64(v.Seconds))
+	}
+	if v.Nanos != 0 {
+		n += 1 + sov(uint64(v.Nanos))
+	}
+	return n
 }
 func (m *TestAllTypesProto2_NestedMessage) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)

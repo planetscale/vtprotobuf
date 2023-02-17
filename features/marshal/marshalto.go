@@ -66,12 +66,10 @@ func (p *marshal) GenerateHelpers() {
 		p.P(`i := len(dAtA)`)
 		p.P(`if v.Nanos != 0 {`)
 		p.P(`i = encodeVarint(dAtA, i, uint64(v.Nanos))`)
-		p.P(`i--`)
 		orig.encodeKey(protoreflect.FieldNumber(2), protowire.VarintType)
 		p.P(`}`)
 		p.P(`if v.Seconds != 0 {`)
 		p.P(`i = encodeVarint(dAtA, i, uint64(v.Seconds))`)
-		p.P(`i--`)
 		orig.encodeKey(protoreflect.FieldNumber(1), protowire.VarintType)
 		p.P(`}`)
 		p.P(`return len(dAtA) - i, nil`)
@@ -137,6 +135,7 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 		p.encodeVarint(`(uint64(`, varName, `) << 1) ^ uint64((`, varName, ` >> 63))`)
 	case protoreflect.MessageKind:
 		p.marshalBackward(varName, true, kvField.Message)
+		p.P(`// 1`)
 	}
 }
 
@@ -388,6 +387,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 	case protoreflect.GroupKind:
 		p.encodeKey(fieldNumber, protowire.EndGroupType)
 		p.marshalBackward(`m.`+fieldname, false, field.Message)
+		p.P(`// 2`)
 		p.encodeKey(fieldNumber, protowire.StartGroupType)
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
@@ -429,10 +429,12 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 		} else if repeated {
 			val := p.reverseListRange(`m.`, fieldname)
 			p.marshalBackward(val, true, field.Message)
+			p.P(`// 3`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
 			p.marshalBackward(`m.`+fieldname, true, field.Message)
+			p.P(`// 4`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.BytesKind:

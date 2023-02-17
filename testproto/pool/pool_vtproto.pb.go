@@ -8,6 +8,7 @@ import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
 	bits "math/bits"
 	sync "sync"
@@ -106,6 +107,9 @@ func (m *MemoryPoolExtension) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func sov(x uint64) (n int) {
+	return (bits.Len64(x|1) + 6) / 7
+}
 func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	offset -= sov(v)
 	base := offset
@@ -116,6 +120,23 @@ func encodeVarint(dAtA []byte, offset int, v uint64) int {
 	}
 	dAtA[offset] = uint8(v)
 	return base
+}
+func marshalGoogleProtobufTimestamp(dAtA []byte, v *timestamppb.Timestamp) (int, error) {
+	if v == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	if v.Nanos != 0 {
+		i = encodeVarint(dAtA, i, uint64(v.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if v.Seconds != 0 {
+		i = encodeVarint(dAtA, i, uint64(v.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
 }
 func (m *MemoryPoolExtension) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
@@ -197,11 +218,20 @@ func (m *MemoryPoolExtension) SizeVT() (n int) {
 	return n
 }
 
-func sov(x uint64) (n int) {
-	return (bits.Len64(x|1) + 6) / 7
-}
 func soz(x uint64) (n int) {
 	return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+}
+func sizeGoogleProtobufTimestamp(v *timestamppb.Timestamp) (n int) {
+	if v == nil {
+		return 0
+	}
+	if v.Seconds != 0 {
+		n += 1 + sov(uint64(v.Seconds))
+	}
+	if v.Nanos != 0 {
+		n += 1 + sov(uint64(v.Nanos))
+	}
+	return n
 }
 func (m *MemoryPoolExtension) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)

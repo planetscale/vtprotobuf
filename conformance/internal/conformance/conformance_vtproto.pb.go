@@ -648,6 +648,7 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x32
 	}
@@ -1027,6 +1028,7 @@ func (m *ConformanceRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		}
 		i -= size
 		i = encodeVarint(dAtA, i, uint64(size))
+		// 4
 		i--
 		dAtA[i] = 0x32
 	}

@@ -47,17 +47,6 @@ gen-testproto:
 		testproto/wellknown/wellknown.proto \
 		|| exit 1;
 
-gen-wellknown:
-	protoc \
-		--proto_path=testproto \
-		--proto_path=include \
-		--go_out=. \
-		--go-vtproto_opt=features=marshal+size \
-		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
-		-I. \
-		testproto/wellknown/wellknown.proto \
-		|| exit 1;
-
 genall: install gen-include gen-conformance gen-testproto
 
 test: install gen-conformance
