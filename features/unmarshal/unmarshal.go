@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/planetscale/vtprotobuf/features/common"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -26,6 +27,8 @@ func init() {
 type unmarshal struct {
 	*generator.GeneratedFile
 	once bool
+
+	externals []*protogen.Message
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
@@ -34,6 +37,11 @@ func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
 		p.message(proto3, message)
+	}
+
+	for _, m := range p.externals {
+		ident, _ := p.MapWellKnown(m)
+		p.generateForExternal(m, ident)
 	}
 
 	return p.once
@@ -138,6 +146,11 @@ func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message
 		p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
+	} else if wellknownIdent, wellknown := p.MapWellKnown(message); wellknown {
+		p.P(`if err := unmarshal_`, common.ConvertIdent(wellknownIdent), `(`, varName, `, `, buf, `); err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+		p.externals = append(p.externals, message)
 	} else {
 		p.P(`if unmarshal, ok := interface{}(`, varName, `).(interface{`)
 		p.P(`UnmarshalVT([]byte) error`)
@@ -732,7 +745,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 	}
 }
 
-func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers) {
+func (p *unmarshal) field(proto3 bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
 	if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
@@ -846,7 +859,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.field(proto3, false, field, message, required)
+		p.field(proto3, field, message, required)
 	}
 	p.P(`default:`)
 	p.P(`iNdEx=preIndex`)
@@ -861,8 +874,8 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 	p.P(`}`)
 	if message.Desc.ExtensionRanges().Len() > 0 {
-		c := []string{}
 		eranges := message.Desc.ExtensionRanges()
+		c := make([]string, 0, eranges.Len())
 		for e := 0; e < eranges.Len(); e++ {
 			erange := eranges.Get(e)
 			c = append(c, `((fieldNum >= `+strconv.Itoa(int(erange[0]))+`) && (fieldNum < `+strconv.Itoa(int(erange[1]))+`))`)
@@ -896,7 +909,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 		if fieldBit == required.Len() {
 			panic("missing required field")
 		}
-		p.P(`if hasFields[`, strconv.Itoa(int(fieldBit/64)), `] & uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `) == 0 {`)
+		p.P(`if hasFields[`, strconv.Itoa(fieldBit/64), `] & uint64(`, fmt.Sprintf("0x%08x", uint64(1)<<(fieldBit%64)), `) == 0 {`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: required field `, field.Desc.Name(), ` not set")`)
 		p.P(`}`)
 	}
@@ -906,4 +919,74 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	p.P(`}`)
 	p.P(`return nil`)
 	p.P(`}`)
+}
+
+func (p *unmarshal) generateForExternal(message *protogen.Message, ident string) {
+	m := p
+	p.Helper(fmt.Sprintf("unmarshal_%s", ident), func(p *generator.GeneratedFile) {
+		p.P(`func unmarshal_`, common.ConvertIdent(ident), `(m *`, ident, `, dAtA []byte) error {`)
+		p.P(`l := len(dAtA)`)
+		p.P(`iNdEx := 0`)
+		p.P(`var unknownFields []byte`)
+		p.P(`for iNdEx < l {`)
+		p.P(`preIndex := iNdEx`)
+		p.P(`var wire uint64`)
+		m.decodeVarint("wire", "uint64")
+		p.P(`fieldNum := int32(wire >> 3)`)
+		p.P(`wireType := int(wire & 0x7)`)
+		p.P(`if wireType == `, strconv.Itoa(int(protowire.EndGroupType)), ` {`)
+		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: `, message.GoIdent.GoName, `: wiretype end group for non-group")`)
+		p.P(`}`)
+		p.P(`if fieldNum <= 0 {`)
+		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: `, message.GoIdent.GoName, `: illegal tag %d (wire type %d)", fieldNum, wire)`)
+		p.P(`}`)
+		p.P(`switch fieldNum {`)
+		for _, field := range message.Fields {
+			m.field(true, field, message, nil)
+		}
+		p.P(`default:`)
+		p.P(`iNdEx=preIndex`)
+		p.P(`skippy, err := skip(dAtA[iNdEx:])`)
+		p.P(`if err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+		p.P(`if (skippy < 0) || (iNdEx + skippy) < 0 {`)
+		p.P(`return ErrInvalidLength`)
+		p.P(`}`)
+		p.P(`if (iNdEx + skippy) > l {`)
+		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
+		p.P(`}`)
+		if message.Desc.ExtensionRanges().Len() > 0 {
+			eranges := message.Desc.ExtensionRanges()
+			c := make([]string, 0, eranges.Len())
+			for e := 0; e < eranges.Len(); e++ {
+				erange := eranges.Get(e)
+				c = append(c, `((fieldNum >= `+strconv.Itoa(int(erange[0]))+`) && (fieldNum < `+strconv.Itoa(int(erange[1]))+`))`)
+			}
+			p.P(`if `, strings.Join(c, "||"), `{`)
+			p.P(`err = `, p.Ident(generator.ProtoPkg, "UnmarshalOptions"), `{AllowPartial: true}.Unmarshal(dAtA[iNdEx:iNdEx+skippy], m)`)
+			p.P(`if err != nil {`)
+			p.P(`return err`)
+			p.P(`}`)
+			p.P(`iNdEx += skippy`)
+			p.P(`} else {`)
+		}
+		p.P(`if skippy > 0 {`)
+		p.P(`unknownFields = append(unknownFields, dAtA[iNdEx:iNdEx+skippy]...)`)
+		p.P(`iNdEx += skippy`)
+		p.P(`}`)
+		if message.Desc.ExtensionRanges().Len() > 0 {
+			p.P(`}`)
+		}
+		p.P(`}`)
+		p.P(`}`)
+
+		p.P()
+		p.P(`if iNdEx > l {`)
+		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
+		p.P(`}`)
+		p.P(`m.ProtoReflect().SetUnknown(unknownFields)`)
+		p.P(`return nil`)
+		p.P(`}`)
+	})
 }

@@ -52,7 +52,7 @@ gen-wellknown:
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. \
-		--go-vtproto_opt=features=marshal+size \
+		--go-vtproto_opt=features=unmarshal \
 		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		-I. \
 		testproto/wellknown/wellknown.proto \
