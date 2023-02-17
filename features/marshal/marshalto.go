@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/planetscale/vtprotobuf/features/common"
 	"github.com/planetscale/vtprotobuf/generator"
 
 	"google.golang.org/protobuf/compiler/protogen"
@@ -53,17 +54,27 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *marshal) GenerateHelpers() {
-	p.Helper("encodeVarint", func(p *generator.GeneratedFile) {
-		p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
-		p.P(`offset -= sov(v)`)
-		p.P(`base := offset`)
-		p.P(`for v >= 1<<7 {`)
-		p.P(`dAtA[offset] = uint8(v&0x7f|0x80)`)
-		p.P(`v >>= 7`)
-		p.P(`offset++`)
+	common.HelperSOV(p.GeneratedFile)
+	common.HelperEncodeVarint(p.GeneratedFile)
+
+	orig := p
+	p.Helper("marshalGoogleProtobufTimestamp", func(p *generator.GeneratedFile) {
+		p.P(`func marshalGoogleProtobufTimestamp(dAtA []byte, v *`, p.Ident("google.golang.org/protobuf/types/known/timestamppb", "Timestamp"), `) (int, error) {`)
+		p.P(`if v == nil {`)
+		p.P(`return 0, nil`)
 		p.P(`}`)
-		p.P(`dAtA[offset] = uint8(v)`)
-		p.P(`return base`)
+		p.P(`i := len(dAtA)`)
+		p.P(`if v.Nanos != 0 {`)
+		p.P(`i = encodeVarint(dAtA, i, uint64(v.Nanos))`)
+		p.P(`i--`)
+		orig.encodeKey(protoreflect.FieldNumber(2), protowire.VarintType)
+		p.P(`}`)
+		p.P(`if v.Seconds != 0 {`)
+		p.P(`i = encodeVarint(dAtA, i, uint64(v.Seconds))`)
+		p.P(`i--`)
+		orig.encodeKey(protoreflect.FieldNumber(1), protowire.VarintType)
+		p.P(`}`)
+		p.P(`return len(dAtA) - i, nil`)
 		p.P(`}`)
 	})
 }
@@ -568,6 +579,15 @@ func (p *marshal) methodMarshal() string {
 	}
 }
 
+func (p *marshal) functionMarshalWellKnown(message *protogen.Message) string {
+	switch id := p.MessageID(message); id {
+	case "google.protobuf.Timestamp":
+		return "marshalGoogleProtobufTimestamp"
+	default:
+		panic(id)
+	}
+}
+
 func (p *marshal) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
 		p.message(nested)
@@ -671,7 +691,7 @@ func (p *marshal) message(message *protogen.Message) {
 	p.P(`}`)
 	p.P()
 
-	//Generate MarshalToVT methods for oneof fields
+	// Generate MarshalToVT methods for oneof fields
 	for _, field := range message.Fields {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
@@ -698,9 +718,12 @@ func (p *marshal) reverseListRange(expression ...string) string {
 
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
 	local := p.IsLocalMessage(message)
+	wellknown := p.IsWellKnownMessage(message)
 
 	if local {
 		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+	} else if wellknown {
+		p.P(`size, err := `, p.functionMarshalWellKnown(message), `(dAtA[:i], `, varName, `)`)
 	} else {
 		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
 		p.P(p.methodMarshalToSizedBuffer(), `([]byte) (int, error)`)
@@ -716,7 +739,7 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 		p.encodeVarint(`size`)
 	}
 
-	if !local {
+	if !local && !wellknown {
 		p.P(`} else {`)
 		p.P(`encoded, err := `, p.Ident(generator.ProtoPkg, "Marshal"), `(`, varName, `)`)
 		p.P(`if err != nil {`)

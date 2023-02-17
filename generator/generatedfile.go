@@ -34,11 +34,11 @@ func (p *GeneratedFile) Ident(path, ident string) string {
 	return p.QualifiedGoIdent(protogen.GoImportPath(path).Ident(ident))
 }
 
-func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
+func (p *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	if message == nil {
 		return false
 	}
-	if b.Ext.Poolable[message.GoIdent] {
+	if p.Ext.Poolable[message.GoIdent] {
 		return true
 	}
 	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Mempool)
@@ -48,11 +48,11 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	return false
 }
 
-func (b *GeneratedFile) Alloc(vname string, message *protogen.Message) {
-	if b.ShouldPool(message) {
-		b.P(vname, " := ", message.GoIdent, `FromVTPool()`)
+func (p *GeneratedFile) Alloc(vname string, message *protogen.Message) {
+	if p.ShouldPool(message) {
+		p.P(vname, " := ", message.GoIdent, `FromVTPool()`)
 	} else {
-		b.P(vname, " := new(", message.GoIdent, `)`)
+		p.P(vname, " := new(", message.GoIdent, `)`)
 	}
 }
 
@@ -102,4 +102,13 @@ func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, point
 func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
 	pkg := string(message.Desc.ParentFile().Package())
 	return p.LocalPackages[pkg]
+}
+
+func (p *GeneratedFile) IsWellKnownMessage(message *protogen.Message) bool {
+	wellknown := map[string]bool{"google.protobuf.Timestamp": true}
+	return wellknown[p.MessageID(message)]
+}
+
+func (p *GeneratedFile) MessageID(message *protogen.Message) string {
+	return fmt.Sprintf("%s.%s", message.Desc.ParentFile().Package(), message.Desc.Name())
 }

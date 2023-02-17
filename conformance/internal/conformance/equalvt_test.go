@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
@@ -121,7 +122,7 @@ func TestEqualVT3(t *testing.T) {
 		RepeatedBytesWrapper:  []*wrapperspb.BytesValue{wrapperspb.Bytes([]byte("blop"))},
 
 		// OptionalDuration:      *durationpb.Duration
-		// OptionalTimestamp:     *timestamppb.Timestamp
+		OptionalTimestamp: timestamppb.Now(),
 		// OptionalFieldMask:     *fieldmaskpb.FieldMask
 		// OptionalStruct:        *structpb.Struct
 		// OptionalAny:           *anypb.Any

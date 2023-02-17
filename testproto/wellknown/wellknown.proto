@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package = "testproto/wellknown";
+
+import "google/protobuf/timestamp.proto";
+
+message WellKnownFields {
+    google.protobuf.Timestamp timestamp = 1;
+    repeated google.protobuf.Timestamp repeated_timestamp = 2;
+}

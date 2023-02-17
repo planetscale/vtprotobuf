@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/planetscale/vtprotobuf/features/common"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -42,24 +43,16 @@ func (p *size) GenerateFile(file *protogen.File) bool {
 }
 
 func (p *size) GenerateHelpers() {
-	p.Helper("sov", func(p *generator.GeneratedFile) {
-		p.P(`
-		func sov(x uint64) (n int) {
-			return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
-		}`)
-	})
-	p.Helper("soz", func(p *generator.GeneratedFile) {
-		p.P(`func soz(x uint64) (n int) {
-			return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
-		}`)
-	})
+	common.HelperSOV(p.GeneratedFile)
+	common.HelperSOZ(p.GeneratedFile)
+	common.HelperSizeGoogleProtobufTimestamp(p.GeneratedFile)
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
-	local := p.IsLocalMessage(message)
-
-	if local {
+	if p.IsLocalMessage(message) {
 		p.P(`l = `, varName, `.`, sizeName, `()`)
+	} else if p.IsWellKnownMessage(message) {
+		p.P(`l = `, p.functionSizeWellKnown(message), `(`, varName, `)`)
 	} else {
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
 		p.P(sizeName, `() int`)
@@ -329,5 +322,14 @@ func (p *size) message(message *protogen.Message) {
 		p.field(true, field, sizeName)
 		p.P(`return n`)
 		p.P(`}`)
+	}
+}
+
+func (p *size) functionSizeWellKnown(message *protogen.Message) string {
+	switch id := p.MessageID(message); id {
+	case "google.protobuf.Timestamp":
+		return "sizeGoogleProtobufTimestamp"
+	default:
+		panic(id)
 	}
 }
