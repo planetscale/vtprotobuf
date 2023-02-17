@@ -3,12 +3,15 @@ package conformance
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
@@ -72,8 +75,8 @@ func TestCloneVT3(t *testing.T) {
 		RepeatedStringWrapper: []*wrapperspb.StringValue{wrapperspb.String("blip")},
 		RepeatedBytesWrapper:  []*wrapperspb.BytesValue{wrapperspb.Bytes([]byte("blop"))},
 
-		// OptionalDuration:      *durationpb.Duration
-		// OptionalTimestamp:     *timestamppb.Timestamp
+		OptionalDuration:  durationpb.New(time.Hour),
+		OptionalTimestamp: timestamppb.Now(),
 		// OptionalFieldMask:     *fieldmaskpb.FieldMask
 		// OptionalStruct:        *structpb.Struct
 		// OptionalAny:           *anypb.Any

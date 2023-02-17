@@ -3,12 +3,14 @@ package conformance
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/planetscale/vtprotobuf/testproto/proto3opt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -121,7 +123,7 @@ func TestEqualVT3(t *testing.T) {
 		RepeatedStringWrapper: []*wrapperspb.StringValue{wrapperspb.String("blip")},
 		RepeatedBytesWrapper:  []*wrapperspb.BytesValue{wrapperspb.Bytes([]byte("blop"))},
 
-		// OptionalDuration:      *durationpb.Duration
+		OptionalDuration:  durationpb.New(time.Hour),
 		OptionalTimestamp: timestamppb.Now(),
 		// OptionalFieldMask:     *fieldmaskpb.FieldMask
 		// OptionalStruct:        *structpb.Struct
