@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/planetscale/vtprotobuf/features/common"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -42,24 +41,34 @@ func (p *size) GenerateFile(file *protogen.File) bool {
 		p.message(message)
 	}
 
-	for _, m := range p.externals {
-		ident, _ := p.MapWellKnown(m)
-		p.generateForExternal(m, ident)
-	}
-
 	return p.once
 }
 
 func (p *size) GenerateHelpers() {
-	common.HelperSOV(p.GeneratedFile)
-	common.HelperSOZ(p.GeneratedFile)
+	p.Helper("sov", func(p *generator.GeneratedFile) {
+		p.P(`
+		func sov(x uint64) (n int) {
+			return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+		}`)
+	})
+
+	p.Helper("soz", func(p *generator.GeneratedFile) {
+		p.P(`func soz(x uint64) (n int) {
+			return sov(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+		}`)
+	})
+
+	for _, m := range p.externals {
+		ident, _ := p.MapWellKnown(m)
+		p.generateForExternal(m, ident)
+	}
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
 	if p.IsLocalMessage(message) {
 		p.P(`l = `, varName, `.`, sizeName, `()`)
 	} else if wellknownIdent, wellknown := p.MapWellKnown(message); wellknown {
-		p.P(`l = size_`, common.ConvertIdent(wellknownIdent), `(`, varName, `)`)
+		p.P(`l = size_`, wellknownIdent.CodeName(), `(`, varName, `)`)
 		p.externals = append(p.externals, message)
 	} else {
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
@@ -333,13 +342,13 @@ func (p *size) message(message *protogen.Message) {
 	}
 }
 
-func (p *size) generateForExternal(message *protogen.Message, ident string) {
+func (p *size) generateForExternal(message *protogen.Message, ident *generator.FullIdent) {
 	m := p
 
 	const sizeName = "SizeVT"
 
-	p.Helper(fmt.Sprintf("size_%s", common.ConvertIdent(ident)), func(p *generator.GeneratedFile) {
-		p.P(`func size_`, common.ConvertIdent(ident), `(m *`, ident, `) (n int) {`)
+	p.Helper(fmt.Sprintf("size_%v", ident), func(p *generator.GeneratedFile) {
+		p.P(`func size_`, ident.CodeName(), `(m *`, ident.StructName(p), `) (n int) {`)
 		p.P(`if m == nil {`)
 		p.P(`return 0`)
 		p.P(`}`)

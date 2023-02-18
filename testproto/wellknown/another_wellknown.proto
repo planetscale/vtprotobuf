@@ -1,0 +1,18 @@
+syntax = "proto3";
+option go_package = "testproto/wellknown";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
+// There was a bug resulting in helpers duplication
+// in the different files of the same package.
+// AnotherWellKnownFields prevents this bug in the future.
+message AnotherWellKnownFields {
+    google.protobuf.Timestamp timestamp = 1;
+    google.protobuf.Duration duration = 2;
+
+    oneof oneof_field {
+        google.protobuf.Timestamp oneof_timestamp = 3;
+        google.protobuf.Duration oneof_duration = 4;
+    }
+}

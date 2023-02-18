@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/planetscale/vtprotobuf/features/common"
 	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
@@ -52,18 +51,36 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 		p.message(message)
 	}
 
+	return p.once
+}
+
+func (p *marshal) GenerateHelpers() {
+	p.Helper("sov", func(p *generator.GeneratedFile) {
+		p.P(`
+		func sov(x uint64) (n int) {
+			return (`, p.Ident("math/bits", "Len64"), `(x | 1) + 6)/ 7
+		}`)
+	})
+
+	p.Helper("encodeVarint", func(p *generator.GeneratedFile) {
+		p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
+		p.P(`offset -= sov(v)`)
+		p.P(`base := offset`)
+		p.P(`for v >= 1<<7 {`)
+		p.P(`dAtA[offset] = uint8(v&0x7f|0x80)`)
+		p.P(`v >>= 7`)
+		p.P(`offset++`)
+		p.P(`}`)
+		p.P(`dAtA[offset] = uint8(v)`)
+		p.P(`return base`)
+		p.P(`}`)
+	})
+
 	var numGen counter
 	for _, m := range p.externals {
 		ident, _ := p.MapWellKnown(m)
 		p.generateForExternal(m, &numGen, ident)
 	}
-
-	return p.once
-}
-
-func (p *marshal) GenerateHelpers() {
-	common.HelperSOV(p.GeneratedFile)
-	common.HelperEncodeVarint(p.GeneratedFile)
 }
 
 func (p *marshal) encodeFixed64(varName ...string) {
@@ -710,7 +727,7 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 	if local {
 		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
 	} else if wellknown {
-		p.P(`size, err := marshal_`, common.ConvertIdent(wellknownIdent), `(dAtA[:i], `, varName, `)`)
+		p.P(`size, err := marshal_`, wellknownIdent.CodeName(), `(dAtA[:i], `, varName, `)`)
 		p.externals = append(p.externals, message)
 	} else {
 		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
@@ -742,10 +759,10 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 	}
 }
 
-func (p *marshal) generateForExternal(message *protogen.Message, numGen *counter, ident string) {
+func (p *marshal) generateForExternal(message *protogen.Message, numGen *counter, ident *generator.FullIdent) {
 	m := p
-	p.Helper(fmt.Sprintf("marshal_%s", common.ConvertIdent(ident)), func(p *generator.GeneratedFile) {
-		p.P(`func marshal_`, common.ConvertIdent(ident), `(dAtA []byte, m *`, ident, `) (int, error) {`)
+	p.Helper(fmt.Sprintf("marshal_%v", ident), func(p *generator.GeneratedFile) {
+		p.P(`func marshal_`, ident.CodeName(), `(dAtA []byte, m *`, ident.StructName(p), `) (int, error) {`)
 		p.P(`if m == nil {`)
 		p.P(`return 0, nil`)
 		p.P(`}`)

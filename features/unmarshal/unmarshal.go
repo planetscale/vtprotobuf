@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/planetscale/vtprotobuf/features/common"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -37,11 +36,6 @@ func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
 		p.message(proto3, message)
-	}
-
-	for _, m := range p.externals {
-		ident, _ := p.MapWellKnown(m)
-		p.generateForExternal(m, ident)
 	}
 
 	return p.once
@@ -130,13 +124,18 @@ func (p *unmarshal) GenerateHelpers() {
 			`}`)
 	})
 
-	p.P(`
-		var (
-			ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
-			ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
-			ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
-		)
-	`)
+	p.Helper("length_errors", func(p *generator.GeneratedFile) {
+		p.P(`var (`)
+		p.P(`ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")`)
+		p.P(`ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")`)
+		p.P(`ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")`)
+		p.P(`)`)
+	})
+
+	for _, m := range p.externals {
+		ident, _ := p.MapWellKnown(m)
+		p.generateForExternal(m, ident)
+	}
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
@@ -147,7 +146,7 @@ func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message
 		p.P(`return err`)
 		p.P(`}`)
 	} else if wellknownIdent, wellknown := p.MapWellKnown(message); wellknown {
-		p.P(`if err := unmarshal_`, common.ConvertIdent(wellknownIdent), `(`, varName, `, `, buf, `); err != nil {`)
+		p.P(`if err := unmarshal_`, wellknownIdent.CodeName(), `(`, varName, `, `, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 		p.externals = append(p.externals, message)
@@ -921,10 +920,10 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	p.P(`}`)
 }
 
-func (p *unmarshal) generateForExternal(message *protogen.Message, ident string) {
+func (p *unmarshal) generateForExternal(message *protogen.Message, ident *generator.FullIdent) {
 	m := p
-	p.Helper(fmt.Sprintf("unmarshal_%s", ident), func(p *generator.GeneratedFile) {
-		p.P(`func unmarshal_`, common.ConvertIdent(ident), `(m *`, ident, `, dAtA []byte) error {`)
+	p.Helper(fmt.Sprintf("unmarshal_%v", ident), func(p *generator.GeneratedFile) {
+		p.P(`func unmarshal_`, ident.CodeName(), `(m *`, ident.StructName(p), `, dAtA []byte) error {`)
 		p.P(`l := len(dAtA)`)
 		p.P(`iNdEx := 0`)
 		p.P(`var unknownFields []byte`)

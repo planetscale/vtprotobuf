@@ -2893,7 +2893,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
+			size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
 			if err != nil {
 				return 0, err
 			}
@@ -2907,7 +2907,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshal_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
+			size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
 			if err != nil {
 				return 0, err
 			}
@@ -3023,7 +3023,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalTimestamp != nil {
-		size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
+		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
 		if err != nil {
 			return 0, err
 		}
@@ -3035,7 +3035,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalDuration != nil {
-		size, err := marshal_durationpb_Duration(dAtA[:i], m.OptionalDuration)
+		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.OptionalDuration)
 		if err != nil {
 			return 0, err
 		}
@@ -5015,7 +5015,7 @@ func (m *EnumOnlyProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func marshal_timestamppb_Timestamp(dAtA []byte, m *timestamppb.Timestamp) (int, error) {
+func marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA []byte, m *timestamppb.Timestamp) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -5036,7 +5036,7 @@ func marshal_timestamppb_Timestamp(dAtA []byte, m *timestamppb.Timestamp) (int, 
 	return len(dAtA) - i, nil
 }
 
-func marshal_durationpb_Duration(dAtA []byte, m *durationpb.Duration) (int, error) {
+func marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA []byte, m *durationpb.Duration) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
@@ -5393,7 +5393,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
+			size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.RepeatedTimestamp[iNdEx])
 			if err != nil {
 				return 0, err
 			}
@@ -5407,7 +5407,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := marshal_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
+			size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.RepeatedDuration[iNdEx])
 			if err != nil {
 				return 0, err
 			}
@@ -5523,7 +5523,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		dAtA[i] = 0xfa
 	}
 	if m.OptionalTimestamp != nil {
-		size, err := marshal_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
+		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.OptionalTimestamp)
 		if err != nil {
 			return 0, err
 		}
@@ -5535,7 +5535,7 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		dAtA[i] = 0xf2
 	}
 	if m.OptionalDuration != nil {
-		size, err := marshal_durationpb_Duration(dAtA[:i], m.OptionalDuration)
+		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.OptionalDuration)
 		if err != nil {
 			return 0, err
 		}
@@ -8288,11 +8288,11 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 		}
 	}
 	if m.OptionalDuration != nil {
-		l = size_durationpb_Duration(m.OptionalDuration)
+		l = size_google_golang_org_protobuf_types_known_durationpb_Duration(m.OptionalDuration)
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalTimestamp != nil {
-		l = size_timestamppb_Timestamp(m.OptionalTimestamp)
+		l = size_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.OptionalTimestamp)
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalFieldMask != nil {
@@ -8340,13 +8340,13 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	}
 	if len(m.RepeatedDuration) > 0 {
 		for _, e := range m.RepeatedDuration {
-			l = size_durationpb_Duration(e)
+			l = size_google_golang_org_protobuf_types_known_durationpb_Duration(e)
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedTimestamp) > 0 {
 		for _, e := range m.RepeatedTimestamp {
-			l = size_timestamppb_Timestamp(e)
+			l = size_google_golang_org_protobuf_types_known_timestamppb_Timestamp(e)
 			n += 2 + l + sov(uint64(l))
 		}
 	}
@@ -8596,7 +8596,7 @@ func (m *EnumOnlyProto3) SizeVT() (n int) {
 	return n
 }
 
-func size_durationpb_Duration(m *durationpb.Duration) (n int) {
+func size_google_golang_org_protobuf_types_known_durationpb_Duration(m *durationpb.Duration) (n int) {
 	if m == nil {
 		return 0
 	}
@@ -8611,7 +8611,7 @@ func size_durationpb_Duration(m *durationpb.Duration) (n int) {
 	return n
 }
 
-func size_timestamppb_Timestamp(m *timestamppb.Timestamp) (n int) {
+func size_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m *timestamppb.Timestamp) (n int) {
 	if m == nil {
 		return 0
 	}
@@ -15257,7 +15257,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalDuration == nil {
 				m.OptionalDuration = &durationpb.Duration{}
 			}
-			if err := unmarshal_durationpb_Duration(m.OptionalDuration, dAtA[iNdEx:postIndex]); err != nil {
+			if err := unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(m.OptionalDuration, dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15293,7 +15293,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalTimestamp == nil {
 				m.OptionalTimestamp = &timestamppb.Timestamp{}
 			}
-			if err := unmarshal_timestamppb_Timestamp(m.OptionalTimestamp, dAtA[iNdEx:postIndex]); err != nil {
+			if err := unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.OptionalTimestamp, dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15522,7 +15522,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedDuration = append(m.RepeatedDuration, &durationpb.Duration{})
-			if err := unmarshal_durationpb_Duration(m.RepeatedDuration[len(m.RepeatedDuration)-1], dAtA[iNdEx:postIndex]); err != nil {
+			if err := unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(m.RepeatedDuration[len(m.RepeatedDuration)-1], dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15556,7 +15556,7 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedTimestamp = append(m.RepeatedTimestamp, &timestamppb.Timestamp{})
-			if err := unmarshal_timestamppb_Timestamp(m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1], dAtA[iNdEx:postIndex]); err != nil {
+			if err := unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.RepeatedTimestamp[len(m.RepeatedTimestamp)-1], dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -16306,7 +16306,7 @@ func (m *EnumOnlyProto3) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
-func unmarshal_durationpb_Duration(m *durationpb.Duration, dAtA []byte) error {
+func unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(m *durationpb.Duration, dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	var unknownFields []byte
@@ -16399,7 +16399,7 @@ func unmarshal_durationpb_Duration(m *durationpb.Duration, dAtA []byte) error {
 	m.ProtoReflect().SetUnknown(unknownFields)
 	return nil
 }
-func unmarshal_timestamppb_Timestamp(m *timestamppb.Timestamp, dAtA []byte) error {
+func unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m *timestamppb.Timestamp, dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	var unknownFields []byte

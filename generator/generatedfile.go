@@ -18,16 +18,21 @@ type GeneratedFile struct {
 	*protogen.GeneratedFile
 	Ext           *Extensions
 	LocalPackages map[string]bool
+	goImportPath  protogen.GoImportPath
 
-	helpers map[string]bool
+	helpers map[helperKey]bool
 }
 
 func (p *GeneratedFile) Helper(name string, generate func(p *GeneratedFile)) {
-	if p.helpers[name] {
+	key := helperKey{
+		Name:    name,
+		Package: p.goImportPath,
+	}
+	if p.helpers[key] {
 		return
 	}
 	generate(p)
-	p.helpers[name] = true
+	p.helpers[key] = true
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {
@@ -109,14 +114,20 @@ func (p *GeneratedFile) IsWellKnownMessage(message *protogen.Message) bool {
 	return wellknown[p.MessageID(message)]
 }
 
-func (p *GeneratedFile) MapWellKnown(message *protogen.Message) (string, bool) {
+func (p *GeneratedFile) MapWellKnown(message *protogen.Message) (*FullIdent, bool) {
 	switch id := p.MessageID(message); id {
 	case "google.protobuf.Timestamp":
-		return p.Ident("google.golang.org/protobuf/types/known/timestamppb", "Timestamp"), true
+		return &FullIdent{
+			Path:  "google.golang.org/protobuf/types/known/timestamppb",
+			Ident: "Timestamp",
+		}, true
 	case "google.protobuf.Duration":
-		return p.Ident("google.golang.org/protobuf/types/known/durationpb", "Duration"), true
+		return &FullIdent{
+			Path:  "google.golang.org/protobuf/types/known/durationpb",
+			Ident: "Duration",
+		}, true
 	default:
-		return "", false
+		return nil, false
 	}
 }
 

@@ -5,6 +5,9 @@
 package generator
 
 import (
+	"fmt"
+	"strings"
+
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -44,4 +47,22 @@ var wireTypes = map[protoreflect.Kind]protowire.Type{
 
 func ProtoWireType(k protoreflect.Kind) protowire.Type {
 	return wireTypes[k]
+}
+
+type FullIdent struct {
+	Path  string
+	Ident string
+}
+
+func (i *FullIdent) String() string {
+	return fmt.Sprintf("%s.%s", i.Path, i.Ident)
+}
+
+func (i *FullIdent) CodeName() string {
+	replacer := strings.NewReplacer(".", "_", "/", "_")
+	return replacer.Replace(i.String())
+}
+
+func (i *FullIdent) StructName(p *GeneratedFile) string {
+	return p.Ident(i.Path, i.Ident)
 }
