@@ -22,6 +22,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// There was a bug resulting in helpers duplication
+// in the different files of the same package.
+// AnotherWellKnownFields prevents this bug in the future.
 type AnotherWellKnownFields struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
