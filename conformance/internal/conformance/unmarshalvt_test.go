@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -16,6 +17,7 @@ func TestUnmarshalVTBasic(t *testing.T) {
 	msg := &TestAllTypesProto3{
 		OptionalTimestamp: timestamppb.Now(),
 		OptionalDuration:  durationpb.New(time.Second),
+		OptionalValue:     structpb.NewStringValue("kek"),
 	}
 	serializedOrig, err := proto.Marshal(msg)
 	require.NoError(t, err)

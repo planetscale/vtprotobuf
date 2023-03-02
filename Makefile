@@ -53,7 +53,8 @@ gen-wellknown:
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. \
-		--go-vtproto_opt=features=marshal+size+unmarshal \
+		--go-vtproto_opt=features=marshal+size+unmarshal+unmarshal_alias \
+		--go-vtproto_opt=wellknown=google.protobuf.Timestamp+google.protobuf.Duration \
 		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		-I. \
 		testproto/wellknown/wellknown.proto \

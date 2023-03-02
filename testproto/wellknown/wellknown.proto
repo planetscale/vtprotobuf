@@ -3,13 +3,18 @@ option go_package = "testproto/wellknown";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
 
 message WellKnownFields {
     google.protobuf.Timestamp timestamp = 1;
     google.protobuf.Duration duration = 2;
+    google.protobuf.Empty empty = 3;
+    google.protobuf.Struct struct = 4;
+    google.protobuf.Value value = 7;
 
     oneof oneof_field {
-        google.protobuf.Timestamp oneof_timestamp = 3;
-        google.protobuf.Duration oneof_duration = 4;
+        google.protobuf.Timestamp oneof_timestamp = 5;
+        google.protobuf.Duration oneof_duration = 6;
     }
 }

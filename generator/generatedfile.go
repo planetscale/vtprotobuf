@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/planetscale/vtprotobuf/vtproto"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -20,7 +19,8 @@ type GeneratedFile struct {
 	LocalPackages map[string]bool
 	goImportPath  protogen.GoImportPath
 
-	helpers map[helperKey]bool
+	helpers   map[helperKey]bool
+	wellknown map[string]bool
 }
 
 func (p *GeneratedFile) Helper(name string, generate func(p *GeneratedFile)) {
@@ -115,20 +115,13 @@ func (p *GeneratedFile) IsWellKnownMessage(message *protogen.Message) bool {
 }
 
 func (p *GeneratedFile) MapWellKnown(message *protogen.Message) (*FullIdent, bool) {
-	switch id := p.MessageID(message); id {
-	case "google.protobuf.Timestamp":
+	if id := p.MessageID(message); p.wellknown[id] {
 		return &FullIdent{
-			Path:  "google.golang.org/protobuf/types/known/timestamppb",
-			Ident: "Timestamp",
+			Path:  string(message.GoIdent.GoImportPath),
+			Ident: message.GoIdent.GoName,
 		}, true
-	case "google.protobuf.Duration":
-		return &FullIdent{
-			Path:  "google.golang.org/protobuf/types/known/durationpb",
-			Ident: "Duration",
-		}, true
-	default:
-		return nil, false
 	}
+	return nil, false
 }
 
 func (p *GeneratedFile) MessageID(message *protogen.Message) string {

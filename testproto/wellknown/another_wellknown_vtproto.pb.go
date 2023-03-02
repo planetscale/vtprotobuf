@@ -233,22 +233,46 @@ func (m *AnotherWellKnownFields) MarshalToSizedBufferVT(dAtA []byte) (int, error
 		i -= size
 	}
 	if m.Duration != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.Duration)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.Duration).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Duration)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 	}
 	if m.Timestamp != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.Timestamp)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.Timestamp).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Timestamp)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -263,12 +287,24 @@ func (m *AnotherWellKnownFields_OneofTimestamp) MarshalToVT(dAtA []byte) (int, e
 func (m *AnotherWellKnownFields_OneofTimestamp) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.OneofTimestamp != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.OneofTimestamp)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.OneofTimestamp).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.OneofTimestamp)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -282,12 +318,24 @@ func (m *AnotherWellKnownFields_OneofDuration) MarshalToVT(dAtA []byte) (int, er
 func (m *AnotherWellKnownFields_OneofDuration) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.OneofDuration != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.OneofDuration)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.OneofDuration).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.OneofDuration)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -338,22 +386,46 @@ func (m *AnotherWellKnownFields) MarshalToSizedBufferVTStrict(dAtA []byte) (int,
 		i -= size
 	}
 	if m.Duration != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.Duration)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.Duration).(interface {
+			MarshalToSizedBufferVTStrict([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Duration)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 	}
 	if m.Timestamp != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.Timestamp)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.Timestamp).(interface {
+			MarshalToSizedBufferVTStrict([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.Timestamp)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -368,12 +440,24 @@ func (m *AnotherWellKnownFields_OneofTimestamp) MarshalToVTStrict(dAtA []byte) (
 func (m *AnotherWellKnownFields_OneofTimestamp) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.OneofTimestamp != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(dAtA[:i], m.OneofTimestamp)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.OneofTimestamp).(interface {
+			MarshalToSizedBufferVTStrict([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.OneofTimestamp)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -387,12 +471,24 @@ func (m *AnotherWellKnownFields_OneofDuration) MarshalToVTStrict(dAtA []byte) (i
 func (m *AnotherWellKnownFields_OneofDuration) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.OneofDuration != nil {
-		size, err := marshal_google_golang_org_protobuf_types_known_durationpb_Duration(dAtA[:i], m.OneofDuration)
-		if err != nil {
-			return 0, err
+		if vtmsg, ok := interface{}(m.OneofDuration).(interface {
+			MarshalToSizedBufferVTStrict([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.OneofDuration)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = encodeVarint(dAtA, i, uint64(len(encoded)))
 		}
-		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -405,11 +501,23 @@ func (m *AnotherWellKnownFields) SizeVT() (n int) {
 	var l int
 	_ = l
 	if m.Timestamp != nil {
-		l = size_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.Timestamp)
+		if size, ok := interface{}(m.Timestamp).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Timestamp)
+		}
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Duration != nil {
-		l = size_google_golang_org_protobuf_types_known_durationpb_Duration(m.Duration)
+		if size, ok := interface{}(m.Duration).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.Duration)
+		}
 		n += 1 + l + sov(uint64(l))
 	}
 	if vtmsg, ok := m.OneofField.(interface{ SizeVT() int }); ok {
@@ -426,7 +534,13 @@ func (m *AnotherWellKnownFields_OneofTimestamp) SizeVT() (n int) {
 	var l int
 	_ = l
 	if m.OneofTimestamp != nil {
-		l = size_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.OneofTimestamp)
+		if size, ok := interface{}(m.OneofTimestamp).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OneofTimestamp)
+		}
 		n += 1 + l + sov(uint64(l))
 	}
 	return n
@@ -438,7 +552,13 @@ func (m *AnotherWellKnownFields_OneofDuration) SizeVT() (n int) {
 	var l int
 	_ = l
 	if m.OneofDuration != nil {
-		l = size_google_golang_org_protobuf_types_known_durationpb_Duration(m.OneofDuration)
+		if size, ok := interface{}(m.OneofDuration).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.OneofDuration)
+		}
 		n += 1 + l + sov(uint64(l))
 	}
 	return n
@@ -504,8 +624,16 @@ func (m *AnotherWellKnownFields) UnmarshalVT(dAtA []byte) error {
 			if m.Timestamp == nil {
 				m.Timestamp = &timestamppb.Timestamp{}
 			}
-			if err := unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(m.Timestamp, dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.Timestamp).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Timestamp); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 2:
@@ -540,8 +668,16 @@ func (m *AnotherWellKnownFields) UnmarshalVT(dAtA []byte) error {
 			if m.Duration == nil {
 				m.Duration = &durationpb.Duration{}
 			}
-			if err := unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(m.Duration, dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.Duration).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Duration); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		case 3:
@@ -574,13 +710,29 @@ func (m *AnotherWellKnownFields) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.OneofField.(*AnotherWellKnownFields_OneofTimestamp); ok {
-				if err := unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(oneof.OneofTimestamp, dAtA[iNdEx:postIndex]); err != nil {
-					return err
+				if unmarshal, ok := interface{}(oneof.OneofTimestamp).(interface {
+					UnmarshalVT([]byte) error
+				}); ok {
+					if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+						return err
+					}
+				} else {
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], oneof.OneofTimestamp); err != nil {
+						return err
+					}
 				}
 			} else {
 				v := &timestamppb.Timestamp{}
-				if err := unmarshal_google_golang_org_protobuf_types_known_timestamppb_Timestamp(v, dAtA[iNdEx:postIndex]); err != nil {
-					return err
+				if unmarshal, ok := interface{}(v).(interface {
+					UnmarshalVT([]byte) error
+				}); ok {
+					if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+						return err
+					}
+				} else {
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+						return err
+					}
 				}
 				m.OneofField = &AnotherWellKnownFields_OneofTimestamp{OneofTimestamp: v}
 			}
@@ -615,13 +767,29 @@ func (m *AnotherWellKnownFields) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.OneofField.(*AnotherWellKnownFields_OneofDuration); ok {
-				if err := unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(oneof.OneofDuration, dAtA[iNdEx:postIndex]); err != nil {
-					return err
+				if unmarshal, ok := interface{}(oneof.OneofDuration).(interface {
+					UnmarshalVT([]byte) error
+				}); ok {
+					if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+						return err
+					}
+				} else {
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], oneof.OneofDuration); err != nil {
+						return err
+					}
 				}
 			} else {
 				v := &durationpb.Duration{}
-				if err := unmarshal_google_golang_org_protobuf_types_known_durationpb_Duration(v, dAtA[iNdEx:postIndex]); err != nil {
-					return err
+				if unmarshal, ok := interface{}(v).(interface {
+					UnmarshalVT([]byte) error
+				}); ok {
+					if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+						return err
+					}
+				} else {
+					if err := proto.Unmarshal(dAtA[iNdEx:postIndex], v); err != nil {
+						return err
+					}
 				}
 				m.OneofField = &AnotherWellKnownFields_OneofDuration{OneofDuration: v}
 			}
