@@ -1,0 +1,35 @@
+syntax = "proto3";
+option go_package = "testproto/pool";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+
+message OneofTest {
+  option (vtproto.mempool) = true;
+
+  message Test1 {
+    option (vtproto.mempool) = true;
+    int64 a = 1;
+  }
+
+  message Test2 {
+    option (vtproto.mempool) = true;
+    repeated string b = 1;
+  }
+
+  message Test3 {
+    option (vtproto.mempool) = true;
+
+    message Element2 {
+      option (vtproto.mempool) = true;
+      int64 d = 1;
+    }
+    Element2 c = 1;
+  }
+
+  oneof test {
+    Test1 test1 = 1;
+    Test2 test2 = 2;
+    Test3 test3 = 3;
+  }
+}

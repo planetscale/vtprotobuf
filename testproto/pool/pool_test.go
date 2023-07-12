@@ -87,3 +87,80 @@ func Test_Pool_slice_recreation(t *testing.T) {
 	assert.Zero(t, req.Sl[0].F)
 
 }
+
+func Test_Pool_Oneof(t *testing.T) {
+	t1_t_t1 := &OneofTest_Test1{
+		A: 42,
+	}
+	t1_t := &OneofTest_Test1_{
+		Test1: t1_t_t1,
+	}
+	t1 := &OneofTest{
+		Test: t1_t,
+	}
+
+	t2_t_t2 := &OneofTest_Test2{
+		B: []string{"str1", "str2", "str3"},
+	}
+	t2_t := &OneofTest_Test2_{
+		Test2: t2_t_t2,
+	}
+	t2 := &OneofTest{
+		Test: t2_t,
+	}
+
+	t3_t_t3_c := &OneofTest_Test3_Element2{
+		D: 51,
+	}
+	t3_t_t3 := &OneofTest_Test3{
+		C: t3_t_t3_c,
+	}
+	t3_t := &OneofTest_Test3_{
+		Test3: t3_t_t3,
+	}
+	t3 := &OneofTest{
+		Test: t3_t,
+	}
+
+	t4 := &OneofTest{Test: nil}
+
+	t1Bytes, err := t1.MarshalVT()
+	require.NoError(t, err)
+	t2Bytes, err := t2.MarshalVT()
+	require.NoError(t, err)
+	t3Bytes, err := t3.MarshalVT()
+	require.NoError(t, err)
+	t4Bytes, err := t4.MarshalVT()
+	require.NoError(t, err)
+
+	t1.ReturnToVTPool()
+
+	t5 := OneofTestFromVTPool()
+	require.NoError(t, t5.UnmarshalVT(t1Bytes))
+	require.Equal(t, &t1, &t5)
+	require.Equal(t, t1_t, t5.Test.(*OneofTest_Test1_))
+	require.Equal(t, t1_t_t1, t5.Test.(*OneofTest_Test1_).Test1)
+	require.Equal(t, &t1_t_t1, &t5.Test.(*OneofTest_Test1_).Test1)
+
+	t2.ReturnToVTPool()
+	t6 := OneofTestFromVTPool()
+	require.NoError(t, t6.UnmarshalVT(t2Bytes))
+	require.Equal(t, &t2, &t6)
+	require.Equal(t, t2_t, t6.Test.(*OneofTest_Test2_))
+	require.Equal(t, t2_t_t2, t6.Test.(*OneofTest_Test2_).Test2)
+	require.Equal(t, &t2_t_t2, &t6.Test.(*OneofTest_Test2_).Test2)
+
+	t3.ReturnToVTPool()
+	t7 := OneofTestFromVTPool()
+	require.NoError(t, t7.UnmarshalVT(t3Bytes))
+	require.Equal(t, &t3, &t7)
+	require.Equal(t, t3_t, t7.Test.(*OneofTest_Test3_))
+	require.Equal(t, t3_t_t3, t7.Test.(*OneofTest_Test3_).Test3)
+	require.Equal(t, &t3_t_t3, &t7.Test.(*OneofTest_Test3_).Test3)
+	require.Equal(t, &t3_t_t3_c, &t7.Test.(*OneofTest_Test3_).Test3.C)
+
+	t4.ReturnToVTPool()
+	t8 := OneofTestFromVTPool()
+	require.NoError(t, t8.UnmarshalVT(t4Bytes))
+	require.Equal(t, &t4, &t8)
+}
