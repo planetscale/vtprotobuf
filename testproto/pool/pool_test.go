@@ -85,5 +85,4 @@ func Test_Pool_slice_recreation(t *testing.T) {
 	assert.Nil(t, req.Sl[0].C)
 	assert.Zero(t, req.Sl[0].E)
 	assert.Zero(t, req.Sl[0].F)
-
 }

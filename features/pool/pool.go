@@ -56,15 +56,16 @@ func (p *pool) message(message *protogen.Message) {
 		if field.Desc.IsList() {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
+				p.P(`for _, mm := range m.`, fieldName, `{`)
 				if p.ShouldPool(field.Message) {
-					p.P(`for _, mm := range m.`, fieldName, `{`)
 					p.P(`mm.ResetVT()`)
-					p.P(`}`)
+				} else {
+					p.P(`mm.Reset()`)
 				}
-			default:
-				p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
-				saved = append(saved, field)
+				p.P(`}`)
 			}
+			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
+			saved = append(saved, field)
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
