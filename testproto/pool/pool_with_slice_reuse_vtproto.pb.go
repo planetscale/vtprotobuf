@@ -689,7 +689,12 @@ var vtprotoPool_Test2 = sync.Pool{
 }
 
 func (m *Test2) ResetVT() {
+	for _, mm := range m.Sl {
+		mm.Reset()
+	}
+	f0 := m.Sl[:0]
 	m.Reset()
+	m.Sl = f0
 }
 func (m *Test2) ReturnToVTPool() {
 	if m != nil {
