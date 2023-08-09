@@ -61,7 +61,7 @@ go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@latest
 
 2. Ensure your project is already using the ProtoBuf v2 API (i.e. `google.golang.org/protobuf`). The `vtprotobuf` compiler is not compatible with APIv1 generated code.
 
-2. Update your `protoc` generator to use the new plug-in. Example from Vitess:
+3. Update your `protoc` generator to use the new plug-in. Example from Vitess:
 
 ```
 for name in $(PROTO_SRC_NAMES); do \
@@ -77,6 +77,15 @@ done
 Note that the `vtproto` compiler runs like an auxiliary plug-in to the `protoc-gen-go` in APIv2, just like the new GRPC compiler plug-in, `protoc-gen-go-grpc`. You need to run it alongside the upstream generator, not as a replacement.
 
 4. (Optional) Pass the features that you want to generate as `--go-vtproto_opt`. If no features are given, all the codegen steps will be performed.
+
+- For the `pool` option it also mandatory to pass `--go-vtproto_opt=pool=<import>.<message>` for each message that you want to generate pool code for. Example from Vitess:
+```
+    $(VTROOT)/bin/protoc \
+    ...
+                --go-vtproto_opt=features=marshal+unmarshal+size+pool \
+		--go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
+		--go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
+```
 
 5. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
 
