@@ -78,7 +78,25 @@ Note that the `vtproto` compiler runs like an auxiliary plug-in to the `protoc-g
 
 4. (Optional) Pass the features that you want to generate as `--go-vtproto_opt`. If no features are given, all the codegen steps will be performed.
 
-- For the `pool` option it also mandatory to pass `--go-vtproto_opt=pool=<import>.<message>` for each message that you want to generate pool code for. Example from Vitess:
+- For the `pool` option on proto3 it is mandatory to set the `option (vtproto.mempool)` option on the proto message. This allows you to skip the alternative option below `--go-vtproto_opt=pool...`:
+	```go
+	syntax = "proto3";
+
+	package app;
+	option go_package = "app";
+
+	import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+	message SampleMessage {
+	  	option (vtproto.mempool) = true; // Enable memory pooling
+
+		string name = 1;
+		optional string project_id = 2;
+		// ...
+	}
+	```
+
+- Alternatively the `pool` option it also mandatory to pass `--go-vtproto_opt=pool=<import>.<message>` for each message that you want to generate pool code for. Example from Vitess:
 ```
     $(VTROOT)/bin/protoc \
     ...
