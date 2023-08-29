@@ -55,41 +55,61 @@ The following features can be generated:
 
 1. Install `protoc-gen-go-vtproto`:
 
-```
-go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@latest
-```
+    ```
+    go install github.com/planetscale/vtprotobuf/cmd/protoc-gen-go-vtproto@latest
+    ```
 
 2. Ensure your project is already using the ProtoBuf v2 API (i.e. `google.golang.org/protobuf`). The `vtprotobuf` compiler is not compatible with APIv1 generated code.
 
 3. Update your `protoc` generator to use the new plug-in. Example from Vitess:
 
-```
-for name in $(PROTO_SRC_NAMES); do \
-    $(VTROOT)/bin/protoc \
-    --go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
-    --go-grpc_out=. --plugin protoc-gen-go-grpc="${GOBIN}/protoc-gen-go-grpc" \
-    --go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
-    --go-vtproto_opt=features=marshal+unmarshal+size \
-    proto/$${name}.proto; \
-done
-```
+    ```
+    for name in $(PROTO_SRC_NAMES); do \
+        $(VTROOT)/bin/protoc \
+        --go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+        --go-grpc_out=. --plugin protoc-gen-go-grpc="${GOBIN}/protoc-gen-go-grpc" \
+        --go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+        --go-vtproto_opt=features=marshal+unmarshal+size \
+        proto/$${name}.proto; \
+    done
+    ```
 
-Note that the `vtproto` compiler runs like an auxiliary plug-in to the `protoc-gen-go` in APIv2, just like the new GRPC compiler plug-in, `protoc-gen-go-grpc`. You need to run it alongside the upstream generator, not as a replacement.
+    Note that the `vtproto` compiler runs like an auxiliary plug-in to the `protoc-gen-go` in APIv2, just like the new GRPC compiler plug-in, `protoc-gen-go-grpc`. You need to run it alongside the upstream generator, not as a replacement.
 
 4. (Optional) Pass the features that you want to generate as `--go-vtproto_opt`. If no features are given, all the codegen steps will be performed.
 
-- For the `pool` option it also mandatory to pass `--go-vtproto_opt=pool=<import>.<message>` for each message that you want to generate pool code for. Example from Vitess:
-```
-    $(VTROOT)/bin/protoc \
-    ...
-                --go-vtproto_opt=features=marshal+unmarshal+size+pool \
-		--go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
-		--go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
-```
+5. (Optional) If you have enabled the `pool` option, you need to manually specify which ProtoBuf objects will be pooled.
 
-5. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+    - You can tag messages explicitly in the `.proto` files with `option (vtproto.mempool)`:
 
-6. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
+    ```proto
+    syntax = "proto3";
+
+    package app;
+    option go_package = "app";
+
+    import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+    message SampleMessage {
+        option (vtproto.mempool) = true; // Enable memory pooling
+        string name = 1;
+        optional string project_id = 2;
+        // ...
+    }
+    ```
+
+    - Alternatively, you can enumerate the pooled objects with `--go-vtproto_opt=pool=<import>.<message>` flags passed via the CLI:
+
+    ```
+        $(VTROOT)/bin/protoc ... \
+            --go-vtproto_opt=features=marshal+unmarshal+size+pool \
+            --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
+            --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
+    ```
+
+6. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+
+7. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
 ## Using the optimized code with RPC frameworks
 
@@ -175,4 +195,24 @@ func main() {
 ```
 
 
+## Integrating with [`buf`](http://github.com/bufbuild/buf)
 
+`vtprotobuf` generation can be easily automated if your project's Protocol Buffers are managed with `buf`.
+
+Simply install `protoc-gen-go-vtproto` (see _Usage_ section) and add it as a plug-in to your `buf.gen.yaml` configuration:
+
+```yaml
+version: v1
+managed:
+  enabled: true
+  # ...
+plugins:
+  - plugin: buf.build/protocolbuffers/go
+    out: ./
+    opt: paths=source_relative
+  - plugin: go-vtproto
+    out: ./
+    opt: paths=source_relative
+```
+
+Running `buf generate` will now also include the `vtprotobuf` optimized helpers.
