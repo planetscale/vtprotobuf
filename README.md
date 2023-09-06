@@ -111,6 +111,30 @@ The following features can be generated:
 
 7. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
+### Well-known types
+
+Several changes are needed in order to use pre-generated optimized code for well-known types.
+
+1. `go get github.com/planetscale/vtprotobuf`
+1. Imports `google.golang.org/protobuf/types/known` should be replaced with `github.com/planetscale/vtprotobuf`.
+1. `protoc` should be invoked with the following options:
+
+```
+protoc \
+    --go_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
+    --go_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
+    --go_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
+    --go_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
+    --go_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
+    --go_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb" \
+    --go-vtproto_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
+    --go-vtproto_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
+    --go-vtproto_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
+    --go-vtproto_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
+    --go-vtproto_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
+    --go-vtproto_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb"
+```
+
 ## Using the optimized code with RPC frameworks
 
 The `protoc-gen-go-vtproto` compiler does not overwrite any of the default marshalling or unmarshalling code for your ProtoBuf objects. Instead, it generates helper methods that can be called explicitly to opt-in to faster (de)serialization.

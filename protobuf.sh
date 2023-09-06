@@ -6,7 +6,7 @@ PROTOBUF_VERSION=21.12
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 PROTOBUF_PATH="${ROOT}/_vendor/protobuf-${PROTOBUF_VERSION}"
 
-if [ -f "$PROTOBUF_PATH/protoc" ]; then
+if [ -f "$PROTOBUF_PATH/src/protoc" ]; then
     echo "protoc found in $PROTOBUF_PATH"
     exit 0
 fi
