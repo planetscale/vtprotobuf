@@ -18,11 +18,6 @@ import (
 )
 
 func main() {
-	// os.WriteFile("/tmp/go_dbg_pid", []byte(strconv.Itoa(os.Getpid())), 0666)
-	// sig := make(chan os.Signal, 1)
-	// signal.Notify(sig, syscall.SIGCONT)
-	// <-sig
-
 	var features string
 	ext := &generator.Extensions{
 		Poolable: make(generator.ObjectSet),
@@ -30,7 +25,7 @@ func main() {
 
 	var f flag.FlagSet
 	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
-	f.BoolVar(&ext.Foreign, "freestanding", false, "")
+	f.BoolVar(&ext.Foreign, "foreign", false, "")
 	f.BoolVar(&ext.AllowEmpty, "allow-empty", false, "allow generation of empty files")
 	f.Var(ext.Poolable, "pool", "use memory pooling for this object")
 

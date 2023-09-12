@@ -52,7 +52,7 @@ gen-wkt:
 		-I$(PROTOBUF_ROOT)/src \
 		--plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		--go-vtproto_out=. \
-		--go-vtproto_opt=module=google.golang.org/protobuf,freestanding=true,features=marshal+size\
+		--go-vtproto_opt=module=google.golang.org/protobuf,foreign=true,features=marshal+size\
 		$(PROTOBUF_ROOT)/src/google/protobuf/any.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/duration.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
