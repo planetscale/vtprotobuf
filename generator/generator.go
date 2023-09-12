@@ -5,7 +5,9 @@
 package generator
 
 import (
+	"fmt"
 	"runtime/debug"
+	"strings"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/runtime/protoimpl"
@@ -16,8 +18,30 @@ type featureHelpers struct {
 	feature int
 }
 
+type ObjectSet map[protogen.GoIdent]bool
+
+func (o ObjectSet) String() string {
+	return fmt.Sprintf("%#v", o)
+}
+
+func (o ObjectSet) Set(s string) error {
+	idx := strings.LastIndexByte(s, '.')
+	if idx < 0 {
+		return fmt.Errorf("invalid object name: %q", s)
+	}
+
+	ident := protogen.GoIdent{
+		GoImportPath: protogen.GoImportPath(s[0:idx]),
+		GoName:       s[idx+1:],
+	}
+	o[ident] = true
+	return nil
+}
+
 type Extensions struct {
-	Poolable map[protogen.GoIdent]bool
+	Poolable   ObjectSet
+	AllowEmpty bool
+	Foreign    bool
 }
 
 type Generator struct {

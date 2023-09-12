@@ -20,10 +20,10 @@ import (
 
 func init() {
 	generator.RegisterFeature("marshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
-		return &marshal{GeneratedFile: gen, Stable: false, strict: false}
+		return &marshal{GeneratedFile: gen, Stable: false, Strict: false}
 	})
 	generator.RegisterFeature("marshal_strict", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
-		return &marshal{GeneratedFile: gen, Stable: false, strict: true}
+		return &marshal{GeneratedFile: gen, Stable: false, Strict: true}
 	})
 }
 
@@ -40,7 +40,9 @@ func (cnt *counter) Current() string {
 
 type marshal struct {
 	*generator.GeneratedFile
-	Stable, once, strict bool
+	Stable bool
+	Strict bool
+	once   bool
 }
 
 var _ generator.FeatureGenerator = (*marshal)(nil)
@@ -543,7 +545,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 func (p *marshal) methodMarshalToSizedBuffer() string {
 	switch {
-	case p.strict:
+	case p.Strict:
 		return "MarshalToSizedBufferVTStrict"
 	default:
 		return "MarshalToSizedBufferVT"
@@ -552,7 +554,7 @@ func (p *marshal) methodMarshalToSizedBuffer() string {
 
 func (p *marshal) methodMarshalTo() string {
 	switch {
-	case p.strict:
+	case p.Strict:
 		return "MarshalToVTStrict"
 	default:
 		return "MarshalToVT"
@@ -561,12 +563,19 @@ func (p *marshal) methodMarshalTo() string {
 
 func (p *marshal) methodMarshal() string {
 	switch {
-	case p.strict:
+	case p.Strict:
 		return "MarshalVTStrict"
 	default:
 		return "MarshalVT"
 	}
 }
+
+const (
+	ApiMarshal              generator.API = "MarshalVT"
+	ApiMarshalTo            generator.API = "MarshalToVT"
+	ApiMarshalToSizedBuffer generator.API = "MarshalToSizedBufferVT"
+	ApiSize                 generator.API = "SizeVT"
+)
 
 func (p *marshal) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
@@ -582,25 +591,69 @@ func (p *marshal) message(message *protogen.Message) {
 	var numGen counter
 	ccTypeName := message.GoIdent
 
-	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshal(), `() (dAtA []byte, err error) {`)
+	apiMarshal := ApiMarshal
+	apiMarshalTo := ApiMarshalTo
+	apiMarshalToSizedBuffer := ApiMarshalToSizedBuffer
+
+	if p.Strict {
+		apiMarshal += "Strict"
+		apiMarshalTo += "Strict"
+		apiMarshalToSizedBuffer += "Strict"
+	}
+
+	p.P(generator.Signature{
+		ReceiverType: ccTypeName,
+		Name:         apiMarshal,
+		Return:       []string{`dAtA []byte`, `err error`},
+	})
 	p.P(`if m == nil {`)
 	p.P(`return nil, nil`)
 	p.P(`}`)
-	p.P(`size := m.SizeVT()`)
+	p.P(`size := `, generator.Call{
+		ReceiverName: "m",
+		ReceiverType: ccTypeName,
+		Name:         ApiSize,
+	})
 	p.P(`dAtA = make([]byte, size)`)
-	p.P(`n, err := m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
+	p.P(`n, err := `, generator.Call{
+		ReceiverName: "m",
+		ReceiverType: ccTypeName,
+		Name:         apiMarshalToSizedBuffer,
+		Arguments:    []string{`dAtA[:size]`},
+	})
 	p.P(`if err != nil {`)
 	p.P(`return nil, err`)
 	p.P(`}`)
 	p.P(`return dAtA[:n], nil`)
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalTo(), `(dAtA []byte) (int, error) {`)
-	p.P(`size := m.SizeVT()`)
-	p.P(`return m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
+
+	p.P(generator.Signature{
+		ReceiverType: ccTypeName,
+		Name:         apiMarshalTo,
+		Arguments:    []string{`dAtA []byte`},
+		Return:       []string{`int`, `error`},
+	})
+	p.P(`size := `, generator.Call{
+		ReceiverName: "m",
+		ReceiverType: ccTypeName,
+		Name:         ApiSize,
+	})
+	p.P(`return `, generator.Call{
+		ReceiverName: "m",
+		ReceiverType: ccTypeName,
+		Name:         apiMarshalToSizedBuffer,
+		Arguments:    []string{`dAtA[:size]`},
+	})
 	p.P(`}`)
 	p.P(``)
-	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalToSizedBuffer(), `(dAtA []byte) (int, error) {`)
+
+	p.P(generator.Signature{
+		ReceiverType: ccTypeName,
+		Name:         apiMarshalToSizedBuffer,
+		Arguments:    []string{`dAtA []byte`},
+		Return:       []string{`int`, `error`},
+	})
 	p.P(`if m == nil {`)
 	p.P(`return 0, nil`)
 	p.P(`}`)
@@ -608,33 +661,43 @@ func (p *marshal) message(message *protogen.Message) {
 	p.P(`_ = i`)
 	p.P(`var l int`)
 	p.P(`_ = l`)
-	p.P(`if m.unknownFields != nil {`)
-	p.P(`i -= len(m.unknownFields)`)
-	p.P(`copy(dAtA[i:], m.unknownFields)`)
-	p.P(`}`)
+
+	if !p.Ext.Foreign {
+		p.P(`if m.unknownFields != nil {`)
+		p.P(`i -= len(m.unknownFields)`)
+		p.P(`copy(dAtA[i:], m.unknownFields)`)
+		p.P(`}`)
+	}
 
 	sort.Slice(message.Fields, func(i, j int) bool {
 		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
 	})
 
-	marshalForwardOneOf := func(varname string) {
-		p.P(`size, err := `, varname, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+	marshalForwardOneOf := func(varname string, ident protogen.GoIdent) {
+		p.P(`size, err :=`, generator.Call{
+			ReceiverName: varname,
+			ReceiverType: ident,
+			Name:         apiMarshalToSizedBuffer,
+			Arguments:    []string{`dAtA[:i]`},
+		})
 		p.P(`if err != nil {`)
 		p.P(`return 0, err`)
 		p.P(`}`)
 		p.P(`i -= size`)
 	}
 
-	if p.strict {
+	if p.Strict {
 		for i := len(message.Fields) - 1; i >= 0; i-- {
 			field := message.Fields[i]
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if !oneof {
 				p.field(false, &numGen, field)
-			} else {
+			} else if !p.Ext.Foreign {
 				p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
-				marshalForwardOneOf("msg")
+				marshalForwardOneOf("msg", field.GoIdent)
 				p.P(`}`)
+			} else {
+				panic("TODO: oneof for foreign types")
 			}
 		}
 	} else {
@@ -646,13 +709,16 @@ func (p *marshal) message(message *protogen.Message) {
 			field := message.Fields[i]
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if oneof {
+				if p.Ext.Foreign {
+					panic("TODO: oneof for foreign types")
+				}
 				fieldname := field.Oneof.GoName
 				if _, ok := oneofs[fieldname]; !ok {
 					oneofs[fieldname] = struct{}{}
 					p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
 					p.P(p.methodMarshalToSizedBuffer(), ` ([]byte) (int, error)`)
 					p.P(`}); ok {`)
-					marshalForwardOneOf("vtmsg")
+					marshalForwardOneOf("vtmsg", field.GoIdent)
 					p.P(`}`)
 				}
 			}

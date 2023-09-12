@@ -6,6 +6,7 @@ package generator
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/planetscale/vtprotobuf/vtproto"
 
@@ -102,4 +103,61 @@ func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, point
 func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
 	pkg := string(message.Desc.ParentFile().Package())
 	return p.LocalPackages[pkg]
+}
+
+type API string
+
+type Signature struct {
+	ReceiverType protogen.GoIdent
+	Name         API
+	Arguments    []string
+	Return       []string
+}
+
+type Call struct {
+	ReceiverName string
+	ReceiverType protogen.GoIdent
+	Name         API
+	Arguments    []string
+}
+
+func (g *GeneratedFile) P(v ...any) {
+	var v1 []any
+	for _, x := range v {
+		switch x := x.(type) {
+		case Signature:
+			fname := string(x.Name)
+			if g.Ext.Foreign {
+				v1 = append(v1,
+					`func `, x.ReceiverType.GoName, `_`, fname,
+					`(m *`, x.ReceiverType, `, `, strings.Join(x.Arguments, `,`), `)`,
+					`(`, strings.Join(x.Return, `,`), `) {`,
+				)
+			} else {
+				v1 = append(v1,
+					`func (m *`, x.ReceiverType, `) `,
+					fname,
+					`(`, strings.Join(x.Arguments, `,`), `)`,
+					`(`, strings.Join(x.Return, `,`), `) {`,
+				)
+			}
+		case Call:
+			fname := string(x.Name)
+			if g.Ext.Foreign {
+				v1 = append(v1,
+					x.ReceiverType.GoName, `_`, fname,
+					`(`, x.ReceiverName, `,`, strings.Join(x.Arguments, `,`), `)`,
+				)
+			} else {
+				v1 = append(v1,
+					x.ReceiverName, `.`, fname,
+					`(`, strings.Join(x.Arguments, `,`), `)`,
+				)
+			}
+
+		default:
+			v1 = append(v1, x)
+		}
+	}
+	g.GeneratedFile.P(v1...)
 }

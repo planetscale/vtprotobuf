@@ -55,11 +55,15 @@ func (p *size) GenerateHelpers() {
 	})
 }
 
-func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
+func (p *size) messageSize(varName string, sizeName generator.API, message *protogen.Message) {
 	local := p.IsLocalMessage(message)
 
 	if local {
-		p.P(`l = `, varName, `.`, sizeName, `()`)
+		p.P(`l =`, generator.Call{
+			ReceiverName: varName,
+			ReceiverType: message.GoIdent,
+			Name:         sizeName,
+		})
 	} else {
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
 		p.P(sizeName, `() int`)
@@ -71,7 +75,7 @@ func (p *size) messageSize(varName, sizeName string, message *protogen.Message) 
 	}
 }
 
-func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
+func (p *size) field(oneof bool, field *protogen.Field, sizeName generator.API) {
 	fieldname := field.GoName
 	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
@@ -275,6 +279,8 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	}
 }
 
+const APISize = generator.API("SizeVT")
+
 func (p *size) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
 		p.message(nested)
@@ -285,11 +291,14 @@ func (p *size) message(message *protogen.Message) {
 	}
 
 	p.once = true
-
-	sizeName := "SizeVT"
 	ccTypeName := message.GoIdent
+	sizeName := APISize
 
-	p.P(`func (m *`, ccTypeName, `) `, sizeName, `() (n int) {`)
+	p.P(generator.Signature{
+		ReceiverType: ccTypeName,
+		Name:         sizeName,
+		Return:       []string{"n int"},
+	})
 	p.P(`if m == nil {`)
 	p.P(`return 0`)
 	p.P(`}`)
@@ -310,7 +319,9 @@ func (p *size) message(message *protogen.Message) {
 			}
 		}
 	}
-	p.P(`n+=len(m.unknownFields)`)
+	if !p.Ext.Foreign {
+		p.P(`n+=len(m.unknownFields)`)
+	}
 	p.P(`return n`)
 	p.P(`}`)
 	p.P()

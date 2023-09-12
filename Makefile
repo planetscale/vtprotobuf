@@ -47,6 +47,19 @@ gen-testproto:
 		testproto/proto2/scalars.proto \
 		|| exit 1;
 
+gen-wkt:
+	$(PROTOBUF_ROOT)/src/protoc \
+		-I$(PROTOBUF_ROOT)/src \
+		--plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		--go-vtproto_out=. \
+		--go-vtproto_opt=module=google.golang.org/protobuf,freestanding=true,features=marshal+size\
+		$(PROTOBUF_ROOT)/src/google/protobuf/any.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/duration.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/field_mask.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
+
 genall: install gen-include gen-conformance gen-testproto
 
 test: install gen-conformance
