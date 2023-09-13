@@ -145,7 +145,7 @@ func (p *clone) cloneField(lhsBase, rhsBase string, allFieldsNullable bool, fiel
 func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent.GoName
 	p.P(`func (m *`, ccTypeName, `) `, cloneName, `() *`, ccTypeName, ` {`)
-	p.body(!proto3, ccTypeName, message.Fields, true)
+	p.body(!proto3, ccTypeName, message, true)
 	p.P(`}`)
 	p.P()
 	p.P(`func (m *`, ccTypeName, `) `, cloneMessageName, `() `, protoPkg.Ident("Message"), ` {`)
@@ -155,9 +155,9 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 }
 
 // body generates the code for the actual cloning logic of a structure containing the given fields.
-// In practice, those can be the fields of a message, or of a oneof struct.
+// In practice, those can be the fields of a message.
 // The object to be cloned is assumed to be called "m".
-func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protogen.Field, cloneUnknownFields bool) {
+func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protogen.Message, cloneUnknownFields bool) {
 	// The method body for a message or a oneof wrapper always starts with a nil check.
 	p.P(`if m == nil {`)
 	// We use an explicitly typed nil to avoid returning the nil interface in the oneof wrapper
@@ -165,9 +165,10 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protog
 	p.P(`return (*`, ccTypeName, `)(nil)`)
 	p.P(`}`)
 
+	fields := message.Fields
 	// Make a first pass over the fields, in which we initialize all non-reference fields via direct
 	// struct literal initialization, and extract all other (refernece) fields for a second pass.
-	p.P(`r := &`, ccTypeName, `{`)
+	p.Alloc("r", message)
 	var refFields []*protogen.Field
 	oneofFields := make(map[string]struct{}, len(fields))
 
@@ -183,18 +184,17 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protog
 		}
 
 		if !isReference(allFieldsNullable, field) {
-			p.P(field.GoName, `: m.`, field.GoName, `,`)
+			p.P(`r.`, field.GoName, ` = m.`, field.GoName)
 			continue
 		}
 		// Shortcut: for types where we know that an optimized clone method exists, we can call it directly as it is
 		// nil-safe.
 		if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil && p.IsLocalMessage(field.Message) {
-			p.P(field.GoName, `: m.`, field.GoName, `.`, cloneName, `(),`)
+			p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
 			continue
 		}
 		refFields = append(refFields, field)
 	}
-	p.P(`}`)
 
 	// Generate explicit assignment statements for all reference fields.
 	for _, field := range refFields {
@@ -212,6 +212,35 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, fields []*protog
 	p.P(`return r`)
 }
 
+func (p *clone) bodyForOneOf(ccTypeName string, field *protogen.Field) {
+	// The method body for a message or a oneof wrapper always starts with a nil check.
+	p.P(`if m == nil {`)
+	// We use an explicitly typed nil to avoid returning the nil interface in the oneof wrapper
+	// case.
+	p.P(`return (*`, ccTypeName, `)(nil)`)
+	p.P(`}`)
+
+	p.P("r", " := new(", ccTypeName, `)`)
+
+	if !isReference(false, field) {
+		p.P(`r.`, field.GoName, ` = m.`, field.GoName)
+		p.P(`return r`)
+		return
+	}
+	// Shortcut: for types where we know that an optimized clone method exists, we can call it directly as it is
+	// nil-safe.
+	if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil && p.IsLocalMessage(field.Message) {
+		p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
+		p.P(`return r`)
+		return
+	}
+
+	// Generate explicit assignment statements for reference field.
+	p.cloneField("r", "m", false, field)
+
+	p.P(`return r`)
+}
+
 // generateCloneMethodsForOneof generates the clone method for the oneof wrapper type of a
 // field in a oneof.
 func (p *clone) generateCloneMethodsForOneof(field *protogen.Field) {
@@ -223,7 +252,7 @@ func (p *clone) generateCloneMethodsForOneof(field *protogen.Field) {
 	fieldInOneof := *field
 	fieldInOneof.Oneof = nil
 	// If we have a scalar field in a oneof, that field is never nullable, even when using proto2
-	p.body(false, ccTypeName, []*protogen.Field{&fieldInOneof}, false)
+	p.bodyForOneOf(ccTypeName, &fieldInOneof)
 	p.P(`}`)
 	p.P()
 }
