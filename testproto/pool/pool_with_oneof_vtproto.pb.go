@@ -23,9 +23,8 @@ func (m *OneofTest_Test1) CloneVT() *OneofTest_Test1 {
 	if m == nil {
 		return (*OneofTest_Test1)(nil)
 	}
-	r := &OneofTest_Test1{
-		A: m.A,
-	}
+	r := OneofTest_Test1FromVTPool()
+	r.A = m.A
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -41,7 +40,7 @@ func (m *OneofTest_Test2) CloneVT() *OneofTest_Test2 {
 	if m == nil {
 		return (*OneofTest_Test2)(nil)
 	}
-	r := &OneofTest_Test2{}
+	r := OneofTest_Test2FromVTPool()
 	if rhs := m.B; rhs != nil {
 		tmpContainer := make([]string, len(rhs))
 		copy(tmpContainer, rhs)
@@ -62,9 +61,8 @@ func (m *OneofTest_Test3_Element2) CloneVT() *OneofTest_Test3_Element2 {
 	if m == nil {
 		return (*OneofTest_Test3_Element2)(nil)
 	}
-	r := &OneofTest_Test3_Element2{
-		D: m.D,
-	}
+	r := OneofTest_Test3_Element2FromVTPool()
+	r.D = m.D
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -80,9 +78,8 @@ func (m *OneofTest_Test3) CloneVT() *OneofTest_Test3 {
 	if m == nil {
 		return (*OneofTest_Test3)(nil)
 	}
-	r := &OneofTest_Test3{
-		C: m.C.CloneVT(),
-	}
+	r := OneofTest_Test3FromVTPool()
+	r.C = m.C.CloneVT()
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -98,7 +95,7 @@ func (m *OneofTest) CloneVT() *OneofTest {
 	if m == nil {
 		return (*OneofTest)(nil)
 	}
-	r := &OneofTest{}
+	r := OneofTestFromVTPool()
 	if m.Test != nil {
 		r.Test = m.Test.(interface{ CloneVT() isOneofTest_Test }).CloneVT()
 	}
@@ -117,9 +114,8 @@ func (m *OneofTest_Test1_) CloneVT() isOneofTest_Test {
 	if m == nil {
 		return (*OneofTest_Test1_)(nil)
 	}
-	r := &OneofTest_Test1_{
-		Test1: m.Test1.CloneVT(),
-	}
+	r := new(OneofTest_Test1_)
+	r.Test1 = m.Test1.CloneVT()
 	return r
 }
 
@@ -127,9 +123,8 @@ func (m *OneofTest_Test2_) CloneVT() isOneofTest_Test {
 	if m == nil {
 		return (*OneofTest_Test2_)(nil)
 	}
-	r := &OneofTest_Test2_{
-		Test2: m.Test2.CloneVT(),
-	}
+	r := new(OneofTest_Test2_)
+	r.Test2 = m.Test2.CloneVT()
 	return r
 }
 
@@ -137,9 +132,8 @@ func (m *OneofTest_Test3_) CloneVT() isOneofTest_Test {
 	if m == nil {
 		return (*OneofTest_Test3_)(nil)
 	}
-	r := &OneofTest_Test3_{
-		Test3: m.Test3.CloneVT(),
-	}
+	r := new(OneofTest_Test3_)
+	r.Test3 = m.Test3.CloneVT()
 	return r
 }
 
