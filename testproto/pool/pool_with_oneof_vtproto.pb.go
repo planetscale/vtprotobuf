@@ -866,7 +866,9 @@ var vtprotoPool_OneofTest_Test1 = sync.Pool{
 }
 
 func (m *OneofTest_Test1) ResetVT() {
-	m.Reset()
+	if m != nil {
+		m.Reset()
+	}
 }
 func (m *OneofTest_Test1) ReturnToVTPool() {
 	if m != nil {
@@ -885,9 +887,11 @@ var vtprotoPool_OneofTest_Test2 = sync.Pool{
 }
 
 func (m *OneofTest_Test2) ResetVT() {
-	f0 := m.B[:0]
-	m.Reset()
-	m.B = f0
+	if m != nil {
+		f0 := m.B[:0]
+		m.Reset()
+		m.B = f0
+	}
 }
 func (m *OneofTest_Test2) ReturnToVTPool() {
 	if m != nil {
@@ -906,7 +910,9 @@ var vtprotoPool_OneofTest_Test3_Element2 = sync.Pool{
 }
 
 func (m *OneofTest_Test3_Element2) ResetVT() {
-	m.Reset()
+	if m != nil {
+		m.Reset()
+	}
 }
 func (m *OneofTest_Test3_Element2) ReturnToVTPool() {
 	if m != nil {
@@ -925,8 +931,10 @@ var vtprotoPool_OneofTest_Test3 = sync.Pool{
 }
 
 func (m *OneofTest_Test3) ResetVT() {
-	m.C.ReturnToVTPool()
-	m.Reset()
+	if m != nil {
+		m.C.ReturnToVTPool()
+		m.Reset()
+	}
 }
 func (m *OneofTest_Test3) ReturnToVTPool() {
 	if m != nil {
@@ -945,16 +953,18 @@ var vtprotoPool_OneofTest = sync.Pool{
 }
 
 func (m *OneofTest) ResetVT() {
-	if oneof, ok := m.Test.(*OneofTest_Test1_); ok {
-		oneof.Test1.ReturnToVTPool()
+	if m != nil {
+		if oneof, ok := m.Test.(*OneofTest_Test1_); ok {
+			oneof.Test1.ReturnToVTPool()
+		}
+		if oneof, ok := m.Test.(*OneofTest_Test2_); ok {
+			oneof.Test2.ReturnToVTPool()
+		}
+		if oneof, ok := m.Test.(*OneofTest_Test3_); ok {
+			oneof.Test3.ReturnToVTPool()
+		}
+		m.Reset()
 	}
-	if oneof, ok := m.Test.(*OneofTest_Test2_); ok {
-		oneof.Test2.ReturnToVTPool()
-	}
-	if oneof, ok := m.Test.(*OneofTest_Test3_); ok {
-		oneof.Test3.ReturnToVTPool()
-	}
-	m.Reset()
 }
 func (m *OneofTest) ReturnToVTPool() {
 	if m != nil {
