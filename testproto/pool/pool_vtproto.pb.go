@@ -169,7 +169,9 @@ var vtprotoPool_MemoryPoolExtension = sync.Pool{
 }
 
 func (m *MemoryPoolExtension) ResetVT() {
-	m.Reset()
+	if m != nil {
+		m.Reset()
+	}
 }
 func (m *MemoryPoolExtension) ReturnToVTPool() {
 	if m != nil {

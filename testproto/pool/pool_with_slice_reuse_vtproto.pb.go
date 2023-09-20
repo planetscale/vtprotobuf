@@ -668,9 +668,11 @@ var vtprotoPool_Test1 = sync.Pool{
 }
 
 func (m *Test1) ResetVT() {
-	f0 := m.Sl[:0]
-	m.Reset()
-	m.Sl = f0
+	if m != nil {
+		f0 := m.Sl[:0]
+		m.Reset()
+		m.Sl = f0
+	}
 }
 func (m *Test1) ReturnToVTPool() {
 	if m != nil {
@@ -689,12 +691,14 @@ var vtprotoPool_Test2 = sync.Pool{
 }
 
 func (m *Test2) ResetVT() {
-	for _, mm := range m.Sl {
-		mm.Reset()
+	if m != nil {
+		for _, mm := range m.Sl {
+			mm.Reset()
+		}
+		f0 := m.Sl[:0]
+		m.Reset()
+		m.Sl = f0
 	}
-	f0 := m.Sl[:0]
-	m.Reset()
-	m.Sl = f0
 }
 func (m *Test2) ReturnToVTPool() {
 	if m != nil {
