@@ -45,6 +45,7 @@ gen-testproto:
 		testproto/pool/pool_with_oneof.proto \
 		testproto/proto3opt/opt.proto \
 		testproto/proto2/scalars.proto \
+		testproto/unsafe/unsafe.proto \
 		|| exit 1;
 
 genall: install gen-include gen-conformance gen-testproto
