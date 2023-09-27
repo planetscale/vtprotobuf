@@ -88,7 +88,7 @@ func NewGenerator(plugin *protogen.Plugin, featureNames []string, cfg *Config) (
 func (gen *Generator) Generate() {
 	for _, file := range gen.plugin.Files {
 		if !file.Generate {
-			return
+			continue
 		}
 
 		var importPath protogen.GoImportPath
