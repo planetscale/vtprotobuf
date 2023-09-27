@@ -25,7 +25,7 @@ func (m *Timestamp) CloneVT() *Timestamp {
 	if m == nil {
 		return (*Timestamp)(nil)
 	}
-	r := new(timestamppb.Timestamp)
+	r := new(Timestamp)
 	r.Seconds = m.Seconds
 	r.Nanos = m.Nanos
 	return r

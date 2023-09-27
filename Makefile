@@ -1,9 +1,9 @@
 export GOBIN=$(PWD)/bin
 export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-21.12
 
-.PHONY: test gen-conformance gen-include gen-wkt genall bin/protoc-gen-go bin/protoc-gen-go-vtproto
+.PHONY: install test gen-conformance gen-include gen-wkt genall bin/protoc-gen-go bin/protoc-gen-go-vtproto
 
-protoc-gen: bin/protoc-gen-go-vtproto bin/protoc-gen-go
+install: bin/protoc-gen-go-vtproto bin/protoc-gen-go
 
 bin/protoc-gen-go-vtproto:
 	go install -tags protolegacy ./cmd/protoc-gen-go-vtproto
@@ -11,7 +11,7 @@ bin/protoc-gen-go-vtproto:
 bin/protoc-gen-go:
 	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
 
-gen-conformance: protoc-gen
+gen-conformance: install
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=$(PROTOBUF_ROOT) \
 		--go_out=conformance --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -48,7 +48,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
 
-gen-testproto: gen-wkt-testproto protoc-gen
+gen-testproto: gen-wkt-testproto install
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
 		--proto_path=include \
@@ -63,7 +63,7 @@ gen-testproto: gen-wkt-testproto protoc-gen
 		testproto/proto2/scalars.proto \
 		|| exit 1;
 
-gen-wkt-testproto: protoc-gen
+gen-wkt-testproto: install
 	$(PROTOBUF_ROOT)/src/protoc \
     	--proto_path=testproto \
     	--proto_path=include \
@@ -75,7 +75,7 @@ gen-wkt-testproto: protoc-gen
 
 genall: gen-include gen-conformance gen-testproto gen-wkt
 
-test: protoc-gen gen-conformance
+test: install gen-conformance
 	go test -short ./...
 	go test -count=1 ./conformance/...
 	GOGC="off" go test -count=1 ./testproto/pool/...

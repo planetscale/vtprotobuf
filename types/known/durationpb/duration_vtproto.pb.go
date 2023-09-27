@@ -25,7 +25,7 @@ func (m *Duration) CloneVT() *Duration {
 	if m == nil {
 		return (*Duration)(nil)
 	}
-	r := new(durationpb.Duration)
+	r := new(Duration)
 	r.Seconds = m.Seconds
 	r.Nanos = m.Nanos
 	return r

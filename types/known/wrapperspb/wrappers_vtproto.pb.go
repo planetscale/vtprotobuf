@@ -35,7 +35,7 @@ func (m *DoubleValue) CloneVT() *DoubleValue {
 	if m == nil {
 		return (*DoubleValue)(nil)
 	}
-	r := new(wrapperspb.DoubleValue)
+	r := new(DoubleValue)
 	r.Value = m.Value
 	return r
 }
@@ -44,7 +44,7 @@ func (m *FloatValue) CloneVT() *FloatValue {
 	if m == nil {
 		return (*FloatValue)(nil)
 	}
-	r := new(wrapperspb.FloatValue)
+	r := new(FloatValue)
 	r.Value = m.Value
 	return r
 }
@@ -53,7 +53,7 @@ func (m *Int64Value) CloneVT() *Int64Value {
 	if m == nil {
 		return (*Int64Value)(nil)
 	}
-	r := new(wrapperspb.Int64Value)
+	r := new(Int64Value)
 	r.Value = m.Value
 	return r
 }
@@ -62,7 +62,7 @@ func (m *UInt64Value) CloneVT() *UInt64Value {
 	if m == nil {
 		return (*UInt64Value)(nil)
 	}
-	r := new(wrapperspb.UInt64Value)
+	r := new(UInt64Value)
 	r.Value = m.Value
 	return r
 }
@@ -71,7 +71,7 @@ func (m *Int32Value) CloneVT() *Int32Value {
 	if m == nil {
 		return (*Int32Value)(nil)
 	}
-	r := new(wrapperspb.Int32Value)
+	r := new(Int32Value)
 	r.Value = m.Value
 	return r
 }
@@ -80,7 +80,7 @@ func (m *UInt32Value) CloneVT() *UInt32Value {
 	if m == nil {
 		return (*UInt32Value)(nil)
 	}
-	r := new(wrapperspb.UInt32Value)
+	r := new(UInt32Value)
 	r.Value = m.Value
 	return r
 }
@@ -89,7 +89,7 @@ func (m *BoolValue) CloneVT() *BoolValue {
 	if m == nil {
 		return (*BoolValue)(nil)
 	}
-	r := new(wrapperspb.BoolValue)
+	r := new(BoolValue)
 	r.Value = m.Value
 	return r
 }
@@ -98,7 +98,7 @@ func (m *StringValue) CloneVT() *StringValue {
 	if m == nil {
 		return (*StringValue)(nil)
 	}
-	r := new(wrapperspb.StringValue)
+	r := new(StringValue)
 	r.Value = m.Value
 	return r
 }
@@ -107,7 +107,7 @@ func (m *BytesValue) CloneVT() *BytesValue {
 	if m == nil {
 		return (*BytesValue)(nil)
 	}
-	r := new(wrapperspb.BytesValue)
+	r := new(BytesValue)
 	if rhs := m.Value; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)

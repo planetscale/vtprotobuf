@@ -50,9 +50,9 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 
 func (b *GeneratedFile) Alloc(vname string, message *protogen.Message) {
 	if b.ShouldPool(message) {
-		b.P(vname, " := ", message.GoIdent, `FromVTPool()`)
+		b.P(vname, " := ", message.GoIdent.GoName, `FromVTPool()`)
 	} else {
-		b.P(vname, " := new(", message.GoIdent, `)`)
+		b.P(vname, " := new(", message.GoIdent.GoName, `)`)
 	}
 }
 
