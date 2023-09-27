@@ -1,17 +1,17 @@
 export GOBIN=$(PWD)/bin
 export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-21.12
 
-.PHONY: install test gen-conformance gen-include gen-wkt genall
+.PHONY: test gen-conformance gen-include gen-wkt genall bin/protoc-gen-go bin/protoc-gen-go-vtproto
 
-install:
-	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
-	go install -tags protolegacy ./cmd/protoc-gen-go-vtproto
-# 	go install -tags protolegacy github.com/gogo/protobuf/protoc-gen-gofast
+protoc-gen: bin/protoc-gen-go-vtproto bin/protoc-gen-go
 
 bin/protoc-gen-go-vtproto:
-	go build -o bin/protoc-gen-go-vtproto cmd/protoc-gen-go-vtproto/main.go
+	go install -tags protolegacy ./cmd/protoc-gen-go-vtproto
 
-gen-conformance:
+bin/protoc-gen-go:
+	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
+
+gen-conformance: protoc-gen
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=$(PROTOBUF_ROOT) \
 		--go_out=conformance --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -27,7 +27,7 @@ gen-conformance:
 		src/google/protobuf/test_messages_proto3.proto \
 		conformance/conformance.proto
 
-gen-include:
+gen-include: bin/protoc-gen-go
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=include \
 		--go_out=include --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -38,24 +38,9 @@ gen-include:
 gen-wkt: bin/protoc-gen-go-vtproto
 	$(PROTOBUF_ROOT)/src/protoc \
 		-I$(PROTOBUF_ROOT)/src \
-		--plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		--plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
-		--go_out=. \
 		--go-vtproto_out=. \
-		--go_opt=module=github.com/planetscale/vtprotobuf \
-		--go_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
-		--go_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
-		--go_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
-		--go_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
-		--go_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
-		--go_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb" \
-		--go-vtproto_opt=module=github.com/planetscale/vtprotobuf \
-		--go-vtproto_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
-		--go-vtproto_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
-		--go-vtproto_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
-		--go-vtproto_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
-		--go-vtproto_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
-		--go-vtproto_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb" \
+		--go-vtproto_opt=module=google.golang.org/protobuf,wrap=true \
 		$(PROTOBUF_ROOT)/src/google/protobuf/any.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/duration.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
@@ -63,7 +48,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
 
-gen-testproto: gen-wkt-testproto
+gen-testproto: gen-wkt-testproto protoc-gen
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
 		--proto_path=include \
@@ -78,31 +63,19 @@ gen-testproto: gen-wkt-testproto
 		testproto/proto2/scalars.proto \
 		|| exit 1;
 
-gen-wkt-testproto:
+gen-wkt-testproto: protoc-gen
 	$(PROTOBUF_ROOT)/src/protoc \
     	--proto_path=testproto \
     	--proto_path=include \
     	--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
     	--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
     	-I$(PROTOBUF_ROOT)/src \
-    	--go_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
-    	--go_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
-    	--go_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
-    	--go_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
-    	--go_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
-    	--go_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/any.proto=github.com/planetscale/vtprotobuf/types/known/any;anypb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/duration.proto=github.com/planetscale/vtprotobuf/types/known/duration;durationpb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/empty.proto=github.com/planetscale/vtprotobuf/types/known/empty;emptypb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/field_mask.proto=github.com/planetscale/vtprotobuf/types/known/field_mask;fieldmaskpb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/timestamp.proto=github.com/planetscale/vtprotobuf/types/known/timestamp;timestamppb" \
-    	--go-vtproto_opt="Mgoogle/protobuf/wrappers.proto=github.com/planetscale/vtprotobuf/types/known/wrappers;wrapperspb" \
     	testproto/wkt/wkt.proto \
     	|| exit 1;
 
-genall: install gen-include gen-conformance gen-testproto gen-wkt
+genall: gen-include gen-conformance gen-testproto gen-wkt
 
-test: install gen-conformance
+test: protoc-gen gen-conformance
 	go test -short ./...
 	go test -count=1 ./conformance/...
 	GOGC="off" go test -count=1 ./testproto/pool/...

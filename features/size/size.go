@@ -56,11 +56,14 @@ func (p *size) GenerateHelpers() {
 }
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
-	local := p.IsLocalMessage(message)
-
-	if local {
+	switch {
+	case p.IsLocalMessage(message):
 		p.P(`l = `, varName, `.`, sizeName, `()`)
-	} else {
+
+	case p.IsWellKnownType(message):
+		p.P(`l = (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, sizeName, `()`)
+
+	default:
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
 		p.P(sizeName, `() int`)
 		p.P(`}); ok{`)
@@ -287,7 +290,7 @@ func (p *size) message(message *protogen.Message) {
 	p.once = true
 
 	sizeName := "SizeVT"
-	ccTypeName := message.GoIdent
+	ccTypeName := message.GoIdent.GoName
 
 	p.P(`func (m *`, ccTypeName, `) `, sizeName, `() (n int) {`)
 	p.P(`if m == nil {`)
@@ -310,7 +313,9 @@ func (p *size) message(message *protogen.Message) {
 			}
 		}
 	}
-	p.P(`n+=len(m.unknownFields)`)
+	if !p.Wrapper() {
+		p.P(`n+=len(m.unknownFields)`)
+	}
 	p.P(`return n`)
 	p.P(`}`)
 	p.P()

@@ -53,7 +53,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 
 	p.once = true
 
-	ccTypeName := message.GoIdent
+	ccTypeName := message.GoIdent.GoName
 	p.P(`func (this *`, ccTypeName, `) `, equalName, `(that *`, ccTypeName, `) bool {`)
 
 	p.P(`if this == that {`)
@@ -102,17 +102,23 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 		}
 	}
 
-	p.P(`return string(this.unknownFields) == string(that.unknownFields)`)
+	if p.Wrapper() {
+		p.P(`return true`)
+	} else {
+		p.P(`return string(this.unknownFields) == string(that.unknownFields)`)
+	}
 	p.P(`}`)
 	p.P()
 
-	p.P(`func (this *`, ccTypeName, `) `, equalMessageName, `(thatMsg `, protoPkg.Ident("Message"), `) bool {`)
-	p.P(`that, ok := thatMsg.(*`, ccTypeName, `)`)
-	p.P(`if !ok {`)
-	p.P(`return false`)
-	p.P(`}`)
-	p.P(`return this.`, equalName, `(that)`)
-	p.P(`}`)
+	if !p.Wrapper() {
+		p.P(`func (this *`, ccTypeName, `) `, equalMessageName, `(thatMsg `, protoPkg.Ident("Message"), `) bool {`)
+		p.P(`that, ok := thatMsg.(*`, ccTypeName, `)`)
+		p.P(`if !ok {`)
+		p.P(`return false`)
+		p.P(`}`)
+		p.P(`return this.`, equalName, `(that)`)
+		p.P(`}`)
+	}
 
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
@@ -242,19 +248,25 @@ func (p *equal) compareCall(lhs, rhs string, msg *protogen.Message, nullable boo
 		p.P(`}`)
 		lhs, rhs = "p", "q"
 	}
-	if msg != nil && msg.Desc != nil && msg.Desc.ParentFile() != nil && p.IsLocalMessage(msg) {
+	switch {
+	case p.IsLocalMessage(msg):
 		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
-		return
+	case p.IsWellKnownType(msg):
+		wkt := p.WellKnownTypeMap(msg)
+		p.P(`if !(*`, wkt, `)(`, lhs, `).`, equalName, `((*`, wkt, `)(`, rhs, `)) {`)
+		p.P(`	return false`)
+		p.P(`}`)
+	default:
+		p.P(`if equal, ok := interface{}(`, lhs, `).(interface { `, equalName, `(*`, p.QualifiedGoIdent(msg.GoIdent), `) bool }); ok {`)
+		p.P(`	if !equal.`, equalName, `(`, rhs, `) {`)
+		p.P(`		return false`)
+		p.P(`	}`)
+		p.P(`} else if !`, p.Ident("google.golang.org/protobuf/proto", "Equal"), `(`, lhs, `, `, rhs, `) {`)
+		p.P(`	return false`)
+		p.P(`}`)
 	}
-	p.P(`if equal, ok := interface{}(`, lhs, `).(interface { `, equalName, `(*`, p.QualifiedGoIdent(msg.GoIdent), `) bool }); ok {`)
-	p.P(`	if !equal.`, equalName, `(`, rhs, `) {`)
-	p.P(`		return false`)
-	p.P(`	}`)
-	p.P(`} else if !`, p.Ident("google.golang.org/protobuf/proto", "Equal"), `(`, lhs, `, `, rhs, `) {`)
-	p.P(`	return false`)
-	p.P(`}`)
 }
 
 func isScalar(kind protoreflect.Kind) bool {

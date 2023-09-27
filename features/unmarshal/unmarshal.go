@@ -132,13 +132,18 @@ func (p *unmarshal) GenerateHelpers() {
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
-	local := p.IsLocalMessage(message)
-
-	if local {
+	switch {
+	case p.IsLocalMessage(message):
 		p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
-	} else {
+
+	case p.IsWellKnownType(message):
+		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+
+	default:
 		p.P(`if unmarshal, ok := interface{}(`, varName, `).(interface{`)
 		p.P(`UnmarshalVT([]byte) error`)
 		p.P(`}); ok{`)
@@ -827,7 +832,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	}
 
 	p.once = true
-	ccTypeName := message.GoIdent
+	ccTypeName := message.GoIdent.GoName
 	required := message.Desc.RequiredNumbers()
 
 	p.P(`func (m *`, ccTypeName, `) UnmarshalVT(dAtA []byte) error {`)
@@ -879,7 +884,9 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 		p.P(`iNdEx += skippy`)
 		p.P(`} else {`)
 	}
-	p.P(`m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)`)
+	if !p.Wrapper() {
+		p.P(`m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)`)
+	}
 	p.P(`iNdEx += skippy`)
 	if message.Desc.ExtensionRanges().Len() > 0 {
 		p.P(`}`)

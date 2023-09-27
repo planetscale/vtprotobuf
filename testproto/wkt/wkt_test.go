@@ -1,44 +1,45 @@
 package wkt
 
 import (
-	"google.golang.org/protobuf/proto"
 	"testing"
 	"time"
 
-	any "github.com/planetscale/vtprotobuf/types/known/any"
-	duration "github.com/planetscale/vtprotobuf/types/known/duration"
-	empty "github.com/planetscale/vtprotobuf/types/known/empty"
-	field_mask "github.com/planetscale/vtprotobuf/types/known/field_mask"
-	timestamp "github.com/planetscale/vtprotobuf/types/known/timestamp"
-	wrappers "github.com/planetscale/vtprotobuf/types/known/wrappers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 func TestWellKnownTypes(t *testing.T) {
-	dur := duration.New(4*time.Hour + 2*time.Second)
+	dur := durationpb.New(4*time.Hour + 2*time.Second)
 
-	anyVal, err := any.New(dur)
+	anyVal, err := anypb.New(dur)
 	require.NoError(t, err)
 
-	fieldMask, err := field_mask.New(dur, "seconds")
+	fieldMask, err := fieldmaskpb.New(dur, "seconds")
 	require.NoError(t, err)
 
 	m := &MessageWithWKT{
 		Any:         anyVal,
 		Duration:    dur,
-		Empty:       &empty.Empty{},
+		Empty:       &emptypb.Empty{},
 		FieldMask:   fieldMask,
-		Timestamp:   timestamp.Now(),
-		DoubleValue: wrappers.Double(123456789.123456789),
-		FloatValue:  wrappers.Float(123456789.123456789),
-		Int64Value:  wrappers.Int64(123456789),
-		Uint64Value: wrappers.UInt64(123456789),
-		Int32Value:  wrappers.Int32(123456789),
-		Uint32Value: wrappers.UInt32(123456789),
-		BoolValue:   wrappers.Bool(true),
-		StringValue: wrappers.String("String marshalling and unmarshalling test"),
-		BytesValue:  wrappers.Bytes([]byte("Bytes marshalling and unmarshalling test")),
+		Timestamp:   timestamppb.Now(),
+		DoubleValue: wrapperspb.Double(123456789.123456789),
+		FloatValue:  wrapperspb.Float(123456789.123456789),
+		Int64Value:  wrapperspb.Int64(123456789),
+		Uint64Value: wrapperspb.UInt64(123456789),
+		Int32Value:  wrapperspb.Int32(123456789),
+		Uint32Value: wrapperspb.UInt32(123456789),
+		BoolValue:   wrapperspb.Bool(true),
+		StringValue: wrapperspb.String("String marshalling and unmarshalling test"),
+		BytesValue:  wrapperspb.Bytes([]byte("Bytes marshalling and unmarshalling test")),
 	}
 
 	golangBytes, err := proto.Marshal(m)

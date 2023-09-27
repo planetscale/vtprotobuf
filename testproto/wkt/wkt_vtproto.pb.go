@@ -6,14 +6,20 @@ package wkt
 
 import (
 	fmt "fmt"
-	any1 "github.com/planetscale/vtprotobuf/types/known/any"
-	duration "github.com/planetscale/vtprotobuf/types/known/duration"
-	empty "github.com/planetscale/vtprotobuf/types/known/empty"
-	field_mask "github.com/planetscale/vtprotobuf/types/known/field_mask"
-	timestamp "github.com/planetscale/vtprotobuf/types/known/timestamp"
-	wrappers "github.com/planetscale/vtprotobuf/types/known/wrappers"
+	anypb1 "github.com/planetscale/vtprotobuf/types/known/anypb"
+	durationpb1 "github.com/planetscale/vtprotobuf/types/known/durationpb"
+	emptypb1 "github.com/planetscale/vtprotobuf/types/known/emptypb"
+	fieldmaskpb1 "github.com/planetscale/vtprotobuf/types/known/fieldmaskpb"
+	timestamppb1 "github.com/planetscale/vtprotobuf/types/known/timestamppb"
+	wrapperspb1 "github.com/planetscale/vtprotobuf/types/known/wrapperspb"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	io "io"
 	bits "math/bits"
 )
@@ -29,104 +35,21 @@ func (m *MessageWithWKT) CloneVT() *MessageWithWKT {
 	if m == nil {
 		return (*MessageWithWKT)(nil)
 	}
-	r := &MessageWithWKT{}
-	if rhs := m.Any; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *any1.Any }); ok {
-			r.Any = vtpb.CloneVT()
-		} else {
-			r.Any = proto.Clone(rhs).(*any1.Any)
-		}
-	}
-	if rhs := m.Duration; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *duration.Duration }); ok {
-			r.Duration = vtpb.CloneVT()
-		} else {
-			r.Duration = proto.Clone(rhs).(*duration.Duration)
-		}
-	}
-	if rhs := m.Empty; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *empty.Empty }); ok {
-			r.Empty = vtpb.CloneVT()
-		} else {
-			r.Empty = proto.Clone(rhs).(*empty.Empty)
-		}
-	}
-	if rhs := m.FieldMask; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *field_mask.FieldMask }); ok {
-			r.FieldMask = vtpb.CloneVT()
-		} else {
-			r.FieldMask = proto.Clone(rhs).(*field_mask.FieldMask)
-		}
-	}
-	if rhs := m.Timestamp; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *timestamp.Timestamp }); ok {
-			r.Timestamp = vtpb.CloneVT()
-		} else {
-			r.Timestamp = proto.Clone(rhs).(*timestamp.Timestamp)
-		}
-	}
-	if rhs := m.DoubleValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.DoubleValue }); ok {
-			r.DoubleValue = vtpb.CloneVT()
-		} else {
-			r.DoubleValue = proto.Clone(rhs).(*wrappers.DoubleValue)
-		}
-	}
-	if rhs := m.FloatValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.FloatValue }); ok {
-			r.FloatValue = vtpb.CloneVT()
-		} else {
-			r.FloatValue = proto.Clone(rhs).(*wrappers.FloatValue)
-		}
-	}
-	if rhs := m.Int64Value; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.Int64Value }); ok {
-			r.Int64Value = vtpb.CloneVT()
-		} else {
-			r.Int64Value = proto.Clone(rhs).(*wrappers.Int64Value)
-		}
-	}
-	if rhs := m.Uint64Value; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.UInt64Value }); ok {
-			r.Uint64Value = vtpb.CloneVT()
-		} else {
-			r.Uint64Value = proto.Clone(rhs).(*wrappers.UInt64Value)
-		}
-	}
-	if rhs := m.Int32Value; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.Int32Value }); ok {
-			r.Int32Value = vtpb.CloneVT()
-		} else {
-			r.Int32Value = proto.Clone(rhs).(*wrappers.Int32Value)
-		}
-	}
-	if rhs := m.Uint32Value; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.UInt32Value }); ok {
-			r.Uint32Value = vtpb.CloneVT()
-		} else {
-			r.Uint32Value = proto.Clone(rhs).(*wrappers.UInt32Value)
-		}
-	}
-	if rhs := m.BoolValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.BoolValue }); ok {
-			r.BoolValue = vtpb.CloneVT()
-		} else {
-			r.BoolValue = proto.Clone(rhs).(*wrappers.BoolValue)
-		}
-	}
-	if rhs := m.StringValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.StringValue }); ok {
-			r.StringValue = vtpb.CloneVT()
-		} else {
-			r.StringValue = proto.Clone(rhs).(*wrappers.StringValue)
-		}
-	}
-	if rhs := m.BytesValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *wrappers.BytesValue }); ok {
-			r.BytesValue = vtpb.CloneVT()
-		} else {
-			r.BytesValue = proto.Clone(rhs).(*wrappers.BytesValue)
-		}
+	r := &MessageWithWKT{
+		Any:         (*anypb.Any)((*anypb1.Any)(m.Any).CloneVT()),
+		Duration:    (*durationpb.Duration)((*durationpb1.Duration)(m.Duration).CloneVT()),
+		Empty:       (*emptypb.Empty)((*emptypb1.Empty)(m.Empty).CloneVT()),
+		FieldMask:   (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.FieldMask).CloneVT()),
+		Timestamp:   (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.Timestamp).CloneVT()),
+		DoubleValue: (*wrapperspb.DoubleValue)((*wrapperspb1.DoubleValue)(m.DoubleValue).CloneVT()),
+		FloatValue:  (*wrapperspb.FloatValue)((*wrapperspb1.FloatValue)(m.FloatValue).CloneVT()),
+		Int64Value:  (*wrapperspb.Int64Value)((*wrapperspb1.Int64Value)(m.Int64Value).CloneVT()),
+		Uint64Value: (*wrapperspb.UInt64Value)((*wrapperspb1.UInt64Value)(m.Uint64Value).CloneVT()),
+		Int32Value:  (*wrapperspb.Int32Value)((*wrapperspb1.Int32Value)(m.Int32Value).CloneVT()),
+		Uint32Value: (*wrapperspb.UInt32Value)((*wrapperspb1.UInt32Value)(m.Uint32Value).CloneVT()),
+		BoolValue:   (*wrapperspb.BoolValue)((*wrapperspb1.BoolValue)(m.BoolValue).CloneVT()),
+		StringValue: (*wrapperspb.StringValue)((*wrapperspb1.StringValue)(m.StringValue).CloneVT()),
+		BytesValue:  (*wrapperspb.BytesValue)((*wrapperspb1.BytesValue)(m.BytesValue).CloneVT()),
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -145,124 +68,46 @@ func (this *MessageWithWKT) EqualVT(that *MessageWithWKT) bool {
 	} else if this == nil || that == nil {
 		return false
 	}
-	if equal, ok := interface{}(this.Any).(interface{ EqualVT(*any1.Any) bool }); ok {
-		if !equal.EqualVT(that.Any) {
-			return false
-		}
-	} else if !proto.Equal(this.Any, that.Any) {
+	if !(*anypb1.Any)(this.Any).EqualVT((*anypb1.Any)(that.Any)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Duration).(interface{ EqualVT(*duration.Duration) bool }); ok {
-		if !equal.EqualVT(that.Duration) {
-			return false
-		}
-	} else if !proto.Equal(this.Duration, that.Duration) {
+	if !(*durationpb1.Duration)(this.Duration).EqualVT((*durationpb1.Duration)(that.Duration)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Empty).(interface{ EqualVT(*empty.Empty) bool }); ok {
-		if !equal.EqualVT(that.Empty) {
-			return false
-		}
-	} else if !proto.Equal(this.Empty, that.Empty) {
+	if !(*emptypb1.Empty)(this.Empty).EqualVT((*emptypb1.Empty)(that.Empty)) {
 		return false
 	}
-	if equal, ok := interface{}(this.FieldMask).(interface {
-		EqualVT(*field_mask.FieldMask) bool
-	}); ok {
-		if !equal.EqualVT(that.FieldMask) {
-			return false
-		}
-	} else if !proto.Equal(this.FieldMask, that.FieldMask) {
+	if !(*fieldmaskpb1.FieldMask)(this.FieldMask).EqualVT((*fieldmaskpb1.FieldMask)(that.FieldMask)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Timestamp).(interface {
-		EqualVT(*timestamp.Timestamp) bool
-	}); ok {
-		if !equal.EqualVT(that.Timestamp) {
-			return false
-		}
-	} else if !proto.Equal(this.Timestamp, that.Timestamp) {
+	if !(*timestamppb1.Timestamp)(this.Timestamp).EqualVT((*timestamppb1.Timestamp)(that.Timestamp)) {
 		return false
 	}
-	if equal, ok := interface{}(this.DoubleValue).(interface {
-		EqualVT(*wrappers.DoubleValue) bool
-	}); ok {
-		if !equal.EqualVT(that.DoubleValue) {
-			return false
-		}
-	} else if !proto.Equal(this.DoubleValue, that.DoubleValue) {
+	if !(*wrapperspb1.DoubleValue)(this.DoubleValue).EqualVT((*wrapperspb1.DoubleValue)(that.DoubleValue)) {
 		return false
 	}
-	if equal, ok := interface{}(this.FloatValue).(interface {
-		EqualVT(*wrappers.FloatValue) bool
-	}); ok {
-		if !equal.EqualVT(that.FloatValue) {
-			return false
-		}
-	} else if !proto.Equal(this.FloatValue, that.FloatValue) {
+	if !(*wrapperspb1.FloatValue)(this.FloatValue).EqualVT((*wrapperspb1.FloatValue)(that.FloatValue)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Int64Value).(interface {
-		EqualVT(*wrappers.Int64Value) bool
-	}); ok {
-		if !equal.EqualVT(that.Int64Value) {
-			return false
-		}
-	} else if !proto.Equal(this.Int64Value, that.Int64Value) {
+	if !(*wrapperspb1.Int64Value)(this.Int64Value).EqualVT((*wrapperspb1.Int64Value)(that.Int64Value)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Uint64Value).(interface {
-		EqualVT(*wrappers.UInt64Value) bool
-	}); ok {
-		if !equal.EqualVT(that.Uint64Value) {
-			return false
-		}
-	} else if !proto.Equal(this.Uint64Value, that.Uint64Value) {
+	if !(*wrapperspb1.UInt64Value)(this.Uint64Value).EqualVT((*wrapperspb1.UInt64Value)(that.Uint64Value)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Int32Value).(interface {
-		EqualVT(*wrappers.Int32Value) bool
-	}); ok {
-		if !equal.EqualVT(that.Int32Value) {
-			return false
-		}
-	} else if !proto.Equal(this.Int32Value, that.Int32Value) {
+	if !(*wrapperspb1.Int32Value)(this.Int32Value).EqualVT((*wrapperspb1.Int32Value)(that.Int32Value)) {
 		return false
 	}
-	if equal, ok := interface{}(this.Uint32Value).(interface {
-		EqualVT(*wrappers.UInt32Value) bool
-	}); ok {
-		if !equal.EqualVT(that.Uint32Value) {
-			return false
-		}
-	} else if !proto.Equal(this.Uint32Value, that.Uint32Value) {
+	if !(*wrapperspb1.UInt32Value)(this.Uint32Value).EqualVT((*wrapperspb1.UInt32Value)(that.Uint32Value)) {
 		return false
 	}
-	if equal, ok := interface{}(this.BoolValue).(interface {
-		EqualVT(*wrappers.BoolValue) bool
-	}); ok {
-		if !equal.EqualVT(that.BoolValue) {
-			return false
-		}
-	} else if !proto.Equal(this.BoolValue, that.BoolValue) {
+	if !(*wrapperspb1.BoolValue)(this.BoolValue).EqualVT((*wrapperspb1.BoolValue)(that.BoolValue)) {
 		return false
 	}
-	if equal, ok := interface{}(this.StringValue).(interface {
-		EqualVT(*wrappers.StringValue) bool
-	}); ok {
-		if !equal.EqualVT(that.StringValue) {
-			return false
-		}
-	} else if !proto.Equal(this.StringValue, that.StringValue) {
+	if !(*wrapperspb1.StringValue)(this.StringValue).EqualVT((*wrapperspb1.StringValue)(that.StringValue)) {
 		return false
 	}
-	if equal, ok := interface{}(this.BytesValue).(interface {
-		EqualVT(*wrappers.BytesValue) bool
-	}); ok {
-		if !equal.EqualVT(that.BytesValue) {
-			return false
-		}
-	} else if !proto.Equal(this.BytesValue, that.BytesValue) {
+	if !(*wrapperspb1.BytesValue)(this.BytesValue).EqualVT((*wrapperspb1.BytesValue)(that.BytesValue)) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -306,310 +151,142 @@ func (m *MessageWithWKT) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if m.BytesValue != nil {
-		if vtmsg, ok := interface{}(m.BytesValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.BytesValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.BytesValue)(m.BytesValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x72
 	}
 	if m.StringValue != nil {
-		if vtmsg, ok := interface{}(m.StringValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.StringValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.StringValue)(m.StringValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x6a
 	}
 	if m.BoolValue != nil {
-		if vtmsg, ok := interface{}(m.BoolValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.BoolValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.BoolValue)(m.BoolValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x62
 	}
 	if m.Uint32Value != nil {
-		if vtmsg, ok := interface{}(m.Uint32Value).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Uint32Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.UInt32Value)(m.Uint32Value).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x5a
 	}
 	if m.Int32Value != nil {
-		if vtmsg, ok := interface{}(m.Int32Value).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Int32Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.Int32Value)(m.Int32Value).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x52
 	}
 	if m.Uint64Value != nil {
-		if vtmsg, ok := interface{}(m.Uint64Value).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Uint64Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.UInt64Value)(m.Uint64Value).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x4a
 	}
 	if m.Int64Value != nil {
-		if vtmsg, ok := interface{}(m.Int64Value).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Int64Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.Int64Value)(m.Int64Value).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x42
 	}
 	if m.FloatValue != nil {
-		if vtmsg, ok := interface{}(m.FloatValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.FloatValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.FloatValue)(m.FloatValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x3a
 	}
 	if m.DoubleValue != nil {
-		if vtmsg, ok := interface{}(m.DoubleValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.DoubleValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.DoubleValue)(m.DoubleValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.Timestamp != nil {
-		if vtmsg, ok := interface{}(m.Timestamp).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Timestamp)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*timestamppb1.Timestamp)(m.Timestamp).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x2a
 	}
 	if m.FieldMask != nil {
-		if vtmsg, ok := interface{}(m.FieldMask).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.FieldMask)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*fieldmaskpb1.FieldMask)(m.FieldMask).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.Empty != nil {
-		if vtmsg, ok := interface{}(m.Empty).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Empty)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*emptypb1.Empty)(m.Empty).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
 	}
 	if m.Duration != nil {
-		if vtmsg, ok := interface{}(m.Duration).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Duration)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*durationpb1.Duration)(m.Duration).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 	}
 	if m.Any != nil {
-		if vtmsg, ok := interface{}(m.Any).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Any)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*anypb1.Any)(m.Any).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -658,310 +335,142 @@ func (m *MessageWithWKT) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) 
 		copy(dAtA[i:], m.unknownFields)
 	}
 	if m.BytesValue != nil {
-		if vtmsg, ok := interface{}(m.BytesValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.BytesValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.BytesValue)(m.BytesValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x72
 	}
 	if m.StringValue != nil {
-		if vtmsg, ok := interface{}(m.StringValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.StringValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.StringValue)(m.StringValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x6a
 	}
 	if m.BoolValue != nil {
-		if vtmsg, ok := interface{}(m.BoolValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.BoolValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.BoolValue)(m.BoolValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x62
 	}
 	if m.Uint32Value != nil {
-		if vtmsg, ok := interface{}(m.Uint32Value).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Uint32Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.UInt32Value)(m.Uint32Value).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x5a
 	}
 	if m.Int32Value != nil {
-		if vtmsg, ok := interface{}(m.Int32Value).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Int32Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.Int32Value)(m.Int32Value).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x52
 	}
 	if m.Uint64Value != nil {
-		if vtmsg, ok := interface{}(m.Uint64Value).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Uint64Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.UInt64Value)(m.Uint64Value).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x4a
 	}
 	if m.Int64Value != nil {
-		if vtmsg, ok := interface{}(m.Int64Value).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Int64Value)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.Int64Value)(m.Int64Value).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x42
 	}
 	if m.FloatValue != nil {
-		if vtmsg, ok := interface{}(m.FloatValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.FloatValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.FloatValue)(m.FloatValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x3a
 	}
 	if m.DoubleValue != nil {
-		if vtmsg, ok := interface{}(m.DoubleValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.DoubleValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*wrapperspb1.DoubleValue)(m.DoubleValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.Timestamp != nil {
-		if vtmsg, ok := interface{}(m.Timestamp).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Timestamp)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*timestamppb1.Timestamp)(m.Timestamp).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x2a
 	}
 	if m.FieldMask != nil {
-		if vtmsg, ok := interface{}(m.FieldMask).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.FieldMask)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*fieldmaskpb1.FieldMask)(m.FieldMask).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.Empty != nil {
-		if vtmsg, ok := interface{}(m.Empty).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Empty)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*emptypb1.Empty)(m.Empty).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
 	}
 	if m.Duration != nil {
-		if vtmsg, ok := interface{}(m.Duration).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Duration)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*durationpb1.Duration)(m.Duration).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
 	}
 	if m.Any != nil {
-		if vtmsg, ok := interface{}(m.Any).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.Any)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*anypb1.Any)(m.Any).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -975,143 +484,59 @@ func (m *MessageWithWKT) SizeVT() (n int) {
 	var l int
 	_ = l
 	if m.Any != nil {
-		if size, ok := interface{}(m.Any).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Any)
-		}
+		l = (*anypb1.Any)(m.Any).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Duration != nil {
-		if size, ok := interface{}(m.Duration).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Duration)
-		}
+		l = (*durationpb1.Duration)(m.Duration).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Empty != nil {
-		if size, ok := interface{}(m.Empty).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Empty)
-		}
+		l = (*emptypb1.Empty)(m.Empty).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.FieldMask != nil {
-		if size, ok := interface{}(m.FieldMask).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.FieldMask)
-		}
+		l = (*fieldmaskpb1.FieldMask)(m.FieldMask).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Timestamp != nil {
-		if size, ok := interface{}(m.Timestamp).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Timestamp)
-		}
+		l = (*timestamppb1.Timestamp)(m.Timestamp).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.DoubleValue != nil {
-		if size, ok := interface{}(m.DoubleValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.DoubleValue)
-		}
+		l = (*wrapperspb1.DoubleValue)(m.DoubleValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.FloatValue != nil {
-		if size, ok := interface{}(m.FloatValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.FloatValue)
-		}
+		l = (*wrapperspb1.FloatValue)(m.FloatValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Int64Value != nil {
-		if size, ok := interface{}(m.Int64Value).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Int64Value)
-		}
+		l = (*wrapperspb1.Int64Value)(m.Int64Value).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Uint64Value != nil {
-		if size, ok := interface{}(m.Uint64Value).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Uint64Value)
-		}
+		l = (*wrapperspb1.UInt64Value)(m.Uint64Value).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Int32Value != nil {
-		if size, ok := interface{}(m.Int32Value).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Int32Value)
-		}
+		l = (*wrapperspb1.Int32Value)(m.Int32Value).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.Uint32Value != nil {
-		if size, ok := interface{}(m.Uint32Value).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.Uint32Value)
-		}
+		l = (*wrapperspb1.UInt32Value)(m.Uint32Value).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.BoolValue != nil {
-		if size, ok := interface{}(m.BoolValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.BoolValue)
-		}
+		l = (*wrapperspb1.BoolValue)(m.BoolValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.StringValue != nil {
-		if size, ok := interface{}(m.StringValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.StringValue)
-		}
+		l = (*wrapperspb1.StringValue)(m.StringValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	if m.BytesValue != nil {
-		if size, ok := interface{}(m.BytesValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.BytesValue)
-		}
+		l = (*wrapperspb1.BytesValue)(m.BytesValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -1183,18 +608,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Any == nil {
-				m.Any = &any1.Any{}
+				m.Any = &anypb.Any{}
 			}
-			if unmarshal, ok := interface{}(m.Any).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Any); err != nil {
-					return err
-				}
+			if err := (*anypb1.Any)(m.Any).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 2:
@@ -1227,18 +644,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Duration == nil {
-				m.Duration = &duration.Duration{}
+				m.Duration = &durationpb.Duration{}
 			}
-			if unmarshal, ok := interface{}(m.Duration).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Duration); err != nil {
-					return err
-				}
+			if err := (*durationpb1.Duration)(m.Duration).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 3:
@@ -1271,18 +680,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Empty == nil {
-				m.Empty = &empty.Empty{}
+				m.Empty = &emptypb.Empty{}
 			}
-			if unmarshal, ok := interface{}(m.Empty).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Empty); err != nil {
-					return err
-				}
+			if err := (*emptypb1.Empty)(m.Empty).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 4:
@@ -1315,18 +716,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.FieldMask == nil {
-				m.FieldMask = &field_mask.FieldMask{}
+				m.FieldMask = &fieldmaskpb.FieldMask{}
 			}
-			if unmarshal, ok := interface{}(m.FieldMask).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.FieldMask); err != nil {
-					return err
-				}
+			if err := (*fieldmaskpb1.FieldMask)(m.FieldMask).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 5:
@@ -1359,18 +752,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Timestamp == nil {
-				m.Timestamp = &timestamp.Timestamp{}
+				m.Timestamp = &timestamppb.Timestamp{}
 			}
-			if unmarshal, ok := interface{}(m.Timestamp).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Timestamp); err != nil {
-					return err
-				}
+			if err := (*timestamppb1.Timestamp)(m.Timestamp).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 6:
@@ -1403,18 +788,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.DoubleValue == nil {
-				m.DoubleValue = &wrappers.DoubleValue{}
+				m.DoubleValue = &wrapperspb.DoubleValue{}
 			}
-			if unmarshal, ok := interface{}(m.DoubleValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.DoubleValue); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.DoubleValue)(m.DoubleValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 7:
@@ -1447,18 +824,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.FloatValue == nil {
-				m.FloatValue = &wrappers.FloatValue{}
+				m.FloatValue = &wrapperspb.FloatValue{}
 			}
-			if unmarshal, ok := interface{}(m.FloatValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.FloatValue); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.FloatValue)(m.FloatValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 8:
@@ -1491,18 +860,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Int64Value == nil {
-				m.Int64Value = &wrappers.Int64Value{}
+				m.Int64Value = &wrapperspb.Int64Value{}
 			}
-			if unmarshal, ok := interface{}(m.Int64Value).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Int64Value); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.Int64Value)(m.Int64Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 9:
@@ -1535,18 +896,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Uint64Value == nil {
-				m.Uint64Value = &wrappers.UInt64Value{}
+				m.Uint64Value = &wrapperspb.UInt64Value{}
 			}
-			if unmarshal, ok := interface{}(m.Uint64Value).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Uint64Value); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.UInt64Value)(m.Uint64Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 10:
@@ -1579,18 +932,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Int32Value == nil {
-				m.Int32Value = &wrappers.Int32Value{}
+				m.Int32Value = &wrapperspb.Int32Value{}
 			}
-			if unmarshal, ok := interface{}(m.Int32Value).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Int32Value); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.Int32Value)(m.Int32Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 11:
@@ -1623,18 +968,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.Uint32Value == nil {
-				m.Uint32Value = &wrappers.UInt32Value{}
+				m.Uint32Value = &wrapperspb.UInt32Value{}
 			}
-			if unmarshal, ok := interface{}(m.Uint32Value).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Uint32Value); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.UInt32Value)(m.Uint32Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 12:
@@ -1667,18 +1004,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.BoolValue == nil {
-				m.BoolValue = &wrappers.BoolValue{}
+				m.BoolValue = &wrapperspb.BoolValue{}
 			}
-			if unmarshal, ok := interface{}(m.BoolValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.BoolValue); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.BoolValue)(m.BoolValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 13:
@@ -1711,18 +1040,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.StringValue == nil {
-				m.StringValue = &wrappers.StringValue{}
+				m.StringValue = &wrapperspb.StringValue{}
 			}
-			if unmarshal, ok := interface{}(m.StringValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.StringValue); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.StringValue)(m.StringValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 14:
@@ -1755,18 +1076,10 @@ func (m *MessageWithWKT) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if m.BytesValue == nil {
-				m.BytesValue = &wrappers.BytesValue{}
+				m.BytesValue = &wrapperspb.BytesValue{}
 			}
-			if unmarshal, ok := interface{}(m.BytesValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.BytesValue); err != nil {
-					return err
-				}
+			if err := (*wrapperspb1.BytesValue)(m.BytesValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		default:

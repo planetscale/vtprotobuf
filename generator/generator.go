@@ -5,10 +5,14 @@
 package generator
 
 import (
+	"fmt"
 	"runtime/debug"
+	"strings"
 
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/runtime/protoimpl"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
 type featureHelpers struct {
@@ -16,42 +20,91 @@ type featureHelpers struct {
 	feature int
 }
 
-type Extensions struct {
-	Poolable map[protogen.GoIdent]bool
+type ObjectSet map[protogen.GoIdent]bool
+
+func (o *ObjectSet) String() string {
+	return fmt.Sprintf("%#v", *o)
+}
+
+func (o *ObjectSet) Set(s string) error {
+	idx := strings.LastIndexByte(s, '.')
+	if idx < 0 {
+		return fmt.Errorf("invalid object name: %q", s)
+	}
+
+	ident := protogen.GoIdent{
+		GoImportPath: protogen.GoImportPath(s[0:idx]),
+		GoName:       s[idx+1:],
+	}
+
+	if o == nil {
+		*o = make(ObjectSet)
+	}
+	(*o)[ident] = true
+	return nil
+}
+
+type Config struct {
+	Poolable       ObjectSet
+	Wrap           bool
+	WellKnownTypes bool
+	AllowEmpty     bool
 }
 
 type Generator struct {
-	seen     map[featureHelpers]bool
-	ext      *Extensions
+	plugin   *protogen.Plugin
+	cfg      *Config
 	features []Feature
-	local    map[string]bool
+	seen     map[featureHelpers]bool
+	local    map[protoreflect.FullName]bool
 }
 
-func NewGenerator(allFiles []*protogen.File, featureNames []string, ext *Extensions) (*Generator, error) {
+const SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+
+func NewGenerator(plugin *protogen.Plugin, featureNames []string, cfg *Config) (*Generator, error) {
+	plugin.SupportedFeatures = SupportedFeatures
+
 	features, err := findFeatures(featureNames)
 	if err != nil {
 		return nil, err
 	}
 
-	local := make(map[string]bool)
-	for _, f := range allFiles {
+	local := make(map[protoreflect.FullName]bool)
+	for _, f := range plugin.Files {
 		if f.Generate {
-			local[string(f.Desc.Package())] = true
+			local[f.Desc.Package()] = true
 		}
 	}
 
 	return &Generator{
-		seen:     make(map[featureHelpers]bool),
-		ext:      ext,
+		plugin:   plugin,
+		cfg:      cfg,
 		features: features,
+		seen:     make(map[featureHelpers]bool),
 		local:    local,
 	}, nil
 }
 
-func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.File) bool {
+func (gen *Generator) Generate() {
+	for _, file := range gen.plugin.Files {
+		if !file.Generate {
+			return
+		}
+
+		var importPath protogen.GoImportPath
+		if !gen.cfg.Wrap {
+			importPath = file.GoImportPath
+		}
+
+		gf := gen.plugin.NewGeneratedFile(file.GeneratedFilenamePrefix+"_vtproto.pb.go", importPath)
+		gen.generateFile(gf, file)
+	}
+}
+
+func (gen *Generator) generateFile(gf *protogen.GeneratedFile, file *protogen.File) {
 	p := &GeneratedFile{
 		GeneratedFile: gf,
-		Ext:           gen.ext,
+		Config:        gen.cfg,
 		LocalPackages: gen.local,
 		helpers:       make(map[string]bool),
 	}
@@ -74,6 +127,12 @@ func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.Fi
 	p.P(")")
 	p.P()
 
+	if p.Wrapper() {
+		for _, msg := range file.Messages {
+			p.P(`type `, msg.GoIdent.GoName, ` `, msg.GoIdent)
+		}
+	}
+
 	var generated bool
 	for fidx, feat := range gen.features {
 		featGenerator := feat(p)
@@ -91,5 +150,7 @@ func (gen *Generator) GenerateFile(gf *protogen.GeneratedFile, file *protogen.Fi
 		}
 	}
 
-	return generated
+	if !generated && !gen.cfg.AllowEmpty {
+		gf.Skip()
+	}
 }

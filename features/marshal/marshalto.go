@@ -580,7 +580,7 @@ func (p *marshal) message(message *protogen.Message) {
 	p.once = true
 
 	var numGen counter
-	ccTypeName := message.GoIdent
+	ccTypeName := message.GoIdent.GoName
 
 	p.P(`func (m *`, ccTypeName, `) `, p.methodMarshal(), `() (dAtA []byte, err error) {`)
 	p.P(`if m == nil {`)
@@ -608,10 +608,13 @@ func (p *marshal) message(message *protogen.Message) {
 	p.P(`_ = i`)
 	p.P(`var l int`)
 	p.P(`_ = l`)
-	p.P(`if m.unknownFields != nil {`)
-	p.P(`i -= len(m.unknownFields)`)
-	p.P(`copy(dAtA[i:], m.unknownFields)`)
-	p.P(`}`)
+
+	if !p.Wrapper() {
+		p.P(`if m.unknownFields != nil {`)
+		p.P(`i -= len(m.unknownFields)`)
+		p.P(`copy(dAtA[i:], m.unknownFields)`)
+		p.P(`}`)
+	}
 
 	sort.Slice(message.Fields, func(i, j int) bool {
 		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
@@ -676,7 +679,7 @@ func (p *marshal) message(message *protogen.Message) {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
 		}
-		ccTypeName := field.GoIdent
+		ccTypeName := field.GoIdent.GoName
 		p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalTo(), `(dAtA []byte) (int, error) {`)
 		p.P(`size := m.SizeVT()`)
 		p.P(`return m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
@@ -696,18 +699,7 @@ func (p *marshal) reverseListRange(expression ...string) string {
 	return exp + `[iNdEx]`
 }
 
-func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
-	local := p.IsLocalMessage(message)
-
-	if local {
-		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
-	} else {
-		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
-		p.P(p.methodMarshalToSizedBuffer(), `([]byte) (int, error)`)
-		p.P(`}); ok{`)
-		p.P(`size, err := vtmsg.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
-	}
-
+func (p *marshal) marshalBackwardSize(varInt bool) {
 	p.P(`if err != nil {`)
 	p.P(`return 0, err`)
 	p.P(`}`)
@@ -716,7 +708,24 @@ func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen
 		p.encodeVarint(`size`)
 	}
 
-	if !local {
+}
+
+func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
+	switch {
+	case p.IsWellKnownType(message):
+		p.P(`size, err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+		p.marshalBackwardSize(varInt)
+
+	case p.IsLocalMessage(message):
+		p.P(`size, err := `, varName, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+		p.marshalBackwardSize(varInt)
+
+	default:
+		p.P(`if vtmsg, ok := interface{}(`, varName, `).(interface{`)
+		p.P(p.methodMarshalToSizedBuffer(), `([]byte) (int, error)`)
+		p.P(`}); ok{`)
+		p.P(`size, err := vtmsg.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+		p.marshalBackwardSize(varInt)
 		p.P(`} else {`)
 		p.P(`encoded, err := `, p.Ident(generator.ProtoPkg, "Marshal"), `(`, varName, `)`)
 		p.P(`if err != nil {`)

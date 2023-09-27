@@ -7,14 +7,14 @@
 package wkt
 
 import (
-	any1 "github.com/planetscale/vtprotobuf/types/known/any"
-	duration "github.com/planetscale/vtprotobuf/types/known/duration"
-	empty "github.com/planetscale/vtprotobuf/types/known/empty"
-	field_mask "github.com/planetscale/vtprotobuf/types/known/field_mask"
-	timestamp "github.com/planetscale/vtprotobuf/types/known/timestamp"
-	wrappers "github.com/planetscale/vtprotobuf/types/known/wrappers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -31,20 +31,20 @@ type MessageWithWKT struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Any         *any1.Any             `protobuf:"bytes,1,opt,name=any,proto3" json:"any,omitempty"`
-	Duration    *duration.Duration    `protobuf:"bytes,2,opt,name=duration,proto3" json:"duration,omitempty"`
-	Empty       *empty.Empty          `protobuf:"bytes,3,opt,name=empty,proto3" json:"empty,omitempty"`
-	FieldMask   *field_mask.FieldMask `protobuf:"bytes,4,opt,name=field_mask,json=fieldMask,proto3" json:"field_mask,omitempty"`
-	Timestamp   *timestamp.Timestamp  `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
-	DoubleValue *wrappers.DoubleValue `protobuf:"bytes,6,opt,name=double_value,json=doubleValue,proto3" json:"double_value,omitempty"`
-	FloatValue  *wrappers.FloatValue  `protobuf:"bytes,7,opt,name=float_value,json=floatValue,proto3" json:"float_value,omitempty"`
-	Int64Value  *wrappers.Int64Value  `protobuf:"bytes,8,opt,name=int64_value,json=int64Value,proto3" json:"int64_value,omitempty"`
-	Uint64Value *wrappers.UInt64Value `protobuf:"bytes,9,opt,name=uint64_value,json=uint64Value,proto3" json:"uint64_value,omitempty"`
-	Int32Value  *wrappers.Int32Value  `protobuf:"bytes,10,opt,name=int32_value,json=int32Value,proto3" json:"int32_value,omitempty"`
-	Uint32Value *wrappers.UInt32Value `protobuf:"bytes,11,opt,name=uint32_value,json=uint32Value,proto3" json:"uint32_value,omitempty"`
-	BoolValue   *wrappers.BoolValue   `protobuf:"bytes,12,opt,name=bool_value,json=boolValue,proto3" json:"bool_value,omitempty"`
-	StringValue *wrappers.StringValue `protobuf:"bytes,13,opt,name=string_value,json=stringValue,proto3" json:"string_value,omitempty"`
-	BytesValue  *wrappers.BytesValue  `protobuf:"bytes,14,opt,name=bytes_value,json=bytesValue,proto3" json:"bytes_value,omitempty"`
+	Any         *anypb.Any              `protobuf:"bytes,1,opt,name=any,proto3" json:"any,omitempty"`
+	Duration    *durationpb.Duration    `protobuf:"bytes,2,opt,name=duration,proto3" json:"duration,omitempty"`
+	Empty       *emptypb.Empty          `protobuf:"bytes,3,opt,name=empty,proto3" json:"empty,omitempty"`
+	FieldMask   *fieldmaskpb.FieldMask  `protobuf:"bytes,4,opt,name=field_mask,json=fieldMask,proto3" json:"field_mask,omitempty"`
+	Timestamp   *timestamppb.Timestamp  `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	DoubleValue *wrapperspb.DoubleValue `protobuf:"bytes,6,opt,name=double_value,json=doubleValue,proto3" json:"double_value,omitempty"`
+	FloatValue  *wrapperspb.FloatValue  `protobuf:"bytes,7,opt,name=float_value,json=floatValue,proto3" json:"float_value,omitempty"`
+	Int64Value  *wrapperspb.Int64Value  `protobuf:"bytes,8,opt,name=int64_value,json=int64Value,proto3" json:"int64_value,omitempty"`
+	Uint64Value *wrapperspb.UInt64Value `protobuf:"bytes,9,opt,name=uint64_value,json=uint64Value,proto3" json:"uint64_value,omitempty"`
+	Int32Value  *wrapperspb.Int32Value  `protobuf:"bytes,10,opt,name=int32_value,json=int32Value,proto3" json:"int32_value,omitempty"`
+	Uint32Value *wrapperspb.UInt32Value `protobuf:"bytes,11,opt,name=uint32_value,json=uint32Value,proto3" json:"uint32_value,omitempty"`
+	BoolValue   *wrapperspb.BoolValue   `protobuf:"bytes,12,opt,name=bool_value,json=boolValue,proto3" json:"bool_value,omitempty"`
+	StringValue *wrapperspb.StringValue `protobuf:"bytes,13,opt,name=string_value,json=stringValue,proto3" json:"string_value,omitempty"`
+	BytesValue  *wrapperspb.BytesValue  `protobuf:"bytes,14,opt,name=bytes_value,json=bytesValue,proto3" json:"bytes_value,omitempty"`
 }
 
 func (x *MessageWithWKT) Reset() {
@@ -79,98 +79,98 @@ func (*MessageWithWKT) Descriptor() ([]byte, []int) {
 	return file_wkt_wkt_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *MessageWithWKT) GetAny() *any1.Any {
+func (x *MessageWithWKT) GetAny() *anypb.Any {
 	if x != nil {
 		return x.Any
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetDuration() *duration.Duration {
+func (x *MessageWithWKT) GetDuration() *durationpb.Duration {
 	if x != nil {
 		return x.Duration
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetEmpty() *empty.Empty {
+func (x *MessageWithWKT) GetEmpty() *emptypb.Empty {
 	if x != nil {
 		return x.Empty
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetFieldMask() *field_mask.FieldMask {
+func (x *MessageWithWKT) GetFieldMask() *fieldmaskpb.FieldMask {
 	if x != nil {
 		return x.FieldMask
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetTimestamp() *timestamp.Timestamp {
+func (x *MessageWithWKT) GetTimestamp() *timestamppb.Timestamp {
 	if x != nil {
 		return x.Timestamp
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetDoubleValue() *wrappers.DoubleValue {
+func (x *MessageWithWKT) GetDoubleValue() *wrapperspb.DoubleValue {
 	if x != nil {
 		return x.DoubleValue
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetFloatValue() *wrappers.FloatValue {
+func (x *MessageWithWKT) GetFloatValue() *wrapperspb.FloatValue {
 	if x != nil {
 		return x.FloatValue
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetInt64Value() *wrappers.Int64Value {
+func (x *MessageWithWKT) GetInt64Value() *wrapperspb.Int64Value {
 	if x != nil {
 		return x.Int64Value
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetUint64Value() *wrappers.UInt64Value {
+func (x *MessageWithWKT) GetUint64Value() *wrapperspb.UInt64Value {
 	if x != nil {
 		return x.Uint64Value
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetInt32Value() *wrappers.Int32Value {
+func (x *MessageWithWKT) GetInt32Value() *wrapperspb.Int32Value {
 	if x != nil {
 		return x.Int32Value
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetUint32Value() *wrappers.UInt32Value {
+func (x *MessageWithWKT) GetUint32Value() *wrapperspb.UInt32Value {
 	if x != nil {
 		return x.Uint32Value
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetBoolValue() *wrappers.BoolValue {
+func (x *MessageWithWKT) GetBoolValue() *wrapperspb.BoolValue {
 	if x != nil {
 		return x.BoolValue
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetStringValue() *wrappers.StringValue {
+func (x *MessageWithWKT) GetStringValue() *wrapperspb.StringValue {
 	if x != nil {
 		return x.StringValue
 	}
 	return nil
 }
 
-func (x *MessageWithWKT) GetBytesValue() *wrappers.BytesValue {
+func (x *MessageWithWKT) GetBytesValue() *wrapperspb.BytesValue {
 	if x != nil {
 		return x.BytesValue
 	}
@@ -263,21 +263,21 @@ func file_wkt_wkt_proto_rawDescGZIP() []byte {
 
 var file_wkt_wkt_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wkt_wkt_proto_goTypes = []interface{}{
-	(*MessageWithWKT)(nil),       // 0: MessageWithWKT
-	(*any1.Any)(nil),             // 1: google.protobuf.Any
-	(*duration.Duration)(nil),    // 2: google.protobuf.Duration
-	(*empty.Empty)(nil),          // 3: google.protobuf.Empty
-	(*field_mask.FieldMask)(nil), // 4: google.protobuf.FieldMask
-	(*timestamp.Timestamp)(nil),  // 5: google.protobuf.Timestamp
-	(*wrappers.DoubleValue)(nil), // 6: google.protobuf.DoubleValue
-	(*wrappers.FloatValue)(nil),  // 7: google.protobuf.FloatValue
-	(*wrappers.Int64Value)(nil),  // 8: google.protobuf.Int64Value
-	(*wrappers.UInt64Value)(nil), // 9: google.protobuf.UInt64Value
-	(*wrappers.Int32Value)(nil),  // 10: google.protobuf.Int32Value
-	(*wrappers.UInt32Value)(nil), // 11: google.protobuf.UInt32Value
-	(*wrappers.BoolValue)(nil),   // 12: google.protobuf.BoolValue
-	(*wrappers.StringValue)(nil), // 13: google.protobuf.StringValue
-	(*wrappers.BytesValue)(nil),  // 14: google.protobuf.BytesValue
+	(*MessageWithWKT)(nil),         // 0: MessageWithWKT
+	(*anypb.Any)(nil),              // 1: google.protobuf.Any
+	(*durationpb.Duration)(nil),    // 2: google.protobuf.Duration
+	(*emptypb.Empty)(nil),          // 3: google.protobuf.Empty
+	(*fieldmaskpb.FieldMask)(nil),  // 4: google.protobuf.FieldMask
+	(*timestamppb.Timestamp)(nil),  // 5: google.protobuf.Timestamp
+	(*wrapperspb.DoubleValue)(nil), // 6: google.protobuf.DoubleValue
+	(*wrapperspb.FloatValue)(nil),  // 7: google.protobuf.FloatValue
+	(*wrapperspb.Int64Value)(nil),  // 8: google.protobuf.Int64Value
+	(*wrapperspb.UInt64Value)(nil), // 9: google.protobuf.UInt64Value
+	(*wrapperspb.Int32Value)(nil),  // 10: google.protobuf.Int32Value
+	(*wrapperspb.UInt32Value)(nil), // 11: google.protobuf.UInt32Value
+	(*wrapperspb.BoolValue)(nil),   // 12: google.protobuf.BoolValue
+	(*wrapperspb.StringValue)(nil), // 13: google.protobuf.StringValue
+	(*wrapperspb.BytesValue)(nil),  // 14: google.protobuf.BytesValue
 }
 var file_wkt_wkt_proto_depIdxs = []int32{
 	1,  // 0: MessageWithWKT.any:type_name -> google.protobuf.Any
