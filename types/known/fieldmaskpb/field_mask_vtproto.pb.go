@@ -25,7 +25,7 @@ func (m *FieldMask) CloneVT() *FieldMask {
 	if m == nil {
 		return (*FieldMask)(nil)
 	}
-	r := &FieldMask{}
+	r := new(fieldmaskpb.FieldMask)
 	if rhs := m.Paths; rhs != nil {
 		tmpContainer := make([]string, len(rhs))
 		copy(tmpContainer, rhs)

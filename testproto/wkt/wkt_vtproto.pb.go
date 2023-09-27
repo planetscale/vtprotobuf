@@ -35,22 +35,21 @@ func (m *MessageWithWKT) CloneVT() *MessageWithWKT {
 	if m == nil {
 		return (*MessageWithWKT)(nil)
 	}
-	r := &MessageWithWKT{
-		Any:         (*anypb.Any)((*anypb1.Any)(m.Any).CloneVT()),
-		Duration:    (*durationpb.Duration)((*durationpb1.Duration)(m.Duration).CloneVT()),
-		Empty:       (*emptypb.Empty)((*emptypb1.Empty)(m.Empty).CloneVT()),
-		FieldMask:   (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.FieldMask).CloneVT()),
-		Timestamp:   (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.Timestamp).CloneVT()),
-		DoubleValue: (*wrapperspb.DoubleValue)((*wrapperspb1.DoubleValue)(m.DoubleValue).CloneVT()),
-		FloatValue:  (*wrapperspb.FloatValue)((*wrapperspb1.FloatValue)(m.FloatValue).CloneVT()),
-		Int64Value:  (*wrapperspb.Int64Value)((*wrapperspb1.Int64Value)(m.Int64Value).CloneVT()),
-		Uint64Value: (*wrapperspb.UInt64Value)((*wrapperspb1.UInt64Value)(m.Uint64Value).CloneVT()),
-		Int32Value:  (*wrapperspb.Int32Value)((*wrapperspb1.Int32Value)(m.Int32Value).CloneVT()),
-		Uint32Value: (*wrapperspb.UInt32Value)((*wrapperspb1.UInt32Value)(m.Uint32Value).CloneVT()),
-		BoolValue:   (*wrapperspb.BoolValue)((*wrapperspb1.BoolValue)(m.BoolValue).CloneVT()),
-		StringValue: (*wrapperspb.StringValue)((*wrapperspb1.StringValue)(m.StringValue).CloneVT()),
-		BytesValue:  (*wrapperspb.BytesValue)((*wrapperspb1.BytesValue)(m.BytesValue).CloneVT()),
-	}
+	r := new(MessageWithWKT)
+	r.Any = (*anypb.Any)((*anypb1.Any)(m.Any).CloneVT())
+	r.Duration = (*durationpb.Duration)((*durationpb1.Duration)(m.Duration).CloneVT())
+	r.Empty = (*emptypb.Empty)((*emptypb1.Empty)(m.Empty).CloneVT())
+	r.FieldMask = (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.FieldMask).CloneVT())
+	r.Timestamp = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.Timestamp).CloneVT())
+	r.DoubleValue = (*wrapperspb.DoubleValue)((*wrapperspb1.DoubleValue)(m.DoubleValue).CloneVT())
+	r.FloatValue = (*wrapperspb.FloatValue)((*wrapperspb1.FloatValue)(m.FloatValue).CloneVT())
+	r.Int64Value = (*wrapperspb.Int64Value)((*wrapperspb1.Int64Value)(m.Int64Value).CloneVT())
+	r.Uint64Value = (*wrapperspb.UInt64Value)((*wrapperspb1.UInt64Value)(m.Uint64Value).CloneVT())
+	r.Int32Value = (*wrapperspb.Int32Value)((*wrapperspb1.Int32Value)(m.Int32Value).CloneVT())
+	r.Uint32Value = (*wrapperspb.UInt32Value)((*wrapperspb1.UInt32Value)(m.Uint32Value).CloneVT())
+	r.BoolValue = (*wrapperspb.BoolValue)((*wrapperspb1.BoolValue)(m.BoolValue).CloneVT())
+	r.StringValue = (*wrapperspb.StringValue)((*wrapperspb1.StringValue)(m.StringValue).CloneVT())
+	r.BytesValue = (*wrapperspb.BytesValue)((*wrapperspb1.BytesValue)(m.BytesValue).CloneVT())
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)

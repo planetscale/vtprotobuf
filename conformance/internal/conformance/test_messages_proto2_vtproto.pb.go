@@ -25,9 +25,8 @@ func (m *TestAllTypesProto2_NestedMessage) CloneVT() *TestAllTypesProto2_NestedM
 	if m == nil {
 		return (*TestAllTypesProto2_NestedMessage)(nil)
 	}
-	r := &TestAllTypesProto2_NestedMessage{
-		Corecursive: m.Corecursive.CloneVT(),
-	}
+	r := new(TestAllTypesProto2_NestedMessage)
+	r.Corecursive = m.Corecursive.CloneVT()
 	if rhs := m.A; rhs != nil {
 		tmpVal := *rhs
 		r.A = &tmpVal
@@ -47,7 +46,7 @@ func (m *TestAllTypesProto2_Data) CloneVT() *TestAllTypesProto2_Data {
 	if m == nil {
 		return (*TestAllTypesProto2_Data)(nil)
 	}
-	r := &TestAllTypesProto2_Data{}
+	r := new(TestAllTypesProto2_Data)
 	if rhs := m.GroupInt32; rhs != nil {
 		tmpVal := *rhs
 		r.GroupInt32 = &tmpVal
@@ -71,7 +70,7 @@ func (m *TestAllTypesProto2_MessageSetCorrect) CloneVT() *TestAllTypesProto2_Mes
 	if m == nil {
 		return (*TestAllTypesProto2_MessageSetCorrect)(nil)
 	}
-	r := &TestAllTypesProto2_MessageSetCorrect{}
+	r := new(TestAllTypesProto2_MessageSetCorrect)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -87,7 +86,7 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension1) CloneVT() *TestAllTypes
 	if m == nil {
 		return (*TestAllTypesProto2_MessageSetCorrectExtension1)(nil)
 	}
-	r := &TestAllTypesProto2_MessageSetCorrectExtension1{}
+	r := new(TestAllTypesProto2_MessageSetCorrectExtension1)
 	if rhs := m.Str; rhs != nil {
 		tmpVal := *rhs
 		r.Str = &tmpVal
@@ -107,7 +106,7 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension2) CloneVT() *TestAllTypes
 	if m == nil {
 		return (*TestAllTypesProto2_MessageSetCorrectExtension2)(nil)
 	}
-	r := &TestAllTypesProto2_MessageSetCorrectExtension2{}
+	r := new(TestAllTypesProto2_MessageSetCorrectExtension2)
 	if rhs := m.I; rhs != nil {
 		tmpVal := *rhs
 		r.I = &tmpVal
@@ -127,12 +126,11 @@ func (m *TestAllTypesProto2) CloneVT() *TestAllTypesProto2 {
 	if m == nil {
 		return (*TestAllTypesProto2)(nil)
 	}
-	r := &TestAllTypesProto2{
-		OptionalNestedMessage:  m.OptionalNestedMessage.CloneVT(),
-		OptionalForeignMessage: m.OptionalForeignMessage.CloneVT(),
-		RecursiveMessage:       m.RecursiveMessage.CloneVT(),
-		Data:                   m.Data.CloneVT(),
-	}
+	r := new(TestAllTypesProto2)
+	r.OptionalNestedMessage = m.OptionalNestedMessage.CloneVT()
+	r.OptionalForeignMessage = m.OptionalForeignMessage.CloneVT()
+	r.RecursiveMessage = m.RecursiveMessage.CloneVT()
+	r.Data = m.Data.CloneVT()
 	if rhs := m.OptionalInt32; rhs != nil {
 		tmpVal := *rhs
 		r.OptionalInt32 = &tmpVal
@@ -751,9 +749,8 @@ func (m *TestAllTypesProto2_OneofUint32) CloneVT() isTestAllTypesProto2_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto2_OneofUint32)(nil)
 	}
-	r := &TestAllTypesProto2_OneofUint32{
-		OneofUint32: m.OneofUint32,
-	}
+	r := new(TestAllTypesProto2_OneofUint32)
+	r.OneofUint32 = m.OneofUint32
 	return r
 }
 
@@ -761,9 +758,8 @@ func (m *TestAllTypesProto2_OneofNestedMessage) CloneVT() isTestAllTypesProto2_O
 	if m == nil {
 		return (*TestAllTypesProto2_OneofNestedMessage)(nil)
 	}
-	r := &TestAllTypesProto2_OneofNestedMessage{
-		OneofNestedMessage: m.OneofNestedMessage.CloneVT(),
-	}
+	r := new(TestAllTypesProto2_OneofNestedMessage)
+	r.OneofNestedMessage = m.OneofNestedMessage.CloneVT()
 	return r
 }
 
@@ -771,9 +767,8 @@ func (m *TestAllTypesProto2_OneofString) CloneVT() isTestAllTypesProto2_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto2_OneofString)(nil)
 	}
-	r := &TestAllTypesProto2_OneofString{
-		OneofString: m.OneofString,
-	}
+	r := new(TestAllTypesProto2_OneofString)
+	r.OneofString = m.OneofString
 	return r
 }
 
@@ -781,7 +776,7 @@ func (m *TestAllTypesProto2_OneofBytes) CloneVT() isTestAllTypesProto2_OneofFiel
 	if m == nil {
 		return (*TestAllTypesProto2_OneofBytes)(nil)
 	}
-	r := &TestAllTypesProto2_OneofBytes{}
+	r := new(TestAllTypesProto2_OneofBytes)
 	if rhs := m.OneofBytes; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -794,9 +789,8 @@ func (m *TestAllTypesProto2_OneofBool) CloneVT() isTestAllTypesProto2_OneofField
 	if m == nil {
 		return (*TestAllTypesProto2_OneofBool)(nil)
 	}
-	r := &TestAllTypesProto2_OneofBool{
-		OneofBool: m.OneofBool,
-	}
+	r := new(TestAllTypesProto2_OneofBool)
+	r.OneofBool = m.OneofBool
 	return r
 }
 
@@ -804,9 +798,8 @@ func (m *TestAllTypesProto2_OneofUint64) CloneVT() isTestAllTypesProto2_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto2_OneofUint64)(nil)
 	}
-	r := &TestAllTypesProto2_OneofUint64{
-		OneofUint64: m.OneofUint64,
-	}
+	r := new(TestAllTypesProto2_OneofUint64)
+	r.OneofUint64 = m.OneofUint64
 	return r
 }
 
@@ -814,9 +807,8 @@ func (m *TestAllTypesProto2_OneofFloat) CloneVT() isTestAllTypesProto2_OneofFiel
 	if m == nil {
 		return (*TestAllTypesProto2_OneofFloat)(nil)
 	}
-	r := &TestAllTypesProto2_OneofFloat{
-		OneofFloat: m.OneofFloat,
-	}
+	r := new(TestAllTypesProto2_OneofFloat)
+	r.OneofFloat = m.OneofFloat
 	return r
 }
 
@@ -824,9 +816,8 @@ func (m *TestAllTypesProto2_OneofDouble) CloneVT() isTestAllTypesProto2_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto2_OneofDouble)(nil)
 	}
-	r := &TestAllTypesProto2_OneofDouble{
-		OneofDouble: m.OneofDouble,
-	}
+	r := new(TestAllTypesProto2_OneofDouble)
+	r.OneofDouble = m.OneofDouble
 	return r
 }
 
@@ -834,9 +825,8 @@ func (m *TestAllTypesProto2_OneofEnum) CloneVT() isTestAllTypesProto2_OneofField
 	if m == nil {
 		return (*TestAllTypesProto2_OneofEnum)(nil)
 	}
-	r := &TestAllTypesProto2_OneofEnum{
-		OneofEnum: m.OneofEnum,
-	}
+	r := new(TestAllTypesProto2_OneofEnum)
+	r.OneofEnum = m.OneofEnum
 	return r
 }
 
@@ -844,7 +834,7 @@ func (m *ForeignMessageProto2) CloneVT() *ForeignMessageProto2 {
 	if m == nil {
 		return (*ForeignMessageProto2)(nil)
 	}
-	r := &ForeignMessageProto2{}
+	r := new(ForeignMessageProto2)
 	if rhs := m.C; rhs != nil {
 		tmpVal := *rhs
 		r.C = &tmpVal
@@ -864,7 +854,7 @@ func (m *UnknownToTestAllTypes_OptionalGroup) CloneVT() *UnknownToTestAllTypes_O
 	if m == nil {
 		return (*UnknownToTestAllTypes_OptionalGroup)(nil)
 	}
-	r := &UnknownToTestAllTypes_OptionalGroup{}
+	r := new(UnknownToTestAllTypes_OptionalGroup)
 	if rhs := m.A; rhs != nil {
 		tmpVal := *rhs
 		r.A = &tmpVal
@@ -884,10 +874,9 @@ func (m *UnknownToTestAllTypes) CloneVT() *UnknownToTestAllTypes {
 	if m == nil {
 		return (*UnknownToTestAllTypes)(nil)
 	}
-	r := &UnknownToTestAllTypes{
-		NestedMessage: m.NestedMessage.CloneVT(),
-		Optionalgroup: m.Optionalgroup.CloneVT(),
-	}
+	r := new(UnknownToTestAllTypes)
+	r.NestedMessage = m.NestedMessage.CloneVT()
+	r.Optionalgroup = m.Optionalgroup.CloneVT()
 	if rhs := m.OptionalInt32; rhs != nil {
 		tmpVal := *rhs
 		r.OptionalInt32 = &tmpVal
@@ -920,7 +909,7 @@ func (m *NullHypothesisProto2) CloneVT() *NullHypothesisProto2 {
 	if m == nil {
 		return (*NullHypothesisProto2)(nil)
 	}
-	r := &NullHypothesisProto2{}
+	r := new(NullHypothesisProto2)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -936,7 +925,7 @@ func (m *EnumOnlyProto2) CloneVT() *EnumOnlyProto2 {
 	if m == nil {
 		return (*EnumOnlyProto2)(nil)
 	}
-	r := &EnumOnlyProto2{}
+	r := new(EnumOnlyProto2)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -952,7 +941,7 @@ func (m *OneStringProto2) CloneVT() *OneStringProto2 {
 	if m == nil {
 		return (*OneStringProto2)(nil)
 	}
-	r := &OneStringProto2{}
+	r := new(OneStringProto2)
 	if rhs := m.Data; rhs != nil {
 		tmpVal := *rhs
 		r.Data = &tmpVal

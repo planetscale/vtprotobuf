@@ -35,10 +35,9 @@ func (m *TestAllTypesProto3_NestedMessage) CloneVT() *TestAllTypesProto3_NestedM
 	if m == nil {
 		return (*TestAllTypesProto3_NestedMessage)(nil)
 	}
-	r := &TestAllTypesProto3_NestedMessage{
-		A:           m.A,
-		Corecursive: m.Corecursive.CloneVT(),
-	}
+	r := new(TestAllTypesProto3_NestedMessage)
+	r.A = m.A
+	r.Corecursive = m.Corecursive.CloneVT()
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -54,62 +53,61 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	if m == nil {
 		return (*TestAllTypesProto3)(nil)
 	}
-	r := &TestAllTypesProto3{
-		OptionalInt32:          m.OptionalInt32,
-		OptionalInt64:          m.OptionalInt64,
-		OptionalUint32:         m.OptionalUint32,
-		OptionalUint64:         m.OptionalUint64,
-		OptionalSint32:         m.OptionalSint32,
-		OptionalSint64:         m.OptionalSint64,
-		OptionalFixed32:        m.OptionalFixed32,
-		OptionalFixed64:        m.OptionalFixed64,
-		OptionalSfixed32:       m.OptionalSfixed32,
-		OptionalSfixed64:       m.OptionalSfixed64,
-		OptionalFloat:          m.OptionalFloat,
-		OptionalDouble:         m.OptionalDouble,
-		OptionalBool:           m.OptionalBool,
-		OptionalString:         m.OptionalString,
-		OptionalNestedMessage:  m.OptionalNestedMessage.CloneVT(),
-		OptionalForeignMessage: m.OptionalForeignMessage.CloneVT(),
-		OptionalNestedEnum:     m.OptionalNestedEnum,
-		OptionalForeignEnum:    m.OptionalForeignEnum,
-		OptionalAliasedEnum:    m.OptionalAliasedEnum,
-		OptionalStringPiece:    m.OptionalStringPiece,
-		OptionalCord:           m.OptionalCord,
-		RecursiveMessage:       m.RecursiveMessage.CloneVT(),
-		OptionalBoolWrapper:    (*wrapperspb.BoolValue)((*wrapperspb1.BoolValue)(m.OptionalBoolWrapper).CloneVT()),
-		OptionalInt32Wrapper:   (*wrapperspb.Int32Value)((*wrapperspb1.Int32Value)(m.OptionalInt32Wrapper).CloneVT()),
-		OptionalInt64Wrapper:   (*wrapperspb.Int64Value)((*wrapperspb1.Int64Value)(m.OptionalInt64Wrapper).CloneVT()),
-		OptionalUint32Wrapper:  (*wrapperspb.UInt32Value)((*wrapperspb1.UInt32Value)(m.OptionalUint32Wrapper).CloneVT()),
-		OptionalUint64Wrapper:  (*wrapperspb.UInt64Value)((*wrapperspb1.UInt64Value)(m.OptionalUint64Wrapper).CloneVT()),
-		OptionalFloatWrapper:   (*wrapperspb.FloatValue)((*wrapperspb1.FloatValue)(m.OptionalFloatWrapper).CloneVT()),
-		OptionalDoubleWrapper:  (*wrapperspb.DoubleValue)((*wrapperspb1.DoubleValue)(m.OptionalDoubleWrapper).CloneVT()),
-		OptionalStringWrapper:  (*wrapperspb.StringValue)((*wrapperspb1.StringValue)(m.OptionalStringWrapper).CloneVT()),
-		OptionalBytesWrapper:   (*wrapperspb.BytesValue)((*wrapperspb1.BytesValue)(m.OptionalBytesWrapper).CloneVT()),
-		OptionalDuration:       (*durationpb.Duration)((*durationpb1.Duration)(m.OptionalDuration).CloneVT()),
-		OptionalTimestamp:      (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.OptionalTimestamp).CloneVT()),
-		OptionalFieldMask:      (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.OptionalFieldMask).CloneVT()),
-		OptionalAny:            (*anypb.Any)((*anypb1.Any)(m.OptionalAny).CloneVT()),
-		OptionalNullValue:      m.OptionalNullValue,
-		Fieldname1:             m.Fieldname1,
-		FieldName2:             m.FieldName2,
-		XFieldName3:            m.XFieldName3,
-		Field_Name4_:           m.Field_Name4_,
-		Field0Name5:            m.Field0Name5,
-		Field_0Name6:           m.Field_0Name6,
-		FieldName7:             m.FieldName7,
-		FieldName8:             m.FieldName8,
-		Field_Name9:            m.Field_Name9,
-		Field_Name10:           m.Field_Name10,
-		FIELD_NAME11:           m.FIELD_NAME11,
-		FIELDName12:            m.FIELDName12,
-		XFieldName13:           m.XFieldName13,
-		X_FieldName14:          m.X_FieldName14,
-		Field_Name15:           m.Field_Name15,
-		Field__Name16:          m.Field__Name16,
-		FieldName17__:          m.FieldName17__,
-		FieldName18__:          m.FieldName18__,
-	}
+	r := new(TestAllTypesProto3)
+	r.OptionalInt32 = m.OptionalInt32
+	r.OptionalInt64 = m.OptionalInt64
+	r.OptionalUint32 = m.OptionalUint32
+	r.OptionalUint64 = m.OptionalUint64
+	r.OptionalSint32 = m.OptionalSint32
+	r.OptionalSint64 = m.OptionalSint64
+	r.OptionalFixed32 = m.OptionalFixed32
+	r.OptionalFixed64 = m.OptionalFixed64
+	r.OptionalSfixed32 = m.OptionalSfixed32
+	r.OptionalSfixed64 = m.OptionalSfixed64
+	r.OptionalFloat = m.OptionalFloat
+	r.OptionalDouble = m.OptionalDouble
+	r.OptionalBool = m.OptionalBool
+	r.OptionalString = m.OptionalString
+	r.OptionalNestedMessage = m.OptionalNestedMessage.CloneVT()
+	r.OptionalForeignMessage = m.OptionalForeignMessage.CloneVT()
+	r.OptionalNestedEnum = m.OptionalNestedEnum
+	r.OptionalForeignEnum = m.OptionalForeignEnum
+	r.OptionalAliasedEnum = m.OptionalAliasedEnum
+	r.OptionalStringPiece = m.OptionalStringPiece
+	r.OptionalCord = m.OptionalCord
+	r.RecursiveMessage = m.RecursiveMessage.CloneVT()
+	r.OptionalBoolWrapper = (*wrapperspb.BoolValue)((*wrapperspb1.BoolValue)(m.OptionalBoolWrapper).CloneVT())
+	r.OptionalInt32Wrapper = (*wrapperspb.Int32Value)((*wrapperspb1.Int32Value)(m.OptionalInt32Wrapper).CloneVT())
+	r.OptionalInt64Wrapper = (*wrapperspb.Int64Value)((*wrapperspb1.Int64Value)(m.OptionalInt64Wrapper).CloneVT())
+	r.OptionalUint32Wrapper = (*wrapperspb.UInt32Value)((*wrapperspb1.UInt32Value)(m.OptionalUint32Wrapper).CloneVT())
+	r.OptionalUint64Wrapper = (*wrapperspb.UInt64Value)((*wrapperspb1.UInt64Value)(m.OptionalUint64Wrapper).CloneVT())
+	r.OptionalFloatWrapper = (*wrapperspb.FloatValue)((*wrapperspb1.FloatValue)(m.OptionalFloatWrapper).CloneVT())
+	r.OptionalDoubleWrapper = (*wrapperspb.DoubleValue)((*wrapperspb1.DoubleValue)(m.OptionalDoubleWrapper).CloneVT())
+	r.OptionalStringWrapper = (*wrapperspb.StringValue)((*wrapperspb1.StringValue)(m.OptionalStringWrapper).CloneVT())
+	r.OptionalBytesWrapper = (*wrapperspb.BytesValue)((*wrapperspb1.BytesValue)(m.OptionalBytesWrapper).CloneVT())
+	r.OptionalDuration = (*durationpb.Duration)((*durationpb1.Duration)(m.OptionalDuration).CloneVT())
+	r.OptionalTimestamp = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.OptionalTimestamp).CloneVT())
+	r.OptionalFieldMask = (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.OptionalFieldMask).CloneVT())
+	r.OptionalAny = (*anypb.Any)((*anypb1.Any)(m.OptionalAny).CloneVT())
+	r.OptionalNullValue = m.OptionalNullValue
+	r.Fieldname1 = m.Fieldname1
+	r.FieldName2 = m.FieldName2
+	r.XFieldName3 = m.XFieldName3
+	r.Field_Name4_ = m.Field_Name4_
+	r.Field0Name5 = m.Field0Name5
+	r.Field_0Name6 = m.Field_0Name6
+	r.FieldName7 = m.FieldName7
+	r.FieldName8 = m.FieldName8
+	r.Field_Name9 = m.Field_Name9
+	r.Field_Name10 = m.Field_Name10
+	r.FIELD_NAME11 = m.FIELD_NAME11
+	r.FIELDName12 = m.FIELDName12
+	r.XFieldName13 = m.XFieldName13
+	r.X_FieldName14 = m.X_FieldName14
+	r.Field_Name15 = m.Field_Name15
+	r.Field__Name16 = m.Field__Name16
+	r.FieldName17__ = m.FieldName17__
+	r.FieldName18__ = m.FieldName18__
 	if rhs := m.OptionalBytes; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -661,9 +659,8 @@ func (m *TestAllTypesProto3_OneofUint32) CloneVT() isTestAllTypesProto3_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto3_OneofUint32)(nil)
 	}
-	r := &TestAllTypesProto3_OneofUint32{
-		OneofUint32: m.OneofUint32,
-	}
+	r := new(TestAllTypesProto3_OneofUint32)
+	r.OneofUint32 = m.OneofUint32
 	return r
 }
 
@@ -671,9 +668,8 @@ func (m *TestAllTypesProto3_OneofNestedMessage) CloneVT() isTestAllTypesProto3_O
 	if m == nil {
 		return (*TestAllTypesProto3_OneofNestedMessage)(nil)
 	}
-	r := &TestAllTypesProto3_OneofNestedMessage{
-		OneofNestedMessage: m.OneofNestedMessage.CloneVT(),
-	}
+	r := new(TestAllTypesProto3_OneofNestedMessage)
+	r.OneofNestedMessage = m.OneofNestedMessage.CloneVT()
 	return r
 }
 
@@ -681,9 +677,8 @@ func (m *TestAllTypesProto3_OneofString) CloneVT() isTestAllTypesProto3_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto3_OneofString)(nil)
 	}
-	r := &TestAllTypesProto3_OneofString{
-		OneofString: m.OneofString,
-	}
+	r := new(TestAllTypesProto3_OneofString)
+	r.OneofString = m.OneofString
 	return r
 }
 
@@ -691,7 +686,7 @@ func (m *TestAllTypesProto3_OneofBytes) CloneVT() isTestAllTypesProto3_OneofFiel
 	if m == nil {
 		return (*TestAllTypesProto3_OneofBytes)(nil)
 	}
-	r := &TestAllTypesProto3_OneofBytes{}
+	r := new(TestAllTypesProto3_OneofBytes)
 	if rhs := m.OneofBytes; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -704,9 +699,8 @@ func (m *TestAllTypesProto3_OneofBool) CloneVT() isTestAllTypesProto3_OneofField
 	if m == nil {
 		return (*TestAllTypesProto3_OneofBool)(nil)
 	}
-	r := &TestAllTypesProto3_OneofBool{
-		OneofBool: m.OneofBool,
-	}
+	r := new(TestAllTypesProto3_OneofBool)
+	r.OneofBool = m.OneofBool
 	return r
 }
 
@@ -714,9 +708,8 @@ func (m *TestAllTypesProto3_OneofUint64) CloneVT() isTestAllTypesProto3_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto3_OneofUint64)(nil)
 	}
-	r := &TestAllTypesProto3_OneofUint64{
-		OneofUint64: m.OneofUint64,
-	}
+	r := new(TestAllTypesProto3_OneofUint64)
+	r.OneofUint64 = m.OneofUint64
 	return r
 }
 
@@ -724,9 +717,8 @@ func (m *TestAllTypesProto3_OneofFloat) CloneVT() isTestAllTypesProto3_OneofFiel
 	if m == nil {
 		return (*TestAllTypesProto3_OneofFloat)(nil)
 	}
-	r := &TestAllTypesProto3_OneofFloat{
-		OneofFloat: m.OneofFloat,
-	}
+	r := new(TestAllTypesProto3_OneofFloat)
+	r.OneofFloat = m.OneofFloat
 	return r
 }
 
@@ -734,9 +726,8 @@ func (m *TestAllTypesProto3_OneofDouble) CloneVT() isTestAllTypesProto3_OneofFie
 	if m == nil {
 		return (*TestAllTypesProto3_OneofDouble)(nil)
 	}
-	r := &TestAllTypesProto3_OneofDouble{
-		OneofDouble: m.OneofDouble,
-	}
+	r := new(TestAllTypesProto3_OneofDouble)
+	r.OneofDouble = m.OneofDouble
 	return r
 }
 
@@ -744,9 +735,8 @@ func (m *TestAllTypesProto3_OneofEnum) CloneVT() isTestAllTypesProto3_OneofField
 	if m == nil {
 		return (*TestAllTypesProto3_OneofEnum)(nil)
 	}
-	r := &TestAllTypesProto3_OneofEnum{
-		OneofEnum: m.OneofEnum,
-	}
+	r := new(TestAllTypesProto3_OneofEnum)
+	r.OneofEnum = m.OneofEnum
 	return r
 }
 
@@ -754,9 +744,8 @@ func (m *TestAllTypesProto3_OneofNullValue) CloneVT() isTestAllTypesProto3_Oneof
 	if m == nil {
 		return (*TestAllTypesProto3_OneofNullValue)(nil)
 	}
-	r := &TestAllTypesProto3_OneofNullValue{
-		OneofNullValue: m.OneofNullValue,
-	}
+	r := new(TestAllTypesProto3_OneofNullValue)
+	r.OneofNullValue = m.OneofNullValue
 	return r
 }
 
@@ -764,9 +753,8 @@ func (m *ForeignMessage) CloneVT() *ForeignMessage {
 	if m == nil {
 		return (*ForeignMessage)(nil)
 	}
-	r := &ForeignMessage{
-		C: m.C,
-	}
+	r := new(ForeignMessage)
+	r.C = m.C
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -782,7 +770,7 @@ func (m *NullHypothesisProto3) CloneVT() *NullHypothesisProto3 {
 	if m == nil {
 		return (*NullHypothesisProto3)(nil)
 	}
-	r := &NullHypothesisProto3{}
+	r := new(NullHypothesisProto3)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -798,7 +786,7 @@ func (m *EnumOnlyProto3) CloneVT() *EnumOnlyProto3 {
 	if m == nil {
 		return (*EnumOnlyProto3)(nil)
 	}
-	r := &EnumOnlyProto3{}
+	r := new(EnumOnlyProto3)
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)

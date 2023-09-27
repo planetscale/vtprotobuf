@@ -25,9 +25,8 @@ func (m *Any) CloneVT() *Any {
 	if m == nil {
 		return (*Any)(nil)
 	}
-	r := &Any{
-		TypeUrl: m.TypeUrl,
-	}
+	r := new(anypb.Any)
+	r.TypeUrl = m.TypeUrl
 	if rhs := m.Value; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)

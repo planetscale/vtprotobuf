@@ -23,7 +23,7 @@ func (m *Test1) CloneVT() *Test1 {
 	if m == nil {
 		return (*Test1)(nil)
 	}
-	r := &Test1{}
+	r := Test1FromVTPool()
 	if rhs := m.Sl; rhs != nil {
 		tmpContainer := make([]string, len(rhs))
 		copy(tmpContainer, rhs)
@@ -44,7 +44,7 @@ func (m *Test2) CloneVT() *Test2 {
 	if m == nil {
 		return (*Test2)(nil)
 	}
-	r := &Test2{}
+	r := Test2FromVTPool()
 	if rhs := m.Sl; rhs != nil {
 		tmpContainer := make([]*Slice2, len(rhs))
 		for k, v := range rhs {
@@ -67,11 +67,10 @@ func (m *Slice2) CloneVT() *Slice2 {
 	if m == nil {
 		return (*Slice2)(nil)
 	}
-	r := &Slice2{
-		D: m.D.CloneVT(),
-		E: m.E,
-		F: m.F,
-	}
+	r := new(Slice2)
+	r.D = m.D.CloneVT()
+	r.E = m.E
+	r.F = m.F
 	if rhs := m.A; rhs != nil {
 		tmpContainer := make(map[int64]int64, len(rhs))
 		for k, v := range rhs {
@@ -103,9 +102,8 @@ func (m *Element2) CloneVT() *Element2 {
 	if m == nil {
 		return (*Element2)(nil)
 	}
-	r := &Element2{
-		A: m.A,
-	}
+	r := new(Element2)
+	r.A = m.A
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -668,9 +666,11 @@ var vtprotoPool_Test1 = sync.Pool{
 }
 
 func (m *Test1) ResetVT() {
-	f0 := m.Sl[:0]
-	m.Reset()
-	m.Sl = f0
+	if m != nil {
+		f0 := m.Sl[:0]
+		m.Reset()
+		m.Sl = f0
+	}
 }
 func (m *Test1) ReturnToVTPool() {
 	if m != nil {
@@ -689,12 +689,14 @@ var vtprotoPool_Test2 = sync.Pool{
 }
 
 func (m *Test2) ResetVT() {
-	for _, mm := range m.Sl {
-		mm.Reset()
+	if m != nil {
+		for _, mm := range m.Sl {
+			mm.Reset()
+		}
+		f0 := m.Sl[:0]
+		m.Reset()
+		m.Sl = f0
 	}
-	f0 := m.Sl[:0]
-	m.Reset()
-	m.Sl = f0
 }
 func (m *Test2) ReturnToVTPool() {
 	if m != nil {

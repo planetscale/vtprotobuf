@@ -25,7 +25,7 @@ func (m *Empty) CloneVT() *Empty {
 	if m == nil {
 		return (*Empty)(nil)
 	}
-	r := &Empty{}
+	r := new(emptypb.Empty)
 	return r
 }
 

@@ -35,9 +35,8 @@ func (m *DoubleValue) CloneVT() *DoubleValue {
 	if m == nil {
 		return (*DoubleValue)(nil)
 	}
-	r := &DoubleValue{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.DoubleValue)
+	r.Value = m.Value
 	return r
 }
 
@@ -45,9 +44,8 @@ func (m *FloatValue) CloneVT() *FloatValue {
 	if m == nil {
 		return (*FloatValue)(nil)
 	}
-	r := &FloatValue{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.FloatValue)
+	r.Value = m.Value
 	return r
 }
 
@@ -55,9 +53,8 @@ func (m *Int64Value) CloneVT() *Int64Value {
 	if m == nil {
 		return (*Int64Value)(nil)
 	}
-	r := &Int64Value{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.Int64Value)
+	r.Value = m.Value
 	return r
 }
 
@@ -65,9 +62,8 @@ func (m *UInt64Value) CloneVT() *UInt64Value {
 	if m == nil {
 		return (*UInt64Value)(nil)
 	}
-	r := &UInt64Value{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.UInt64Value)
+	r.Value = m.Value
 	return r
 }
 
@@ -75,9 +71,8 @@ func (m *Int32Value) CloneVT() *Int32Value {
 	if m == nil {
 		return (*Int32Value)(nil)
 	}
-	r := &Int32Value{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.Int32Value)
+	r.Value = m.Value
 	return r
 }
 
@@ -85,9 +80,8 @@ func (m *UInt32Value) CloneVT() *UInt32Value {
 	if m == nil {
 		return (*UInt32Value)(nil)
 	}
-	r := &UInt32Value{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.UInt32Value)
+	r.Value = m.Value
 	return r
 }
 
@@ -95,9 +89,8 @@ func (m *BoolValue) CloneVT() *BoolValue {
 	if m == nil {
 		return (*BoolValue)(nil)
 	}
-	r := &BoolValue{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.BoolValue)
+	r.Value = m.Value
 	return r
 }
 
@@ -105,9 +98,8 @@ func (m *StringValue) CloneVT() *StringValue {
 	if m == nil {
 		return (*StringValue)(nil)
 	}
-	r := &StringValue{
-		Value: m.Value,
-	}
+	r := new(wrapperspb.StringValue)
+	r.Value = m.Value
 	return r
 }
 
@@ -115,7 +107,7 @@ func (m *BytesValue) CloneVT() *BytesValue {
 	if m == nil {
 		return (*BytesValue)(nil)
 	}
-	r := &BytesValue{}
+	r := new(wrapperspb.BytesValue)
 	if rhs := m.Value; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)

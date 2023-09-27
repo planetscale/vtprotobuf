@@ -24,10 +24,9 @@ func (m *MemoryPoolExtension) CloneVT() *MemoryPoolExtension {
 	if m == nil {
 		return (*MemoryPoolExtension)(nil)
 	}
-	r := &MemoryPoolExtension{
-		Foo1: m.Foo1,
-		Foo2: m.Foo2,
-	}
+	r := MemoryPoolExtensionFromVTPool()
+	r.Foo1 = m.Foo1
+	r.Foo2 = m.Foo2
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -169,7 +168,9 @@ var vtprotoPool_MemoryPoolExtension = sync.Pool{
 }
 
 func (m *MemoryPoolExtension) ResetVT() {
-	m.Reset()
+	if m != nil {
+		m.Reset()
+	}
 }
 func (m *MemoryPoolExtension) ReturnToVTPool() {
 	if m != nil {
