@@ -16,8 +16,8 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Ext           *Extensions
-	LocalPackages map[string]bool
+	Config        *Config
+	LocalPackages map[protoreflect.FullName]bool
 
 	helpers map[string]bool
 }
@@ -38,7 +38,7 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	if message == nil {
 		return false
 	}
-	if b.Ext.Poolable[message.GoIdent] {
+	if b.Config.Poolable[message.GoIdent] {
 		return true
 	}
 	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Mempool)
@@ -50,9 +50,9 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 
 func (b *GeneratedFile) Alloc(vname string, message *protogen.Message) {
 	if b.ShouldPool(message) {
-		b.P(vname, " := ", message.GoIdent, `FromVTPool()`)
+		b.P(vname, " := ", message.GoIdent.GoName, `FromVTPool()`)
 	} else {
-		b.P(vname, " := new(", message.GoIdent, `)`)
+		b.P(vname, " := new(", message.GoIdent.GoName, `)`)
 	}
 }
 
@@ -100,6 +100,47 @@ func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, point
 }
 
 func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
-	pkg := string(message.Desc.ParentFile().Package())
+	if message == nil {
+		return false
+	}
+	pkg := message.Desc.ParentFile().Package()
 	return p.LocalPackages[pkg]
+}
+
+const vtWellKnownPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/types/known/")
+
+var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
+	"google.protobuf.Any":         {GoName: "Any", GoImportPath: vtWellKnownPackage + "anypb"},
+	"google.protobuf.Duration":    {GoName: "Duration", GoImportPath: vtWellKnownPackage + "durationpb"},
+	"google.protobuf.Empty":       {GoName: "Empty", GoImportPath: vtWellKnownPackage + "emptypb"},
+	"google.protobuf.FieldMask":   {GoName: "FieldMask", GoImportPath: vtWellKnownPackage + "fieldmaskpb"},
+	"google.protobuf.Timestamp":   {GoName: "Timestamp", GoImportPath: vtWellKnownPackage + "timestamppb"},
+	"google.protobuf.DoubleValue": {GoName: "DoubleValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.FloatValue":  {GoName: "FloatValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.Int64Value":  {GoName: "Int64Value", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.UInt64Value": {GoName: "UInt64Value", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.Int32Value":  {GoName: "Int32Value", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.UInt32Value": {GoName: "UInt32Value", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.BoolValue":   {GoName: "BoolValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.StringValue": {GoName: "StringValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.BytesValue":  {GoName: "BytesValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+}
+
+func (p *GeneratedFile) IsWellKnownType(message *protogen.Message) bool {
+	if message == nil || !p.Config.WellKnownTypes {
+		return false
+	}
+	_, ok := wellKnownTypes[message.Desc.FullName()]
+	return ok
+}
+
+func (p *GeneratedFile) WellKnownTypeMap(message *protogen.Message) protogen.GoIdent {
+	if message == nil || !p.Config.WellKnownTypes {
+		return protogen.GoIdent{}
+	}
+	return wellKnownTypes[message.Desc.FullName()]
+}
+
+func (p *GeneratedFile) Wrapper() bool {
+	return p.Config.Wrap
 }

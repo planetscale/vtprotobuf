@@ -66,9 +66,12 @@ func (p *clone) cloneOneofField(lhsBase, rhsBase string, oneof *protogen.Oneof) 
 func (p *clone) cloneFieldSingular(lhs, rhs string, kind protoreflect.Kind, message *protogen.Message) {
 	switch {
 	case kind == protoreflect.MessageKind, kind == protoreflect.GroupKind:
-		if p.IsLocalMessage(message) {
+		switch {
+		case p.IsLocalMessage(message):
 			p.P(lhs, ` = `, rhs, `.`, cloneName, `()`)
-		} else {
+		case p.IsWellKnownType(message):
+			p.P(lhs, ` = (*`, message.GoIdent, `)((*`, p.WellKnownTypeMap(message), `)(`, rhs, `).`, cloneName, `())`)
+		default:
 			// rhs is a concrete type, we need to first convert it to an interface in order to use an interface
 			// type assertion.
 			p.P(`if vtpb, ok := interface{}(`, rhs, `).(interface{ `, cloneName, `() *`, message.GoIdent, ` }); ok {`)
@@ -148,10 +151,13 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 	p.body(!proto3, ccTypeName, message, true)
 	p.P(`}`)
 	p.P()
-	p.P(`func (m *`, ccTypeName, `) `, cloneMessageName, `() `, protoPkg.Ident("Message"), ` {`)
-	p.P(`return m.`, cloneName, `()`)
-	p.P(`}`)
-	p.P()
+
+	if !p.Wrapper() {
+		p.P(`func (m *`, ccTypeName, `) `, cloneMessageName, `() `, protoPkg.Ident("Message"), ` {`)
+		p.P(`return m.`, cloneName, `()`)
+		p.P(`}`)
+		p.P()
+	}
 }
 
 // body generates the code for the actual cloning logic of a structure containing the given fields.
@@ -189,9 +195,16 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protoge
 		}
 		// Shortcut: for types where we know that an optimized clone method exists, we can call it directly as it is
 		// nil-safe.
-		if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil && p.IsLocalMessage(field.Message) {
-			p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
-			continue
+		if field.Desc.Cardinality() != protoreflect.Repeated {
+			switch {
+			case p.IsLocalMessage(field.Message):
+				p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
+				continue
+
+			case p.IsWellKnownType(field.Message):
+				p.P(`r.`, field.GoName, ` = (*`, field.Message.GoIdent, `)((*`, p.WellKnownTypeMap(field.Message), `)(m.`, field.GoName, `).`, cloneName, `())`)
+				continue
+			}
 		}
 		refFields = append(refFields, field)
 	}
@@ -201,7 +214,7 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protoge
 		p.cloneField("r", "m", allFieldsNullable, field)
 	}
 
-	if cloneUnknownFields {
+	if cloneUnknownFields && !p.Wrapper() {
 		// Clone unknown fields, if any
 		p.P(`if len(m.unknownFields) > 0 {`)
 		p.P(`r.unknownFields = make([]byte, len(m.unknownFields))`)
