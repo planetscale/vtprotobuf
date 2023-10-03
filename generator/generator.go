@@ -22,11 +22,11 @@ type featureHelpers struct {
 
 type ObjectSet map[protogen.GoIdent]bool
 
-func (o *ObjectSet) String() string {
-	return fmt.Sprintf("%#v", *o)
+func (o ObjectSet) String() string {
+	return fmt.Sprintf("%#v", o)
 }
 
-func (o *ObjectSet) Set(s string) error {
+func (o ObjectSet) Set(s string) error {
 	idx := strings.LastIndexByte(s, '.')
 	if idx < 0 {
 		return fmt.Errorf("invalid object name: %q", s)
@@ -37,10 +37,7 @@ func (o *ObjectSet) Set(s string) error {
 		GoName:       s[idx+1:],
 	}
 
-	if o == nil {
-		*o = make(ObjectSet)
-	}
-	(*o)[ident] = true
+	o[ident] = true
 	return nil
 }
 

@@ -19,9 +19,10 @@ import (
 func main() {
 	var cfg generator.Config
 	var features string
-
 	var f flag.FlagSet
+
 	f.BoolVar(&cfg.AllowEmpty, "allow-empty", false, "allow generation of empty files")
+	cfg.Poolable = make(generator.ObjectSet)
 	f.Var(&cfg.Poolable, "pool", "use memory pooling for this object")
 	f.BoolVar(&cfg.Wrap, "wrap", false, "generate wrapper types")
 	f.BoolVar(&cfg.WellKnownTypes, "wkt", true, "generate optimized code for well-known types")
