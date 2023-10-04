@@ -1,8 +1,6 @@
 syntax = "proto3";
 option go_package = "testproto/unsafe";
 
-import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
-
 message UnsafeTest {
     message Sub1 {
         string s = 1;
