@@ -1,0 +1,32 @@
+syntax = "proto3";
+option go_package = "testproto/unsafe";
+
+message UnsafeTest {
+    message Sub1 {
+        string s = 1;
+        bytes b = 2;
+    }
+
+    message Sub2 {
+        repeated string s = 1;
+        repeated bytes b = 2;
+    }
+
+    message Sub3 {
+        map<string, bytes> foo = 1;
+    }
+
+    message Sub4 {
+        oneof foo {
+            string s = 1;
+            bytes b = 2;
+        }
+    }
+
+    oneof sub {
+        Sub1 sub1 = 1;
+        Sub2 sub2 = 2;
+        Sub3 sub3 = 3;
+        Sub4 sub4 = 4;
+    }
+}
