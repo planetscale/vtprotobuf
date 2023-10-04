@@ -11,34 +11,46 @@ import (
 
 func Test_UnmarshalVTUnsafe(t *testing.T) {
 	t0 := &UnsafeTest{
-		// TODO: add more test cases, consider fuzzing
-		Foo1: "c4c5cVG%$VG$%_KCREÉŠŻ",
-		Foo2: []byte{1, 2, 3, 4, 5, 6, 7, 8},
+		Foo1: "⚡速いA6@wdkyAiX!7Ls7Tp9_NÉŠŻ⚡",
+		Foo2: []byte{8, 7, 6, 5, 4, 3, 2, 1, 0, 1, 2, 3, 4, 5, 6, 7, 8},
 	}
 
 	t0Bytes, err := t0.MarshalVT()
 	require.NoError(t, err)
 
-	t1 := &UnsafeTest{}
-	require.NoError(t, t1.UnmarshalVTUnsafe(t0Bytes))
-	require.NotEqual(t, uintptr(unsafe.Pointer(t0)), uintptr(unsafe.Pointer(t1)))
-
+	// Note: this test performs checks on the Data uintptr of headers. It works as long as the garbage collector doesn't
+	// move memory. To provide guarantee that this test works, consider using https://pkg.go.dev/runtime#Pinner when
+	// upgrading Go to >= 1.21.
 	t0BytesStart := (*reflect.SliceHeader)(unsafe.Pointer(&t0Bytes)).Data
 	t0BytesEnd := t0BytesStart + uintptr(t0.SizeVT()) - 1
 
-	assert.Equal(t, t0.Foo1, t1.Foo1)
-	hdr0s := (*reflect.StringHeader)(unsafe.Pointer(&t0.Foo1))
-	hdr1s := (*reflect.StringHeader)(unsafe.Pointer(&t1.Foo1))
-	assert.False(t, hdr0s.Data > t0BytesStart && hdr0s.Data < t0BytesEnd)
-	// TODO: maybe add something for UnmarshalVT
-	// the underlying data of Foo1 belongs to t0Bytes because it is unsafe
-	assert.True(t, hdr1s.Data > t0BytesStart && hdr1s.Data < t0BytesEnd)
+	// Helper functions to check that the underlying array belongs to t0Bytes
+	assertStringBelongs := func(s string, belongs bool) {
+		hdr := (*reflect.StringHeader)(unsafe.Pointer(&s))
+		start := hdr.Data
+		end := start + uintptr(len(s)) - 1
+		assert.Equal(t, belongs, start >= t0BytesStart && start < t0BytesEnd)
+		assert.Equal(t, belongs, end > t0BytesStart && end <= t0BytesEnd)
+	}
+	assertBytesBelongs := func(s []byte, belongs bool) {
+		hdr := (*reflect.SliceHeader)(unsafe.Pointer(&s))
+		start := hdr.Data
+		end := start + uintptr(len(s)) - 1
+		assert.Equal(t, belongs, start >= t0BytesStart && start < t0BytesEnd)
+		assert.Equal(t, belongs, end > t0BytesStart && end <= t0BytesEnd)
+	}
 
-	assert.Equal(t, t0.Foo2, t1.Foo2)
-	hdr0b := (*reflect.SliceHeader)(unsafe.Pointer(&t0.Foo2))
-	hdr1b := (*reflect.SliceHeader)(unsafe.Pointer(&t1.Foo2))
-	assert.False(t, hdr0b.Data > t0BytesStart && hdr0b.Data < t0BytesEnd)
-	// the underlying data of Foo2 belongs to t0Bytes because it is unsafe
-	// TODO: it fails here, there is an issue with bytes
-	assert.True(t, hdr1b.Data > t0BytesStart && hdr1b.Data < t0BytesEnd)
+	t1Safe := &UnsafeTest{}
+	require.NoError(t, t1Safe.UnmarshalVT(t0Bytes))
+	require.NotEqual(t, uintptr(unsafe.Pointer(t0)), uintptr(unsafe.Pointer(t1Safe)))
+
+	assertStringBelongs(t1Safe.Foo1, false)
+	assertBytesBelongs(t1Safe.Foo2, false)
+
+	t1Unsafe := &UnsafeTest{}
+	require.NoError(t, t1Unsafe.UnmarshalVTUnsafe(t0Bytes))
+	require.NotEqual(t, uintptr(unsafe.Pointer(t0)), uintptr(unsafe.Pointer(t1Unsafe)))
+
+	assertStringBelongs(t1Unsafe.Foo1, true)
+	assertBytesBelongs(t1Unsafe.Foo2, true)
 }
