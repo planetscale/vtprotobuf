@@ -146,23 +146,30 @@ func (p *unmarshal) GenerateHelpers() {
 	}
 }
 
+func (p *unmarshal) methodUnmarshal() string {
+	if p.unsafe {
+		return "UnmarshalVTUnsafe"
+	}
+	return "UnmarshalVT"
+}
+
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
 	switch {
 	case p.IsLocalMessage(message):
-		p.P(`if err := `, varName, `.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`if err := `, varName, `.`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 
 	case p.IsWellKnownType(message):
-		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 
 	default:
 		p.P(`if unmarshal, ok := interface{}(`, varName, `).(interface{`)
-		p.P(`UnmarshalVT([]byte) error`)
+		p.P(p.methodUnmarshal(), `([]byte) error`)
 		p.P(`}); ok{`)
-		p.P(`if err := unmarshal.UnmarshalVT(`, buf, `); err != nil {`)
+		p.P(`if err := unmarshal.`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 		p.P(`} else {`)
@@ -288,7 +295,11 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`if postStringIndex`, varName, ` > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
+		if p.unsafe {
+			p.P(varName, ` = `, "unsafeBytesToString", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
+		} else {
+			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
+		}
 		p.P(`iNdEx = postStringIndex`, varName)
 	case protoreflect.MessageKind:
 		p.P(`var mapmsglen int`)
@@ -321,8 +332,12 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`if postbytesIndex > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(varName, ` = make([]byte, mapbyteLen)`)
-		p.P(`copy(`, varName, `, dAtA[iNdEx:postbytesIndex])`)
+		if p.unsafe {
+			p.P(varName, ` = dAtA[iNdEx:postbytesIndex]`)
+		} else {
+			p.P(varName, ` = make([]byte, mapbyteLen)`)
+			p.P(`copy(`, varName, `, dAtA[iNdEx:postbytesIndex])`)
+		}
 		p.P(`iNdEx = postbytesIndex`)
 	case protoreflect.Uint32Kind:
 		p.decodeVarint(varName, "uint32")
@@ -662,10 +677,14 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 				p.P(`copy(m.`, fieldname, `[len(m.`, fieldname, `)-1], dAtA[iNdEx:postIndex])`)
 			}
 		} else {
-			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `[:0] , dAtA[iNdEx:postIndex]...)`)
-			p.P(`if m.`, fieldname, ` == nil {`)
-			p.P(`m.`, fieldname, ` = []byte{}`)
-			p.P(`}`)
+			if p.unsafe {
+				p.P(`m.`, fieldname, ` = dAtA[iNdEx:postIndex]`)
+			} else {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `[:0] , dAtA[iNdEx:postIndex]...)`)
+				p.P(`if m.`, fieldname, ` == nil {`)
+				p.P(`m.`, fieldname, ` = []byte{}`)
+				p.P(`}`)
+			}
 		}
 		p.P(`iNdEx = postIndex`)
 	case protoreflect.Uint32Kind:
@@ -862,11 +881,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent.GoName
 	required := message.Desc.RequiredNumbers()
 
-	if p.unsafe {
-		p.P(`func (m *`, ccTypeName, `) UnmarshalVTUnsafe(dAtA []byte) error {`)
-	} else {
-		p.P(`func (m *`, ccTypeName, `) UnmarshalVT(dAtA []byte) error {`)
-	}
+	p.P(`func (m *`, ccTypeName, `) `, p.methodUnmarshal(), `(dAtA []byte) error {`)
 	if required.Len() > 0 {
 		p.P(`var hasFields [`, strconv.Itoa(1+(required.Len()-1)/64), `]uint64`)
 	}

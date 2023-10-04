@@ -14858,7 +14858,7 @@ func (m *TestAllTypesProto2_NestedMessage) UnmarshalVTUnsafe(dAtA []byte) error 
 			if m.Corecursive == nil {
 				m.Corecursive = &TestAllTypesProto2{}
 			}
-			if err := m.Corecursive.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Corecursive.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15492,10 +15492,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalBytes = append(m.OptionalBytes[:0], dAtA[iNdEx:postIndex]...)
-			if m.OptionalBytes == nil {
-				m.OptionalBytes = []byte{}
-			}
+			m.OptionalBytes = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 		case 18:
 			if wireType != 2 {
@@ -15529,7 +15526,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.OptionalNestedMessage == nil {
 				m.OptionalNestedMessage = &TestAllTypesProto2_NestedMessage{}
 			}
-			if err := m.OptionalNestedMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.OptionalNestedMessage.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15565,7 +15562,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.OptionalForeignMessage == nil {
 				m.OptionalForeignMessage = &ForeignMessageProto2{}
 			}
-			if err := m.OptionalForeignMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.OptionalForeignMessage.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -15707,7 +15704,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.RecursiveMessage == nil {
 				m.RecursiveMessage = &TestAllTypesProto2{}
 			}
-			if err := m.RecursiveMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.RecursiveMessage.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -16650,7 +16647,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedNestedMessage = append(m.RepeatedNestedMessage, &TestAllTypesProto2_NestedMessage{})
-			if err := m.RepeatedNestedMessage[len(m.RepeatedNestedMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.RepeatedNestedMessage[len(m.RepeatedNestedMessage)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -16684,7 +16681,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedForeignMessage = append(m.RepeatedForeignMessage, &ForeignMessageProto2{})
-			if err := m.RepeatedForeignMessage[len(m.RepeatedForeignMessage)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.RepeatedForeignMessage[len(m.RepeatedForeignMessage)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -18186,7 +18183,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var stringLenmapvalue uint64
@@ -18215,7 +18212,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapvalue > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					mapvalue = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapvalue])
 					iNdEx = postStringIndexmapvalue
 				} else {
 					iNdEx = entryPreIndex
@@ -18313,7 +18310,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapbyteLen uint64
@@ -18342,8 +18339,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postbytesIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapvalue = make([]byte, mapbyteLen)
-					copy(mapvalue, dAtA[iNdEx:postbytesIndex])
+					mapvalue = dAtA[iNdEx:postbytesIndex]
 					iNdEx = postbytesIndex
 				} else {
 					iNdEx = entryPreIndex
@@ -18441,7 +18437,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapmsglen int
@@ -18470,7 +18466,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					mapvalue = &TestAllTypesProto2_NestedMessage{}
-					if err := mapvalue.UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
+					if err := mapvalue.UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
 					iNdEx = postmsgIndex
@@ -18570,7 +18566,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapmsglen int
@@ -18599,7 +18595,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					mapvalue = &ForeignMessageProto2{}
-					if err := mapvalue.UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
+					if err := mapvalue.UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
 					iNdEx = postmsgIndex
@@ -18699,7 +18695,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					for shift := uint(0); ; shift += 7 {
@@ -18812,7 +18808,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					for shift := uint(0); ; shift += 7 {
@@ -20726,12 +20722,12 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.OneofField.(*TestAllTypesProto2_OneofNestedMessage); ok {
-				if err := oneof.OneofNestedMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := oneof.OneofNestedMessage.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := &TestAllTypesProto2_NestedMessage{}
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.OneofField = &TestAllTypesProto2_OneofNestedMessage{OneofNestedMessage: v}
@@ -20908,7 +20904,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				groupWireType := int(wire & 0x7)
 				if groupWireType == 4 {
-					if err := m.Data.UnmarshalVT(dAtA[groupStart:maybeGroupEnd]); err != nil {
+					if err := m.Data.UnmarshalVTUnsafe(dAtA[groupStart:maybeGroupEnd]); err != nil {
 						return err
 					}
 					break
@@ -21196,10 +21192,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.DefaultBytes = append(m.DefaultBytes[:0], dAtA[iNdEx:postIndex]...)
-			if m.DefaultBytes == nil {
-				m.DefaultBytes = []byte{}
-			}
+			m.DefaultBytes = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 		case 401:
 			if wireType != 0 {
@@ -21847,7 +21840,7 @@ func (m *UnknownToTestAllTypes) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.NestedMessage == nil {
 				m.NestedMessage = &ForeignMessageProto2{}
 			}
-			if err := m.NestedMessage.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.NestedMessage.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -21875,7 +21868,7 @@ func (m *UnknownToTestAllTypes) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				groupWireType := int(wire & 0x7)
 				if groupWireType == 4 {
-					if err := m.Optionalgroup.UnmarshalVT(dAtA[groupStart:maybeGroupEnd]); err != nil {
+					if err := m.Optionalgroup.UnmarshalVTUnsafe(dAtA[groupStart:maybeGroupEnd]); err != nil {
 						return err
 					}
 					break

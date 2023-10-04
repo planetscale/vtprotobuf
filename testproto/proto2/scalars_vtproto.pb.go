@@ -10320,10 +10320,7 @@ func (m *BytesMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RequiredField = append(m.RequiredField[:0], dAtA[iNdEx:postIndex]...)
-			if m.RequiredField == nil {
-				m.RequiredField = []byte{}
-			}
+			m.RequiredField = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
@@ -10355,10 +10352,7 @@ func (m *BytesMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalField = append(m.OptionalField[:0], dAtA[iNdEx:postIndex]...)
-			if m.OptionalField == nil {
-				m.OptionalField = []byte{}
-			}
+			m.OptionalField = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {

@@ -2590,7 +2590,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.JspbEncodingOptions == nil {
 				m.JspbEncodingOptions = &JspbEncodingConfig{}
 			}
-			if err := m.JspbEncodingOptions.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.JspbEncodingOptions.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

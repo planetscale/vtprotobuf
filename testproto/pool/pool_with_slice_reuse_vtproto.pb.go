@@ -1473,7 +1473,7 @@ func (m *Test2) UnmarshalVTUnsafe(dAtA []byte) error {
 					m.Sl[len(m.Sl)-1] = &Slice2{}
 				}
 			}
-			if err := m.Sl[len(m.Sl)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Sl[len(m.Sl)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1711,7 +1711,7 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.D == nil {
 				m.D = &Element2{}
 			}
-			if err := m.D.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.D.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

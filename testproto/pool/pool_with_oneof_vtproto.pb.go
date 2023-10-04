@@ -1842,7 +1842,7 @@ func (m *OneofTest_Test3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.C == nil {
 				m.C = OneofTest_Test3_Element2FromVTPool()
 			}
-			if err := m.C.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.C.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1927,12 +1927,12 @@ func (m *OneofTest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Test.(*OneofTest_Test1_); ok {
-				if err := oneof.Test1.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := oneof.Test1.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := OneofTest_Test1FromVTPool()
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Test = &OneofTest_Test1_{Test1: v}
@@ -1968,12 +1968,12 @@ func (m *OneofTest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Test.(*OneofTest_Test2_); ok {
-				if err := oneof.Test2.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := oneof.Test2.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := OneofTest_Test2FromVTPool()
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Test = &OneofTest_Test2_{Test2: v}
@@ -2009,12 +2009,12 @@ func (m *OneofTest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Test.(*OneofTest_Test3_); ok {
-				if err := oneof.Test3.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := oneof.Test3.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := OneofTest_Test3FromVTPool()
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Test = &OneofTest_Test3_{Test3: v}

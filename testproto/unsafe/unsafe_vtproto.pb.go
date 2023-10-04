@@ -486,10 +486,7 @@ func (m *UnsafeTest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Foo2 = append(m.Foo2[:0], dAtA[iNdEx:postIndex]...)
-			if m.Foo2 == nil {
-				m.Foo2 = []byte{}
-			}
+			m.Foo2 = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

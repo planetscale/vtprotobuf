@@ -1243,10 +1243,7 @@ func (m *OptionalFieldInProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.OptionalBytes = append(m.OptionalBytes[:0], dAtA[iNdEx:postIndex]...)
-			if m.OptionalBytes == nil {
-				m.OptionalBytes = []byte{}
-			}
+			m.OptionalBytes = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
 		case 16:
 			if wireType != 0 {

@@ -1251,7 +1251,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Any == nil {
 				m.Any = &anypb.Any{}
 			}
-			if err := (*anypb1.Any)(m.Any).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*anypb1.Any)(m.Any).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1287,7 +1287,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Duration == nil {
 				m.Duration = &durationpb.Duration{}
 			}
-			if err := (*durationpb1.Duration)(m.Duration).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*durationpb1.Duration)(m.Duration).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1323,7 +1323,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Empty == nil {
 				m.Empty = &emptypb.Empty{}
 			}
-			if err := (*emptypb1.Empty)(m.Empty).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*emptypb1.Empty)(m.Empty).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1359,7 +1359,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.FieldMask == nil {
 				m.FieldMask = &fieldmaskpb.FieldMask{}
 			}
-			if err := (*fieldmaskpb1.FieldMask)(m.FieldMask).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*fieldmaskpb1.FieldMask)(m.FieldMask).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1395,7 +1395,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Timestamp == nil {
 				m.Timestamp = &timestamppb.Timestamp{}
 			}
-			if err := (*timestamppb1.Timestamp)(m.Timestamp).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*timestamppb1.Timestamp)(m.Timestamp).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1431,7 +1431,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.DoubleValue == nil {
 				m.DoubleValue = &wrapperspb.DoubleValue{}
 			}
-			if err := (*wrapperspb1.DoubleValue)(m.DoubleValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.DoubleValue)(m.DoubleValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1467,7 +1467,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.FloatValue == nil {
 				m.FloatValue = &wrapperspb.FloatValue{}
 			}
-			if err := (*wrapperspb1.FloatValue)(m.FloatValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.FloatValue)(m.FloatValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1503,7 +1503,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Int64Value == nil {
 				m.Int64Value = &wrapperspb.Int64Value{}
 			}
-			if err := (*wrapperspb1.Int64Value)(m.Int64Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.Int64Value)(m.Int64Value).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1539,7 +1539,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Uint64Value == nil {
 				m.Uint64Value = &wrapperspb.UInt64Value{}
 			}
-			if err := (*wrapperspb1.UInt64Value)(m.Uint64Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.UInt64Value)(m.Uint64Value).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1575,7 +1575,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Int32Value == nil {
 				m.Int32Value = &wrapperspb.Int32Value{}
 			}
-			if err := (*wrapperspb1.Int32Value)(m.Int32Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.Int32Value)(m.Int32Value).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1611,7 +1611,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.Uint32Value == nil {
 				m.Uint32Value = &wrapperspb.UInt32Value{}
 			}
-			if err := (*wrapperspb1.UInt32Value)(m.Uint32Value).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.UInt32Value)(m.Uint32Value).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1647,7 +1647,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.BoolValue == nil {
 				m.BoolValue = &wrapperspb.BoolValue{}
 			}
-			if err := (*wrapperspb1.BoolValue)(m.BoolValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.BoolValue)(m.BoolValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1683,7 +1683,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.StringValue == nil {
 				m.StringValue = &wrapperspb.StringValue{}
 			}
-			if err := (*wrapperspb1.StringValue)(m.StringValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.StringValue)(m.StringValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1719,7 +1719,7 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.BytesValue == nil {
 				m.BytesValue = &wrapperspb.BytesValue{}
 			}
-			if err := (*wrapperspb1.BytesValue)(m.BytesValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*wrapperspb1.BytesValue)(m.BytesValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
