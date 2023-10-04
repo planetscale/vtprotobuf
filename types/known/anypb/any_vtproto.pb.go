@@ -432,7 +432,7 @@ func (m *Any) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.TypeUrl = unsafeBytesToString(dAtA[iNdEx:postIndex])
+			m.TypeUrl = unsafe.String(&dAtA[iNdEx], intStringLen)
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -485,8 +485,4 @@ func (m *Any) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

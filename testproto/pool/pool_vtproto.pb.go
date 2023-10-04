@@ -452,7 +452,7 @@ func (m *MemoryPoolExtension) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Foo1 = unsafeBytesToString(dAtA[iNdEx:postIndex])
+			m.Foo1 = unsafe.String(&dAtA[iNdEx], intStringLen)
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {
@@ -494,8 +494,4 @@ func (m *MemoryPoolExtension) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

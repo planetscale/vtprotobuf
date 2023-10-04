@@ -10,7 +10,6 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	io "io"
 	bits "math/bits"
-	unsafe "unsafe"
 )
 
 const (
@@ -308,8 +307,4 @@ func (m *Empty) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

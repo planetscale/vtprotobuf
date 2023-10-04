@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -1687,7 +1688,7 @@ func (m *OneofTest_Test2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.B = append(m.B, unsafeBytesToString(dAtA[iNdEx:postIndex]))
+			m.B = append(m.B, unsafe.String(&dAtA[iNdEx], intStringLen))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

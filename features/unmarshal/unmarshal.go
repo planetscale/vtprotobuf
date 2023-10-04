@@ -135,15 +135,6 @@ func (p *unmarshal) GenerateHelpers() {
 				ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
 			)`)
 	})
-
-	if p.unsafe {
-		p.Helper("unsafeBytesToString", func(p *generator.GeneratedFile) {
-			p.P(`
-				func unsafeBytesToString(b []byte) string {
-					return *(*string)(`, p.Ident("unsafe", `Pointer`), `(&b))
-				}`)
-		})
-	}
 }
 
 func (p *unmarshal) methodUnmarshal() string {
@@ -296,7 +287,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		if p.unsafe {
-			p.P(varName, ` = `, "unsafeBytesToString", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
+			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)`)
 		} else {
 			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
 		}
@@ -522,7 +513,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`}`)
 		str := "string(dAtA[iNdEx:postIndex])"
 		if p.unsafe {
-			str = `unsafeBytesToString(dAtA[iNdEx:postIndex])`
+			str = p.Ident("unsafe", `String`) + `(&dAtA[iNdEx], intStringLen)`
 		}
 		if oneof {
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", str, `}`)

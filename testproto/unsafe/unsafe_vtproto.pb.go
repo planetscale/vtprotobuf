@@ -2223,7 +2223,7 @@ func (m *UnsafeTest_Sub1) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.S = unsafeBytesToString(dAtA[iNdEx:postIndex])
+			m.S = unsafe.String(&dAtA[iNdEx], intStringLen)
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2337,7 +2337,7 @@ func (m *UnsafeTest_Sub2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.S = append(m.S, unsafeBytesToString(dAtA[iNdEx:postIndex]))
+			m.S = append(m.S, unsafe.String(&dAtA[iNdEx], intStringLen))
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2500,7 +2500,7 @@ func (m *UnsafeTest_Sub3) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = unsafeBytesToString(dAtA[iNdEx:postStringIndexmapkey])
+					mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapbyteLen uint64
@@ -2629,7 +2629,7 @@ func (m *UnsafeTest_Sub4) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Foo = &UnsafeTest_Sub4_S{S: unsafeBytesToString(dAtA[iNdEx:postIndex])}
+			m.Foo = &UnsafeTest_Sub4_S{S: unsafe.String(&dAtA[iNdEx], intStringLen)}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2899,8 +2899,4 @@ func (m *UnsafeTest) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

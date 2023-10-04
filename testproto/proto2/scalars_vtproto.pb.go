@@ -10167,7 +10167,7 @@ func (m *StringMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := unsafeBytesToString(dAtA[iNdEx:postIndex])
+			s := unsafe.String(&dAtA[iNdEx], intStringLen)
 			m.RequiredField = &s
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000001)
@@ -10201,7 +10201,7 @@ func (m *StringMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := unsafeBytesToString(dAtA[iNdEx:postIndex])
+			s := unsafe.String(&dAtA[iNdEx], intStringLen)
 			m.OptionalField = &s
 			iNdEx = postIndex
 		case 3:
@@ -10234,7 +10234,7 @@ func (m *StringMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.RepeatedField = append(m.RepeatedField, unsafeBytesToString(dAtA[iNdEx:postIndex]))
+			m.RepeatedField = append(m.RepeatedField, unsafe.String(&dAtA[iNdEx], intStringLen))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -10643,8 +10643,4 @@ func (m *EnumMessage) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

@@ -2233,7 +2233,7 @@ func (m *StringValue) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Value = unsafeBytesToString(dAtA[iNdEx:postIndex])
+			m.Value = unsafe.String(&dAtA[iNdEx], intStringLen)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2336,8 +2336,4 @@ func (m *BytesValue) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

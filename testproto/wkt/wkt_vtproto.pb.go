@@ -22,7 +22,6 @@ import (
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	io "io"
 	bits "math/bits"
-	unsafe "unsafe"
 )
 
 const (
@@ -1744,8 +1743,4 @@ func (m *MessageWithWKT) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

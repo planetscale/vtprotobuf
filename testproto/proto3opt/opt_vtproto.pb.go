@@ -1211,7 +1211,7 @@ func (m *OptionalFieldInProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := unsafeBytesToString(dAtA[iNdEx:postIndex])
+			s := unsafe.String(&dAtA[iNdEx], intStringLen)
 			m.OptionalString = &s
 			iNdEx = postIndex
 		case 15:
@@ -1286,8 +1286,4 @@ func (m *OptionalFieldInProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 		return io.ErrUnexpectedEOF
 	}
 	return nil
-}
-
-func unsafeBytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

@@ -1,7 +1,6 @@
 package unsafe
 
 import (
-	"reflect"
 	"testing"
 	"unsafe"
 
@@ -11,15 +10,14 @@ import (
 
 // assertStringIsOriginal asserts whether the underlying array of s belongs to originalData.
 //
-// Note: performing checks on the Data uintptr of headers works as long as the garbage collector
-// doesn't move memory. To provide guarantee that this test works, consider using
+// Note: performing checks on the uintptr to the underlying arrays works as long as the garbage
+// collector doesn't move memory. To provide guarantee that this test works, consider using
 // https://pkg.go.dev/runtime#Pinner when upgrading Go to >= 1.21.
 func assertStringIsOriginal(t *testing.T, s string, belongs bool, originalData []byte) {
-	originalStart := (*reflect.SliceHeader)(unsafe.Pointer(&originalData)).Data
+	originalStart := uintptr(unsafe.Pointer(unsafe.SliceData(originalData)))
 	originalEnd := originalStart + uintptr(len(originalData)) - 1
 
-	hdr := (*reflect.StringHeader)(unsafe.Pointer(&s))
-	start := hdr.Data
+	start := uintptr(unsafe.Pointer(unsafe.StringData(s)))
 	end := start + uintptr(len(s)) - 1
 	assert.Equal(t, belongs, start >= originalStart && start < originalEnd)
 	assert.Equal(t, belongs, end > originalStart && end <= originalEnd)
@@ -27,11 +25,10 @@ func assertStringIsOriginal(t *testing.T, s string, belongs bool, originalData [
 
 // assertBytesAreOriginal is the same as assertStringIsOriginal for a []byte.
 func assertBytesAreOriginal(t *testing.T, b []byte, belongs bool, originalData []byte) {
-	originalStart := (*reflect.SliceHeader)(unsafe.Pointer(&originalData)).Data
+	originalStart := uintptr(unsafe.Pointer(unsafe.SliceData(originalData)))
 	originalEnd := originalStart + uintptr(len(originalData)) - 1
 
-	hdr := (*reflect.SliceHeader)(unsafe.Pointer(&b))
-	start := hdr.Data
+	start := uintptr(unsafe.Pointer(unsafe.SliceData(b)))
 	end := start + uintptr(len(b)) - 1
 	assert.Equal(t, belongs, start >= originalStart && start < originalEnd)
 	assert.Equal(t, belongs, end > originalStart && end <= originalEnd)

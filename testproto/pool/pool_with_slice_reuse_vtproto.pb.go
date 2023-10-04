@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -1383,7 +1384,7 @@ func (m *Test1) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Sl = append(m.Sl, unsafeBytesToString(dAtA[iNdEx:postIndex]))
+			m.Sl = append(m.Sl, unsafe.String(&dAtA[iNdEx], intStringLen))
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1677,7 +1678,7 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.C = append(m.C, unsafeBytesToString(dAtA[iNdEx:postIndex]))
+			m.C = append(m.C, unsafe.String(&dAtA[iNdEx], intStringLen))
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -1745,7 +1746,7 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.E = unsafeBytesToString(dAtA[iNdEx:postIndex])
+			m.E = unsafe.String(&dAtA[iNdEx], intStringLen)
 			iNdEx = postIndex
 		case 6:
 			if wireType != 0 {
