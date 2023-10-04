@@ -21,11 +21,16 @@ func init() {
 	generator.RegisterFeature("unmarshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen}
 	})
+
+	generator.RegisterFeature("unmarshal_unsafe", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &unmarshal{GeneratedFile: gen, unsafe: true}
+	})
 }
 
 type unmarshal struct {
 	*generator.GeneratedFile
-	once bool
+	unsafe bool
+	once   bool
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
@@ -33,8 +38,7 @@ var _ generator.FeatureGenerator = (*unmarshal)(nil)
 func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(proto3, message, false)
-		p.message(proto3, message, true)
+		p.message(proto3, message)
 	}
 
 	return p.once
@@ -123,20 +127,23 @@ func (p *unmarshal) GenerateHelpers() {
 			`}`)
 	})
 
-	p.P(`
-		var (
-			ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
-			ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
-			ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
-		)
-	`)
-
-	p.Helper("unsafeBytesToString", func(p *generator.GeneratedFile) {
+	p.Helper("err", func(p *generator.GeneratedFile) {
 		p.P(`
-			func unsafeBytesToString(b []byte) string {
-				return *(*string)(`, p.Ident("unsafe", `Pointer`), `(&b))
-			}`)
+			var (
+				ErrInvalidLength = `, p.Ident("fmt", "Errorf"), `("proto: negative length found during unmarshaling")
+				ErrIntOverflow = `, p.Ident("fmt", "Errorf"), `("proto: integer overflow")
+				ErrUnexpectedEndOfGroup = `, p.Ident("fmt", "Errorf"), `("proto: unexpected end of group")
+			)`)
 	})
+
+	if p.unsafe {
+		p.Helper("unsafeBytesToString", func(p *generator.GeneratedFile) {
+			p.P(`
+				func unsafeBytesToString(b []byte) string {
+					return *(*string)(`, p.Ident("unsafe", `Pointer`), `(&b))
+				}`)
+		})
+	}
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
@@ -350,7 +357,7 @@ func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 	return typ
 }
 
-func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool, unsafe bool) {
+func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
@@ -499,7 +506,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		str := "string(dAtA[iNdEx:postIndex])"
-		if unsafe {
+		if p.unsafe {
 			str = `unsafeBytesToString(dAtA[iNdEx:postIndex])`
 		}
 		if oneof {
@@ -640,7 +647,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		if oneof {
-			if unsafe {
+			if p.unsafe {
 				p.P(`v := dAtA[iNdEx:postIndex]`)
 			} else {
 				p.P(`v := make([]byte, postIndex-iNdEx)`)
@@ -648,7 +655,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			}
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
 		} else if repeated {
-			if unsafe {
+			if p.unsafe {
 				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, dAtA[iNdEx:postIndex])`)
 			} else {
 				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, make([]byte, postIndex-iNdEx))`)
@@ -761,7 +768,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 	}
 }
 
-func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers, unsafe bool) {
+func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers) {
 	fieldname := field.GoName
 	errFieldname := fieldname
 	if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
@@ -772,7 +779,7 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 	wireType := generator.ProtoWireType(field.Desc.Kind())
 	if field.Desc.IsList() && wireType != protowire.BytesType {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
-		p.fieldItem(field, fieldname, message, false, unsafe)
+		p.fieldItem(field, fieldname, message, false)
 		p.P(`} else if wireType == `, strconv.Itoa(int(protowire.BytesType)), `{`)
 		p.P(`var packedLen int`)
 		p.decodeVarint("packedLen", "int")
@@ -816,7 +823,7 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 		p.P(`}`)
 
 		p.P(`for iNdEx < postIndex {`)
-		p.fieldItem(field, fieldname, message, false, unsafe)
+		p.fieldItem(field, fieldname, message, false)
 		p.P(`}`)
 		p.P(`} else {`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
@@ -825,7 +832,7 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 		p.P(`if wireType != `, strconv.Itoa(int(wireType)), `{`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
 		p.P(`}`)
-		p.fieldItem(field, fieldname, message, proto3, unsafe)
+		p.fieldItem(field, fieldname, message, proto3)
 	}
 
 	if field.Desc.Cardinality() == protoreflect.Required {
@@ -842,9 +849,9 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 	}
 }
 
-func (p *unmarshal) message(proto3 bool, message *protogen.Message, unsafe bool) {
+func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(proto3, nested, unsafe)
+		p.message(proto3, nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -855,7 +862,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message, unsafe bool)
 	ccTypeName := message.GoIdent.GoName
 	required := message.Desc.RequiredNumbers()
 
-	if unsafe {
+	if p.unsafe {
 		p.P(`func (m *`, ccTypeName, `) UnmarshalVTUnsafe(dAtA []byte) error {`)
 	} else {
 		p.P(`func (m *`, ccTypeName, `) UnmarshalVT(dAtA []byte) error {`)
@@ -879,7 +886,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message, unsafe bool)
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.field(proto3, false, field, message, required, unsafe)
+		p.field(proto3, false, field, message, required)
 	}
 	p.P(`default:`)
 	p.P(`iNdEx=preIndex`)
