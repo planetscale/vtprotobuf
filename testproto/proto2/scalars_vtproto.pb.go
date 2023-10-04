@@ -26,7 +26,7 @@ func (m *DoubleMessage) CloneVT() *DoubleMessage {
 	if m == nil {
 		return (*DoubleMessage)(nil)
 	}
-	r := &DoubleMessage{}
+	r := new(DoubleMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -60,7 +60,7 @@ func (m *FloatMessage) CloneVT() *FloatMessage {
 	if m == nil {
 		return (*FloatMessage)(nil)
 	}
-	r := &FloatMessage{}
+	r := new(FloatMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -94,7 +94,7 @@ func (m *Int32Message) CloneVT() *Int32Message {
 	if m == nil {
 		return (*Int32Message)(nil)
 	}
-	r := &Int32Message{}
+	r := new(Int32Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -128,7 +128,7 @@ func (m *Int64Message) CloneVT() *Int64Message {
 	if m == nil {
 		return (*Int64Message)(nil)
 	}
-	r := &Int64Message{}
+	r := new(Int64Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -162,7 +162,7 @@ func (m *Uint32Message) CloneVT() *Uint32Message {
 	if m == nil {
 		return (*Uint32Message)(nil)
 	}
-	r := &Uint32Message{}
+	r := new(Uint32Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -196,7 +196,7 @@ func (m *Uint64Message) CloneVT() *Uint64Message {
 	if m == nil {
 		return (*Uint64Message)(nil)
 	}
-	r := &Uint64Message{}
+	r := new(Uint64Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -230,7 +230,7 @@ func (m *Sint32Message) CloneVT() *Sint32Message {
 	if m == nil {
 		return (*Sint32Message)(nil)
 	}
-	r := &Sint32Message{}
+	r := new(Sint32Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -264,7 +264,7 @@ func (m *Sint64Message) CloneVT() *Sint64Message {
 	if m == nil {
 		return (*Sint64Message)(nil)
 	}
-	r := &Sint64Message{}
+	r := new(Sint64Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -298,7 +298,7 @@ func (m *Fixed32Message) CloneVT() *Fixed32Message {
 	if m == nil {
 		return (*Fixed32Message)(nil)
 	}
-	r := &Fixed32Message{}
+	r := new(Fixed32Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -332,7 +332,7 @@ func (m *Fixed64Message) CloneVT() *Fixed64Message {
 	if m == nil {
 		return (*Fixed64Message)(nil)
 	}
-	r := &Fixed64Message{}
+	r := new(Fixed64Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -366,7 +366,7 @@ func (m *Sfixed32Message) CloneVT() *Sfixed32Message {
 	if m == nil {
 		return (*Sfixed32Message)(nil)
 	}
-	r := &Sfixed32Message{}
+	r := new(Sfixed32Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -400,7 +400,7 @@ func (m *Sfixed64Message) CloneVT() *Sfixed64Message {
 	if m == nil {
 		return (*Sfixed64Message)(nil)
 	}
-	r := &Sfixed64Message{}
+	r := new(Sfixed64Message)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -434,7 +434,7 @@ func (m *BoolMessage) CloneVT() *BoolMessage {
 	if m == nil {
 		return (*BoolMessage)(nil)
 	}
-	r := &BoolMessage{}
+	r := new(BoolMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -468,7 +468,7 @@ func (m *StringMessage) CloneVT() *StringMessage {
 	if m == nil {
 		return (*StringMessage)(nil)
 	}
-	r := &StringMessage{}
+	r := new(StringMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal
@@ -497,7 +497,7 @@ func (m *BytesMessage) CloneVT() *BytesMessage {
 	if m == nil {
 		return (*BytesMessage)(nil)
 	}
-	r := &BytesMessage{}
+	r := new(BytesMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -532,7 +532,7 @@ func (m *EnumMessage) CloneVT() *EnumMessage {
 	if m == nil {
 		return (*EnumMessage)(nil)
 	}
-	r := &EnumMessage{}
+	r := new(EnumMessage)
 	if rhs := m.RequiredField; rhs != nil {
 		tmpVal := *rhs
 		r.RequiredField = &tmpVal

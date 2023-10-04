@@ -50,6 +50,7 @@ func (p *pool) message(message *protogen.Message) {
 	p.P(`}`)
 
 	p.P(`func (m *`, ccTypeName, `) ResetVT() {`)
+	p.P(`if m != nil {`)
 	var saved []*protogen.Field
 	for _, field := range message.Fields {
 		fieldName := field.GoName
@@ -88,6 +89,7 @@ func (p *pool) message(message *protogen.Message) {
 	for i, field := range saved {
 		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i))
 	}
+	p.P(`}`)
 	p.P(`}`)
 
 	p.P(`func (m *`, ccTypeName, `) ReturnToVTPool() {`)

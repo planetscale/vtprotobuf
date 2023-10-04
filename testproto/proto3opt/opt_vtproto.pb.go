@@ -26,7 +26,7 @@ func (m *OptionalFieldInProto3) CloneVT() *OptionalFieldInProto3 {
 	if m == nil {
 		return (*OptionalFieldInProto3)(nil)
 	}
-	r := &OptionalFieldInProto3{}
+	r := new(OptionalFieldInProto3)
 	if rhs := m.OptionalInt32; rhs != nil {
 		tmpVal := *rhs
 		r.OptionalInt32 = &tmpVal

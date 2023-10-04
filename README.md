@@ -111,6 +111,12 @@ The following features can be generated:
 
 7. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
+## Well-known types
+
+By default, `vtprotobuf` will detect ProtoBuf [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/) embedded in your own Messages and generate optimized code to marshal and unmarshal them.
+
+In order to access the optimized code for these types, your `_vtproto.pb.go` files will have a dependency on this Go package. If this is not acceptable, you can disable well-known types with `--go-vtproto_opt=wkt=false`.
+
 ## Using the optimized code with RPC frameworks
 
 The `protoc-gen-go-vtproto` compiler does not overwrite any of the default marshalling or unmarshalling code for your ProtoBuf objects. Instead, it generates helper methods that can be called explicitly to opt-in to faster (de)serialization.
