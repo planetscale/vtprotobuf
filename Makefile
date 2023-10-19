@@ -46,6 +46,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/field_mask.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/struct.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
 
 gen-testproto: gen-wkt-testproto install
