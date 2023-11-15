@@ -45,7 +45,7 @@ func (p *pool) message(message *protogen.Message) {
 
 	p.P(`var vtprotoPool_`, ccTypeName, ` = `, p.Ident("sync", "Pool"), `{`)
 	p.P(`New: func() interface{} {`)
-	p.P(`return &`, message.GoIdent, `{}`)
+	p.P(`return &`, ccTypeName, `{}`)
 	p.P(`},`)
 	p.P(`}`)
 
@@ -68,10 +68,12 @@ func (p *pool) message(message *protogen.Message) {
 			}
 			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
 			saved = append(saved, field)
-		} else if field.Oneof != nil && p.ShouldPool(message) && p.ShouldPool(field.Message) {
-			p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
-			p.P(`oneof.`, fieldName, `.ReturnToVTPool()`)
-			p.P(`}`)
+		} else if field.Oneof != nil {
+			if p.ShouldPool(field.Message) {
+				p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
+				p.P(`oneof.`, fieldName, `.ReturnToVTPool()`)
+				p.P(`}`)
+			}
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:

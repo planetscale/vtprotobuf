@@ -31,5 +31,6 @@ message OneofTest {
     Test1 test1 = 1;
     Test2 test2 = 2;
     Test3 test3 = 3;
+    bytes test4 = 4;
   }
 }
