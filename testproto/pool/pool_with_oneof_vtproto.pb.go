@@ -138,6 +138,19 @@ func (m *OneofTest_Test3_) CloneVT() isOneofTest_Test {
 	return r
 }
 
+func (m *OneofTest_Test4) CloneVT() isOneofTest_Test {
+	if m == nil {
+		return (*OneofTest_Test4)(nil)
+	}
+	r := new(OneofTest_Test4)
+	if rhs := m.Test4; rhs != nil {
+		tmpBytes := make([]byte, len(rhs))
+		copy(tmpBytes, rhs)
+		r.Test4 = tmpBytes
+	}
+	return r
+}
+
 func (this *OneofTest_Test1) EqualVT(that *OneofTest_Test1) bool {
 	if this == that {
 		return true
@@ -317,6 +330,23 @@ func (this *OneofTest_Test3_) EqualVT(thatIface isOneofTest_Test) bool {
 		if !p.EqualVT(q) {
 			return false
 		}
+	}
+	return true
+}
+
+func (this *OneofTest_Test4) EqualVT(thatIface isOneofTest_Test) bool {
+	that, ok := thatIface.(*OneofTest_Test4)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if string(this.Test4) != string(that.Test4) {
+		return false
 	}
 	return true
 }
@@ -581,6 +611,20 @@ func (m *OneofTest_Test3_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	return len(dAtA) - i, nil
 }
+func (m *OneofTest_Test4) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *OneofTest_Test4) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.Test4)
+	copy(dAtA[i:], m.Test4)
+	i = encodeVarint(dAtA, i, uint64(len(m.Test4)))
+	i--
+	dAtA[i] = 0x22
+	return len(dAtA) - i, nil
+}
 func (m *OneofTest_Test1) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -772,6 +816,13 @@ func (m *OneofTest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if msg, ok := m.Test.(*OneofTest_Test4); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
 	if msg, ok := m.Test.(*OneofTest_Test3_); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -851,6 +902,20 @@ func (m *OneofTest_Test3_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i--
 		dAtA[i] = 0x1a
 	}
+	return len(dAtA) - i, nil
+}
+func (m *OneofTest_Test4) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *OneofTest_Test4) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.Test4)
+	copy(dAtA[i:], m.Test4)
+	i = encodeVarint(dAtA, i, uint64(len(m.Test4)))
+	i--
+	dAtA[i] = 0x22
 	return len(dAtA) - i, nil
 }
 
@@ -1073,6 +1138,16 @@ func (m *OneofTest_Test3_) SizeVT() (n int) {
 		l = m.Test3.SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
+	return n
+}
+func (m *OneofTest_Test4) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Test4)
+	n += 1 + l + sov(uint64(l))
 	return n
 }
 func (m *OneofTest_Test1) UnmarshalVT(dAtA []byte) error {
@@ -1536,6 +1611,39 @@ func (m *OneofTest) UnmarshalVT(dAtA []byte) error {
 				}
 				m.Test = &OneofTest_Test3_{Test3: v}
 			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Test4", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := make([]byte, postIndex-iNdEx)
+			copy(v, dAtA[iNdEx:postIndex])
+			m.Test = &OneofTest_Test4{Test4: v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2020,6 +2128,38 @@ func (m *OneofTest) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				m.Test = &OneofTest_Test3_{Test3: v}
 			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Test4", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLength
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			v := dAtA[iNdEx:postIndex]
+			m.Test = &OneofTest_Test4{Test4: v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
