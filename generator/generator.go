@@ -20,13 +20,38 @@ type featureHelpers struct {
 	feature int
 }
 
-type ObjectSet map[protogen.GoIdent]bool
+type ObjectSet struct {
+	wildcards map[string]struct{}
+	mp        map[protogen.GoIdent]bool
+}
+
+func NewObjectSet() ObjectSet {
+	return ObjectSet{
+		mp:        map[protogen.GoIdent]bool{},
+		wildcards: map[string]struct{}{},
+	}
+}
 
 func (o ObjectSet) String() string {
 	return fmt.Sprintf("%#v", o)
 }
 
+func (o ObjectSet) Contains(g protogen.GoIdent) bool {
+	for wildcard := range o.wildcards {
+		if Match(wildcard, fmt.Sprintf("%s.%s", string(g.GoImportPath), g.GoName)) {
+			return true
+		}
+	}
+
+	return o.mp[g]
+}
+
 func (o ObjectSet) Set(s string) error {
+	if strings.Contains(s, "*") {
+		o.wildcards[s] = struct{}{}
+		return nil
+	}
+
 	idx := strings.LastIndexByte(s, '.')
 	if idx < 0 {
 		return fmt.Errorf("invalid object name: %q", s)
@@ -37,15 +62,49 @@ func (o ObjectSet) Set(s string) error {
 		GoName:       s[idx+1:],
 	}
 
-	o[ident] = true
+	o.mp[ident] = true
 	return nil
 }
 
+func Match(pattern, name string) (matched bool) {
+	if pattern == "" {
+		return name == pattern
+	}
+
+	if pattern == "*" {
+		return true
+	}
+	return deepMatchRune([]rune(name), []rune(pattern))
+
+}
+
+func deepMatchRune(str, pattern []rune) bool {
+	for len(pattern) > 0 {
+		switch pattern[0] {
+		default:
+			if len(str) == 0 || str[0] != pattern[0] {
+				return false
+			}
+		case '*':
+			return deepMatchRune(str, pattern[1:]) ||
+				(len(str) > 0 && deepMatchRune(str[1:], pattern))
+		}
+
+		str = str[1:]
+		pattern = pattern[1:]
+	}
+
+	return len(str) == 0 && len(pattern) == 0
+}
+
 type Config struct {
-	Poolable       ObjectSet
-	Wrap           bool
-	WellKnownTypes bool
-	AllowEmpty     bool
+	// Poolable rules determines if pool feature generate for particular message
+	Poolable ObjectSet
+	// PoolableExclude rules determines if pool feature disabled for particular message
+	PoolableExclude ObjectSet
+	Wrap            bool
+	WellKnownTypes  bool
+	AllowEmpty      bool
 }
 
 type Generator struct {

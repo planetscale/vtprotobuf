@@ -35,12 +35,15 @@ func (p *GeneratedFile) Ident(path, ident string) string {
 }
 
 func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
-	if message == nil {
+	// Do not generate pool if message is nil or message excluded by external rules
+	if message == nil || b.Config.PoolableExclude.Contains(message.GoIdent) {
 		return false
 	}
-	if b.Config.Poolable[message.GoIdent] {
+
+	if b.Config.Poolable.Contains(message.GoIdent) {
 		return true
 	}
+
 	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Mempool)
 	if mempool, ok := ext.(bool); ok {
 		return mempool

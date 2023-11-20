@@ -22,8 +22,10 @@ func main() {
 	var f flag.FlagSet
 
 	f.BoolVar(&cfg.AllowEmpty, "allow-empty", false, "allow generation of empty files")
-	cfg.Poolable = make(generator.ObjectSet)
+	cfg.Poolable = generator.NewObjectSet()
+	cfg.PoolableExclude = generator.NewObjectSet()
 	f.Var(&cfg.Poolable, "pool", "use memory pooling for this object")
+	f.Var(&cfg.PoolableExclude, "pool-exclude", "do not use memory pooling for this object")
 	f.BoolVar(&cfg.Wrap, "wrap", false, "generate wrapper types")
 	f.BoolVar(&cfg.WellKnownTypes, "wkt", true, "generate optimized code for well-known types")
 	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
