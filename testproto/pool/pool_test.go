@@ -1,6 +1,7 @@
 package pool
 
 import (
+	"google.golang.org/protobuf/proto"
 	"log"
 	"testing"
 
@@ -162,4 +163,25 @@ func Test_Pool_Oneof(t *testing.T) {
 	t8 := OneofTestFromVTPool()
 	require.NoError(t, t8.UnmarshalVT(t4Bytes))
 	require.Equal(t, &t4, &t8)
+}
+
+func Test_Pool_Optional(t *testing.T) {
+	m := &MemoryPoolExtension{
+		Foo1: "foo1",
+		Foo2: 123,
+		Foo3: &OptionalMessage{},
+	}
+
+	mBytes, err := m.MarshalVT()
+	require.NoError(t, err)
+
+	mUnmarshal := &MemoryPoolExtension{}
+	err = proto.Unmarshal(mBytes, mUnmarshal)
+	require.NoError(t, err)
+
+	require.True(t, m.EqualVT(mUnmarshal))
+
+	m.ReturnToVTPool()
+	mFromPool := MemoryPoolExtensionFromVTPool()
+	require.True(t, mFromPool.EqualVT(&MemoryPoolExtension{}))
 }
