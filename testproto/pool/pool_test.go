@@ -1,12 +1,13 @@
 package pool
 
 import (
-	"google.golang.org/protobuf/proto"
 	"log"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"google.golang.org/protobuf/proto"
 )
 
 func Test_Pool_slice_data_override(t *testing.T) {
