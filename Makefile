@@ -48,7 +48,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
 
-gen-testproto: gen-wkt-testproto install
+gen-testproto: get-grpc-testproto gen-wkt-testproto install
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
 		--proto_path=include \
@@ -62,6 +62,22 @@ gen-testproto: gen-wkt-testproto install
 		testproto/proto3opt/opt.proto \
 		testproto/proto2/scalars.proto \
 		testproto/unsafe/unsafe.proto \
+		|| exit 1;
+
+get-grpc-testproto: install
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=. \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		-I$(PROTOBUF_ROOT)/src \
+		-I. \
+		--go_opt=paths=source_relative \
+		--go_opt=Mtestproto/grpc/inner/inner.proto=github.com/planetscale/vtprotobuf/testproto/grpc/inner \
+		--go-vtproto_opt=paths=source_relative \
+        --go-vtproto_opt=Mtestproto/grpc/inner/inner.proto=github.com/planetscale/vtprotobuf/testproto/grpc/inner \
+		testproto/grpc/inner/inner.proto \
+		testproto/grpc/grpc.proto \
 		|| exit 1;
 
 gen-wkt-testproto: install

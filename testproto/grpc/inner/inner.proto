@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package inner;
+
+option go_package = "testproto/grpc/inner";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message TestMessageRequest{
+  option (vtproto.mempool) = true;
+}
+
+message TestMessageResponse{
+  option (vtproto.mempool) = true;
+}

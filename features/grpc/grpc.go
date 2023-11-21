@@ -245,7 +245,7 @@ func genClientMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 	g.P("func (c *", unexport(service.GoName), "Client) ", clientSignature(g, method), "{")
 	if !method.Desc.IsStreamingServer() && !method.Desc.IsStreamingClient() {
 		// g.P("out := new(", method.Output.GoIdent, ")")
-		g.Alloc("out", method.Output)
+		g.Alloc("out", method.Output, true)
 		g.P(`err := c.cc.Invoke(ctx, "`, sname, `", in, out, opts...)`)
 		g.P("if err != nil { return nil, err }")
 		g.P("return out, nil")
@@ -299,7 +299,7 @@ func genClientMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 	if genRecv {
 		g.P("func (x *", streamType, ") Recv() (*", method.Output.GoIdent, ", error) {")
 		// g.P("m := new(", method.Output.GoIdent, ")")
-		g.Alloc("m", method.Output)
+		g.Alloc("m", method.Output, true)
 		g.P("if err := x.ClientStream.RecvMsg(m); err != nil { return nil, err }")
 		g.P("return m, nil")
 		g.P("}")
@@ -309,7 +309,7 @@ func genClientMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 		g.P("func (x *", streamType, ") CloseAndRecv() (*", method.Output.GoIdent, ", error) {")
 		g.P("if err := x.ClientStream.CloseSend(); err != nil { return nil, err }")
 		// g.P("m := new(", method.Output.GoIdent, ")")
-		g.Alloc("m", method.Output)
+		g.Alloc("m", method.Output, true)
 		g.P("if err := x.ClientStream.RecvMsg(m); err != nil { return nil, err }")
 		g.P("return m, nil")
 		g.P("}")
@@ -340,7 +340,7 @@ func genServerMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 	if !method.Desc.IsStreamingClient() && !method.Desc.IsStreamingServer() {
 		g.P("func ", hname, "(srv interface{}, ctx ", contextPackage.Ident("Context"), ", dec func(interface{}) error, interceptor ", grpcPackage.Ident("UnaryServerInterceptor"), ") (interface{}, error) {")
 		// g.P("in := new(", method.Input.GoIdent, ")")
-		g.Alloc("in", method.Input)
+		g.Alloc("in", method.Input, true)
 		g.P("if err := dec(in); err != nil { return nil, err }")
 		g.P("if interceptor == nil { return srv.(", service.GoName, "Server).", method.GoName, "(ctx, in) }")
 		g.P("info := &", grpcPackage.Ident("UnaryServerInfo"), "{")
@@ -359,7 +359,7 @@ func genServerMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 	g.P("func ", hname, "(srv interface{}, stream ", grpcPackage.Ident("ServerStream"), ") error {")
 	if !method.Desc.IsStreamingClient() {
 		// g.P("m := new(", method.Input.GoIdent, ")")
-		g.Alloc("m", method.Input)
+		g.Alloc("m", method.Input, true)
 		g.P("if err := stream.RecvMsg(m); err != nil { return err }")
 		g.P("return srv.(", service.GoName, "Server).", method.GoName, "(m, &", streamType, "{stream})")
 	} else {
@@ -407,7 +407,7 @@ func genServerMethod(gen *protogen.Plugin, file *protogen.File, g *generator.Gen
 	if genRecv {
 		g.P("func (x *", streamType, ") Recv() (*", method.Input.GoIdent, ", error) {")
 		// g.P("m := new(", method.Input.GoIdent, ")")
-		g.Alloc("m", method.Input)
+		g.Alloc("m", method.Input, true)
 		g.P("if err := x.ServerStream.RecvMsg(m); err != nil { return nil, err }")
 		g.P("return m, nil")
 		g.P("}")
