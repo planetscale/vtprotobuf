@@ -48,11 +48,16 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	return false
 }
 
-func (b *GeneratedFile) Alloc(vname string, message *protogen.Message) {
+func (b *GeneratedFile) Alloc(vname string, message *protogen.Message, isQualifiedIdent bool) {
+	ident := message.GoIdent.GoName
+	if isQualifiedIdent {
+		ident = b.QualifiedGoIdent(message.GoIdent)
+	}
+
 	if b.ShouldPool(message) {
-		b.P(vname, " := ", message.GoIdent.GoName, `FromVTPool()`)
+		b.P(vname, " := ", ident, `FromVTPool()`)
 	} else {
-		b.P(vname, " := new(", message.GoIdent.GoName, `)`)
+		b.P(vname, " := new(", ident, `)`)
 	}
 }
 

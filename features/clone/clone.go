@@ -174,7 +174,8 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protoge
 	fields := message.Fields
 	// Make a first pass over the fields, in which we initialize all non-reference fields via direct
 	// struct literal initialization, and extract all other (reference) fields for a second pass.
-	p.Alloc("r", message)
+	// Do not require qualified name because CloneVT generates in same file with definition.
+	p.Alloc("r", message, false)
 	var refFields []*protogen.Field
 	oneofFields := make(map[string]struct{}, len(fields))
 
