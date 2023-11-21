@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "testproto/grpc";
+
+
+import "testproto/grpc/inner/inner.proto";
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+
+message LocalTestMessageRequest {
+  option (vtproto.mempool) = true;
+}
+
+message LocalTestMessageResponse {
+  option (vtproto.mempool) = true;
+}
+
+service TestService{
+  rpc TestRPC(inner.TestMessageRequest) returns (inner.TestMessageResponse){}
+}
+
+service TestServiceLocal{
+  rpc TestRPCLocal(LocalTestMessageRequest) returns (LocalTestMessageResponse){}
+}
