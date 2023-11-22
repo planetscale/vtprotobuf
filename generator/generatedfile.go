@@ -129,6 +129,10 @@ var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
 	"google.protobuf.BoolValue":   {GoName: "BoolValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
 	"google.protobuf.StringValue": {GoName: "StringValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
 	"google.protobuf.BytesValue":  {GoName: "BytesValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.Struct":      {GoName: "Struct", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value":       {GoName: "Value", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.ListValue":   {GoName: "ListValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.NullValue":   {GoName: "NullValue", GoImportPath: vtWellKnownPackage + "structpb"},
 }
 
 func (p *GeneratedFile) IsWellKnownType(message *protogen.Message) bool {

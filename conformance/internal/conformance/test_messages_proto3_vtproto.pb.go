@@ -10,6 +10,7 @@ import (
 	anypb1 "github.com/planetscale/vtprotobuf/types/known/anypb"
 	durationpb1 "github.com/planetscale/vtprotobuf/types/known/durationpb"
 	fieldmaskpb1 "github.com/planetscale/vtprotobuf/types/known/fieldmaskpb"
+	structpb1 "github.com/planetscale/vtprotobuf/types/known/structpb"
 	timestamppb1 "github.com/planetscale/vtprotobuf/types/known/timestamppb"
 	wrapperspb1 "github.com/planetscale/vtprotobuf/types/known/wrapperspb"
 	proto "google.golang.org/protobuf/proto"
@@ -89,7 +90,9 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	r.OptionalDuration = (*durationpb.Duration)((*durationpb1.Duration)(m.OptionalDuration).CloneVT())
 	r.OptionalTimestamp = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.OptionalTimestamp).CloneVT())
 	r.OptionalFieldMask = (*fieldmaskpb.FieldMask)((*fieldmaskpb1.FieldMask)(m.OptionalFieldMask).CloneVT())
+	r.OptionalStruct = (*structpb.Struct)((*structpb1.Struct)(m.OptionalStruct).CloneVT())
 	r.OptionalAny = (*anypb.Any)((*anypb1.Any)(m.OptionalAny).CloneVT())
+	r.OptionalValue = (*structpb.Value)((*structpb1.Value)(m.OptionalValue).CloneVT())
 	r.OptionalNullValue = m.OptionalNullValue
 	r.Fieldname1 = m.Fieldname1
 	r.FieldName2 = m.FieldName2
@@ -570,20 +573,6 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 		}
 		r.RepeatedBytesWrapper = tmpContainer
 	}
-	if rhs := m.OptionalStruct; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Struct }); ok {
-			r.OptionalStruct = vtpb.CloneVT()
-		} else {
-			r.OptionalStruct = proto.Clone(rhs).(*structpb.Struct)
-		}
-	}
-	if rhs := m.OptionalValue; rhs != nil {
-		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *structpb.Value }); ok {
-			r.OptionalValue = vtpb.CloneVT()
-		} else {
-			r.OptionalValue = proto.Clone(rhs).(*structpb.Value)
-		}
-	}
 	if rhs := m.RepeatedDuration; rhs != nil {
 		tmpContainer := make([]*durationpb.Duration, len(rhs))
 		for k, v := range rhs {
@@ -608,11 +597,7 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	if rhs := m.RepeatedStruct; rhs != nil {
 		tmpContainer := make([]*structpb.Struct, len(rhs))
 		for k, v := range rhs {
-			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.Struct }); ok {
-				tmpContainer[k] = vtpb.CloneVT()
-			} else {
-				tmpContainer[k] = proto.Clone(v).(*structpb.Struct)
-			}
+			tmpContainer[k] = (*structpb.Struct)((*structpb1.Struct)(v).CloneVT())
 		}
 		r.RepeatedStruct = tmpContainer
 	}
@@ -626,22 +611,14 @@ func (m *TestAllTypesProto3) CloneVT() *TestAllTypesProto3 {
 	if rhs := m.RepeatedValue; rhs != nil {
 		tmpContainer := make([]*structpb.Value, len(rhs))
 		for k, v := range rhs {
-			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.Value }); ok {
-				tmpContainer[k] = vtpb.CloneVT()
-			} else {
-				tmpContainer[k] = proto.Clone(v).(*structpb.Value)
-			}
+			tmpContainer[k] = (*structpb.Value)((*structpb1.Value)(v).CloneVT())
 		}
 		r.RepeatedValue = tmpContainer
 	}
 	if rhs := m.RepeatedListValue; rhs != nil {
 		tmpContainer := make([]*structpb.ListValue, len(rhs))
 		for k, v := range rhs {
-			if vtpb, ok := interface{}(v).(interface{ CloneVT() *structpb.ListValue }); ok {
-				tmpContainer[k] = vtpb.CloneVT()
-			} else {
-				tmpContainer[k] = proto.Clone(v).(*structpb.ListValue)
-			}
+			tmpContainer[k] = (*structpb.ListValue)((*structpb1.ListValue)(v).CloneVT())
 		}
 		r.RepeatedListValue = tmpContainer
 	}
@@ -1798,21 +1775,13 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 	if !(*fieldmaskpb1.FieldMask)(this.OptionalFieldMask).EqualVT((*fieldmaskpb1.FieldMask)(that.OptionalFieldMask)) {
 		return false
 	}
-	if equal, ok := interface{}(this.OptionalStruct).(interface{ EqualVT(*structpb.Struct) bool }); ok {
-		if !equal.EqualVT(that.OptionalStruct) {
-			return false
-		}
-	} else if !proto.Equal(this.OptionalStruct, that.OptionalStruct) {
+	if !(*structpb1.Struct)(this.OptionalStruct).EqualVT((*structpb1.Struct)(that.OptionalStruct)) {
 		return false
 	}
 	if !(*anypb1.Any)(this.OptionalAny).EqualVT((*anypb1.Any)(that.OptionalAny)) {
 		return false
 	}
-	if equal, ok := interface{}(this.OptionalValue).(interface{ EqualVT(*structpb.Value) bool }); ok {
-		if !equal.EqualVT(that.OptionalValue) {
-			return false
-		}
-	} else if !proto.Equal(this.OptionalValue, that.OptionalValue) {
+	if !(*structpb1.Value)(this.OptionalValue).EqualVT((*structpb1.Value)(that.OptionalValue)) {
 		return false
 	}
 	if this.OptionalNullValue != that.OptionalNullValue {
@@ -1898,11 +1867,7 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 			if q == nil {
 				q = &structpb.Value{}
 			}
-			if equal, ok := interface{}(p).(interface{ EqualVT(*structpb.Value) bool }); ok {
-				if !equal.EqualVT(q) {
-					return false
-				}
-			} else if !proto.Equal(p, q) {
+			if !(*structpb1.Value)(p).EqualVT((*structpb1.Value)(q)) {
 				return false
 			}
 		}
@@ -1919,13 +1884,7 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 			if q == nil {
 				q = &structpb.ListValue{}
 			}
-			if equal, ok := interface{}(p).(interface {
-				EqualVT(*structpb.ListValue) bool
-			}); ok {
-				if !equal.EqualVT(q) {
-					return false
-				}
-			} else if !proto.Equal(p, q) {
+			if !(*structpb1.ListValue)(p).EqualVT((*structpb1.ListValue)(q)) {
 				return false
 			}
 		}
@@ -1942,11 +1901,7 @@ func (this *TestAllTypesProto3) EqualVT(that *TestAllTypesProto3) bool {
 			if q == nil {
 				q = &structpb.Struct{}
 			}
-			if equal, ok := interface{}(p).(interface{ EqualVT(*structpb.Struct) bool }); ok {
-				if !equal.EqualVT(q) {
-					return false
-				}
-			} else if !proto.Equal(p, q) {
+			if !(*structpb1.Struct)(p).EqualVT((*structpb1.Struct)(q)) {
 				return false
 			}
 		}
@@ -2459,24 +2414,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedStruct) > 0 {
 		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedStruct[iNdEx]).(interface {
-				MarshalToSizedBufferVT([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedStruct[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.Struct)(m.RepeatedStruct[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x14
 			i--
@@ -2485,24 +2428,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedListValue[iNdEx]).(interface {
-				MarshalToSizedBufferVT([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedListValue[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.ListValue)(m.RepeatedListValue[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2511,24 +2442,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.RepeatedValue) > 0 {
 		for iNdEx := len(m.RepeatedValue) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedValue[iNdEx]).(interface {
-				MarshalToSizedBufferVT([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedValue[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.Value)(m.RepeatedValue[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -2599,24 +2518,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x98
 	}
 	if m.OptionalValue != nil {
-		if vtmsg, ok := interface{}(m.OptionalValue).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*structpb1.Value)(m.OptionalValue).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -2635,24 +2542,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		dAtA[i] = 0x8a
 	}
 	if m.OptionalStruct != nil {
-		if vtmsg, ok := interface{}(m.OptionalStruct).(interface {
-			MarshalToSizedBufferVT([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalStruct)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*structpb1.Struct)(m.OptionalStruct).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -4653,24 +4548,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedStruct) > 0 {
 		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedStruct[iNdEx]).(interface {
-				MarshalToSizedBufferVTStrict([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedStruct[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.Struct)(m.RepeatedStruct[iNdEx]).MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x14
 			i--
@@ -4679,24 +4562,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedListValue[iNdEx]).(interface {
-				MarshalToSizedBufferVTStrict([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedListValue[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.ListValue)(m.RepeatedListValue[iNdEx]).MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -4705,24 +4576,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	}
 	if len(m.RepeatedValue) > 0 {
 		for iNdEx := len(m.RepeatedValue) - 1; iNdEx >= 0; iNdEx-- {
-			if vtmsg, ok := interface{}(m.RepeatedValue[iNdEx]).(interface {
-				MarshalToSizedBufferVTStrict([]byte) (int, error)
-			}); ok {
-				size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarint(dAtA, i, uint64(size))
-			} else {
-				encoded, err := proto.Marshal(m.RepeatedValue[iNdEx])
-				if err != nil {
-					return 0, err
-				}
-				i -= len(encoded)
-				copy(dAtA[i:], encoded)
-				i = encodeVarint(dAtA, i, uint64(len(encoded)))
+			size, err := (*structpb1.Value)(m.RepeatedValue[iNdEx]).MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
 			}
+			i -= size
+			i = encodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0x13
 			i--
@@ -4793,24 +4652,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		dAtA[i] = 0x98
 	}
 	if m.OptionalValue != nil {
-		if vtmsg, ok := interface{}(m.OptionalValue).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalValue)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*structpb1.Value)(m.OptionalValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -4829,24 +4676,12 @@ func (m *TestAllTypesProto3) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 		dAtA[i] = 0x8a
 	}
 	if m.OptionalStruct != nil {
-		if vtmsg, ok := interface{}(m.OptionalStruct).(interface {
-			MarshalToSizedBufferVTStrict([]byte) (int, error)
-		}); ok {
-			size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarint(dAtA, i, uint64(size))
-		} else {
-			encoded, err := proto.Marshal(m.OptionalStruct)
-			if err != nil {
-				return 0, err
-			}
-			i -= len(encoded)
-			copy(dAtA[i:], encoded)
-			i = encodeVarint(dAtA, i, uint64(len(encoded)))
+		size, err := (*structpb1.Struct)(m.OptionalStruct).MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
 		}
+		i -= size
+		i = encodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x13
 		i--
@@ -7318,13 +7153,7 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalStruct != nil {
-		if size, ok := interface{}(m.OptionalStruct).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.OptionalStruct)
-		}
+		l = (*structpb1.Struct)(m.OptionalStruct).SizeVT()
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalAny != nil {
@@ -7332,13 +7161,7 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalValue != nil {
-		if size, ok := interface{}(m.OptionalValue).(interface {
-			SizeVT() int
-		}); ok {
-			l = size.SizeVT()
-		} else {
-			l = proto.Size(m.OptionalValue)
-		}
+		l = (*structpb1.Value)(m.OptionalValue).SizeVT()
 		n += 2 + l + sov(uint64(l))
 	}
 	if m.OptionalNullValue != 0 {
@@ -7370,37 +7193,19 @@ func (m *TestAllTypesProto3) SizeVT() (n int) {
 	}
 	if len(m.RepeatedValue) > 0 {
 		for _, e := range m.RepeatedValue {
-			if size, ok := interface{}(e).(interface {
-				SizeVT() int
-			}); ok {
-				l = size.SizeVT()
-			} else {
-				l = proto.Size(e)
-			}
+			l = (*structpb1.Value)(e).SizeVT()
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedListValue) > 0 {
 		for _, e := range m.RepeatedListValue {
-			if size, ok := interface{}(e).(interface {
-				SizeVT() int
-			}); ok {
-				l = size.SizeVT()
-			} else {
-				l = proto.Size(e)
-			}
+			l = (*structpb1.ListValue)(e).SizeVT()
 			n += 2 + l + sov(uint64(l))
 		}
 	}
 	if len(m.RepeatedStruct) > 0 {
 		for _, e := range m.RepeatedStruct {
-			if size, ok := interface{}(e).(interface {
-				SizeVT() int
-			}); ok {
-				l = size.SizeVT()
-			} else {
-				l = proto.Size(e)
-			}
+			l = (*structpb1.Struct)(e).SizeVT()
 			n += 2 + l + sov(uint64(l))
 		}
 	}
@@ -14185,16 +13990,8 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalStruct == nil {
 				m.OptionalStruct = &structpb.Struct{}
 			}
-			if unmarshal, ok := interface{}(m.OptionalStruct).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStruct); err != nil {
-					return err
-				}
+			if err := (*structpb1.Struct)(m.OptionalStruct).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 305:
@@ -14265,16 +14062,8 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 			if m.OptionalValue == nil {
 				m.OptionalValue = &structpb.Value{}
 			}
-			if unmarshal, ok := interface{}(m.OptionalValue).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalValue); err != nil {
-					return err
-				}
+			if err := (*structpb1.Value)(m.OptionalValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 307:
@@ -14462,16 +14251,8 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedValue = append(m.RepeatedValue, &structpb.Value{})
-			if unmarshal, ok := interface{}(m.RepeatedValue[len(m.RepeatedValue)-1]).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.Value)(m.RepeatedValue[len(m.RepeatedValue)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 317:
@@ -14504,16 +14285,8 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedListValue = append(m.RepeatedListValue, &structpb.ListValue{})
-			if unmarshal, ok := interface{}(m.RepeatedListValue[len(m.RepeatedListValue)-1]).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.ListValue)(m.RepeatedListValue[len(m.RepeatedListValue)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 324:
@@ -14546,16 +14319,8 @@ func (m *TestAllTypesProto3) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedStruct = append(m.RepeatedStruct, &structpb.Struct{})
-			if unmarshal, ok := interface{}(m.RepeatedStruct[len(m.RepeatedStruct)-1]).(interface {
-				UnmarshalVT([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.Struct)(m.RepeatedStruct[len(m.RepeatedStruct)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 401:
@@ -21683,16 +21448,8 @@ func (m *TestAllTypesProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.OptionalStruct == nil {
 				m.OptionalStruct = &structpb.Struct{}
 			}
-			if unmarshal, ok := interface{}(m.OptionalStruct).(interface {
-				UnmarshalVTUnsafe([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalStruct); err != nil {
-					return err
-				}
+			if err := (*structpb1.Struct)(m.OptionalStruct).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 305:
@@ -21763,16 +21520,8 @@ func (m *TestAllTypesProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if m.OptionalValue == nil {
 				m.OptionalValue = &structpb.Value{}
 			}
-			if unmarshal, ok := interface{}(m.OptionalValue).(interface {
-				UnmarshalVTUnsafe([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.OptionalValue); err != nil {
-					return err
-				}
+			if err := (*structpb1.Value)(m.OptionalValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 307:
@@ -21960,16 +21709,8 @@ func (m *TestAllTypesProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedValue = append(m.RepeatedValue, &structpb.Value{})
-			if unmarshal, ok := interface{}(m.RepeatedValue[len(m.RepeatedValue)-1]).(interface {
-				UnmarshalVTUnsafe([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedValue[len(m.RepeatedValue)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.Value)(m.RepeatedValue[len(m.RepeatedValue)-1]).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 317:
@@ -22002,16 +21743,8 @@ func (m *TestAllTypesProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedListValue = append(m.RepeatedListValue, &structpb.ListValue{})
-			if unmarshal, ok := interface{}(m.RepeatedListValue[len(m.RepeatedListValue)-1]).(interface {
-				UnmarshalVTUnsafe([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedListValue[len(m.RepeatedListValue)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.ListValue)(m.RepeatedListValue[len(m.RepeatedListValue)-1]).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 324:
@@ -22044,16 +21777,8 @@ func (m *TestAllTypesProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.RepeatedStruct = append(m.RepeatedStruct, &structpb.Struct{})
-			if unmarshal, ok := interface{}(m.RepeatedStruct[len(m.RepeatedStruct)-1]).(interface {
-				UnmarshalVTUnsafe([]byte) error
-			}); ok {
-				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-					return err
-				}
-			} else {
-				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.RepeatedStruct[len(m.RepeatedStruct)-1]); err != nil {
-					return err
-				}
+			if err := (*structpb1.Struct)(m.RepeatedStruct[len(m.RepeatedStruct)-1]).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
 			}
 			iNdEx = postIndex
 		case 401:
