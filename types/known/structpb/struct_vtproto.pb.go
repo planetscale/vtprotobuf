@@ -181,17 +181,44 @@ func (this *Value) EqualVT(that *Value) bool {
 		if that.Kind == nil {
 			return false
 		}
-		if !this.Kind.(interface{ EqualVT(isValue_Kind) bool }).EqualVT(that.Kind) {
-			return false
+		switch c := this.Kind.(type) {
+		case *structpb.Value_NullValue:
+			if !(*Value_NullValue)(c).EqualVT(that.Kind) {
+				return false
+			}
+		case *structpb.Value_NumberValue:
+			if !(*Value_NumberValue)(c).EqualVT(that.Kind) {
+				return false
+			}
+		case *structpb.Value_StringValue:
+			if !(*Value_StringValue)(c).EqualVT(that.Kind) {
+				return false
+			}
+		case *structpb.Value_BoolValue:
+			if !(*Value_BoolValue)(c).EqualVT(that.Kind) {
+				return false
+			}
+		case *structpb.Value_StructValue:
+			if !(*Value_StructValue)(c).EqualVT(that.Kind) {
+				return false
+			}
+		case *structpb.Value_ListValue:
+			if !(*Value_ListValue)(c).EqualVT(that.Kind) {
+				return false
+			}
 		}
 	}
 	return true
 }
 
-func (this *Value_NullValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_NullValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_NullValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_NullValue); ok {
+			that = (*Value_NullValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -205,10 +232,14 @@ func (this *Value_NullValue) EqualVT(thatIface isValue_Kind) bool {
 	return true
 }
 
-func (this *Value_NumberValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_NumberValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_NumberValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_NumberValue); ok {
+			that = (*Value_NumberValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -222,10 +253,14 @@ func (this *Value_NumberValue) EqualVT(thatIface isValue_Kind) bool {
 	return true
 }
 
-func (this *Value_StringValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_StringValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_StringValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_StringValue); ok {
+			that = (*Value_StringValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -239,10 +274,14 @@ func (this *Value_StringValue) EqualVT(thatIface isValue_Kind) bool {
 	return true
 }
 
-func (this *Value_BoolValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_BoolValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_BoolValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_BoolValue); ok {
+			that = (*Value_BoolValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -256,10 +295,14 @@ func (this *Value_BoolValue) EqualVT(thatIface isValue_Kind) bool {
 	return true
 }
 
-func (this *Value_StructValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_StructValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_StructValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_StructValue); ok {
+			that = (*Value_StructValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -281,10 +324,14 @@ func (this *Value_StructValue) EqualVT(thatIface isValue_Kind) bool {
 	return true
 }
 
-func (this *Value_ListValue) EqualVT(thatIface isValue_Kind) bool {
+func (this *Value_ListValue) EqualVT(thatIface any) bool {
 	that, ok := thatIface.(*Value_ListValue)
 	if !ok {
-		return false
+		if ot, ok := thatIface.(*structpb.Value_ListValue); ok {
+			that = (*Value_ListValue)(ot)
+		} else {
+			return false
+		}
 	}
 	if this == that {
 		return true
@@ -644,42 +691,48 @@ func (m *Value) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if msg, ok := m.Kind.(*Value_ListValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_ListValue); ok {
+		msg := ((*Value_ListValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 	}
-	if msg, ok := m.Kind.(*Value_StructValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_StructValue); ok {
+		msg := ((*Value_StructValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 	}
-	if msg, ok := m.Kind.(*Value_BoolValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_BoolValue); ok {
+		msg := ((*Value_BoolValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 	}
-	if msg, ok := m.Kind.(*Value_StringValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_StringValue); ok {
+		msg := ((*Value_StringValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 	}
-	if msg, ok := m.Kind.(*Value_NumberValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_NumberValue); ok {
+		msg := ((*Value_NumberValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
 		i -= size
 	}
-	if msg, ok := m.Kind.(*Value_NullValue); ok {
+	if m, ok := m.Kind.(*structpb.Value_NullValue); ok {
+		msg := ((*Value_NullValue)(m))
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
@@ -1077,7 +1130,7 @@ func (m *Struct) UnmarshalVT(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					mapvalue = &structpb.Value{}
-					if err := mapvalue.UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
+					if err := (*Value)(mapvalue).UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
 					iNdEx = postmsgIndex
@@ -1262,12 +1315,12 @@ func (m *Value) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Kind.(*structpb.Value_StructValue); ok {
-				if err := oneof.StructValue.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*Struct)(oneof.StructValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := &structpb.Struct{}
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*Struct)(v).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Kind = &structpb.Value_StructValue{StructValue: v}
@@ -1303,12 +1356,12 @@ func (m *Value) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Kind.(*structpb.Value_ListValue); ok {
-				if err := oneof.ListValue.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*ListValue)(oneof.ListValue).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := &structpb.ListValue{}
-				if err := v.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*ListValue)(v).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Kind = &structpb.Value_ListValue{ListValue: v}
@@ -1394,7 +1447,7 @@ func (m *ListValue) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Values = append(m.Values, &structpb.Value{})
-			if err := m.Values[len(m.Values)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*Value)(m.Values[len(m.Values)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -1642,7 +1695,7 @@ func (m *Struct) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					mapvalue = &structpb.Value{}
-					if err := mapvalue.UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
+					if err := (*Value)(mapvalue).UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
 					iNdEx = postmsgIndex
@@ -1827,12 +1880,12 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Kind.(*structpb.Value_StructValue); ok {
-				if err := oneof.StructValue.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*Struct)(oneof.StructValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := &structpb.Struct{}
-				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*Struct)(v).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Kind = &structpb.Value_StructValue{StructValue: v}
@@ -1868,12 +1921,12 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if oneof, ok := m.Kind.(*structpb.Value_ListValue); ok {
-				if err := oneof.ListValue.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*ListValue)(oneof.ListValue).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 			} else {
 				v := &structpb.ListValue{}
-				if err := v.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				if err := (*ListValue)(v).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
 				m.Kind = &structpb.Value_ListValue{ListValue: v}
@@ -1959,7 +2012,7 @@ func (m *ListValue) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Values = append(m.Values, &structpb.Value{})
-			if err := m.Values[len(m.Values)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+			if err := (*Value)(m.Values[len(m.Values)-1]).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

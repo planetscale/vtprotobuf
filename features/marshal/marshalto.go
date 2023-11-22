@@ -635,7 +635,12 @@ func (p *marshal) message(message *protogen.Message) {
 			if !oneof {
 				p.field(false, &numGen, field)
 			} else {
-				p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
+				if p.IsWellKnownType(message) {
+					p.P(`if m, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
+					p.P(`msg := ((*`, p.WellKnownFieldMap(field), `)(m))`)
+				} else {
+					p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
+				}
 				marshalForwardOneOf("msg")
 				p.P(`}`)
 			}

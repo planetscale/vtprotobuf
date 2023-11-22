@@ -146,13 +146,13 @@ func (p *unmarshal) methodUnmarshal() string {
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
 	switch {
-	case p.IsLocalMessage(message):
-		p.P(`if err := `, varName, `.`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
+	case p.IsWellKnownType(message):
+		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 
-	case p.IsWellKnownType(message):
-		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
+	case p.IsLocalMessage(message):
+		p.P(`if err := `, varName, `.`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
 		p.P(`return err`)
 		p.P(`}`)
 
