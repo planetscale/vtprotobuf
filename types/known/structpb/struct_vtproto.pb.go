@@ -456,10 +456,39 @@ func (m *Value) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if vtmsg, ok := m.Kind.(interface {
-		MarshalToSizedBufferVT([]byte) (int, error)
-	}); ok {
-		size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+	switch c := m.Kind.(type) {
+	case *structpb.Value_NullValue:
+		size, err := (*Value_NullValue)(c).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_NumberValue:
+		size, err := (*Value_NumberValue)(c).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_StringValue:
+		size, err := (*Value_StringValue)(c).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_BoolValue:
+		size, err := (*Value_BoolValue)(c).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_StructValue:
+		size, err := (*Value_StructValue)(c).MarshalToSizedBufferVT(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_ListValue:
+		size, err := (*Value_ListValue)(c).MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -905,8 +934,19 @@ func (m *Value) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if vtmsg, ok := m.Kind.(interface{ SizeVT() int }); ok {
-		n += vtmsg.SizeVT()
+	switch c := m.Kind.(type) {
+	case *structpb.Value_NullValue:
+		n += (*Value_NullValue)(c).SizeVT()
+	case *structpb.Value_NumberValue:
+		n += (*Value_NumberValue)(c).SizeVT()
+	case *structpb.Value_StringValue:
+		n += (*Value_StringValue)(c).SizeVT()
+	case *structpb.Value_BoolValue:
+		n += (*Value_BoolValue)(c).SizeVT()
+	case *structpb.Value_StructValue:
+		n += (*Value_StructValue)(c).SizeVT()
+	case *structpb.Value_ListValue:
+		n += (*Value_ListValue)(c).SizeVT()
 	}
 	return n
 }

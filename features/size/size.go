@@ -305,8 +305,20 @@ func (p *size) message(message *protogen.Message) {
 			p.field(false, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
-			if _, ok := oneofs[fieldname]; !ok {
-				oneofs[fieldname] = struct{}{}
+			if _, ok := oneofs[fieldname]; ok {
+				continue
+			}
+			oneofs[fieldname] = struct{}{}
+			if p.IsWellKnownType(message) {
+				p.P(`switch c := m.`, fieldname, `.(type) {`)
+				for _, f := range field.Oneof.Fields {
+					p.P(`case *`, f.GoIdent, `:`)
+					p.P(`n += (*`, p.WellKnownFieldMap(f), `)(c).`, sizeName, `()`)
+				}
+				p.P(`}`)
+			} else {
+				//if _, ok := oneofs[fieldname]; !ok {
+				//oneofs[fieldname] = struct{}{}
 				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{ SizeVT() int }); ok {`)
 				p.P(`n+=vtmsg.`, sizeName, `()`)
 				p.P(`}`)

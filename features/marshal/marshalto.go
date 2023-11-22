@@ -620,8 +620,11 @@ func (p *marshal) message(message *protogen.Message) {
 		return message.Fields[i].Desc.Number() < message.Fields[j].Desc.Number()
 	})
 
-	marshalForwardOneOf := func(varname string) {
-		p.P(`size, err := `, varname, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+	marshalForwardOneOf := func(varname ...any) {
+		l := []any{`size, err := `}
+		l = append(l, varname...)
+		l = append(l, `.`, p.methodMarshalToSizedBuffer(), `(dAtA[:i])`)
+		p.P(l...)
 		p.P(`if err != nil {`)
 		p.P(`return 0, err`)
 		p.P(`}`)
@@ -655,8 +658,18 @@ func (p *marshal) message(message *protogen.Message) {
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if oneof {
 				fieldname := field.Oneof.GoName
-				if _, ok := oneofs[fieldname]; !ok {
-					oneofs[fieldname] = struct{}{}
+				if _, ok := oneofs[fieldname]; ok {
+					continue
+				}
+				oneofs[fieldname] = struct{}{}
+				if p.IsWellKnownType(message) {
+					p.P(`switch c := m.`, fieldname, `.(type) {`)
+					for _, f := range field.Oneof.Fields {
+						p.P(`case *`, f.GoIdent, `:`)
+						marshalForwardOneOf(`(*`, p.WellKnownFieldMap(f), `)(c)`)
+					}
+					p.P(`}`)
+				} else {
 					p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{`)
 					p.P(p.methodMarshalToSizedBuffer(), ` ([]byte) (int, error)`)
 					p.P(`}); ok {`)
