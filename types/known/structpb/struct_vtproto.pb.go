@@ -161,7 +161,7 @@ func (this *Struct) EqualVT(that *Struct) bool {
 			if q == nil {
 				q = &structpb.Value{}
 			}
-			if !p.EqualVT(q) {
+			if !(*Value)(p).EqualVT((*Value)(q)) {
 				return false
 			}
 		}
@@ -274,7 +274,7 @@ func (this *Value_StructValue) EqualVT(thatIface isValue_Kind) bool {
 		if q == nil {
 			q = &structpb.Struct{}
 		}
-		if !p.EqualVT(q) {
+		if !(*Struct)(p).EqualVT((*Struct)(q)) {
 			return false
 		}
 	}
@@ -299,7 +299,7 @@ func (this *Value_ListValue) EqualVT(thatIface isValue_Kind) bool {
 		if q == nil {
 			q = &structpb.ListValue{}
 		}
-		if !p.EqualVT(q) {
+		if !(*ListValue)(p).EqualVT((*ListValue)(q)) {
 			return false
 		}
 	}
@@ -324,7 +324,7 @@ func (this *ListValue) EqualVT(that *ListValue) bool {
 			if q == nil {
 				q = &structpb.Value{}
 			}
-			if !p.EqualVT(q) {
+			if !(*Value)(p).EqualVT((*Value)(q)) {
 				return false
 			}
 		}
@@ -836,7 +836,7 @@ func (m *Struct) SizeVT() (n int) {
 			_ = v
 			l = 0
 			if v != nil {
-				l = v.SizeVT()
+				l = (*Value)(v).SizeVT()
 			}
 			l += 1 + sov(uint64(l))
 			mapEntrySize := 1 + len(k) + sov(uint64(len(k))) + l
@@ -858,7 +858,7 @@ func (m *Value) SizeVT() (n int) {
 	return n
 }
 
-func (m *structpb.Value_NullValue) SizeVT() (n int) {
+func (m *Value_NullValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -867,7 +867,7 @@ func (m *structpb.Value_NullValue) SizeVT() (n int) {
 	n += 1 + sov(uint64(m.NullValue))
 	return n
 }
-func (m *structpb.Value_NumberValue) SizeVT() (n int) {
+func (m *Value_NumberValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -876,7 +876,7 @@ func (m *structpb.Value_NumberValue) SizeVT() (n int) {
 	n += 9
 	return n
 }
-func (m *structpb.Value_StringValue) SizeVT() (n int) {
+func (m *Value_StringValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -886,7 +886,7 @@ func (m *structpb.Value_StringValue) SizeVT() (n int) {
 	n += 1 + l + sov(uint64(l))
 	return n
 }
-func (m *structpb.Value_BoolValue) SizeVT() (n int) {
+func (m *Value_BoolValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -895,26 +895,26 @@ func (m *structpb.Value_BoolValue) SizeVT() (n int) {
 	n += 2
 	return n
 }
-func (m *structpb.Value_StructValue) SizeVT() (n int) {
+func (m *Value_StructValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.StructValue != nil {
-		l = m.StructValue.SizeVT()
+		l = (*Struct)(m.StructValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	return n
 }
-func (m *structpb.Value_ListValue) SizeVT() (n int) {
+func (m *Value_ListValue) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.ListValue != nil {
-		l = m.ListValue.SizeVT()
+		l = (*ListValue)(m.ListValue).SizeVT()
 		n += 1 + l + sov(uint64(l))
 	}
 	return n
@@ -927,7 +927,7 @@ func (m *ListValue) SizeVT() (n int) {
 	_ = l
 	if len(m.Values) > 0 {
 		for _, e := range m.Values {
-			l = e.SizeVT()
+			l = (*Value)(e).SizeVT()
 			n += 1 + l + sov(uint64(l))
 		}
 	}

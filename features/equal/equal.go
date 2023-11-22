@@ -249,13 +249,13 @@ func (p *equal) compareCall(lhs, rhs string, msg *protogen.Message, nullable boo
 		lhs, rhs = "p", "q"
 	}
 	switch {
-	case p.IsLocalMessage(msg):
-		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
-		p.P(`	return false`)
-		p.P(`}`)
 	case p.IsWellKnownType(msg):
 		wkt := p.WellKnownTypeMap(msg)
 		p.P(`if !(*`, wkt, `)(`, lhs, `).`, equalName, `((*`, wkt, `)(`, rhs, `)) {`)
+		p.P(`	return false`)
+		p.P(`}`)
+	case p.IsLocalMessage(msg):
+		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
 	default:

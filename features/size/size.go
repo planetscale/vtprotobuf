@@ -57,11 +57,11 @@ func (p *size) GenerateHelpers() {
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
 	switch {
-	case p.IsLocalMessage(message):
-		p.P(`l = `, varName, `.`, sizeName, `()`)
-
 	case p.IsWellKnownType(message):
 		p.P(`l = (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, sizeName, `()`)
+
+	case p.IsLocalMessage(message):
+		p.P(`l = `, varName, `.`, sizeName, `()`)
 
 	default:
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
@@ -325,6 +325,9 @@ func (p *size) message(message *protogen.Message) {
 			continue
 		}
 		ccTypeName := field.GoIdent
+		if p.IsWellKnownType(message) && p.IsLocalMessage(message) {
+			ccTypeName.GoImportPath = ""
+		}
 		p.P(`func (m *`, ccTypeName, `) `, sizeName, `() (n int) {`)
 		p.P(`if m == nil {`)
 		p.P(`return 0`)
