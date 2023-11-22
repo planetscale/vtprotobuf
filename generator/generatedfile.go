@@ -112,6 +112,14 @@ func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
 	return p.LocalPackages[pkg]
 }
 
+func (p *GeneratedFile) IsLocalField(field *protogen.Field) bool {
+	if field == nil {
+		return false
+	}
+	pkg := field.Desc.ParentFile().Package()
+	return p.LocalPackages[pkg]
+}
+
 const vtWellKnownPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/types/known/")
 
 var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
@@ -132,7 +140,15 @@ var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
 	"google.protobuf.Struct":      {GoName: "Struct", GoImportPath: vtWellKnownPackage + "structpb"},
 	"google.protobuf.Value":       {GoName: "Value", GoImportPath: vtWellKnownPackage + "structpb"},
 	"google.protobuf.ListValue":   {GoName: "ListValue", GoImportPath: vtWellKnownPackage + "structpb"},
-	"google.protobuf.NullValue":   {GoName: "NullValue", GoImportPath: vtWellKnownPackage + "structpb"},
+}
+
+var wellKnownFields = map[protoreflect.FullName]protogen.GoIdent{
+	"google.protobuf.Value.null_value":   {GoName: "Value_NullValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.number_value": {GoName: "Value_NumberValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.string_value": {GoName: "Value_StringValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.bool_value":   {GoName: "Value_BoolValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.struct_value": {GoName: "Value_StructValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.list_value":   {GoName: "Value_ListValue", GoImportPath: vtWellKnownPackage + "structpb"},
 }
 
 func (p *GeneratedFile) IsWellKnownType(message *protogen.Message) bool {
@@ -143,11 +159,29 @@ func (p *GeneratedFile) IsWellKnownType(message *protogen.Message) bool {
 	return ok
 }
 
+func (p *GeneratedFile) WellKnownFieldMap(field *protogen.Field) protogen.GoIdent {
+	if field == nil || !p.Config.WellKnownTypes {
+		return protogen.GoIdent{}
+	}
+	res, ff := wellKnownFields[field.Desc.FullName()]
+	if !ff {
+		panic(field.Desc.FullName())
+	}
+	if p.IsLocalField(field) {
+		res.GoImportPath = ""
+	}
+	return res
+}
+
 func (p *GeneratedFile) WellKnownTypeMap(message *protogen.Message) protogen.GoIdent {
 	if message == nil || !p.Config.WellKnownTypes {
 		return protogen.GoIdent{}
 	}
-	return wellKnownTypes[message.Desc.FullName()]
+	res := wellKnownTypes[message.Desc.FullName()]
+	if p.IsLocalMessage(message) {
+		res.GoImportPath = ""
+	}
+	return res
 }
 
 func (p *GeneratedFile) Wrapper() bool {

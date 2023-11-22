@@ -7,7 +7,6 @@ package structpb
 import (
 	binary "encoding/binary"
 	fmt "fmt"
-	structpb1 "github.com/planetscale/vtprotobuf/types/known/structpb"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
@@ -25,8 +24,13 @@ const (
 
 type Struct structpb.Struct
 type Value structpb.Value
+type Value_NullValue structpb.Value_NullValue
+type Value_NumberValue structpb.Value_NumberValue
+type Value_StringValue structpb.Value_StringValue
+type Value_BoolValue structpb.Value_BoolValue
+type Value_StructValue structpb.Value_StructValue
+type Value_ListValue structpb.Value_ListValue
 type ListValue structpb.ListValue
-type Value_NullValue structpb.ListValue
 
 func (m *Struct) CloneVT() *Struct {
 	if m == nil {
@@ -36,7 +40,7 @@ func (m *Struct) CloneVT() *Struct {
 	if rhs := m.Fields; rhs != nil {
 		tmpContainer := make(map[string]*structpb.Value, len(rhs))
 		for k, v := range rhs {
-			tmpContainer[k] = v.CloneVT()
+			tmpContainer[k] = (*structpb.Value)((*Value)(v).CloneVT())
 		}
 		r.Fields = tmpContainer
 	}
@@ -49,12 +53,25 @@ func (m *Value) CloneVT() *Value {
 	}
 	r := new(Value)
 	if m.Kind != nil {
-		r.Kind = m.Kind.(interface{ CloneVT() isValue_Kind }).CloneVT()
+		switch c := m.Kind.(type) {
+		case *structpb.Value_NullValue:
+			r.Kind = (*structpb.Value_NullValue)((*Value_NullValue)(c).CloneVT())
+		case *structpb.Value_NumberValue:
+			r.Kind = (*structpb.Value_NumberValue)((*Value_NumberValue)(c).CloneVT())
+		case *structpb.Value_StringValue:
+			r.Kind = (*structpb.Value_StringValue)((*Value_StringValue)(c).CloneVT())
+		case *structpb.Value_BoolValue:
+			r.Kind = (*structpb.Value_BoolValue)((*Value_BoolValue)(c).CloneVT())
+		case *structpb.Value_StructValue:
+			r.Kind = (*structpb.Value_StructValue)((*Value_StructValue)(c).CloneVT())
+		case *structpb.Value_ListValue:
+			r.Kind = (*structpb.Value_ListValue)((*Value_ListValue)(c).CloneVT())
+		}
 	}
 	return r
 }
 
-func (m *Value_NullValue) CloneVT() isValue_Kind {
+func (m *Value_NullValue) CloneVT() *Value_NullValue {
 	if m == nil {
 		return (*Value_NullValue)(nil)
 	}
@@ -63,7 +80,7 @@ func (m *Value_NullValue) CloneVT() isValue_Kind {
 	return r
 }
 
-func (m *Value_NumberValue) CloneVT() isValue_Kind {
+func (m *Value_NumberValue) CloneVT() *Value_NumberValue {
 	if m == nil {
 		return (*Value_NumberValue)(nil)
 	}
@@ -72,7 +89,7 @@ func (m *Value_NumberValue) CloneVT() isValue_Kind {
 	return r
 }
 
-func (m *Value_StringValue) CloneVT() isValue_Kind {
+func (m *Value_StringValue) CloneVT() *Value_StringValue {
 	if m == nil {
 		return (*Value_StringValue)(nil)
 	}
@@ -81,7 +98,7 @@ func (m *Value_StringValue) CloneVT() isValue_Kind {
 	return r
 }
 
-func (m *Value_BoolValue) CloneVT() isValue_Kind {
+func (m *Value_BoolValue) CloneVT() *Value_BoolValue {
 	if m == nil {
 		return (*Value_BoolValue)(nil)
 	}
@@ -90,21 +107,21 @@ func (m *Value_BoolValue) CloneVT() isValue_Kind {
 	return r
 }
 
-func (m *Value_StructValue) CloneVT() isValue_Kind {
+func (m *Value_StructValue) CloneVT() *Value_StructValue {
 	if m == nil {
 		return (*Value_StructValue)(nil)
 	}
 	r := new(Value_StructValue)
-	r.StructValue = m.StructValue.CloneVT()
+	r.StructValue = (*structpb.Struct)((*Struct)(m.StructValue).CloneVT())
 	return r
 }
 
-func (m *Value_ListValue) CloneVT() isValue_Kind {
+func (m *Value_ListValue) CloneVT() *Value_ListValue {
 	if m == nil {
 		return (*Value_ListValue)(nil)
 	}
 	r := new(Value_ListValue)
-	r.ListValue = m.ListValue.CloneVT()
+	r.ListValue = (*structpb.ListValue)((*ListValue)(m.ListValue).CloneVT())
 	return r
 }
 
@@ -116,7 +133,7 @@ func (m *ListValue) CloneVT() *ListValue {
 	if rhs := m.Values; rhs != nil {
 		tmpContainer := make([]*structpb.Value, len(rhs))
 		for k, v := range rhs {
-			tmpContainer[k] = v.CloneVT()
+			tmpContainer[k] = (*structpb.Value)((*Value)(v).CloneVT())
 		}
 		r.Values = tmpContainer
 	}
@@ -345,7 +362,7 @@ func (m *Struct) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		for k := range m.Fields {
 			v := m.Fields[k]
 			baseI := i
-			size, err := (*structpb.Value)(v).MarshalToSizedBufferVT(dAtA[:i])
+			size, err := (*Value)(v).MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -468,7 +485,7 @@ func (m *Value_StructValue) MarshalToVT(dAtA []byte) (int, error) {
 func (m *Value_StructValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.StructValue != nil {
-		size, err := (*structpb1.Struct)(m.StructValue).MarshalToSizedBufferVT(dAtA[:i])
+		size, err := (*Struct)(m.StructValue).MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -487,7 +504,7 @@ func (m *Value_ListValue) MarshalToVT(dAtA []byte) (int, error) {
 func (m *Value_ListValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.ListValue != nil {
-		size, err := (*structpb1.ListValue)(m.ListValue).MarshalToSizedBufferVT(dAtA[:i])
+		size, err := (*ListValue)(m.ListValue).MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -526,7 +543,7 @@ func (m *ListValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	_ = l
 	if len(m.Values) > 0 {
 		for iNdEx := len(m.Values) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := (*structpb1.Value)(m.Values[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			size, err := (*Value)(m.Values[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -580,7 +597,7 @@ func (m *Struct) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for k := range m.Fields {
 			v := m.Fields[k]
 			baseI := i
-			size, err := (*structpb1.Value)(v).MarshalToSizedBufferVTStrict(dAtA[:i])
+			size, err := (*Value)(v).MarshalToSizedBufferVTStrict(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -736,7 +753,7 @@ func (m *Value_StructValue) MarshalToVTStrict(dAtA []byte) (int, error) {
 func (m *Value_StructValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.StructValue != nil {
-		size, err := (*structpb1.Struct)(m.StructValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		size, err := (*Struct)(m.StructValue).MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -755,7 +772,7 @@ func (m *Value_ListValue) MarshalToVTStrict(dAtA []byte) (int, error) {
 func (m *Value_ListValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	if m.ListValue != nil {
-		size, err := (*structpb1.ListValue)(m.ListValue).MarshalToSizedBufferVTStrict(dAtA[:i])
+		size, err := (*ListValue)(m.ListValue).MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -794,7 +811,7 @@ func (m *ListValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	_ = l
 	if len(m.Values) > 0 {
 		for iNdEx := len(m.Values) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := (*structpb1.Value)(m.Values[iNdEx]).MarshalToSizedBufferVTStrict(dAtA[:i])
+			size, err := (*Value)(m.Values[iNdEx]).MarshalToSizedBufferVTStrict(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
