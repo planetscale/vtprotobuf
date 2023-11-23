@@ -87,9 +87,20 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 			p.P(`		return false`)
 			p.P(`	}`)
 			ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
-			p.P(`if !this.`, fieldname, `.(interface{ `, equalName, `(`, ccInterfaceName, `) bool }).`, equalName, `(that.`, fieldname, `) {`)
-			p.P(`return false`)
-			p.P(`}`)
+			if p.IsWellKnownType(message) {
+				p.P(`switch c := this.`, fieldname, `.(type) {`)
+				for _, f := range field.Oneof.Fields {
+					p.P(`case *`, f.GoIdent, `:`)
+					p.P(`if !(*`, p.WellKnownFieldMap(f), `)(c).`, equalName, `(that.`, fieldname, `) {`)
+					p.P(`return false`)
+					p.P(`}`)
+				}
+				p.P(`}`)
+			} else {
+				p.P(`if !this.`, fieldname, `.(interface{ `, equalName, `(`, ccInterfaceName, `) bool }).`, equalName, `(that.`, fieldname, `) {`)
+				p.P(`return false`)
+				p.P(`}`)
+			}
 			p.P(`}`)
 		}
 	}
@@ -134,10 +145,22 @@ func (p *equal) oneof(field *protogen.Field) {
 	ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
 	fieldname := field.GoName
 
-	p.P(`func (this *`, ccTypeName, `) `, equalName, `(thatIface `, ccInterfaceName, `) bool {`)
+	if p.IsWellKnownType(field.Parent) {
+		p.P(`func (this *`, ccTypeName, `) `, equalName, `(thatIface any) bool {`)
+	} else {
+		p.P(`func (this *`, ccTypeName, `) `, equalName, `(thatIface `, ccInterfaceName, `) bool {`)
+	}
 	p.P(`that, ok := thatIface.(*`, ccTypeName, `)`)
 	p.P(`if !ok {`)
-	p.P(`return false`)
+	if p.IsWellKnownType(field.Parent) {
+		p.P(`if ot, ok := thatIface.(*`, field.GoIdent, `); ok {`)
+		p.P(`that = (*`, ccTypeName, `)(ot)`)
+		p.P("} else {")
+		p.P("return false")
+		p.P("}")
+	} else {
+		p.P(`return false`)
+	}
 	p.P(`}`)
 	p.P(`if this == that {`)
 	p.P(`return true`)
@@ -249,13 +272,13 @@ func (p *equal) compareCall(lhs, rhs string, msg *protogen.Message, nullable boo
 		lhs, rhs = "p", "q"
 	}
 	switch {
-	case p.IsLocalMessage(msg):
-		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
-		p.P(`	return false`)
-		p.P(`}`)
 	case p.IsWellKnownType(msg):
 		wkt := p.WellKnownTypeMap(msg)
 		p.P(`if !(*`, wkt, `)(`, lhs, `).`, equalName, `((*`, wkt, `)(`, rhs, `)) {`)
+		p.P(`	return false`)
+		p.P(`}`)
+	case p.IsLocalMessage(msg):
+		p.P(`if !`, lhs, `.`, equalName, `(`, rhs, `) {`)
 		p.P(`	return false`)
 		p.P(`}`)
 	default:

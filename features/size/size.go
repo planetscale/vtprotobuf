@@ -57,11 +57,11 @@ func (p *size) GenerateHelpers() {
 
 func (p *size) messageSize(varName, sizeName string, message *protogen.Message) {
 	switch {
-	case p.IsLocalMessage(message):
-		p.P(`l = `, varName, `.`, sizeName, `()`)
-
 	case p.IsWellKnownType(message):
 		p.P(`l = (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, sizeName, `()`)
+
+	case p.IsLocalMessage(message):
+		p.P(`l = `, varName, `.`, sizeName, `()`)
 
 	default:
 		p.P(`if size, ok := interface{}(`, varName, `).(interface{`)
@@ -305,8 +305,20 @@ func (p *size) message(message *protogen.Message) {
 			p.field(false, field, sizeName)
 		} else {
 			fieldname := field.Oneof.GoName
-			if _, ok := oneofs[fieldname]; !ok {
-				oneofs[fieldname] = struct{}{}
+			if _, ok := oneofs[fieldname]; ok {
+				continue
+			}
+			oneofs[fieldname] = struct{}{}
+			if p.IsWellKnownType(message) {
+				p.P(`switch c := m.`, fieldname, `.(type) {`)
+				for _, f := range field.Oneof.Fields {
+					p.P(`case *`, f.GoIdent, `:`)
+					p.P(`n += (*`, p.WellKnownFieldMap(f), `)(c).`, sizeName, `()`)
+				}
+				p.P(`}`)
+			} else {
+				//if _, ok := oneofs[fieldname]; !ok {
+				//oneofs[fieldname] = struct{}{}
 				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{ SizeVT() int }); ok {`)
 				p.P(`n+=vtmsg.`, sizeName, `()`)
 				p.P(`}`)
@@ -325,6 +337,9 @@ func (p *size) message(message *protogen.Message) {
 			continue
 		}
 		ccTypeName := field.GoIdent
+		if p.IsWellKnownType(message) && p.IsLocalMessage(message) {
+			ccTypeName.GoImportPath = ""
+		}
 		p.P(`func (m *`, ccTypeName, `) `, sizeName, `() (n int) {`)
 		p.P(`if m == nil {`)
 		p.P(`return 0`)
