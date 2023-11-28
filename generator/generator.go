@@ -6,8 +6,8 @@ package generator
 
 import (
 	"fmt"
+	"path"
 	"runtime/debug"
-	"strings"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -21,14 +21,12 @@ type featureHelpers struct {
 }
 
 type ObjectSet struct {
-	wildcards map[string]struct{}
-	mp        map[protogen.GoIdent]bool
+	mp map[string]bool
 }
 
 func NewObjectSet() ObjectSet {
 	return ObjectSet{
-		mp:        map[protogen.GoIdent]bool{},
-		wildcards: map[string]struct{}{},
+		mp: map[string]bool{},
 	}
 }
 
@@ -37,64 +35,26 @@ func (o ObjectSet) String() string {
 }
 
 func (o ObjectSet) Contains(g protogen.GoIdent) bool {
-	for wildcard := range o.wildcards {
-		if Match(wildcard, fmt.Sprintf("%s.%s", string(g.GoImportPath), g.GoName)) {
+	objectPath := fmt.Sprintf("%s.%s", string(g.GoImportPath), g.GoName)
+
+	for wildcard := range o.mp {
+		// Ignore malformed pattern error because pattern already checked in Set
+		if ok, _ := path.Match(wildcard, objectPath); ok {
 			return true
 		}
 	}
 
-	return o.mp[g]
+	return false
 }
 
 func (o ObjectSet) Set(s string) error {
-	if strings.Contains(s, "*") {
-		o.wildcards[s] = struct{}{}
-		return nil
+	// Checks if pattern not malformed
+	if _, err := path.Match(s, ""); err != nil {
+		return err
 	}
 
-	idx := strings.LastIndexByte(s, '.')
-	if idx < 0 {
-		return fmt.Errorf("invalid object name: %q", s)
-	}
-
-	ident := protogen.GoIdent{
-		GoImportPath: protogen.GoImportPath(s[0:idx]),
-		GoName:       s[idx+1:],
-	}
-
-	o.mp[ident] = true
+	o.mp[s] = true
 	return nil
-}
-
-func Match(pattern, name string) (matched bool) {
-	if pattern == "" {
-		return name == pattern
-	}
-
-	if pattern == "*" {
-		return true
-	}
-	return deepMatchRune([]rune(name), []rune(pattern))
-
-}
-
-func deepMatchRune(str, pattern []rune) bool {
-	for len(pattern) > 0 {
-		switch pattern[0] {
-		default:
-			if len(str) == 0 || str[0] != pattern[0] {
-				return false
-			}
-		case '*':
-			return deepMatchRune(str, pattern[1:]) ||
-				(len(str) > 0 && deepMatchRune(str[1:], pattern))
-		}
-
-		str = str[1:]
-		pattern = pattern[1:]
-	}
-
-	return len(str) == 0 && len(pattern) == 0
 }
 
 type Config struct {
