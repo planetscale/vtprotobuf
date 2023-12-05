@@ -32,5 +32,3 @@ func (g *grpc) GenerateFile(file *protogen.File) bool {
 	generateFileContent(nil, file, g.GeneratedFile)
 	return true
 }
-
-func (g *grpc) GenerateHelpers() {}

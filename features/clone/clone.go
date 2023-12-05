@@ -48,9 +48,6 @@ func (p *clone) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
-func (p *clone) GenerateHelpers() {
-}
-
 // cloneOneofField generates the statements for cloning a oneof field
 func (p *clone) cloneOneofField(lhsBase, rhsBase string, oneof *protogen.Oneof) {
 	fieldname := oneof.GoName

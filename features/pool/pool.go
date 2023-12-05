@@ -22,8 +22,6 @@ type pool struct {
 
 var _ generator.FeatureGenerator = (*pool)(nil)
 
-func (p *pool) GenerateHelpers() {}
-
 func (p *pool) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)

@@ -18,16 +18,6 @@ type GeneratedFile struct {
 	*protogen.GeneratedFile
 	Config        *Config
 	LocalPackages map[protoreflect.FullName]bool
-
-	helpers map[string]bool
-}
-
-func (p *GeneratedFile) Helper(name string, generate func(p *GeneratedFile)) {
-	if p.helpers[name] {
-		return
-	}
-	generate(p)
-	p.helpers[name] = true
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {
@@ -118,6 +108,22 @@ func (p *GeneratedFile) IsLocalField(field *protogen.Field) bool {
 	}
 	pkg := field.Desc.ParentFile().Package()
 	return p.LocalPackages[pkg]
+}
+
+const vtHelpersPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/protohelpers")
+
+var helpers = map[string]protogen.GoIdent{
+	"EncodeVarint":            {GoName: "EncodeVarint", GoImportPath: vtHelpersPackage},
+	"SizeOfVarint":            {GoName: "SizeOfVarint", GoImportPath: vtHelpersPackage},
+	"SizeOfZigzag":            {GoName: "SizeOfZigzag", GoImportPath: vtHelpersPackage},
+	"Skip":                    {GoName: "Skip", GoImportPath: vtHelpersPackage},
+	"ErrInvalidLength":        {GoName: "ErrInvalidLength", GoImportPath: vtHelpersPackage},
+	"ErrIntOverflow":          {GoName: "ErrIntOverflow", GoImportPath: vtHelpersPackage},
+	"ErrUnexpectedEndOfGroup": {GoName: "ErrUnexpectedEndOfGroup", GoImportPath: vtHelpersPackage},
+}
+
+func (p *GeneratedFile) Helper(name string) protogen.GoIdent {
+	return helpers[name]
 }
 
 const vtWellKnownPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/types/known/")
