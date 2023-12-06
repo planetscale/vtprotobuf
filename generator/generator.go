@@ -39,7 +39,6 @@ func (o ObjectSet) Set(s string) error {
 type Config struct {
 	Poolable       ObjectSet
 	Wrap           bool
-	WellKnownTypes bool
 	AllowEmpty     bool
 }
 
