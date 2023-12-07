@@ -55,5 +55,4 @@ type Feature func(gen *GeneratedFile) FeatureGenerator
 
 type FeatureGenerator interface {
 	GenerateFile(file *protogen.File) bool
-	GenerateHelpers()
 }

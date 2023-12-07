@@ -52,22 +52,6 @@ func (p *marshal) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
-func (p *marshal) GenerateHelpers() {
-	p.Helper("encodeVarint", func(p *generator.GeneratedFile) {
-		p.P(`func encodeVarint(dAtA []byte, offset int, v uint64) int {`)
-		p.P(`offset -= sov(v)`)
-		p.P(`base := offset`)
-		p.P(`for v >= 1<<7 {`)
-		p.P(`dAtA[offset] = uint8(v&0x7f|0x80)`)
-		p.P(`v >>= 7`)
-		p.P(`offset++`)
-		p.P(`}`)
-		p.P(`dAtA[offset] = uint8(v)`)
-		p.P(`return base`)
-		p.P(`}`)
-	})
-}
-
 func (p *marshal) encodeFixed64(varName ...string) {
 	p.P(`i -= 8`)
 	p.P(p.Ident("encoding/binary", "LittleEndian"), `.PutUint64(dAtA[i:], uint64(`, strings.Join(varName, ""), `))`)
@@ -79,7 +63,7 @@ func (p *marshal) encodeFixed32(varName ...string) {
 }
 
 func (p *marshal) encodeVarint(varName ...string) {
-	p.P(`i = encodeVarint(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
+	p.P(`i = `, p.Helper("EncodeVarint"), `(dAtA, i, uint64(`, strings.Join(varName, ""), `))`)
 }
 
 func (p *marshal) encodeKey(fieldNumber protoreflect.FieldNumber, wireType protowire.Type) {
@@ -210,7 +194,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 			p.P(`var `, total, ` int`)
 			p.P(`for _, num := range m.`, fieldname, ` {`)
-			p.P(total, ` += sov(uint64(num))`)
+			p.P(total, ` += `, p.Helper("SizeOfVarint"), `(uint64(num))`)
 			p.P(`}`)
 
 			p.P(`i -= `, total)
@@ -452,7 +436,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 			p.P(`var `, total, ` int`)
 			p.P(`for _, num := range m.`, fieldname, ` {`)
-			p.P(total, ` += soz(uint64(num))`)
+			p.P(total, ` += `, p.Helper("SizeOfZigzag"), `(uint64(num))`)
 			p.P(`}`)
 			p.P(`i -= `, total)
 			p.P(jvar, `:= i`)
@@ -496,7 +480,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 			p.P(`var `, total, ` int`)
 			p.P(`for _, num := range m.`, fieldname, ` {`)
-			p.P(total, ` += soz(uint64(num))`)
+			p.P(total, ` += `, p.Helper("SizeOfZigzag"), `(uint64(num))`)
 			p.P(`}`)
 			p.P(`i -= `, total)
 			p.P(jvar, `:= i`)

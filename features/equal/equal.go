@@ -29,8 +29,8 @@ type equal struct {
 
 var _ generator.FeatureGenerator = (*equal)(nil)
 
-func (p *equal) Name() string     { return "equal" }
-func (p *equal) GenerateHelpers() {}
+func (p *equal) Name() string { return "equal" }
+
 func (p *equal) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {

@@ -25,7 +25,6 @@ func main() {
 	cfg.Poolable = make(generator.ObjectSet)
 	f.Var(&cfg.Poolable, "pool", "use memory pooling for this object")
 	f.BoolVar(&cfg.Wrap, "wrap", false, "generate wrapper types")
-	f.BoolVar(&cfg.WellKnownTypes, "wkt", true, "generate optimized code for well-known types")
 	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
 
 	protogen.Options{ParamFunc: f.Set}.Run(func(plugin *protogen.Plugin) error {
