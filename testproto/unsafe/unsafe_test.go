@@ -94,7 +94,7 @@ func Test_UnmarshalVTUnsafe(t *testing.T) {
 		assertBytesAreOriginal(t, (t2Unsafe.Sub).(*UnsafeTest_Sub2_).Sub2.B[i], true, originalData2)
 	}
 
-	// map field
+	// map[string]bytes field
 	t3Orig := &UnsafeTest{
 		Sub: &UnsafeTest_Sub3_{
 			Sub3: &UnsafeTest_Sub3{
@@ -122,27 +122,32 @@ func Test_UnmarshalVTUnsafe(t *testing.T) {
 	}
 
 	// oneof field
-	t4OrigS := &UnsafeTest{
-		Sub: &UnsafeTest_Sub4_{
-			Sub4: &UnsafeTest_Sub4{
-				Foo: &UnsafeTest_Sub4_S{
-					S: testString,
+	for _, stringVal := range []string{
+		testString,
+		"",
+	} {
+		t4OrigS := &UnsafeTest{
+			Sub: &UnsafeTest_Sub4_{
+				Sub4: &UnsafeTest_Sub4{
+					Foo: &UnsafeTest_Sub4_S{
+						S: stringVal,
+					},
 				},
 			},
-		},
+		}
+		originalData4S, err := t4OrigS.MarshalVT()
+		require.NoError(t, err)
+
+		t4SafeS := &UnsafeTest{}
+		require.NoError(t, t4SafeS.UnmarshalVT(originalData4S))
+		assert.Equal(t, (t4OrigS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, (t4SafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S)
+		assertStringIsOriginal(t, (t4SafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, false, originalData4S)
+
+		t4UnsafeS := &UnsafeTest{}
+		require.NoError(t, t4UnsafeS.UnmarshalVTUnsafe(originalData4S))
+		assert.Equal(t, (t4OrigS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, (t4UnsafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S)
+		assertStringIsOriginal(t, (t4UnsafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, true, originalData4S)
 	}
-	originalData4S, err := t4OrigS.MarshalVT()
-	require.NoError(t, err)
-
-	t4SafeS := &UnsafeTest{}
-	require.NoError(t, t4SafeS.UnmarshalVT(originalData4S))
-	assert.Equal(t, (t4OrigS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, (t4SafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S)
-	assertStringIsOriginal(t, (t4SafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, false, originalData4S)
-
-	t4UnsafeS := &UnsafeTest{}
-	require.NoError(t, t4UnsafeS.UnmarshalVTUnsafe(originalData4S))
-	assert.Equal(t, (t4OrigS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, (t4UnsafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S)
-	assertStringIsOriginal(t, (t4UnsafeS.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_S).S, true, originalData4S)
 
 	t4OrigB := &UnsafeTest{
 		Sub: &UnsafeTest_Sub4_{
@@ -165,4 +170,36 @@ func Test_UnmarshalVTUnsafe(t *testing.T) {
 	require.NoError(t, t4UnsafeB.UnmarshalVTUnsafe(originalData4B))
 	assert.Equal(t, (t4OrigB.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_B).B, (t4UnsafeB.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_B).B)
 	assertBytesAreOriginal(t, (t4UnsafeB.Sub).(*UnsafeTest_Sub4_).Sub4.Foo.(*UnsafeTest_Sub4_B).B, true, originalData4B)
+
+	// map[string]string field
+	for _, stringVal := range []string{
+		testString,
+		"",
+	} {
+		t5Orig := &UnsafeTest{
+			Sub: &UnsafeTest_Sub5_{
+				Sub5: &UnsafeTest_Sub5{
+					Foo: map[string]string{testString: stringVal},
+				},
+			},
+		}
+		originalData5, err := t5Orig.MarshalVT()
+		require.NoError(t, err)
+
+		t5Safe := &UnsafeTest{}
+		require.NoError(t, t5Safe.UnmarshalVT(originalData5))
+		assert.Equal(t, (t5Orig.Sub).(*UnsafeTest_Sub5_).Sub5.Foo, (t5Safe.Sub).(*UnsafeTest_Sub5_).Sub5.Foo)
+		for k, v := range (t5Safe.Sub).(*UnsafeTest_Sub5_).Sub5.Foo {
+			assertStringIsOriginal(t, k, false, originalData5)
+			assertStringIsOriginal(t, v, false, originalData5)
+		}
+
+		t5Unsafe := &UnsafeTest{}
+		require.NoError(t, t5Unsafe.UnmarshalVTUnsafe(originalData5))
+		assert.Equal(t, (t5Orig.Sub).(*UnsafeTest_Sub5_).Sub5.Foo, (t5Unsafe.Sub).(*UnsafeTest_Sub5_).Sub5.Foo)
+		for k, v := range (t5Unsafe.Sub).(*UnsafeTest_Sub5_).Sub5.Foo {
+			assertStringIsOriginal(t, k, true, originalData5)
+			assertStringIsOriginal(t, v, true, originalData5)
+		}
+	}
 }
