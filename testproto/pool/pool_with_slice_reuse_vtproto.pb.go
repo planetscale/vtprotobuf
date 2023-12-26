@@ -1385,7 +1385,13 @@ func (m *Test1) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Sl = append(m.Sl, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Sl = append(m.Sl, stringValue)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1679,7 +1685,13 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.C = append(m.C, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.C = append(m.C, stringValue)
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {
@@ -1747,7 +1759,13 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.E = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.E = stringValue
 			iNdEx = postIndex
 		case 6:
 			if wireType != 0 {

@@ -2602,7 +2602,13 @@ func (m *UnsafeTest_Sub1) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.S = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.S = stringValue
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2716,7 +2722,13 @@ func (m *UnsafeTest_Sub2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.S = append(m.S, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.S = append(m.S, stringValue)
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2879,7 +2891,11 @@ func (m *UnsafeTest_Sub3) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					if intStringLenmapkey == 0 {
+						mapkey = unsafe.String(nil, intStringLenmapkey)
+					} else {
+						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					}
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapbyteLen uint64
@@ -3008,7 +3024,13 @@ func (m *UnsafeTest_Sub4) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Foo = &UnsafeTest_Sub4_S{S: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Foo = &UnsafeTest_Sub4_S{S: stringValue}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -3172,7 +3194,11 @@ func (m *UnsafeTest_Sub5) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					if intStringLenmapkey == 0 {
+						mapkey = unsafe.String(nil, intStringLenmapkey)
+					} else {
+						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					}
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var stringLenmapvalue uint64
@@ -3201,7 +3227,11 @@ func (m *UnsafeTest_Sub5) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapvalue > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapvalue = unsafe.String(&dAtA[iNdEx], intStringLenmapvalue)
+					if intStringLenmapvalue == 0 {
+						mapvalue = unsafe.String(nil, intStringLenmapvalue)
+					} else {
+						mapvalue = unsafe.String(&dAtA[iNdEx], intStringLenmapvalue)
+					}
 					iNdEx = postStringIndexmapvalue
 				} else {
 					iNdEx = entryPreIndex

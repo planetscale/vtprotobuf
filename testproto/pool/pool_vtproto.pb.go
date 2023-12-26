@@ -645,7 +645,13 @@ func (m *MemoryPoolExtension) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Foo1 = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Foo1 = stringValue
 			iNdEx = postIndex
 		case 2:
 			if wireType != 0 {

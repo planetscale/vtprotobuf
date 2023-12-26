@@ -2130,7 +2130,13 @@ func (m *StringValue) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Value = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Value = stringValue
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

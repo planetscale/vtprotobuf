@@ -2373,7 +2373,13 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Failure = append(m.Failure, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Failure = append(m.Failure, stringValue)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2488,7 +2494,13 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: stringValue}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
@@ -2539,7 +2551,13 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MessageType = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.MessageType = stringValue
 			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
@@ -2626,7 +2644,13 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: stringValue}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -2658,7 +2682,13 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_TextPayload{TextPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_TextPayload{TextPayload: stringValue}
 			iNdEx = postIndex
 		case 9:
 			if wireType != 0 {
@@ -2761,7 +2791,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_ParseError{ParseError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_ParseError{ParseError: stringValue}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2793,7 +2829,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: stringValue}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -2857,7 +2899,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: stringValue}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -2889,7 +2937,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_Skipped{Skipped: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_Skipped{Skipped: stringValue}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -2921,7 +2975,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_SerializeError{SerializeError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_SerializeError{SerializeError: stringValue}
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
@@ -2953,7 +3013,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: stringValue}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -2985,7 +3051,13 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_TextPayload{TextPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_TextPayload{TextPayload: stringValue}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

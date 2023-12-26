@@ -1797,7 +1797,13 @@ func (m *OneofTest_Test2) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.B = append(m.B, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.B = append(m.B, stringValue)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

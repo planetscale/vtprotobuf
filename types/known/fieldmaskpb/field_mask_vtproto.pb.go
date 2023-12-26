@@ -285,7 +285,13 @@ func (m *FieldMask) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Paths = append(m.Paths, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen == 0 {
+				stringValue = unsafe.String(nil, intStringLen)
+			} else {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Paths = append(m.Paths, stringValue)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
