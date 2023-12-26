@@ -14,11 +14,17 @@ import (
 // collector doesn't move memory. To provide guarantee that this test works, consider using
 // https://pkg.go.dev/runtime#Pinner when upgrading Go to >= 1.21.
 func assertStringIsOriginal(t *testing.T, s string, belongs bool, originalData []byte) {
+	start := uintptr(unsafe.Pointer(unsafe.StringData(s)))
+	// empty string has no underlying array, compare pointer to nil
+	if len(s) == 0 {
+		assert.Equal(t, uintptr(unsafe.Pointer(nil)), start)
+		return
+	}
+	end := start + uintptr(len(s)) - 1
+
 	originalStart := uintptr(unsafe.Pointer(unsafe.SliceData(originalData)))
 	originalEnd := originalStart + uintptr(len(originalData)) - 1
 
-	start := uintptr(unsafe.Pointer(unsafe.StringData(s)))
-	end := start + uintptr(len(s)) - 1
 	assert.Equal(t, belongs, start >= originalStart && start < originalEnd)
 	assert.Equal(t, belongs, end > originalStart && end <= originalEnd)
 }
