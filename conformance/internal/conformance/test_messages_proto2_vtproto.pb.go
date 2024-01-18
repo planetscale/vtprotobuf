@@ -3918,6 +3918,12 @@ func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToSizedBufferVT(dAtA []by
 		dAtA[i] = 0x7
 		i--
 		dAtA[i] = 0x82
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x7
+		i--
+		dAtA[i] = 0x82
 	}
 	return len(dAtA) - i, nil
 }
@@ -6038,6 +6044,12 @@ func (m *TestAllTypesProto2_OneofNestedMessage) MarshalToSizedBufferVTStrict(dAt
 		dAtA[i] = 0x7
 		i--
 		dAtA[i] = 0x82
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x7
+		i--
+		dAtA[i] = 0x82
 	}
 	return len(dAtA) - i, nil
 }
@@ -7094,6 +7106,8 @@ func (m *TestAllTypesProto2_OneofNestedMessage) SizeVT() (n int) {
 	if m.OneofNestedMessage != nil {
 		l = m.OneofNestedMessage.SizeVT()
 		n += 2 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }

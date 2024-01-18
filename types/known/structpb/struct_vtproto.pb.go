@@ -569,6 +569,10 @@ func (m *Value_StructValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x2a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x2a
 	}
 	return len(dAtA) - i, nil
 }
@@ -586,6 +590,10 @@ func (m *Value_ListValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x32
 	}
@@ -832,6 +840,10 @@ func (m *Value_StructValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, erro
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x2a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x2a
 	}
 	return len(dAtA) - i, nil
 }
@@ -849,6 +861,10 @@ func (m *Value_ListValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error)
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x32
 	}
@@ -986,6 +1002,8 @@ func (m *Value_StructValue) SizeVT() (n int) {
 	if m.StructValue != nil {
 		l = (*Struct)(m.StructValue).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -998,6 +1016,8 @@ func (m *Value_ListValue) SizeVT() (n int) {
 	if m.ListValue != nil {
 		l = (*ListValue)(m.ListValue).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
