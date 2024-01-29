@@ -75,7 +75,7 @@ func (p *pool) message(message *protogen.Message) {
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
-				if p.ShouldPool(field.Message) {
+				if !field.Desc.IsMap() && p.ShouldPool(field.Message) {
 					p.P(`m.`, fieldName, `.ReturnToVTPool()`)
 				}
 			case protoreflect.BytesKind:
