@@ -22,8 +22,6 @@ type pool struct {
 
 var _ generator.FeatureGenerator = (*pool)(nil)
 
-func (p *pool) GenerateHelpers() {}
-
 func (p *pool) GenerateFile(file *protogen.File) bool {
 	for _, message := range file.Messages {
 		p.message(message)
@@ -77,7 +75,7 @@ func (p *pool) message(message *protogen.Message) {
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
-				if p.ShouldPool(field.Message) {
+				if !field.Desc.IsMap() && p.ShouldPool(field.Message) {
 					p.P(`m.`, fieldName, `.ReturnToVTPool()`)
 				}
 			case protoreflect.BytesKind:

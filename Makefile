@@ -46,7 +46,8 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/field_mask.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/timestamp.proto \
-        $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto
+        $(PROTOBUF_ROOT)/src/google/protobuf/wrappers.proto \
+        $(PROTOBUF_ROOT)/src/google/protobuf/struct.proto
 
 gen-testproto: get-grpc-testproto gen-wkt-testproto install
 	$(PROTOBUF_ROOT)/src/protoc \
@@ -62,6 +63,16 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		testproto/proto3opt/opt.proto \
 		testproto/proto2/scalars.proto \
 		testproto/unsafe/unsafe.proto \
+		|| exit 1;
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_opt=paths=source_relative \
+		--go-vtproto_opt=buildTag=vtprotobuf \
+		--go-vtproto_out=allow-empty=true:./testproto/buildtag --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		-I$(PROTOBUF_ROOT)/src \
+		testproto/empty/empty.proto \
 		|| exit 1;
 
 get-grpc-testproto: install

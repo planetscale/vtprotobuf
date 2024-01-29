@@ -18,16 +18,6 @@ type GeneratedFile struct {
 	*protogen.GeneratedFile
 	Config        *Config
 	LocalPackages map[protoreflect.FullName]bool
-
-	helpers map[string]bool
-}
-
-func (p *GeneratedFile) Helper(name string, generate func(p *GeneratedFile)) {
-	if p.helpers[name] {
-		return
-	}
-	generate(p)
-	p.helpers[name] = true
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {
@@ -115,6 +105,30 @@ func (p *GeneratedFile) IsLocalMessage(message *protogen.Message) bool {
 	return p.LocalPackages[pkg]
 }
 
+func (p *GeneratedFile) IsLocalField(field *protogen.Field) bool {
+	if field == nil {
+		return false
+	}
+	pkg := field.Desc.ParentFile().Package()
+	return p.LocalPackages[pkg]
+}
+
+const vtHelpersPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/protohelpers")
+
+var helpers = map[string]protogen.GoIdent{
+	"EncodeVarint":            {GoName: "EncodeVarint", GoImportPath: vtHelpersPackage},
+	"SizeOfVarint":            {GoName: "SizeOfVarint", GoImportPath: vtHelpersPackage},
+	"SizeOfZigzag":            {GoName: "SizeOfZigzag", GoImportPath: vtHelpersPackage},
+	"Skip":                    {GoName: "Skip", GoImportPath: vtHelpersPackage},
+	"ErrInvalidLength":        {GoName: "ErrInvalidLength", GoImportPath: vtHelpersPackage},
+	"ErrIntOverflow":          {GoName: "ErrIntOverflow", GoImportPath: vtHelpersPackage},
+	"ErrUnexpectedEndOfGroup": {GoName: "ErrUnexpectedEndOfGroup", GoImportPath: vtHelpersPackage},
+}
+
+func (p *GeneratedFile) Helper(name string) protogen.GoIdent {
+	return helpers[name]
+}
+
 const vtWellKnownPackage = protogen.GoImportPath("github.com/planetscale/vtprotobuf/types/known/")
 
 var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
@@ -132,21 +146,51 @@ var wellKnownTypes = map[protoreflect.FullName]protogen.GoIdent{
 	"google.protobuf.BoolValue":   {GoName: "BoolValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
 	"google.protobuf.StringValue": {GoName: "StringValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
 	"google.protobuf.BytesValue":  {GoName: "BytesValue", GoImportPath: vtWellKnownPackage + "wrapperspb"},
+	"google.protobuf.Struct":      {GoName: "Struct", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value":       {GoName: "Value", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.ListValue":   {GoName: "ListValue", GoImportPath: vtWellKnownPackage + "structpb"},
+}
+
+var wellKnownFields = map[protoreflect.FullName]protogen.GoIdent{
+	"google.protobuf.Value.null_value":   {GoName: "Value_NullValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.number_value": {GoName: "Value_NumberValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.string_value": {GoName: "Value_StringValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.bool_value":   {GoName: "Value_BoolValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.struct_value": {GoName: "Value_StructValue", GoImportPath: vtWellKnownPackage + "structpb"},
+	"google.protobuf.Value.list_value":   {GoName: "Value_ListValue", GoImportPath: vtWellKnownPackage + "structpb"},
 }
 
 func (p *GeneratedFile) IsWellKnownType(message *protogen.Message) bool {
-	if message == nil || !p.Config.WellKnownTypes {
+	if message == nil {
 		return false
 	}
 	_, ok := wellKnownTypes[message.Desc.FullName()]
 	return ok
 }
 
-func (p *GeneratedFile) WellKnownTypeMap(message *protogen.Message) protogen.GoIdent {
-	if message == nil || !p.Config.WellKnownTypes {
+func (p *GeneratedFile) WellKnownFieldMap(field *protogen.Field) protogen.GoIdent {
+	if field == nil {
 		return protogen.GoIdent{}
 	}
-	return wellKnownTypes[message.Desc.FullName()]
+	res, ff := wellKnownFields[field.Desc.FullName()]
+	if !ff {
+		panic(field.Desc.FullName())
+	}
+	if p.IsLocalField(field) {
+		res.GoImportPath = ""
+	}
+	return res
+}
+
+func (p *GeneratedFile) WellKnownTypeMap(message *protogen.Message) protogen.GoIdent {
+	if message == nil {
+		return protogen.GoIdent{}
+	}
+	res := wellKnownTypes[message.Desc.FullName()]
+	if p.IsLocalMessage(message) {
+		res.GoImportPath = ""
+	}
+	return res
 }
 
 func (p *GeneratedFile) Wrapper() bool {

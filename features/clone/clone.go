@@ -48,9 +48,6 @@ func (p *clone) GenerateFile(file *protogen.File) bool {
 	return p.once
 }
 
-func (p *clone) GenerateHelpers() {
-}
-
 // cloneOneofField generates the statements for cloning a oneof field
 func (p *clone) cloneOneofField(lhsBase, rhsBase string, oneof *protogen.Oneof) {
 	fieldname := oneof.GoName
@@ -58,7 +55,16 @@ func (p *clone) cloneOneofField(lhsBase, rhsBase string, oneof *protogen.Oneof) 
 	lhs := lhsBase + "." + fieldname
 	rhs := rhsBase + "." + fieldname
 	p.P(`if `, rhs, ` != nil {`)
-	p.P(lhs, ` = `, rhs, `.(interface{ `, cloneName, `() `, ccInterfaceName, ` }).`, cloneName, `()`)
+	if p.IsWellKnownType(oneof.Parent) {
+		p.P(`switch c := `, rhs, `.(type) {`)
+		for _, f := range oneof.Fields {
+			p.P(`case *`, f.GoIdent, `:`)
+			p.P(lhs, `= (*`, f.GoIdent, `)((*`, p.WellKnownFieldMap(f), `)(c).`, cloneName, `())`)
+		}
+		p.P(`}`)
+	} else {
+		p.P(lhs, ` = `, rhs, `.(interface{ `, cloneName, `() `, ccInterfaceName, ` }).`, cloneName, `()`)
+	}
 	p.P(`}`)
 }
 
@@ -67,10 +73,10 @@ func (p *clone) cloneFieldSingular(lhs, rhs string, kind protoreflect.Kind, mess
 	switch {
 	case kind == protoreflect.MessageKind, kind == protoreflect.GroupKind:
 		switch {
-		case p.IsLocalMessage(message):
-			p.P(lhs, ` = `, rhs, `.`, cloneName, `()`)
 		case p.IsWellKnownType(message):
 			p.P(lhs, ` = (*`, message.GoIdent, `)((*`, p.WellKnownTypeMap(message), `)(`, rhs, `).`, cloneName, `())`)
+		case p.IsLocalMessage(message):
+			p.P(lhs, ` = `, rhs, `.`, cloneName, `()`)
 		default:
 			// rhs is a concrete type, we need to first convert it to an interface in order to use an interface
 			// type assertion.
@@ -198,12 +204,11 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protoge
 		// nil-safe.
 		if field.Desc.Cardinality() != protoreflect.Repeated {
 			switch {
-			case p.IsLocalMessage(field.Message):
-				p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
-				continue
-
 			case p.IsWellKnownType(field.Message):
 				p.P(`r.`, field.GoName, ` = (*`, field.Message.GoIdent, `)((*`, p.WellKnownTypeMap(field.Message), `)(m.`, field.GoName, `).`, cloneName, `())`)
+				continue
+			case p.IsLocalMessage(field.Message):
+				p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
 				continue
 			}
 		}
@@ -243,10 +248,17 @@ func (p *clone) bodyForOneOf(ccTypeName string, field *protogen.Field) {
 	}
 	// Shortcut: for types where we know that an optimized clone method exists, we can call it directly as it is
 	// nil-safe.
-	if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil && p.IsLocalMessage(field.Message) {
-		p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
-		p.P(`return r`)
-		return
+	if field.Desc.Cardinality() != protoreflect.Repeated && field.Message != nil {
+		switch {
+		case p.IsWellKnownType(field.Message):
+			p.P(`r.`, field.GoName, ` = (*`, field.Message.GoIdent, `)((*`, p.WellKnownTypeMap(field.Message), `)(m.`, field.GoName, `).`, cloneName, `())`)
+			p.P(`return r`)
+			return
+		case p.IsLocalMessage(field.Message):
+			p.P(`r.`, field.GoName, ` = m.`, field.GoName, `.`, cloneName, `()`)
+			p.P(`return r`)
+			return
+		}
 	}
 
 	// Generate explicit assignment statements for reference field.
@@ -257,10 +269,14 @@ func (p *clone) bodyForOneOf(ccTypeName string, field *protogen.Field) {
 
 // generateCloneMethodsForOneof generates the clone method for the oneof wrapper type of a
 // field in a oneof.
-func (p *clone) generateCloneMethodsForOneof(field *protogen.Field) {
+func (p *clone) generateCloneMethodsForOneof(message *protogen.Message, field *protogen.Field) {
 	ccTypeName := field.GoIdent.GoName
 	ccInterfaceName := "is" + field.Oneof.GoIdent.GoName
-	p.P(`func (m *`, ccTypeName, `) `, cloneName, `() `, ccInterfaceName, ` {`)
+	if p.IsWellKnownType(message) {
+		p.P(`func (m *`, ccTypeName, `) `, cloneName, `() *`, ccTypeName, ` {`)
+	} else {
+		p.P(`func (m *`, ccTypeName, `) `, cloneName, `() `, ccInterfaceName, ` {`)
+	}
 
 	// Create a "fake" field for the single oneof member, pretending it is not a oneof field.
 	fieldInOneof := *field
@@ -276,7 +292,7 @@ func (p *clone) processMessageOneofs(message *protogen.Message) {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
 		}
-		p.generateCloneMethodsForOneof(field)
+		p.generateCloneMethodsForOneof(message, field)
 	}
 }
 

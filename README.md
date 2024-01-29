@@ -108,16 +108,24 @@ The following features can be generated:
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
     ```
+6. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
 
-6. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+    When using this option, the generated code will only be compiled in if a build tag is provided.
 
-7. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
+    It is recommended, but not required, to use `vtprotobuf` as the build tag if this is desired, especially if your project is imported by others.
+    This will reduce the number of build tags a user will need to configure if they are importing multiple libraries following this pattern.
 
-## Well-known types
+    When using this option, it is strongly recommended to make your code compile with and without the build tag.
+    This can be done with type assertions before using `vtprotobuf` generated methods.
+    The `grpc.Codec{}` object (discussed below) shows an example.
 
-By default, `vtprotobuf` will detect ProtoBuf [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/) embedded in your own Messages and generate optimized code to marshal and unmarshal them.
+7. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
 
-In order to access the optimized code for these types, your `_vtproto.pb.go` files will have a dependency on this Go package. If this is not acceptable, you can disable well-known types with `--go-vtproto_opt=wkt=false`.
+8. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
+
+## `vtprotobuf` package and well-known types
+
+Your generated `_vtproto.pb.go` files will have a dependency on this Go package to access some helper functions as well as the optimized code for ProtoBuf [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/). `vtprotobuf` will detect these types embedded in your own Messages and generate optimized code to marshal and unmarshal them.
 
 ## Using the optimized code with RPC frameworks
 

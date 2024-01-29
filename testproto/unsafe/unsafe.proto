@@ -23,10 +23,15 @@ message UnsafeTest {
         }
     }
 
+    message Sub5 {
+        map<string, string> foo = 1;
+    }
+
     oneof sub {
         Sub1 sub1 = 1;
         Sub2 sub2 = 2;
         Sub3 sub3 = 3;
         Sub4 sub4 = 4;
+        Sub5 sub5 = 5;
     }
 }

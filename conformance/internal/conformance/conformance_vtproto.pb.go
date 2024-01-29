@@ -6,6 +6,7 @@ package conformance
 
 import (
 	fmt "fmt"
+	protohelpers "github.com/planetscale/vtprotobuf/protohelpers"
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
@@ -573,7 +574,7 @@ func (m *FailureSet) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Failure[iNdEx])
 			copy(dAtA[i:], m.Failure[iNdEx])
-			i = encodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -636,24 +637,24 @@ func (m *ConformanceRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 			return 0, err
 		}
 		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.TestCategory != 0 {
-		i = encodeVarint(dAtA, i, uint64(m.TestCategory))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.TestCategory))
 		i--
 		dAtA[i] = 0x28
 	}
 	if len(m.MessageType) > 0 {
 		i -= len(m.MessageType)
 		copy(dAtA[i:], m.MessageType)
-		i = encodeVarint(dAtA, i, uint64(len(m.MessageType)))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.MessageType)))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.RequestedOutputFormat != 0 {
-		i = encodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -669,7 +670,7 @@ func (m *ConformanceRequest_ProtobufPayload) MarshalToSizedBufferVT(dAtA []byte)
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -683,7 +684,7 @@ func (m *ConformanceRequest_JsonPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -697,7 +698,7 @@ func (m *ConformanceRequest_JspbPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -711,7 +712,7 @@ func (m *ConformanceRequest_TextPayload) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -767,7 +768,7 @@ func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVT(dAtA []byte) (in
 	i := len(dAtA)
 	i -= len(m.ParseError)
 	copy(dAtA[i:], m.ParseError)
-	i = encodeVarint(dAtA, i, uint64(len(m.ParseError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ParseError)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -781,7 +782,7 @@ func (m *ConformanceResponse_RuntimeError) MarshalToSizedBufferVT(dAtA []byte) (
 	i := len(dAtA)
 	i -= len(m.RuntimeError)
 	copy(dAtA[i:], m.RuntimeError)
-	i = encodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -795,7 +796,7 @@ func (m *ConformanceResponse_ProtobufPayload) MarshalToSizedBufferVT(dAtA []byte
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0x1a
 	return len(dAtA) - i, nil
@@ -809,7 +810,7 @@ func (m *ConformanceResponse_JsonPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x22
 	return len(dAtA) - i, nil
@@ -823,7 +824,7 @@ func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVT(dAtA []byte) (int, 
 	i := len(dAtA)
 	i -= len(m.Skipped)
 	copy(dAtA[i:], m.Skipped)
-	i = encodeVarint(dAtA, i, uint64(len(m.Skipped)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Skipped)))
 	i--
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
@@ -837,7 +838,7 @@ func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVT(dAtA []byte)
 	i := len(dAtA)
 	i -= len(m.SerializeError)
 	copy(dAtA[i:], m.SerializeError)
-	i = encodeVarint(dAtA, i, uint64(len(m.SerializeError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.SerializeError)))
 	i--
 	dAtA[i] = 0x32
 	return len(dAtA) - i, nil
@@ -851,7 +852,7 @@ func (m *ConformanceResponse_JspbPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -865,7 +866,7 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -947,7 +948,7 @@ func (m *FailureSet) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Failure[iNdEx])
 			copy(dAtA[i:], m.Failure[iNdEx])
-			i = encodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -1015,24 +1016,24 @@ func (m *ConformanceRequest) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 			return 0, err
 		}
 		i -= size
-		i = encodeVarint(dAtA, i, uint64(size))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x32
 	}
 	if m.TestCategory != 0 {
-		i = encodeVarint(dAtA, i, uint64(m.TestCategory))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.TestCategory))
 		i--
 		dAtA[i] = 0x28
 	}
 	if len(m.MessageType) > 0 {
 		i -= len(m.MessageType)
 		copy(dAtA[i:], m.MessageType)
-		i = encodeVarint(dAtA, i, uint64(len(m.MessageType)))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.MessageType)))
 		i--
 		dAtA[i] = 0x22
 	}
 	if m.RequestedOutputFormat != 0 {
-		i = encodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RequestedOutputFormat))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -1062,7 +1063,7 @@ func (m *ConformanceRequest_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA [
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -1076,7 +1077,7 @@ func (m *ConformanceRequest_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -1090,7 +1091,7 @@ func (m *ConformanceRequest_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -1104,7 +1105,7 @@ func (m *ConformanceRequest_TextPayload) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -1207,7 +1208,7 @@ func (m *ConformanceResponse_ParseError) MarshalToSizedBufferVTStrict(dAtA []byt
 	i := len(dAtA)
 	i -= len(m.ParseError)
 	copy(dAtA[i:], m.ParseError)
-	i = encodeVarint(dAtA, i, uint64(len(m.ParseError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ParseError)))
 	i--
 	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
@@ -1221,7 +1222,7 @@ func (m *ConformanceResponse_RuntimeError) MarshalToSizedBufferVTStrict(dAtA []b
 	i := len(dAtA)
 	i -= len(m.RuntimeError)
 	copy(dAtA[i:], m.RuntimeError)
-	i = encodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RuntimeError)))
 	i--
 	dAtA[i] = 0x12
 	return len(dAtA) - i, nil
@@ -1235,7 +1236,7 @@ func (m *ConformanceResponse_ProtobufPayload) MarshalToSizedBufferVTStrict(dAtA 
 	i := len(dAtA)
 	i -= len(m.ProtobufPayload)
 	copy(dAtA[i:], m.ProtobufPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.ProtobufPayload)))
 	i--
 	dAtA[i] = 0x1a
 	return len(dAtA) - i, nil
@@ -1249,7 +1250,7 @@ func (m *ConformanceResponse_JsonPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.JsonPayload)
 	copy(dAtA[i:], m.JsonPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JsonPayload)))
 	i--
 	dAtA[i] = 0x22
 	return len(dAtA) - i, nil
@@ -1263,7 +1264,7 @@ func (m *ConformanceResponse_Skipped) MarshalToSizedBufferVTStrict(dAtA []byte) 
 	i := len(dAtA)
 	i -= len(m.Skipped)
 	copy(dAtA[i:], m.Skipped)
-	i = encodeVarint(dAtA, i, uint64(len(m.Skipped)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Skipped)))
 	i--
 	dAtA[i] = 0x2a
 	return len(dAtA) - i, nil
@@ -1277,7 +1278,7 @@ func (m *ConformanceResponse_SerializeError) MarshalToSizedBufferVTStrict(dAtA [
 	i := len(dAtA)
 	i -= len(m.SerializeError)
 	copy(dAtA[i:], m.SerializeError)
-	i = encodeVarint(dAtA, i, uint64(len(m.SerializeError)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.SerializeError)))
 	i--
 	dAtA[i] = 0x32
 	return len(dAtA) - i, nil
@@ -1291,7 +1292,7 @@ func (m *ConformanceResponse_JspbPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.JspbPayload)
 	copy(dAtA[i:], m.JspbPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.JspbPayload)))
 	i--
 	dAtA[i] = 0x3a
 	return len(dAtA) - i, nil
@@ -1305,7 +1306,7 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	i := len(dAtA)
 	i -= len(m.TextPayload)
 	copy(dAtA[i:], m.TextPayload)
-	i = encodeVarint(dAtA, i, uint64(len(m.TextPayload)))
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TextPayload)))
 	i--
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
@@ -1362,7 +1363,7 @@ func (m *FailureSet) SizeVT() (n int) {
 	if len(m.Failure) > 0 {
 		for _, s := range m.Failure {
 			l = len(s)
-			n += 1 + l + sov(uint64(l))
+			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
 	n += len(m.unknownFields)
@@ -1379,18 +1380,18 @@ func (m *ConformanceRequest) SizeVT() (n int) {
 		n += vtmsg.SizeVT()
 	}
 	if m.RequestedOutputFormat != 0 {
-		n += 1 + sov(uint64(m.RequestedOutputFormat))
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.RequestedOutputFormat))
 	}
 	l = len(m.MessageType)
 	if l > 0 {
-		n += 1 + l + sov(uint64(l))
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	if m.TestCategory != 0 {
-		n += 1 + sov(uint64(m.TestCategory))
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.TestCategory))
 	}
 	if m.JspbEncodingOptions != nil {
 		l = m.JspbEncodingOptions.SizeVT()
-		n += 1 + l + sov(uint64(l))
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	if m.PrintUnknownFields {
 		n += 2
@@ -1406,7 +1407,7 @@ func (m *ConformanceRequest_ProtobufPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ProtobufPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_JsonPayload) SizeVT() (n int) {
@@ -1416,7 +1417,7 @@ func (m *ConformanceRequest_JsonPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JsonPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_JspbPayload) SizeVT() (n int) {
@@ -1426,7 +1427,7 @@ func (m *ConformanceRequest_JspbPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JspbPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceRequest_TextPayload) SizeVT() (n int) {
@@ -1436,7 +1437,7 @@ func (m *ConformanceRequest_TextPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.TextPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse) SizeVT() (n int) {
@@ -1459,7 +1460,7 @@ func (m *ConformanceResponse_ParseError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ParseError)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_RuntimeError) SizeVT() (n int) {
@@ -1469,7 +1470,7 @@ func (m *ConformanceResponse_RuntimeError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.RuntimeError)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_ProtobufPayload) SizeVT() (n int) {
@@ -1479,7 +1480,7 @@ func (m *ConformanceResponse_ProtobufPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.ProtobufPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_JsonPayload) SizeVT() (n int) {
@@ -1489,7 +1490,7 @@ func (m *ConformanceResponse_JsonPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JsonPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_Skipped) SizeVT() (n int) {
@@ -1499,7 +1500,7 @@ func (m *ConformanceResponse_Skipped) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.Skipped)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
@@ -1509,7 +1510,7 @@ func (m *ConformanceResponse_SerializeError) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.SerializeError)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_JspbPayload) SizeVT() (n int) {
@@ -1519,7 +1520,7 @@ func (m *ConformanceResponse_JspbPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.JspbPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *ConformanceResponse_TextPayload) SizeVT() (n int) {
@@ -1529,7 +1530,7 @@ func (m *ConformanceResponse_TextPayload) SizeVT() (n int) {
 	var l int
 	_ = l
 	l = len(m.TextPayload)
-	n += 1 + l + sov(uint64(l))
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
 func (m *JspbEncodingConfig) SizeVT() (n int) {
@@ -1553,7 +1554,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1581,7 +1582,7 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1595,11 +1596,11 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1608,12 +1609,12 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1636,7 +1637,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1664,7 +1665,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1677,11 +1678,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1697,7 +1698,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1711,11 +1712,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1729,7 +1730,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.RequestedOutputFormat = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1748,7 +1749,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1762,11 +1763,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1780,7 +1781,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.TestCategory = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1799,7 +1800,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1812,11 +1813,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if msglen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + msglen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1835,7 +1836,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1849,11 +1850,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1867,7 +1868,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1881,11 +1882,11 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1899,7 +1900,7 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1914,12 +1915,12 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			m.PrintUnknownFields = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1942,7 +1943,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1970,7 +1971,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1984,11 +1985,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2002,7 +2003,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2016,11 +2017,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2034,7 +2035,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2047,11 +2048,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2067,7 +2068,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2081,11 +2082,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2099,7 +2100,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2113,11 +2114,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2131,7 +2132,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2145,11 +2146,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2163,7 +2164,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2177,11 +2178,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2195,7 +2196,7 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2209,11 +2210,11 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2222,12 +2223,12 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -2250,7 +2251,7 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -2278,7 +2279,7 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2293,12 +2294,12 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 			m.UseJspbArrayAnyFormat = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -2321,7 +2322,7 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -2349,7 +2350,7 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2363,25 +2364,29 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Failure = append(m.Failure, unsafe.String(&dAtA[iNdEx], intStringLen))
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Failure = append(m.Failure, stringValue)
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -2404,7 +2409,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -2432,7 +2437,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2445,11 +2450,11 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2464,7 +2469,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2478,16 +2483,20 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: stringValue}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 0 {
@@ -2496,7 +2505,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			m.RequestedOutputFormat = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2515,7 +2524,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2529,16 +2538,20 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.MessageType = unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.MessageType = stringValue
 			iNdEx = postIndex
 		case 5:
 			if wireType != 0 {
@@ -2547,7 +2560,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			m.TestCategory = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2566,7 +2579,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2579,11 +2592,11 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 			}
 			if msglen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + msglen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2602,7 +2615,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2616,16 +2629,20 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: stringValue}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -2634,7 +2651,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2648,16 +2665,20 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Payload = &ConformanceRequest_TextPayload{TextPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Payload = &ConformanceRequest_TextPayload{TextPayload: stringValue}
 			iNdEx = postIndex
 		case 9:
 			if wireType != 0 {
@@ -2666,7 +2687,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2681,12 +2702,12 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			m.PrintUnknownFields = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -2709,7 +2730,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -2737,7 +2758,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2751,16 +2772,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_ParseError{ParseError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_ParseError{ParseError: stringValue}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
@@ -2769,7 +2794,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2783,16 +2808,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: stringValue}
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
@@ -2801,7 +2830,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2814,11 +2843,11 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -2833,7 +2862,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2847,16 +2876,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: stringValue}
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
@@ -2865,7 +2898,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2879,16 +2912,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_Skipped{Skipped: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_Skipped{Skipped: stringValue}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
@@ -2897,7 +2934,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2911,16 +2948,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_SerializeError{SerializeError: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_SerializeError{SerializeError: stringValue}
 			iNdEx = postIndex
 		case 7:
 			if wireType != 2 {
@@ -2929,7 +2970,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2943,16 +2984,20 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: stringValue}
 			iNdEx = postIndex
 		case 8:
 			if wireType != 2 {
@@ -2961,7 +3006,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -2975,25 +3020,29 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Result = &ConformanceResponse_TextPayload{TextPayload: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_TextPayload{TextPayload: stringValue}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -3016,7 +3065,7 @@ func (m *JspbEncodingConfig) UnmarshalVTUnsafe(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflow
+				return protohelpers.ErrIntOverflow
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -3044,7 +3093,7 @@ func (m *JspbEncodingConfig) UnmarshalVTUnsafe(dAtA []byte) error {
 			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflow
+					return protohelpers.ErrIntOverflow
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -3059,12 +3108,12 @@ func (m *JspbEncodingConfig) UnmarshalVTUnsafe(dAtA []byte) error {
 			m.UseJspbArrayAnyFormat = bool(v != 0)
 		default:
 			iNdEx = preIndex
-			skippy, err := skip(dAtA[iNdEx:])
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLength
+				return protohelpers.ErrInvalidLength
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF

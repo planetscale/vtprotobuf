@@ -7,6 +7,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
 
 message MessageWithWKT {
   google.protobuf.Any any = 1;
@@ -23,4 +24,8 @@ message MessageWithWKT {
   google.protobuf.BoolValue bool_value = 12;
   google.protobuf.StringValue string_value = 13;
   google.protobuf.BytesValue bytes_value = 14;
+  google.protobuf.Struct struct_value = 15;
+  google.protobuf.Value value_value = 16;
+  google.protobuf.ListValue listvalue_value = 17;
+  google.protobuf.NullValue null_value = 18;
 }
