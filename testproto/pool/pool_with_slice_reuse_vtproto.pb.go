@@ -1386,9 +1386,7 @@ func (m *Test1) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Sl = append(m.Sl, stringValue)
@@ -1686,9 +1684,7 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.C = append(m.C, stringValue)
@@ -1760,9 +1756,7 @@ func (m *Slice2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.E = stringValue

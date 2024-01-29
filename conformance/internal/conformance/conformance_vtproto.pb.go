@@ -2374,9 +2374,7 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Failure = append(m.Failure, stringValue)
@@ -2495,9 +2493,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: stringValue}
@@ -2552,9 +2548,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.MessageType = stringValue
@@ -2645,9 +2639,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: stringValue}
@@ -2683,9 +2675,7 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Payload = &ConformanceRequest_TextPayload{TextPayload: stringValue}
@@ -2792,9 +2782,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_ParseError{ParseError: stringValue}
@@ -2830,9 +2818,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: stringValue}
@@ -2900,9 +2886,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: stringValue}
@@ -2938,9 +2922,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_Skipped{Skipped: stringValue}
@@ -2976,9 +2958,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_SerializeError{SerializeError: stringValue}
@@ -3014,9 +2994,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: stringValue}
@@ -3052,9 +3030,7 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_TextPayload{TextPayload: stringValue}

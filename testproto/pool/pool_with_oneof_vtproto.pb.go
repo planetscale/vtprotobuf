@@ -1798,9 +1798,7 @@ func (m *OneofTest_Test2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.B = append(m.B, stringValue)

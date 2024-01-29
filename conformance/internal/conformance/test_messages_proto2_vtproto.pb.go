@@ -14991,9 +14991,7 @@ func (m *TestAllTypesProto2_MessageSetCorrectExtension1) UnmarshalVTUnsafe(dAtA 
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -15364,9 +15362,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -15546,9 +15542,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -15585,9 +15579,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -16506,9 +16498,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.RepeatedString = append(m.RepeatedString, stringValue)
@@ -16781,9 +16771,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.RepeatedStringPiece = append(m.RepeatedStringPiece, stringValue)
@@ -16819,9 +16807,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.RepeatedCord = append(m.RepeatedCord, stringValue)
@@ -18123,7 +18109,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -18156,7 +18142,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapvalue == 0 {
-						mapvalue = unsafe.String(nil, intStringLenmapvalue)
+						mapvalue = ""
 					} else {
 						mapvalue = unsafe.String(&dAtA[iNdEx], intStringLenmapvalue)
 					}
@@ -18258,7 +18244,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -18389,7 +18375,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -18522,7 +18508,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -18655,7 +18641,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -18772,7 +18758,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -20731,9 +20717,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.OneofField = &TestAllTypesProto2_OneofString{OneofString: stringValue}
@@ -21134,9 +21118,7 @@ func (m *TestAllTypesProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -21785,9 +21767,7 @@ func (m *UnknownToTestAllTypes) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue
@@ -22148,9 +22128,7 @@ func (m *OneStringProto2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			s := stringValue

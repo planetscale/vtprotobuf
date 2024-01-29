@@ -2603,9 +2603,7 @@ func (m *UnsafeTest_Sub1) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.S = stringValue
@@ -2723,9 +2721,7 @@ func (m *UnsafeTest_Sub2) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.S = append(m.S, stringValue)
@@ -2892,7 +2888,7 @@ func (m *UnsafeTest_Sub3) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -3025,9 +3021,7 @@ func (m *UnsafeTest_Sub4) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Foo = &UnsafeTest_Sub4_S{S: stringValue}
@@ -3195,7 +3189,7 @@ func (m *UnsafeTest_Sub5) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -3228,7 +3222,7 @@ func (m *UnsafeTest_Sub5) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapvalue == 0 {
-						mapvalue = unsafe.String(nil, intStringLenmapvalue)
+						mapvalue = ""
 					} else {
 						mapvalue = unsafe.String(&dAtA[iNdEx], intStringLenmapvalue)
 					}

@@ -195,7 +195,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`}`)
 		if p.unsafe {
 			p.P(`if intStringLen`, varName, ` == 0 {`)
-			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(nil, intStringLen`, varName, `)`)
+			p.P(varName, ` = ""`)
 			p.P(`} else {`)
 			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)`)
 			p.P(`}`)
@@ -426,9 +426,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		if p.unsafe {
 			str = "stringValue"
 			p.P(`var stringValue string`)
-			p.P(`if intStringLen == 0 {`)
-			p.P(`stringValue = `, p.Ident("unsafe", `String`), `(nil, intStringLen)`)
-			p.P(`} else {`)
+			p.P(`if intStringLen > 0 {`)
 			p.P(`stringValue = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)`)
 			p.P(`}`)
 		}

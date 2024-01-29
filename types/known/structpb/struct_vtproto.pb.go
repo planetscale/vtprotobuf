@@ -1604,7 +1604,7 @@ func (m *Struct) UnmarshalVTUnsafe(dAtA []byte) error {
 						return io.ErrUnexpectedEOF
 					}
 					if intStringLenmapkey == 0 {
-						mapkey = unsafe.String(nil, intStringLenmapkey)
+						mapkey = ""
 					} else {
 						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
 					}
@@ -1769,9 +1769,7 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			var stringValue string
-			if intStringLen == 0 {
-				stringValue = unsafe.String(nil, intStringLen)
-			} else {
+			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Kind = &structpb.Value_StringValue{StringValue: stringValue}
