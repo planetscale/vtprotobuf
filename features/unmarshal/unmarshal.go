@@ -194,7 +194,11 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		if p.unsafe {
+			p.P(`if intStringLen`, varName, ` == 0 {`)
+			p.P(varName, ` = ""`)
+			p.P(`} else {`)
 			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)`)
+			p.P(`}`)
 		} else {
 			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
 		}
@@ -420,7 +424,11 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`}`)
 		str := "string(dAtA[iNdEx:postIndex])"
 		if p.unsafe {
-			str = p.Ident("unsafe", `String`) + `(&dAtA[iNdEx], intStringLen)`
+			str = "stringValue"
+			p.P(`var stringValue string`)
+			p.P(`if intStringLen > 0 {`)
+			p.P(`stringValue = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)`)
+			p.P(`}`)
 		}
 		if oneof {
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", str, `}`)

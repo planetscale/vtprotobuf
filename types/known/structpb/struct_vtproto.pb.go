@@ -1603,7 +1603,11 @@ func (m *Struct) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postStringIndexmapkey > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					if intStringLenmapkey == 0 {
+						mapkey = ""
+					} else {
+						mapkey = unsafe.String(&dAtA[iNdEx], intStringLenmapkey)
+					}
 					iNdEx = postStringIndexmapkey
 				} else if fieldNum == 2 {
 					var mapmsglen int
@@ -1764,7 +1768,11 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Kind = &structpb.Value_StringValue{StringValue: unsafe.String(&dAtA[iNdEx], intStringLen)}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Kind = &structpb.Value_StringValue{StringValue: stringValue}
 			iNdEx = postIndex
 		case 4:
 			if wireType != 0 {

@@ -1108,7 +1108,11 @@ func (m *OptionalFieldInProto3) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			s := unsafe.String(&dAtA[iNdEx], intStringLen)
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			s := stringValue
 			m.OptionalString = &s
 			iNdEx = postIndex
 		case 15:
