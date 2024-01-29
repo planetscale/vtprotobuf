@@ -108,10 +108,20 @@ The following features can be generated:
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
     ```
+6. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
 
-6. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+    When using this option, the generated code will only be compiled in if a build tag is provided.
 
-7. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
+    It is recommended, but not required, to use `vtprotobuf` as the build tag if this is desired, especially if your project is imported by others.
+    This will reduce the number of build tags a user will need to configure if they are importing multiple libraries following this pattern.
+
+    When using this option, it is strongly recommended to make your code compile with and without the build tag.
+    This can be done with type assertions before using `vtprotobuf` generated methods.
+    The `grpc.Codec{}` object (discussed below) shows an example.
+
+7. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+
+8. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
 ## `vtprotobuf` package and well-known types
 
