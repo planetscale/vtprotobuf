@@ -29,6 +29,7 @@ func (Codec) Unmarshal(data []byte, v interface{}) error {
 	if !ok {
 		return fmt.Errorf("failed to unmarshal, message is %T (missing vtprotobuf helpers)", v)
 	}
+
 	vv, ok := v.(proto.Message)
 	if !ok {
 		return fmt.Errorf("failed to unmarshal, message is %T (can't reset)", vv)
