@@ -10,6 +10,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	sort "sort"
 	sync "sync"
 	unsafe "unsafe"
 )
@@ -433,6 +434,438 @@ func (m *Element2) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *Element2) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.A != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Test1) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Test1) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Test1) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Sl) > 0 {
+		for iNdEx := len(m.Sl) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Sl[iNdEx])
+			copy(dAtA[i:], m.Sl[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Sl[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Test2) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Test2) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Test2) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Sl) > 0 {
+		for iNdEx := len(m.Sl) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Sl[iNdEx].MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Slice2) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Slice2) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Slice2) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.F != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.F))
+		i--
+		dAtA[i] = 0x30
+	}
+	if len(m.E) > 0 {
+		i -= len(m.E)
+		copy(dAtA[i:], m.E)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.E)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.D != nil {
+		size, err := m.D.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.C) > 0 {
+		for iNdEx := len(m.C) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.C[iNdEx])
+			copy(dAtA[i:], m.C[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.C[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.B != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.B))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.A) > 0 {
+		keysForA := make([]int64, 0, len(m.A))
+		for k := range m.A {
+			keysForA = append(keysForA, int64(k))
+		}
+		sort.Slice(keysForA, func(i, j int) bool {
+			return keysForA[i] < keysForA[j]
+		})
+		for iNdEx := len(keysForA) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.A[int64(keysForA[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForA[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Element2) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Element2) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Element2) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.A != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Test1) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Test1) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Test1) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Sl) > 0 {
+		for iNdEx := len(m.Sl) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Sl[iNdEx])
+			copy(dAtA[i:], m.Sl[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Sl[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Test2) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Test2) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Test2) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.Sl) > 0 {
+		for iNdEx := len(m.Sl) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Sl[iNdEx].MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Slice2) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Slice2) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Slice2) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.F != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.F))
+		i--
+		dAtA[i] = 0x30
+	}
+	if len(m.E) > 0 {
+		i -= len(m.E)
+		copy(dAtA[i:], m.E)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.E)))
+		i--
+		dAtA[i] = 0x2a
+	}
+	if m.D != nil {
+		size, err := m.D.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.C) > 0 {
+		for iNdEx := len(m.C) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.C[iNdEx])
+			copy(dAtA[i:], m.C[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.C[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.B != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.B))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.A) > 0 {
+		keysForA := make([]int64, 0, len(m.A))
+		for k := range m.A {
+			keysForA = append(keysForA, int64(k))
+		}
+		sort.Slice(keysForA, func(i, j int) bool {
+			return keysForA[i] < keysForA[j]
+		})
+		for iNdEx := len(keysForA) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.A[int64(keysForA[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForA[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Element2) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Element2) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Element2) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
