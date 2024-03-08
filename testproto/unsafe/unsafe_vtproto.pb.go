@@ -880,6 +880,10 @@ func (m *UnsafeTest_Sub1_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -897,6 +901,10 @@ func (m *UnsafeTest_Sub2_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x12
 	}
@@ -918,6 +926,10 @@ func (m *UnsafeTest_Sub3_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x1a
 	}
 	return len(dAtA) - i, nil
 }
@@ -937,6 +949,10 @@ func (m *UnsafeTest_Sub4_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x22
 	}
 	return len(dAtA) - i, nil
 }
@@ -954,6 +970,10 @@ func (m *UnsafeTest_Sub5_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -1320,6 +1340,10 @@ func (m *UnsafeTest_Sub1_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -1337,6 +1361,10 @@ func (m *UnsafeTest_Sub2_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x12
 	}
@@ -1358,6 +1386,10 @@ func (m *UnsafeTest_Sub3_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x1a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x1a
 	}
 	return len(dAtA) - i, nil
 }
@@ -1377,6 +1409,10 @@ func (m *UnsafeTest_Sub4_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x22
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x22
 	}
 	return len(dAtA) - i, nil
 }
@@ -1394,6 +1430,10 @@ func (m *UnsafeTest_Sub5_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x2a
 	}
@@ -1531,6 +1571,8 @@ func (m *UnsafeTest_Sub1_) SizeVT() (n int) {
 	if m.Sub1 != nil {
 		l = m.Sub1.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1543,6 +1585,8 @@ func (m *UnsafeTest_Sub2_) SizeVT() (n int) {
 	if m.Sub2 != nil {
 		l = m.Sub2.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1555,6 +1599,8 @@ func (m *UnsafeTest_Sub3_) SizeVT() (n int) {
 	if m.Sub3 != nil {
 		l = m.Sub3.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1567,6 +1613,8 @@ func (m *UnsafeTest_Sub4_) SizeVT() (n int) {
 	if m.Sub4 != nil {
 		l = m.Sub4.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1579,6 +1627,8 @@ func (m *UnsafeTest_Sub5_) SizeVT() (n int) {
 	if m.Sub5 != nil {
 		l = m.Sub5.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }

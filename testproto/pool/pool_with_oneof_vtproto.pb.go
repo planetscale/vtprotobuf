@@ -571,6 +571,10 @@ func (m *OneofTest_Test1_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -590,6 +594,10 @@ func (m *OneofTest_Test2_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x12
 	}
 	return len(dAtA) - i, nil
 }
@@ -607,6 +615,10 @@ func (m *OneofTest_Test3_) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -864,6 +876,10 @@ func (m *OneofTest_Test1_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0xa
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -883,6 +899,10 @@ func (m *OneofTest_Test2_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 		i--
 		dAtA[i] = 0x12
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
+		i--
+		dAtA[i] = 0x12
 	}
 	return len(dAtA) - i, nil
 }
@@ -900,6 +920,10 @@ func (m *OneofTest_Test3_) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 		}
 		i -= size
 		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1a
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, 0)
 		i--
 		dAtA[i] = 0x1a
 	}
@@ -1114,6 +1138,8 @@ func (m *OneofTest_Test1_) SizeVT() (n int) {
 	if m.Test1 != nil {
 		l = m.Test1.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1126,6 +1152,8 @@ func (m *OneofTest_Test2_) SizeVT() (n int) {
 	if m.Test2 != nil {
 		l = m.Test2.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }
@@ -1138,6 +1166,8 @@ func (m *OneofTest_Test3_) SizeVT() (n int) {
 	if m.Test3 != nil {
 		l = m.Test3.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	} else {
+		n += 3
 	}
 	return n
 }

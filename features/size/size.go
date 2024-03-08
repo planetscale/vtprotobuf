@@ -8,11 +8,10 @@ package size
 import (
 	"strconv"
 
+	"github.com/planetscale/vtprotobuf/generator"
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
-
-	"github.com/planetscale/vtprotobuf/generator"
 )
 
 func init() {
@@ -266,7 +265,12 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	default:
 		panic("not implemented")
 	}
-	if repeated || nullable {
+	// Empty protobufs should emit a message or compatibility with Golang protobuf;
+	// See https://github.com/planetscale/vtprotobuf/issues/61
+	// Size is always 3 so just hardcode that here
+	if oneof && field.Desc.Kind() == protoreflect.MessageKind && !field.Desc.IsMap() && !field.Desc.IsList() {
+		p.P("} else { n += 3 }")
+	} else if repeated || nullable {
 		p.P(`}`)
 	}
 }
@@ -310,8 +314,6 @@ func (p *size) message(message *protogen.Message) {
 				}
 				p.P(`}`)
 			} else {
-				//if _, ok := oneofs[fieldname]; !ok {
-				//oneofs[fieldname] = struct{}{}
 				p.P(`if vtmsg, ok := m.`, fieldname, `.(interface{ SizeVT() int }); ok {`)
 				p.P(`n+=vtmsg.`, sizeName, `()`)
 				p.P(`}`)

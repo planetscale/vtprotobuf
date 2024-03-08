@@ -12,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/planetscale/vtprotobuf/generator"
-
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -520,7 +519,14 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 	default:
 		panic("not implemented")
 	}
-	if repeated || nullable {
+	// Empty protobufs should emit a message or compatibility with Golang protobuf;
+	// See https://github.com/planetscale/vtprotobuf/issues/61
+	if oneof && field.Desc.Kind() == protoreflect.MessageKind && !field.Desc.IsMap() && !field.Desc.IsList() {
+		p.P("} else {")
+		p.P("i = protohelpers.EncodeVarint(dAtA, i, 0)")
+		p.encodeKey(fieldNumber, wireType)
+		p.P("}")
+	} else if repeated || nullable {
 		p.P(`}`)
 	}
 }
@@ -676,7 +682,7 @@ func (p *marshal) message(message *protogen.Message) {
 	p.P(`}`)
 	p.P()
 
-	//Generate MarshalToVT methods for oneof fields
+	// Generate MarshalToVT methods for oneof fields
 	for _, field := range message.Fields {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
@@ -709,7 +715,6 @@ func (p *marshal) marshalBackwardSize(varInt bool) {
 	if varInt {
 		p.encodeVarint(`size`)
 	}
-
 }
 
 func (p *marshal) marshalBackward(varName string, varInt bool, message *protogen.Message) {
