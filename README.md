@@ -180,7 +180,7 @@ protoc --go_out=. --go-vtproto_out=. --go-drpc_out=. --go-drpc_opt=protolib=gith
 ```
 
 ### Connect
-To use `vtprotobuf` with Connect simply pass in `connect.WithCodec(grpc.Codec{})` as a connect option to the client and handler constructors.
+To use `vtprotobuf` with Connect, first implement a custom codec in your own project that serializes messages based on their type (see [Mixing ProtoBuf implementations with GRPC](#mixing-protobuf-implementations-with-grpc)). This is required because Connect internally serializes some types such as `Status` that don't have `vtprotobuf` helpers. Then pass in `connect.WithCodec(mygrpc.Codec{})` as a connect option to the client and handler constructors.
 
 ```go
 package main
@@ -190,21 +190,21 @@ import (
 
 	"github.com/bufbuild/connect-go"
 	"github.com/foo/bar/pingv1connect"
-	"github.com/planetscale/vtprotobuf/codec/grpc"
+	"github.com/myorg/myproject/codec/mygrpc"
 )
 
 func main() {
 	mux := http.NewServeMux()
 	mux.Handle(pingv1connect.NewPingServiceHandler(
 		&PingServer{},
-		connect.WithCodec(grpc.Codec{}), // Add connect option to handler.
+		connect.WithCodec(mygrpc.Codec{}), // Add connect option to handler.
 	))
 	// handler serving ...
 
 	client := pingv1connect.NewPingServiceClient(
 		http.DefaultClient,
 		"http://localhost:8080",
-		connect.WithCodec(grpc.Codec{}), // Add connect option to client.
+		connect.WithCodec(mygrpc.Codec{}), // Add connect option to client.
 	)
 	/// client code here ...
 }
