@@ -24,6 +24,7 @@ import (
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	io "io"
 	math "math"
+	sort "sort"
 	unsafe "unsafe"
 )
 
@@ -4335,6 +4336,4605 @@ func (m *EnumOnlyProto3) MarshalToVT(dAtA []byte) (int, error) {
 }
 
 func (m *EnumOnlyProto3) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Corecursive != nil {
+		size, err := m.Corecursive.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.A != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto3) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if vtmsg, ok := m.OneofField.(interface {
+		MarshalToSizedBufferVTStable([]byte) (int, error)
+	}); ok {
+		size, err := vtmsg.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m.FieldName18__ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName18__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.FieldName17__ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName17__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.Field__Name16 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field__Name16))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x80
+	}
+	if m.Field_Name15 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name15))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf8
+	}
+	if m.X_FieldName14 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.X_FieldName14))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf0
+	}
+	if m.XFieldName13 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.XFieldName13))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe8
+	}
+	if m.FIELDName12 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FIELDName12))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe0
+	}
+	if m.FIELD_NAME11 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FIELD_NAME11))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd8
+	}
+	if m.Field_Name10 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name10))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd0
+	}
+	if m.Field_Name9 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name9))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc8
+	}
+	if m.FieldName8 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName8))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc0
+	}
+	if m.FieldName7 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName7))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.Field_0Name6 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_0Name6))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.Field0Name5 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field0Name5))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.Field_Name4_ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name4_))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.XFieldName3 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.XFieldName3))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.FieldName2 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName2))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.Fieldname1 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Fieldname1))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x88
+	}
+	if len(m.RepeatedStruct) > 0 {
+		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.Struct)(m.RepeatedStruct[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x14
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.RepeatedListValue) > 0 {
+		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.ListValue)(m.RepeatedListValue[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.RepeatedValue) > 0 {
+		for iNdEx := len(m.RepeatedValue) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.Value)(m.RepeatedValue[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.RepeatedAny) > 0 {
+		for iNdEx := len(m.RepeatedAny) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*anypb1.Any)(m.RepeatedAny[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.RepeatedFieldmask) > 0 {
+		for iNdEx := len(m.RepeatedFieldmask) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*fieldmaskpb1.FieldMask)(m.RepeatedFieldmask[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.RepeatedTimestamp) > 0 {
+		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*timestamppb1.Timestamp)(m.RepeatedTimestamp[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedDuration) > 0 {
+		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*durationpb1.Duration)(m.RepeatedDuration[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if m.OptionalNullValue != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalNullValue))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.OptionalValue != nil {
+		size, err := (*structpb1.Value)(m.OptionalValue).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x92
+	}
+	if m.OptionalAny != nil {
+		size, err := (*anypb1.Any)(m.OptionalAny).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x8a
+	}
+	if m.OptionalStruct != nil {
+		size, err := (*structpb1.Struct)(m.OptionalStruct).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x82
+	}
+	if m.OptionalFieldMask != nil {
+		size, err := (*fieldmaskpb1.FieldMask)(m.OptionalFieldMask).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.OptionalTimestamp != nil {
+		size, err := (*timestamppb1.Timestamp)(m.OptionalTimestamp).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.OptionalDuration != nil {
+		size, err := (*durationpb1.Duration)(m.OptionalDuration).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xea
+	}
+	if len(m.RepeatedBytesWrapper) > 0 {
+		for iNdEx := len(m.RepeatedBytesWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.BytesValue)(m.RepeatedBytesWrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.RepeatedStringWrapper) > 0 {
+		for iNdEx := len(m.RepeatedStringWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.StringValue)(m.RepeatedStringWrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.RepeatedDoubleWrapper) > 0 {
+		for iNdEx := len(m.RepeatedDoubleWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.DoubleValue)(m.RepeatedDoubleWrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.RepeatedFloatWrapper) > 0 {
+		for iNdEx := len(m.RepeatedFloatWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.FloatValue)(m.RepeatedFloatWrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedUint64Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedUint64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.UInt64Value)(m.RepeatedUint64Wrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.RepeatedUint32Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedUint32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.UInt32Value)(m.RepeatedUint32Wrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.RepeatedInt64Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedInt64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.Int64Value)(m.RepeatedInt64Wrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.RepeatedInt32Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedInt32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.Int32Value)(m.RepeatedInt32Wrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.RepeatedBoolWrapper) > 0 {
+		for iNdEx := len(m.RepeatedBoolWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.BoolValue)(m.RepeatedBoolWrapper[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if m.OptionalBytesWrapper != nil {
+		size, err := (*wrapperspb1.BytesValue)(m.OptionalBytesWrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xd
+		i--
+		dAtA[i] = 0x8a
+	}
+	if m.OptionalStringWrapper != nil {
+		size, err := (*wrapperspb1.StringValue)(m.OptionalStringWrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xd
+		i--
+		dAtA[i] = 0x82
+	}
+	if m.OptionalDoubleWrapper != nil {
+		size, err := (*wrapperspb1.DoubleValue)(m.OptionalDoubleWrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.OptionalFloatWrapper != nil {
+		size, err := (*wrapperspb1.FloatValue)(m.OptionalFloatWrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.OptionalUint64Wrapper != nil {
+		size, err := (*wrapperspb1.UInt64Value)(m.OptionalUint64Wrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xea
+	}
+	if m.OptionalUint32Wrapper != nil {
+		size, err := (*wrapperspb1.UInt32Value)(m.OptionalUint32Wrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xe2
+	}
+	if m.OptionalInt64Wrapper != nil {
+		size, err := (*wrapperspb1.Int64Value)(m.OptionalInt64Wrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.OptionalInt32Wrapper != nil {
+		size, err := (*wrapperspb1.Int32Value)(m.OptionalInt32Wrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
+	}
+	if m.OptionalBoolWrapper != nil {
+		size, err := (*wrapperspb1.BoolValue)(m.OptionalBoolWrapper).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.UnpackedNestedEnum) > 0 {
+		for iNdEx := len(m.UnpackedNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedNestedEnum[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xb0
+		}
+	}
+	if len(m.UnpackedBool) > 0 {
+		for iNdEx := len(m.UnpackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.UnpackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa8
+		}
+	}
+	if len(m.UnpackedDouble) > 0 {
+		for iNdEx := len(m.UnpackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float64bits(float64(m.UnpackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa1
+		}
+	}
+	if len(m.UnpackedFloat) > 0 {
+		for iNdEx := len(m.UnpackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float32bits(float32(m.UnpackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f2))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x9d
+		}
+	}
+	if len(m.UnpackedSfixed64) > 0 {
+		for iNdEx := len(m.UnpackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedSfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x91
+		}
+	}
+	if len(m.UnpackedSfixed32) > 0 {
+		for iNdEx := len(m.UnpackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedSfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x8d
+		}
+	}
+	if len(m.UnpackedFixed64) > 0 {
+		for iNdEx := len(m.UnpackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedFixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x81
+		}
+	}
+	if len(m.UnpackedFixed32) > 0 {
+		for iNdEx := len(m.UnpackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedFixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xfd
+		}
+	}
+	if len(m.UnpackedSint64) > 0 {
+		for iNdEx := len(m.UnpackedSint64) - 1; iNdEx >= 0; iNdEx-- {
+			x3 := (uint64(m.UnpackedSint64[iNdEx]) << 1) ^ uint64((m.UnpackedSint64[iNdEx] >> 63))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x3))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xf0
+		}
+	}
+	if len(m.UnpackedSint32) > 0 {
+		for iNdEx := len(m.UnpackedSint32) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint32(m.UnpackedSint32[iNdEx]) << 1) ^ uint32((m.UnpackedSint32[iNdEx] >> 31))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe8
+		}
+	}
+	if len(m.UnpackedUint64) > 0 {
+		for iNdEx := len(m.UnpackedUint64) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedUint64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe0
+		}
+	}
+	if len(m.UnpackedUint32) > 0 {
+		for iNdEx := len(m.UnpackedUint32) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedUint32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd8
+		}
+	}
+	if len(m.UnpackedInt64) > 0 {
+		for iNdEx := len(m.UnpackedInt64) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedInt64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd0
+		}
+	}
+	if len(m.UnpackedInt32) > 0 {
+		for iNdEx := len(m.UnpackedInt32) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedInt32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xc8
+		}
+	}
+	if len(m.PackedNestedEnum) > 0 {
+		var pksize6 int
+		for _, num := range m.PackedNestedEnum {
+			pksize6 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize6
+		j5 := i
+		for _, num1 := range m.PackedNestedEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j5] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j5++
+			}
+			dAtA[j5] = uint8(num)
+			j5++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize6))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.PackedBool) > 0 {
+		for iNdEx := len(m.PackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.PackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedBool)))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.PackedDouble) > 0 {
+		for iNdEx := len(m.PackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f7 := math.Float64bits(float64(m.PackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f7))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedDouble)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.PackedFloat) > 0 {
+		for iNdEx := len(m.PackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f8 := math.Float32bits(float32(m.PackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f8))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFloat)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.PackedSfixed64) > 0 {
+		for iNdEx := len(m.PackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedSfixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedSfixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.PackedSfixed32) > 0 {
+		for iNdEx := len(m.PackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedSfixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedSfixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.PackedFixed64) > 0 {
+		for iNdEx := len(m.PackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedFixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.PackedFixed32) > 0 {
+		for iNdEx := len(m.PackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedFixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x8a
+	}
+	if len(m.PackedSint64) > 0 {
+		var pksize10 int
+		for _, num := range m.PackedSint64 {
+			pksize10 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize10
+		j9 := i
+		for _, num := range m.PackedSint64 {
+			x11 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x11 >= 1<<7 {
+				dAtA[j9] = uint8(uint64(x11)&0x7f | 0x80)
+				j9++
+				x11 >>= 7
+			}
+			dAtA[j9] = uint8(x11)
+			j9++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize10))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.PackedSint32) > 0 {
+		var pksize13 int
+		for _, num := range m.PackedSint32 {
+			pksize13 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize13
+		j12 := i
+		for _, num := range m.PackedSint32 {
+			x14 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x14 >= 1<<7 {
+				dAtA[j12] = uint8(uint64(x14)&0x7f | 0x80)
+				j12++
+				x14 >>= 7
+			}
+			dAtA[j12] = uint8(x14)
+			j12++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize13))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xfa
+	}
+	if len(m.PackedUint64) > 0 {
+		var pksize16 int
+		for _, num := range m.PackedUint64 {
+			pksize16 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize16
+		j15 := i
+		for _, num := range m.PackedUint64 {
+			for num >= 1<<7 {
+				dAtA[j15] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j15++
+			}
+			dAtA[j15] = uint8(num)
+			j15++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize16))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xf2
+	}
+	if len(m.PackedUint32) > 0 {
+		var pksize18 int
+		for _, num := range m.PackedUint32 {
+			pksize18 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize18
+		j17 := i
+		for _, num := range m.PackedUint32 {
+			for num >= 1<<7 {
+				dAtA[j17] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j17++
+			}
+			dAtA[j17] = uint8(num)
+			j17++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize18))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xea
+	}
+	if len(m.PackedInt64) > 0 {
+		var pksize20 int
+		for _, num := range m.PackedInt64 {
+			pksize20 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize20
+		j19 := i
+		for _, num1 := range m.PackedInt64 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j19] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j19++
+			}
+			dAtA[j19] = uint8(num)
+			j19++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize20))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xe2
+	}
+	if len(m.PackedInt32) > 0 {
+		var pksize22 int
+		for _, num := range m.PackedInt32 {
+			pksize22 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize22
+		j21 := i
+		for _, num1 := range m.PackedInt32 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j21] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j21++
+			}
+			dAtA[j21] = uint8(num)
+			j21++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize22))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.MapStringForeignEnum) > 0 {
+		keysForMapStringForeignEnum := make([]string, 0, len(m.MapStringForeignEnum))
+		for k := range m.MapStringForeignEnum {
+			keysForMapStringForeignEnum = append(keysForMapStringForeignEnum, string(k))
+		}
+		sort.Slice(keysForMapStringForeignEnum, func(i, j int) bool {
+			return keysForMapStringForeignEnum[i] < keysForMapStringForeignEnum[j]
+		})
+		for iNdEx := len(keysForMapStringForeignEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignEnum[string(keysForMapStringForeignEnum[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringForeignEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignEnum[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringForeignEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapStringNestedEnum) > 0 {
+		keysForMapStringNestedEnum := make([]string, 0, len(m.MapStringNestedEnum))
+		for k := range m.MapStringNestedEnum {
+			keysForMapStringNestedEnum = append(keysForMapStringNestedEnum, string(k))
+		}
+		sort.Slice(keysForMapStringNestedEnum, func(i, j int) bool {
+			return keysForMapStringNestedEnum[i] < keysForMapStringNestedEnum[j]
+		})
+		for iNdEx := len(keysForMapStringNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedEnum[string(keysForMapStringNestedEnum[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringNestedEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedEnum[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringNestedEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapStringForeignMessage) > 0 {
+		keysForMapStringForeignMessage := make([]string, 0, len(m.MapStringForeignMessage))
+		for k := range m.MapStringForeignMessage {
+			keysForMapStringForeignMessage = append(keysForMapStringForeignMessage, string(k))
+		}
+		sort.Slice(keysForMapStringForeignMessage, func(i, j int) bool {
+			return keysForMapStringForeignMessage[i] < keysForMapStringForeignMessage[j]
+		})
+		for iNdEx := len(keysForMapStringForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignMessage[string(keysForMapStringForeignMessage[iNdEx])]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringForeignMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignMessage[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringForeignMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.MapStringNestedMessage) > 0 {
+		keysForMapStringNestedMessage := make([]string, 0, len(m.MapStringNestedMessage))
+		for k := range m.MapStringNestedMessage {
+			keysForMapStringNestedMessage = append(keysForMapStringNestedMessage, string(k))
+		}
+		sort.Slice(keysForMapStringNestedMessage, func(i, j int) bool {
+			return keysForMapStringNestedMessage[i] < keysForMapStringNestedMessage[j]
+		})
+		for iNdEx := len(keysForMapStringNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedMessage[string(keysForMapStringNestedMessage[iNdEx])]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringNestedMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedMessage[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringNestedMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.MapStringBytes) > 0 {
+		keysForMapStringBytes := make([]string, 0, len(m.MapStringBytes))
+		for k := range m.MapStringBytes {
+			keysForMapStringBytes = append(keysForMapStringBytes, string(k))
+		}
+		sort.Slice(keysForMapStringBytes, func(i, j int) bool {
+			return keysForMapStringBytes[i] < keysForMapStringBytes[j]
+		})
+		for iNdEx := len(keysForMapStringBytes) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringBytes[string(keysForMapStringBytes[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringBytes[iNdEx])
+			copy(dAtA[i:], keysForMapStringBytes[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringBytes[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.MapStringString) > 0 {
+		keysForMapStringString := make([]string, 0, len(m.MapStringString))
+		for k := range m.MapStringString {
+			keysForMapStringString = append(keysForMapStringString, string(k))
+		}
+		sort.Slice(keysForMapStringString, func(i, j int) bool {
+			return keysForMapStringString[i] < keysForMapStringString[j]
+		})
+		for iNdEx := len(keysForMapStringString) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringString[string(keysForMapStringString[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringString[iNdEx])
+			copy(dAtA[i:], keysForMapStringString[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringString[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.MapBoolBool) > 0 {
+		for k := range m.MapBoolBool {
+			v := m.MapBoolBool[bool(k)]
+			baseI := i
+			i--
+			if v {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x10
+			i--
+			if k {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.MapInt32Double) > 0 {
+		keysForMapInt32Double := make([]int32, 0, len(m.MapInt32Double))
+		for k := range m.MapInt32Double {
+			keysForMapInt32Double = append(keysForMapInt32Double, int32(k))
+		}
+		sort.Slice(keysForMapInt32Double, func(i, j int) bool {
+			return keysForMapInt32Double[i] < keysForMapInt32Double[j]
+		})
+		for iNdEx := len(keysForMapInt32Double) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Double[int32(keysForMapInt32Double[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
+			i--
+			dAtA[i] = 0x11
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Double[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if len(m.MapInt32Float) > 0 {
+		keysForMapInt32Float := make([]int32, 0, len(m.MapInt32Float))
+		for k := range m.MapInt32Float {
+			keysForMapInt32Float = append(keysForMapInt32Float, int32(k))
+		}
+		sort.Slice(keysForMapInt32Float, func(i, j int) bool {
+			return keysForMapInt32Float[i] < keysForMapInt32Float[j]
+		})
+		for iNdEx := len(keysForMapInt32Float) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Float[int32(keysForMapInt32Float[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
+			i--
+			dAtA[i] = 0x15
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Float[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x92
+		}
+	}
+	if len(m.MapSfixed64Sfixed64) > 0 {
+		keysForMapSfixed64Sfixed64 := make([]int64, 0, len(m.MapSfixed64Sfixed64))
+		for k := range m.MapSfixed64Sfixed64 {
+			keysForMapSfixed64Sfixed64 = append(keysForMapSfixed64Sfixed64, int64(k))
+		}
+		sort.Slice(keysForMapSfixed64Sfixed64, func(i, j int) bool {
+			return keysForMapSfixed64Sfixed64[i] < keysForMapSfixed64Sfixed64[j]
+		})
+		for iNdEx := len(keysForMapSfixed64Sfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed64Sfixed64[int64(keysForMapSfixed64Sfixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapSfixed64Sfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.MapSfixed32Sfixed32) > 0 {
+		keysForMapSfixed32Sfixed32 := make([]int32, 0, len(m.MapSfixed32Sfixed32))
+		for k := range m.MapSfixed32Sfixed32 {
+			keysForMapSfixed32Sfixed32 = append(keysForMapSfixed32Sfixed32, int32(k))
+		}
+		sort.Slice(keysForMapSfixed32Sfixed32, func(i, j int) bool {
+			return keysForMapSfixed32Sfixed32[i] < keysForMapSfixed32Sfixed32[j]
+		})
+		for iNdEx := len(keysForMapSfixed32Sfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed32Sfixed32[int32(keysForMapSfixed32Sfixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapSfixed32Sfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.MapFixed64Fixed64) > 0 {
+		keysForMapFixed64Fixed64 := make([]uint64, 0, len(m.MapFixed64Fixed64))
+		for k := range m.MapFixed64Fixed64 {
+			keysForMapFixed64Fixed64 = append(keysForMapFixed64Fixed64, uint64(k))
+		}
+		sort.Slice(keysForMapFixed64Fixed64, func(i, j int) bool {
+			return keysForMapFixed64Fixed64[i] < keysForMapFixed64Fixed64[j]
+		})
+		for iNdEx := len(keysForMapFixed64Fixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed64Fixed64[uint64(keysForMapFixed64Fixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapFixed64Fixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xfa
+		}
+	}
+	if len(m.MapFixed32Fixed32) > 0 {
+		keysForMapFixed32Fixed32 := make([]uint32, 0, len(m.MapFixed32Fixed32))
+		for k := range m.MapFixed32Fixed32 {
+			keysForMapFixed32Fixed32 = append(keysForMapFixed32Fixed32, uint32(k))
+		}
+		sort.Slice(keysForMapFixed32Fixed32, func(i, j int) bool {
+			return keysForMapFixed32Fixed32[i] < keysForMapFixed32Fixed32[j]
+		})
+		for iNdEx := len(keysForMapFixed32Fixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed32Fixed32[uint32(keysForMapFixed32Fixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapFixed32Fixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xf2
+		}
+	}
+	if len(m.MapSint64Sint64) > 0 {
+		keysForMapSint64Sint64 := make([]int64, 0, len(m.MapSint64Sint64))
+		for k := range m.MapSint64Sint64 {
+			keysForMapSint64Sint64 = append(keysForMapSint64Sint64, int64(k))
+		}
+		sort.Slice(keysForMapSint64Sint64, func(i, j int) bool {
+			return keysForMapSint64Sint64[i] < keysForMapSint64Sint64[j]
+		})
+		for iNdEx := len(keysForMapSint64Sint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint64Sint64[int64(keysForMapSint64Sint64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(keysForMapSint64Sint64[iNdEx])<<1)^uint64((keysForMapSint64Sint64[iNdEx]>>63))))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.MapSint32Sint32) > 0 {
+		keysForMapSint32Sint32 := make([]int32, 0, len(m.MapSint32Sint32))
+		for k := range m.MapSint32Sint32 {
+			keysForMapSint32Sint32 = append(keysForMapSint32Sint32, int32(k))
+		}
+		sort.Slice(keysForMapSint32Sint32, func(i, j int) bool {
+			return keysForMapSint32Sint32[i] < keysForMapSint32Sint32[j]
+		})
+		for iNdEx := len(keysForMapSint32Sint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint32Sint32[int32(keysForMapSint32Sint32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(keysForMapSint32Sint32[iNdEx])<<1)^uint32((keysForMapSint32Sint32[iNdEx]>>31))))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.MapUint64Uint64) > 0 {
+		keysForMapUint64Uint64 := make([]uint64, 0, len(m.MapUint64Uint64))
+		for k := range m.MapUint64Uint64 {
+			keysForMapUint64Uint64 = append(keysForMapUint64Uint64, uint64(k))
+		}
+		sort.Slice(keysForMapUint64Uint64, func(i, j int) bool {
+			return keysForMapUint64Uint64[i] < keysForMapUint64Uint64[j]
+		})
+		for iNdEx := len(keysForMapUint64Uint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint64Uint64[uint64(keysForMapUint64Uint64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapUint64Uint64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.MapUint32Uint32) > 0 {
+		keysForMapUint32Uint32 := make([]uint32, 0, len(m.MapUint32Uint32))
+		for k := range m.MapUint32Uint32 {
+			keysForMapUint32Uint32 = append(keysForMapUint32Uint32, uint32(k))
+		}
+		sort.Slice(keysForMapUint32Uint32, func(i, j int) bool {
+			return keysForMapUint32Uint32[i] < keysForMapUint32Uint32[j]
+		})
+		for iNdEx := len(keysForMapUint32Uint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint32Uint32[uint32(keysForMapUint32Uint32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapUint32Uint32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapInt64Int64) > 0 {
+		keysForMapInt64Int64 := make([]int64, 0, len(m.MapInt64Int64))
+		for k := range m.MapInt64Int64 {
+			keysForMapInt64Int64 = append(keysForMapInt64Int64, int64(k))
+		}
+		sort.Slice(keysForMapInt64Int64, func(i, j int) bool {
+			return keysForMapInt64Int64[i] < keysForMapInt64Int64[j]
+		})
+		for iNdEx := len(keysForMapInt64Int64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt64Int64[int64(keysForMapInt64Int64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt64Int64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapInt32Int32) > 0 {
+		keysForMapInt32Int32 := make([]int32, 0, len(m.MapInt32Int32))
+		for k := range m.MapInt32Int32 {
+			keysForMapInt32Int32 = append(keysForMapInt32Int32, int32(k))
+		}
+		sort.Slice(keysForMapInt32Int32, func(i, j int) bool {
+			return keysForMapInt32Int32[i] < keysForMapInt32Int32[j]
+		})
+		for iNdEx := len(keysForMapInt32Int32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Int32[int32(keysForMapInt32Int32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Int32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedCord) > 0 {
+		for iNdEx := len(m.RepeatedCord) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedCord[iNdEx])
+			copy(dAtA[i:], m.RepeatedCord[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedCord[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.RepeatedStringPiece) > 0 {
+		for iNdEx := len(m.RepeatedStringPiece) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedStringPiece[iNdEx])
+			copy(dAtA[i:], m.RepeatedStringPiece[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedStringPiece[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.RepeatedForeignEnum) > 0 {
+		var pksize24 int
+		for _, num := range m.RepeatedForeignEnum {
+			pksize24 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize24
+		j23 := i
+		for _, num1 := range m.RepeatedForeignEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j23] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j23++
+			}
+			dAtA[j23] = uint8(num)
+			j23++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize24))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.RepeatedNestedEnum) > 0 {
+		var pksize26 int
+		for _, num := range m.RepeatedNestedEnum {
+			pksize26 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize26
+		j25 := i
+		for _, num1 := range m.RepeatedNestedEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j25] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j25++
+			}
+			dAtA[j25] = uint8(num)
+			j25++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize26))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.RepeatedForeignMessage) > 0 {
+		for iNdEx := len(m.RepeatedForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedForeignMessage[iNdEx].MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.RepeatedNestedMessage) > 0 {
+		for iNdEx := len(m.RepeatedNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedNestedMessage[iNdEx].MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.RepeatedBytes) > 0 {
+		for iNdEx := len(m.RepeatedBytes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedBytes[iNdEx])
+			copy(dAtA[i:], m.RepeatedBytes[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedBytes[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.RepeatedString) > 0 {
+		for iNdEx := len(m.RepeatedString) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedString[iNdEx])
+			copy(dAtA[i:], m.RepeatedString[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedString[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.RepeatedBool) > 0 {
+		for iNdEx := len(m.RepeatedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.RepeatedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedBool)))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.RepeatedDouble) > 0 {
+		for iNdEx := len(m.RepeatedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f27 := math.Float64bits(float64(m.RepeatedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f27))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedDouble)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xd2
+	}
+	if len(m.RepeatedFloat) > 0 {
+		for iNdEx := len(m.RepeatedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f28 := math.Float32bits(float32(m.RepeatedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f28))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFloat)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.RepeatedSfixed64) > 0 {
+		for iNdEx := len(m.RepeatedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedSfixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedSfixed64)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.RepeatedSfixed32) > 0 {
+		for iNdEx := len(m.RepeatedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedSfixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedSfixed32)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.RepeatedFixed64) > 0 {
+		for iNdEx := len(m.RepeatedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedFixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFixed64)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.RepeatedFixed32) > 0 {
+		for iNdEx := len(m.RepeatedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedFixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFixed32)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.RepeatedSint64) > 0 {
+		var pksize30 int
+		for _, num := range m.RepeatedSint64 {
+			pksize30 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize30
+		j29 := i
+		for _, num := range m.RepeatedSint64 {
+			x31 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x31 >= 1<<7 {
+				dAtA[j29] = uint8(uint64(x31)&0x7f | 0x80)
+				j29++
+				x31 >>= 7
+			}
+			dAtA[j29] = uint8(x31)
+			j29++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize30))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.RepeatedSint32) > 0 {
+		var pksize33 int
+		for _, num := range m.RepeatedSint32 {
+			pksize33 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize33
+		j32 := i
+		for _, num := range m.RepeatedSint32 {
+			x34 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x34 >= 1<<7 {
+				dAtA[j32] = uint8(uint64(x34)&0x7f | 0x80)
+				j32++
+				x34 >>= 7
+			}
+			dAtA[j32] = uint8(x34)
+			j32++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize33))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.RepeatedUint64) > 0 {
+		var pksize36 int
+		for _, num := range m.RepeatedUint64 {
+			pksize36 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize36
+		j35 := i
+		for _, num := range m.RepeatedUint64 {
+			for num >= 1<<7 {
+				dAtA[j35] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j35++
+			}
+			dAtA[j35] = uint8(num)
+			j35++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize36))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.RepeatedUint32) > 0 {
+		var pksize38 int
+		for _, num := range m.RepeatedUint32 {
+			pksize38 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize38
+		j37 := i
+		for _, num := range m.RepeatedUint32 {
+			for num >= 1<<7 {
+				dAtA[j37] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j37++
+			}
+			dAtA[j37] = uint8(num)
+			j37++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize38))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x8a
+	}
+	if len(m.RepeatedInt64) > 0 {
+		var pksize40 int
+		for _, num := range m.RepeatedInt64 {
+			pksize40 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize40
+		j39 := i
+		for _, num1 := range m.RepeatedInt64 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j39] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j39++
+			}
+			dAtA[j39] = uint8(num)
+			j39++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize40))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.RepeatedInt32) > 0 {
+		var pksize42 int
+		for _, num := range m.RepeatedInt32 {
+			pksize42 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize42
+		j41 := i
+		for _, num1 := range m.RepeatedInt32 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j41] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j41++
+			}
+			dAtA[j41] = uint8(num)
+			j41++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize42))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.RecursiveMessage != nil {
+		size, err := m.RecursiveMessage.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.OptionalCord) > 0 {
+		i -= len(m.OptionalCord)
+		copy(dAtA[i:], m.OptionalCord)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalCord)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.OptionalStringPiece) > 0 {
+		i -= len(m.OptionalStringPiece)
+		copy(dAtA[i:], m.OptionalStringPiece)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalStringPiece)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.OptionalAliasedEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalAliasedEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.OptionalForeignEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalForeignEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.OptionalNestedEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalNestedEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.OptionalForeignMessage != nil {
+		size, err := m.OptionalForeignMessage.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x9a
+	}
+	if m.OptionalNestedMessage != nil {
+		size, err := m.OptionalNestedMessage.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.OptionalBytes) > 0 {
+		i -= len(m.OptionalBytes)
+		copy(dAtA[i:], m.OptionalBytes)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+		i--
+		dAtA[i] = 0x7a
+	}
+	if len(m.OptionalString) > 0 {
+		i -= len(m.OptionalString)
+		copy(dAtA[i:], m.OptionalString)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalString)))
+		i--
+		dAtA[i] = 0x72
+	}
+	if m.OptionalBool {
+		i--
+		if m.OptionalBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.OptionalDouble != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.OptionalDouble))))
+		i--
+		dAtA[i] = 0x61
+	}
+	if m.OptionalFloat != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.OptionalFloat))))
+		i--
+		dAtA[i] = 0x5d
+	}
+	if m.OptionalSfixed64 != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.OptionalSfixed64))
+		i--
+		dAtA[i] = 0x51
+	}
+	if m.OptionalSfixed32 != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.OptionalSfixed32))
+		i--
+		dAtA[i] = 0x4d
+	}
+	if m.OptionalFixed64 != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.OptionalFixed64))
+		i--
+		dAtA[i] = 0x41
+	}
+	if m.OptionalFixed32 != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.OptionalFixed32))
+		i--
+		dAtA[i] = 0x3d
+	}
+	if m.OptionalSint64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(m.OptionalSint64)<<1)^uint64((m.OptionalSint64>>63))))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.OptionalSint32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(m.OptionalSint32)<<1)^uint32((m.OptionalSint32>>31))))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.OptionalUint64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalUint64))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.OptionalUint32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalUint32))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.OptionalInt64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalInt64))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.OptionalInt32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalInt32))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3_OneofUint32) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofUint32) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofUint32))
+	i--
+	dAtA[i] = 0x6
+	i--
+	dAtA[i] = 0xf8
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.OneofNestedMessage != nil {
+		size, err := m.OneofNestedMessage.MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x7
+		i--
+		dAtA[i] = 0x82
+	}
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofString) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofString) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofString)
+	copy(dAtA[i:], m.OneofString)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OneofString)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x8a
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofBytes) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofBytes) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofBytes)
+	copy(dAtA[i:], m.OneofBytes)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OneofBytes)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x92
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofBool) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofBool) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.OneofBool {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x98
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofUint64) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofUint64) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofUint64))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xa0
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofFloat) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofFloat) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 4
+	binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.OneofFloat))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xad
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofDouble) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofDouble) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.OneofDouble))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb1
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofEnum) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofEnum) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofEnum))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb8
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofNullValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofNullValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofNullValue))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xc0
+	return len(dAtA) - i, nil
+}
+func (m *ForeignMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ForeignMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *ForeignMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.C != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.C))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NullHypothesisProto3) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NullHypothesisProto3) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *NullHypothesisProto3) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumOnlyProto3) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumOnlyProto3) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *EnumOnlyProto3) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_NestedMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Corecursive != nil {
+		size, err := m.Corecursive.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.A != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.A))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestAllTypesProto3) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.FieldName18__ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName18__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.FieldName17__ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName17__))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x88
+	}
+	if m.Field__Name16 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field__Name16))
+		i--
+		dAtA[i] = 0x1a
+		i--
+		dAtA[i] = 0x80
+	}
+	if m.Field_Name15 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name15))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf8
+	}
+	if m.X_FieldName14 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.X_FieldName14))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xf0
+	}
+	if m.XFieldName13 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.XFieldName13))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe8
+	}
+	if m.FIELDName12 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FIELDName12))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xe0
+	}
+	if m.FIELD_NAME11 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FIELD_NAME11))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd8
+	}
+	if m.Field_Name10 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name10))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xd0
+	}
+	if m.Field_Name9 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name9))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc8
+	}
+	if m.FieldName8 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName8))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xc0
+	}
+	if m.FieldName7 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName7))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.Field_0Name6 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_0Name6))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.Field0Name5 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field0Name5))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.Field_Name4_ != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Field_Name4_))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0xa0
+	}
+	if m.XFieldName3 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.XFieldName3))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.FieldName2 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.FieldName2))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x90
+	}
+	if m.Fieldname1 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Fieldname1))
+		i--
+		dAtA[i] = 0x19
+		i--
+		dAtA[i] = 0x88
+	}
+	if len(m.RepeatedStruct) > 0 {
+		for iNdEx := len(m.RepeatedStruct) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.Struct)(m.RepeatedStruct[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x14
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.RepeatedListValue) > 0 {
+		for iNdEx := len(m.RepeatedListValue) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.ListValue)(m.RepeatedListValue[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.RepeatedValue) > 0 {
+		for iNdEx := len(m.RepeatedValue) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*structpb1.Value)(m.RepeatedValue[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.RepeatedAny) > 0 {
+		for iNdEx := len(m.RepeatedAny) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*anypb1.Any)(m.RepeatedAny[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.RepeatedFieldmask) > 0 {
+		for iNdEx := len(m.RepeatedFieldmask) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*fieldmaskpb1.FieldMask)(m.RepeatedFieldmask[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.RepeatedTimestamp) > 0 {
+		for iNdEx := len(m.RepeatedTimestamp) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*timestamppb1.Timestamp)(m.RepeatedTimestamp[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedDuration) > 0 {
+		for iNdEx := len(m.RepeatedDuration) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*durationpb1.Duration)(m.RepeatedDuration[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x13
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if m.OptionalNullValue != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalNullValue))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x98
+	}
+	if m.OptionalValue != nil {
+		size, err := (*structpb1.Value)(m.OptionalValue).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x92
+	}
+	if m.OptionalAny != nil {
+		size, err := (*anypb1.Any)(m.OptionalAny).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x8a
+	}
+	if m.OptionalStruct != nil {
+		size, err := (*structpb1.Struct)(m.OptionalStruct).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x13
+		i--
+		dAtA[i] = 0x82
+	}
+	if m.OptionalFieldMask != nil {
+		size, err := (*fieldmaskpb1.FieldMask)(m.OptionalFieldMask).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.OptionalTimestamp != nil {
+		size, err := (*timestamppb1.Timestamp)(m.OptionalTimestamp).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.OptionalDuration != nil {
+		size, err := (*durationpb1.Duration)(m.OptionalDuration).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x12
+		i--
+		dAtA[i] = 0xea
+	}
+	if len(m.RepeatedBytesWrapper) > 0 {
+		for iNdEx := len(m.RepeatedBytesWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.BytesValue)(m.RepeatedBytesWrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.RepeatedStringWrapper) > 0 {
+		for iNdEx := len(m.RepeatedStringWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.StringValue)(m.RepeatedStringWrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.RepeatedDoubleWrapper) > 0 {
+		for iNdEx := len(m.RepeatedDoubleWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.DoubleValue)(m.RepeatedDoubleWrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.RepeatedFloatWrapper) > 0 {
+		for iNdEx := len(m.RepeatedFloatWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.FloatValue)(m.RepeatedFloatWrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedUint64Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedUint64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.UInt64Value)(m.RepeatedUint64Wrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.RepeatedUint32Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedUint32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.UInt32Value)(m.RepeatedUint32Wrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.RepeatedInt64Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedInt64Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.Int64Value)(m.RepeatedInt64Wrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.RepeatedInt32Wrapper) > 0 {
+		for iNdEx := len(m.RepeatedInt32Wrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.Int32Value)(m.RepeatedInt32Wrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.RepeatedBoolWrapper) > 0 {
+		for iNdEx := len(m.RepeatedBoolWrapper) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*wrapperspb1.BoolValue)(m.RepeatedBoolWrapper[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xd
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if m.OptionalBytesWrapper != nil {
+		size, err := (*wrapperspb1.BytesValue)(m.OptionalBytesWrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xd
+		i--
+		dAtA[i] = 0x8a
+	}
+	if m.OptionalStringWrapper != nil {
+		size, err := (*wrapperspb1.StringValue)(m.OptionalStringWrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xd
+		i--
+		dAtA[i] = 0x82
+	}
+	if m.OptionalDoubleWrapper != nil {
+		size, err := (*wrapperspb1.DoubleValue)(m.OptionalDoubleWrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.OptionalFloatWrapper != nil {
+		size, err := (*wrapperspb1.FloatValue)(m.OptionalFloatWrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xf2
+	}
+	if m.OptionalUint64Wrapper != nil {
+		size, err := (*wrapperspb1.UInt64Value)(m.OptionalUint64Wrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xea
+	}
+	if m.OptionalUint32Wrapper != nil {
+		size, err := (*wrapperspb1.UInt32Value)(m.OptionalUint32Wrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xe2
+	}
+	if m.OptionalInt64Wrapper != nil {
+		size, err := (*wrapperspb1.Int64Value)(m.OptionalInt64Wrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xda
+	}
+	if m.OptionalInt32Wrapper != nil {
+		size, err := (*wrapperspb1.Int32Value)(m.OptionalInt32Wrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xd2
+	}
+	if m.OptionalBoolWrapper != nil {
+		size, err := (*wrapperspb1.BoolValue)(m.OptionalBoolWrapper).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0xc
+		i--
+		dAtA[i] = 0xca
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofNullValue); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofEnum); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofDouble); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofFloat); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofUint64); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofBool); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofBytes); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofString); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofNestedMessage); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if msg, ok := m.OneofField.(*TestAllTypesProto3_OneofUint32); ok {
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if len(m.UnpackedNestedEnum) > 0 {
+		for iNdEx := len(m.UnpackedNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedNestedEnum[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xb0
+		}
+	}
+	if len(m.UnpackedBool) > 0 {
+		for iNdEx := len(m.UnpackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.UnpackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa8
+		}
+	}
+	if len(m.UnpackedDouble) > 0 {
+		for iNdEx := len(m.UnpackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float64bits(float64(m.UnpackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0xa1
+		}
+	}
+	if len(m.UnpackedFloat) > 0 {
+		for iNdEx := len(m.UnpackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float32bits(float32(m.UnpackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f2))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x9d
+		}
+	}
+	if len(m.UnpackedSfixed64) > 0 {
+		for iNdEx := len(m.UnpackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedSfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x91
+		}
+	}
+	if len(m.UnpackedSfixed32) > 0 {
+		for iNdEx := len(m.UnpackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedSfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x8d
+		}
+	}
+	if len(m.UnpackedFixed64) > 0 {
+		for iNdEx := len(m.UnpackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.UnpackedFixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x6
+			i--
+			dAtA[i] = 0x81
+		}
+	}
+	if len(m.UnpackedFixed32) > 0 {
+		for iNdEx := len(m.UnpackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.UnpackedFixed32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xfd
+		}
+	}
+	if len(m.UnpackedSint64) > 0 {
+		for iNdEx := len(m.UnpackedSint64) - 1; iNdEx >= 0; iNdEx-- {
+			x3 := (uint64(m.UnpackedSint64[iNdEx]) << 1) ^ uint64((m.UnpackedSint64[iNdEx] >> 63))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x3))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xf0
+		}
+	}
+	if len(m.UnpackedSint32) > 0 {
+		for iNdEx := len(m.UnpackedSint32) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint32(m.UnpackedSint32[iNdEx]) << 1) ^ uint32((m.UnpackedSint32[iNdEx] >> 31))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe8
+		}
+	}
+	if len(m.UnpackedUint64) > 0 {
+		for iNdEx := len(m.UnpackedUint64) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedUint64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xe0
+		}
+	}
+	if len(m.UnpackedUint32) > 0 {
+		for iNdEx := len(m.UnpackedUint32) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedUint32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd8
+		}
+	}
+	if len(m.UnpackedInt64) > 0 {
+		for iNdEx := len(m.UnpackedInt64) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedInt64[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xd0
+		}
+	}
+	if len(m.UnpackedInt32) > 0 {
+		for iNdEx := len(m.UnpackedInt32) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.UnpackedInt32[iNdEx]))
+			i--
+			dAtA[i] = 0x5
+			i--
+			dAtA[i] = 0xc8
+		}
+	}
+	if len(m.PackedNestedEnum) > 0 {
+		var pksize6 int
+		for _, num := range m.PackedNestedEnum {
+			pksize6 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize6
+		j5 := i
+		for _, num1 := range m.PackedNestedEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j5] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j5++
+			}
+			dAtA[j5] = uint8(num)
+			j5++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize6))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.PackedBool) > 0 {
+		for iNdEx := len(m.PackedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.PackedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedBool)))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.PackedDouble) > 0 {
+		for iNdEx := len(m.PackedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f7 := math.Float64bits(float64(m.PackedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f7))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedDouble)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.PackedFloat) > 0 {
+		for iNdEx := len(m.PackedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f8 := math.Float32bits(float32(m.PackedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f8))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFloat)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.PackedSfixed64) > 0 {
+		for iNdEx := len(m.PackedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedSfixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedSfixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.PackedSfixed32) > 0 {
+		for iNdEx := len(m.PackedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedSfixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedSfixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.PackedFixed64) > 0 {
+		for iNdEx := len(m.PackedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedFixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFixed64)*8))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.PackedFixed32) > 0 {
+		for iNdEx := len(m.PackedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedFixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedFixed32)*4))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x8a
+	}
+	if len(m.PackedSint64) > 0 {
+		var pksize10 int
+		for _, num := range m.PackedSint64 {
+			pksize10 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize10
+		j9 := i
+		for _, num := range m.PackedSint64 {
+			x11 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x11 >= 1<<7 {
+				dAtA[j9] = uint8(uint64(x11)&0x7f | 0x80)
+				j9++
+				x11 >>= 7
+			}
+			dAtA[j9] = uint8(x11)
+			j9++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize10))
+		i--
+		dAtA[i] = 0x5
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.PackedSint32) > 0 {
+		var pksize13 int
+		for _, num := range m.PackedSint32 {
+			pksize13 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize13
+		j12 := i
+		for _, num := range m.PackedSint32 {
+			x14 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x14 >= 1<<7 {
+				dAtA[j12] = uint8(uint64(x14)&0x7f | 0x80)
+				j12++
+				x14 >>= 7
+			}
+			dAtA[j12] = uint8(x14)
+			j12++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize13))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xfa
+	}
+	if len(m.PackedUint64) > 0 {
+		var pksize16 int
+		for _, num := range m.PackedUint64 {
+			pksize16 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize16
+		j15 := i
+		for _, num := range m.PackedUint64 {
+			for num >= 1<<7 {
+				dAtA[j15] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j15++
+			}
+			dAtA[j15] = uint8(num)
+			j15++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize16))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xf2
+	}
+	if len(m.PackedUint32) > 0 {
+		var pksize18 int
+		for _, num := range m.PackedUint32 {
+			pksize18 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize18
+		j17 := i
+		for _, num := range m.PackedUint32 {
+			for num >= 1<<7 {
+				dAtA[j17] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j17++
+			}
+			dAtA[j17] = uint8(num)
+			j17++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize18))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xea
+	}
+	if len(m.PackedInt64) > 0 {
+		var pksize20 int
+		for _, num := range m.PackedInt64 {
+			pksize20 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize20
+		j19 := i
+		for _, num1 := range m.PackedInt64 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j19] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j19++
+			}
+			dAtA[j19] = uint8(num)
+			j19++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize20))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xe2
+	}
+	if len(m.PackedInt32) > 0 {
+		var pksize22 int
+		for _, num := range m.PackedInt32 {
+			pksize22 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize22
+		j21 := i
+		for _, num1 := range m.PackedInt32 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j21] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j21++
+			}
+			dAtA[j21] = uint8(num)
+			j21++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize22))
+		i--
+		dAtA[i] = 0x4
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.MapStringForeignEnum) > 0 {
+		keysForMapStringForeignEnum := make([]string, 0, len(m.MapStringForeignEnum))
+		for k := range m.MapStringForeignEnum {
+			keysForMapStringForeignEnum = append(keysForMapStringForeignEnum, string(k))
+		}
+		sort.Slice(keysForMapStringForeignEnum, func(i, j int) bool {
+			return keysForMapStringForeignEnum[i] < keysForMapStringForeignEnum[j]
+		})
+		for iNdEx := len(keysForMapStringForeignEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignEnum[string(keysForMapStringForeignEnum[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringForeignEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignEnum[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringForeignEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapStringNestedEnum) > 0 {
+		keysForMapStringNestedEnum := make([]string, 0, len(m.MapStringNestedEnum))
+		for k := range m.MapStringNestedEnum {
+			keysForMapStringNestedEnum = append(keysForMapStringNestedEnum, string(k))
+		}
+		sort.Slice(keysForMapStringNestedEnum, func(i, j int) bool {
+			return keysForMapStringNestedEnum[i] < keysForMapStringNestedEnum[j]
+		})
+		for iNdEx := len(keysForMapStringNestedEnum) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedEnum[string(keysForMapStringNestedEnum[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i -= len(keysForMapStringNestedEnum[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedEnum[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringNestedEnum[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapStringForeignMessage) > 0 {
+		keysForMapStringForeignMessage := make([]string, 0, len(m.MapStringForeignMessage))
+		for k := range m.MapStringForeignMessage {
+			keysForMapStringForeignMessage = append(keysForMapStringForeignMessage, string(k))
+		}
+		sort.Slice(keysForMapStringForeignMessage, func(i, j int) bool {
+			return keysForMapStringForeignMessage[i] < keysForMapStringForeignMessage[j]
+		})
+		for iNdEx := len(keysForMapStringForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringForeignMessage[string(keysForMapStringForeignMessage[iNdEx])]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringForeignMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringForeignMessage[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringForeignMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.MapStringNestedMessage) > 0 {
+		keysForMapStringNestedMessage := make([]string, 0, len(m.MapStringNestedMessage))
+		for k := range m.MapStringNestedMessage {
+			keysForMapStringNestedMessage = append(keysForMapStringNestedMessage, string(k))
+		}
+		sort.Slice(keysForMapStringNestedMessage, func(i, j int) bool {
+			return keysForMapStringNestedMessage[i] < keysForMapStringNestedMessage[j]
+		})
+		for iNdEx := len(keysForMapStringNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringNestedMessage[string(keysForMapStringNestedMessage[iNdEx])]
+			baseI := i
+			size, err := v.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringNestedMessage[iNdEx])
+			copy(dAtA[i:], keysForMapStringNestedMessage[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringNestedMessage[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.MapStringBytes) > 0 {
+		keysForMapStringBytes := make([]string, 0, len(m.MapStringBytes))
+		for k := range m.MapStringBytes {
+			keysForMapStringBytes = append(keysForMapStringBytes, string(k))
+		}
+		sort.Slice(keysForMapStringBytes, func(i, j int) bool {
+			return keysForMapStringBytes[i] < keysForMapStringBytes[j]
+		})
+		for iNdEx := len(keysForMapStringBytes) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringBytes[string(keysForMapStringBytes[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringBytes[iNdEx])
+			copy(dAtA[i:], keysForMapStringBytes[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringBytes[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.MapStringString) > 0 {
+		keysForMapStringString := make([]string, 0, len(m.MapStringString))
+		for k := range m.MapStringString {
+			keysForMapStringString = append(keysForMapStringString, string(k))
+		}
+		sort.Slice(keysForMapStringString, func(i, j int) bool {
+			return keysForMapStringString[i] < keysForMapStringString[j]
+		})
+		for iNdEx := len(keysForMapStringString) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapStringString[string(keysForMapStringString[iNdEx])]
+			baseI := i
+			i -= len(v)
+			copy(dAtA[i:], v)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(v)))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForMapStringString[iNdEx])
+			copy(dAtA[i:], keysForMapStringString[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForMapStringString[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xaa
+		}
+	}
+	if len(m.MapBoolBool) > 0 {
+		for k := range m.MapBoolBool {
+			v := m.MapBoolBool[bool(k)]
+			baseI := i
+			i--
+			if v {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x10
+			i--
+			if k {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0xa2
+		}
+	}
+	if len(m.MapInt32Double) > 0 {
+		keysForMapInt32Double := make([]int32, 0, len(m.MapInt32Double))
+		for k := range m.MapInt32Double {
+			keysForMapInt32Double = append(keysForMapInt32Double, int32(k))
+		}
+		sort.Slice(keysForMapInt32Double, func(i, j int) bool {
+			return keysForMapInt32Double[i] < keysForMapInt32Double[j]
+		})
+		for iNdEx := len(keysForMapInt32Double) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Double[int32(keysForMapInt32Double[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(v))))
+			i--
+			dAtA[i] = 0x11
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Double[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x9a
+		}
+	}
+	if len(m.MapInt32Float) > 0 {
+		keysForMapInt32Float := make([]int32, 0, len(m.MapInt32Float))
+		for k := range m.MapInt32Float {
+			keysForMapInt32Float = append(keysForMapInt32Float, int32(k))
+		}
+		sort.Slice(keysForMapInt32Float, func(i, j int) bool {
+			return keysForMapInt32Float[i] < keysForMapInt32Float[j]
+		})
+		for iNdEx := len(keysForMapInt32Float) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Float[int32(keysForMapInt32Float[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(v))))
+			i--
+			dAtA[i] = 0x15
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Float[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x92
+		}
+	}
+	if len(m.MapSfixed64Sfixed64) > 0 {
+		keysForMapSfixed64Sfixed64 := make([]int64, 0, len(m.MapSfixed64Sfixed64))
+		for k := range m.MapSfixed64Sfixed64 {
+			keysForMapSfixed64Sfixed64 = append(keysForMapSfixed64Sfixed64, int64(k))
+		}
+		sort.Slice(keysForMapSfixed64Sfixed64, func(i, j int) bool {
+			return keysForMapSfixed64Sfixed64[i] < keysForMapSfixed64Sfixed64[j]
+		})
+		for iNdEx := len(keysForMapSfixed64Sfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed64Sfixed64[int64(keysForMapSfixed64Sfixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapSfixed64Sfixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.MapSfixed32Sfixed32) > 0 {
+		keysForMapSfixed32Sfixed32 := make([]int32, 0, len(m.MapSfixed32Sfixed32))
+		for k := range m.MapSfixed32Sfixed32 {
+			keysForMapSfixed32Sfixed32 = append(keysForMapSfixed32Sfixed32, int32(k))
+		}
+		sort.Slice(keysForMapSfixed32Sfixed32, func(i, j int) bool {
+			return keysForMapSfixed32Sfixed32[i] < keysForMapSfixed32Sfixed32[j]
+		})
+		for iNdEx := len(keysForMapSfixed32Sfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSfixed32Sfixed32[int32(keysForMapSfixed32Sfixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapSfixed32Sfixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x4
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.MapFixed64Fixed64) > 0 {
+		keysForMapFixed64Fixed64 := make([]uint64, 0, len(m.MapFixed64Fixed64))
+		for k := range m.MapFixed64Fixed64 {
+			keysForMapFixed64Fixed64 = append(keysForMapFixed64Fixed64, uint64(k))
+		}
+		sort.Slice(keysForMapFixed64Fixed64, func(i, j int) bool {
+			return keysForMapFixed64Fixed64[i] < keysForMapFixed64Fixed64[j]
+		})
+		for iNdEx := len(keysForMapFixed64Fixed64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed64Fixed64[uint64(keysForMapFixed64Fixed64[iNdEx])]
+			baseI := i
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(v))
+			i--
+			dAtA[i] = 0x11
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(keysForMapFixed64Fixed64[iNdEx]))
+			i--
+			dAtA[i] = 0x9
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xfa
+		}
+	}
+	if len(m.MapFixed32Fixed32) > 0 {
+		keysForMapFixed32Fixed32 := make([]uint32, 0, len(m.MapFixed32Fixed32))
+		for k := range m.MapFixed32Fixed32 {
+			keysForMapFixed32Fixed32 = append(keysForMapFixed32Fixed32, uint32(k))
+		}
+		sort.Slice(keysForMapFixed32Fixed32, func(i, j int) bool {
+			return keysForMapFixed32Fixed32[i] < keysForMapFixed32Fixed32[j]
+		})
+		for iNdEx := len(keysForMapFixed32Fixed32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapFixed32Fixed32[uint32(keysForMapFixed32Fixed32[iNdEx])]
+			baseI := i
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(v))
+			i--
+			dAtA[i] = 0x15
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(keysForMapFixed32Fixed32[iNdEx]))
+			i--
+			dAtA[i] = 0xd
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xf2
+		}
+	}
+	if len(m.MapSint64Sint64) > 0 {
+		keysForMapSint64Sint64 := make([]int64, 0, len(m.MapSint64Sint64))
+		for k := range m.MapSint64Sint64 {
+			keysForMapSint64Sint64 = append(keysForMapSint64Sint64, int64(k))
+		}
+		sort.Slice(keysForMapSint64Sint64, func(i, j int) bool {
+			return keysForMapSint64Sint64[i] < keysForMapSint64Sint64[j]
+		})
+		for iNdEx := len(keysForMapSint64Sint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint64Sint64[int64(keysForMapSint64Sint64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(v)<<1)^uint64((v>>63))))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(keysForMapSint64Sint64[iNdEx])<<1)^uint64((keysForMapSint64Sint64[iNdEx]>>63))))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.MapSint32Sint32) > 0 {
+		keysForMapSint32Sint32 := make([]int32, 0, len(m.MapSint32Sint32))
+		for k := range m.MapSint32Sint32 {
+			keysForMapSint32Sint32 = append(keysForMapSint32Sint32, int32(k))
+		}
+		sort.Slice(keysForMapSint32Sint32, func(i, j int) bool {
+			return keysForMapSint32Sint32[i] < keysForMapSint32Sint32[j]
+		})
+		for iNdEx := len(keysForMapSint32Sint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapSint32Sint32[int32(keysForMapSint32Sint32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(v)<<1)^uint32((v>>31))))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(keysForMapSint32Sint32[iNdEx])<<1)^uint32((keysForMapSint32Sint32[iNdEx]>>31))))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.MapUint64Uint64) > 0 {
+		keysForMapUint64Uint64 := make([]uint64, 0, len(m.MapUint64Uint64))
+		for k := range m.MapUint64Uint64 {
+			keysForMapUint64Uint64 = append(keysForMapUint64Uint64, uint64(k))
+		}
+		sort.Slice(keysForMapUint64Uint64, func(i, j int) bool {
+			return keysForMapUint64Uint64[i] < keysForMapUint64Uint64[j]
+		})
+		for iNdEx := len(keysForMapUint64Uint64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint64Uint64[uint64(keysForMapUint64Uint64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapUint64Uint64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xda
+		}
+	}
+	if len(m.MapUint32Uint32) > 0 {
+		keysForMapUint32Uint32 := make([]uint32, 0, len(m.MapUint32Uint32))
+		for k := range m.MapUint32Uint32 {
+			keysForMapUint32Uint32 = append(keysForMapUint32Uint32, uint32(k))
+		}
+		sort.Slice(keysForMapUint32Uint32, func(i, j int) bool {
+			return keysForMapUint32Uint32[i] < keysForMapUint32Uint32[j]
+		})
+		for iNdEx := len(keysForMapUint32Uint32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapUint32Uint32[uint32(keysForMapUint32Uint32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapUint32Uint32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xd2
+		}
+	}
+	if len(m.MapInt64Int64) > 0 {
+		keysForMapInt64Int64 := make([]int64, 0, len(m.MapInt64Int64))
+		for k := range m.MapInt64Int64 {
+			keysForMapInt64Int64 = append(keysForMapInt64Int64, int64(k))
+		}
+		sort.Slice(keysForMapInt64Int64, func(i, j int) bool {
+			return keysForMapInt64Int64[i] < keysForMapInt64Int64[j]
+		})
+		for iNdEx := len(keysForMapInt64Int64) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt64Int64[int64(keysForMapInt64Int64[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt64Int64[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xca
+		}
+	}
+	if len(m.MapInt32Int32) > 0 {
+		keysForMapInt32Int32 := make([]int32, 0, len(m.MapInt32Int32))
+		for k := range m.MapInt32Int32 {
+			keysForMapInt32Int32 = append(keysForMapInt32Int32, int32(k))
+		}
+		sort.Slice(keysForMapInt32Int32, func(i, j int) bool {
+			return keysForMapInt32Int32[i] < keysForMapInt32Int32[j]
+		})
+		for iNdEx := len(keysForMapInt32Int32) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.MapInt32Int32[int32(keysForMapInt32Int32[iNdEx])]
+			baseI := i
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(v))
+			i--
+			dAtA[i] = 0x10
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(keysForMapInt32Int32[iNdEx]))
+			i--
+			dAtA[i] = 0x8
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xc2
+		}
+	}
+	if len(m.RepeatedCord) > 0 {
+		for iNdEx := len(m.RepeatedCord) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedCord[iNdEx])
+			copy(dAtA[i:], m.RepeatedCord[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedCord[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xba
+		}
+	}
+	if len(m.RepeatedStringPiece) > 0 {
+		for iNdEx := len(m.RepeatedStringPiece) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedStringPiece[iNdEx])
+			copy(dAtA[i:], m.RepeatedStringPiece[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedStringPiece[iNdEx])))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0xb2
+		}
+	}
+	if len(m.RepeatedForeignEnum) > 0 {
+		var pksize24 int
+		for _, num := range m.RepeatedForeignEnum {
+			pksize24 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize24
+		j23 := i
+		for _, num1 := range m.RepeatedForeignEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j23] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j23++
+			}
+			dAtA[j23] = uint8(num)
+			j23++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize24))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.RepeatedNestedEnum) > 0 {
+		var pksize26 int
+		for _, num := range m.RepeatedNestedEnum {
+			pksize26 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize26
+		j25 := i
+		for _, num1 := range m.RepeatedNestedEnum {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j25] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j25++
+			}
+			dAtA[j25] = uint8(num)
+			j25++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize26))
+		i--
+		dAtA[i] = 0x3
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.RepeatedForeignMessage) > 0 {
+		for iNdEx := len(m.RepeatedForeignMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedForeignMessage[iNdEx].MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x8a
+		}
+	}
+	if len(m.RepeatedNestedMessage) > 0 {
+		for iNdEx := len(m.RepeatedNestedMessage) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.RepeatedNestedMessage[iNdEx].MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x3
+			i--
+			dAtA[i] = 0x82
+		}
+	}
+	if len(m.RepeatedBytes) > 0 {
+		for iNdEx := len(m.RepeatedBytes) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedBytes[iNdEx])
+			copy(dAtA[i:], m.RepeatedBytes[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedBytes[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xea
+		}
+	}
+	if len(m.RepeatedString) > 0 {
+		for iNdEx := len(m.RepeatedString) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedString[iNdEx])
+			copy(dAtA[i:], m.RepeatedString[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedString[iNdEx])))
+			i--
+			dAtA[i] = 0x2
+			i--
+			dAtA[i] = 0xe2
+		}
+	}
+	if len(m.RepeatedBool) > 0 {
+		for iNdEx := len(m.RepeatedBool) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.RepeatedBool[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedBool)))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.RepeatedDouble) > 0 {
+		for iNdEx := len(m.RepeatedDouble) - 1; iNdEx >= 0; iNdEx-- {
+			f27 := math.Float64bits(float64(m.RepeatedDouble[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f27))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedDouble)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xd2
+	}
+	if len(m.RepeatedFloat) > 0 {
+		for iNdEx := len(m.RepeatedFloat) - 1; iNdEx >= 0; iNdEx-- {
+			f28 := math.Float32bits(float32(m.RepeatedFloat[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f28))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFloat)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.RepeatedSfixed64) > 0 {
+		for iNdEx := len(m.RepeatedSfixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedSfixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedSfixed64)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xc2
+	}
+	if len(m.RepeatedSfixed32) > 0 {
+		for iNdEx := len(m.RepeatedSfixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedSfixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedSfixed32)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xba
+	}
+	if len(m.RepeatedFixed64) > 0 {
+		for iNdEx := len(m.RepeatedFixed64) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedFixed64[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFixed64)*8))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xb2
+	}
+	if len(m.RepeatedFixed32) > 0 {
+		for iNdEx := len(m.RepeatedFixed32) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedFixed32[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedFixed32)*4))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xaa
+	}
+	if len(m.RepeatedSint64) > 0 {
+		var pksize30 int
+		for _, num := range m.RepeatedSint64 {
+			pksize30 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize30
+		j29 := i
+		for _, num := range m.RepeatedSint64 {
+			x31 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x31 >= 1<<7 {
+				dAtA[j29] = uint8(uint64(x31)&0x7f | 0x80)
+				j29++
+				x31 >>= 7
+			}
+			dAtA[j29] = uint8(x31)
+			j29++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize30))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0xa2
+	}
+	if len(m.RepeatedSint32) > 0 {
+		var pksize33 int
+		for _, num := range m.RepeatedSint32 {
+			pksize33 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize33
+		j32 := i
+		for _, num := range m.RepeatedSint32 {
+			x34 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x34 >= 1<<7 {
+				dAtA[j32] = uint8(uint64(x34)&0x7f | 0x80)
+				j32++
+				x34 >>= 7
+			}
+			dAtA[j32] = uint8(x34)
+			j32++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize33))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x9a
+	}
+	if len(m.RepeatedUint64) > 0 {
+		var pksize36 int
+		for _, num := range m.RepeatedUint64 {
+			pksize36 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize36
+		j35 := i
+		for _, num := range m.RepeatedUint64 {
+			for num >= 1<<7 {
+				dAtA[j35] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j35++
+			}
+			dAtA[j35] = uint8(num)
+			j35++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize36))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.RepeatedUint32) > 0 {
+		var pksize38 int
+		for _, num := range m.RepeatedUint32 {
+			pksize38 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize38
+		j37 := i
+		for _, num := range m.RepeatedUint32 {
+			for num >= 1<<7 {
+				dAtA[j37] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j37++
+			}
+			dAtA[j37] = uint8(num)
+			j37++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize38))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x8a
+	}
+	if len(m.RepeatedInt64) > 0 {
+		var pksize40 int
+		for _, num := range m.RepeatedInt64 {
+			pksize40 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize40
+		j39 := i
+		for _, num1 := range m.RepeatedInt64 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j39] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j39++
+			}
+			dAtA[j39] = uint8(num)
+			j39++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize40))
+		i--
+		dAtA[i] = 0x2
+		i--
+		dAtA[i] = 0x82
+	}
+	if len(m.RepeatedInt32) > 0 {
+		var pksize42 int
+		for _, num := range m.RepeatedInt32 {
+			pksize42 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize42
+		j41 := i
+		for _, num1 := range m.RepeatedInt32 {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j41] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j41++
+			}
+			dAtA[j41] = uint8(num)
+			j41++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize42))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xfa
+	}
+	if m.RecursiveMessage != nil {
+		size, err := m.RecursiveMessage.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xda
+	}
+	if len(m.OptionalCord) > 0 {
+		i -= len(m.OptionalCord)
+		copy(dAtA[i:], m.OptionalCord)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalCord)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xca
+	}
+	if len(m.OptionalStringPiece) > 0 {
+		i -= len(m.OptionalStringPiece)
+		copy(dAtA[i:], m.OptionalStringPiece)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalStringPiece)))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xc2
+	}
+	if m.OptionalAliasedEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalAliasedEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb8
+	}
+	if m.OptionalForeignEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalForeignEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xb0
+	}
+	if m.OptionalNestedEnum != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalNestedEnum))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0xa8
+	}
+	if m.OptionalForeignMessage != nil {
+		size, err := m.OptionalForeignMessage.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x9a
+	}
+	if m.OptionalNestedMessage != nil {
+		size, err := m.OptionalNestedMessage.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x1
+		i--
+		dAtA[i] = 0x92
+	}
+	if len(m.OptionalBytes) > 0 {
+		i -= len(m.OptionalBytes)
+		copy(dAtA[i:], m.OptionalBytes)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalBytes)))
+		i--
+		dAtA[i] = 0x7a
+	}
+	if len(m.OptionalString) > 0 {
+		i -= len(m.OptionalString)
+		copy(dAtA[i:], m.OptionalString)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalString)))
+		i--
+		dAtA[i] = 0x72
+	}
+	if m.OptionalBool {
+		i--
+		if m.OptionalBool {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x68
+	}
+	if m.OptionalDouble != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.OptionalDouble))))
+		i--
+		dAtA[i] = 0x61
+	}
+	if m.OptionalFloat != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.OptionalFloat))))
+		i--
+		dAtA[i] = 0x5d
+	}
+	if m.OptionalSfixed64 != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.OptionalSfixed64))
+		i--
+		dAtA[i] = 0x51
+	}
+	if m.OptionalSfixed32 != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.OptionalSfixed32))
+		i--
+		dAtA[i] = 0x4d
+	}
+	if m.OptionalFixed64 != 0 {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.OptionalFixed64))
+		i--
+		dAtA[i] = 0x41
+	}
+	if m.OptionalFixed32 != 0 {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.OptionalFixed32))
+		i--
+		dAtA[i] = 0x3d
+	}
+	if m.OptionalSint64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(m.OptionalSint64)<<1)^uint64((m.OptionalSint64>>63))))
+		i--
+		dAtA[i] = 0x30
+	}
+	if m.OptionalSint32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(m.OptionalSint32)<<1)^uint32((m.OptionalSint32>>31))))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.OptionalUint64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalUint64))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.OptionalUint32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalUint32))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.OptionalInt64 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalInt64))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.OptionalInt32 != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OptionalInt32))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *TestAllTypesProto3_OneofUint32) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofUint32) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofUint32))
+	i--
+	dAtA[i] = 0x6
+	i--
+	dAtA[i] = 0xf8
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofNestedMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.OneofNestedMessage != nil {
+		size, err := m.OneofNestedMessage.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x7
+		i--
+		dAtA[i] = 0x82
+	}
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofString) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofString) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofString)
+	copy(dAtA[i:], m.OneofString)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OneofString)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x8a
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofBytes) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofBytes) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.OneofBytes)
+	copy(dAtA[i:], m.OneofBytes)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OneofBytes)))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x92
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofBool) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofBool) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.OneofBool {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0x98
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofUint64) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofUint64) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofUint64))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xa0
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofFloat) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofFloat) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 4
+	binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.OneofFloat))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xad
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofDouble) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofDouble) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.OneofDouble))))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb1
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofEnum) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofEnum) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofEnum))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xb8
+	return len(dAtA) - i, nil
+}
+func (m *TestAllTypesProto3_OneofNullValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *TestAllTypesProto3_OneofNullValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.OneofNullValue))
+	i--
+	dAtA[i] = 0x7
+	i--
+	dAtA[i] = 0xc0
+	return len(dAtA) - i, nil
+}
+func (m *ForeignMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ForeignMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *ForeignMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.C != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.C))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NullHypothesisProto3) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NullHypothesisProto3) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *NullHypothesisProto3) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumOnlyProto3) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumOnlyProto3) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *EnumOnlyProto3) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
 	if m == nil {
 		return 0, nil
 	}
