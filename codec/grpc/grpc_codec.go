@@ -1,6 +1,10 @@
 package grpc
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/golang/protobuf/proto" //nolint
+)
 
 // Name is the name registered for the proto compressor.
 const Name = "proto"
@@ -25,6 +29,11 @@ func (Codec) Unmarshal(data []byte, v interface{}) error {
 	if !ok {
 		return fmt.Errorf("failed to unmarshal, message is %T (missing vtprotobuf helpers)", v)
 	}
+	vv, ok := v.(proto.Message)
+	if !ok {
+		return fmt.Errorf("failed to unmarshal, message is %T (can't reset)", vv)
+	}
+	vv.Reset()
 	return vt.UnmarshalVT(data)
 }
 
