@@ -32,7 +32,10 @@ jobs:
     - run: make install && go mod tidy && go mod verify
     - run: git --no-pager diff --exit-code
 
-    - run: go vet ./...
+    - uses: golangci/golangci-lint-action@v4
+      with:
+        skip-cache: true
+        args: --verbose
 
     - run: make genall
     - run: git --no-pager diff --exit-code
