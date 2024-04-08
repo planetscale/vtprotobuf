@@ -267,9 +267,9 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	}
 	// Empty protobufs should emit a message or compatibility with Golang protobuf;
 	// See https://github.com/planetscale/vtprotobuf/issues/61
-	// Size is always 3 so just hardcode that here
+	// Size is always keysize + 1 so just hardcode that here
 	if oneof && field.Desc.Kind() == protoreflect.MessageKind && !field.Desc.IsMap() && !field.Desc.IsList() {
-		p.P("} else { n += 3 }")
+		p.P("} else { n += ", strconv.Itoa(key + 1), " }")
 	} else if repeated || nullable {
 		p.P(`}`)
 	}

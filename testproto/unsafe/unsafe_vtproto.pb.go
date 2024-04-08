@@ -1572,7 +1572,7 @@ func (m *UnsafeTest_Sub1_) SizeVT() (n int) {
 		l = m.Sub1.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	} else {
-		n += 3
+		n += 2
 	}
 	return n
 }
@@ -1586,7 +1586,7 @@ func (m *UnsafeTest_Sub2_) SizeVT() (n int) {
 		l = m.Sub2.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	} else {
-		n += 3
+		n += 2
 	}
 	return n
 }
@@ -1600,7 +1600,7 @@ func (m *UnsafeTest_Sub3_) SizeVT() (n int) {
 		l = m.Sub3.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	} else {
-		n += 3
+		n += 2
 	}
 	return n
 }
@@ -1614,7 +1614,7 @@ func (m *UnsafeTest_Sub4_) SizeVT() (n int) {
 		l = m.Sub4.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	} else {
-		n += 3
+		n += 2
 	}
 	return n
 }
@@ -1628,7 +1628,7 @@ func (m *UnsafeTest_Sub5_) SizeVT() (n int) {
 		l = m.Sub5.SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	} else {
-		n += 3
+		n += 2
 	}
 	return n
 }
