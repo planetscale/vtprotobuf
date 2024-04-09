@@ -12,6 +12,7 @@ import (
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
 	math "math"
+	sort "sort"
 	unsafe "unsafe"
 )
 
@@ -628,6 +629,536 @@ func (m *ListValue) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	if len(m.Values) > 0 {
 		for iNdEx := len(m.Values) - 1; iNdEx >= 0; iNdEx-- {
 			size, err := (*Value)(m.Values[iNdEx]).MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Struct) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Struct) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Struct) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fields) > 0 {
+		keysForFields := make([]string, 0, len(m.Fields))
+		for k := range m.Fields {
+			keysForFields = append(keysForFields, string(k))
+		}
+		sort.Slice(keysForFields, func(i, j int) bool {
+			return keysForFields[i] < keysForFields[j]
+		})
+		for iNdEx := len(keysForFields) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.Fields[string(keysForFields[iNdEx])]
+			baseI := i
+			size, err := (*Value)(v).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForFields[iNdEx])
+			copy(dAtA[i:], keysForFields[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForFields[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Value) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Value) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	switch c := m.Kind.(type) {
+	case *structpb.Value_NullValue:
+		size, err := (*Value_NullValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_NumberValue:
+		size, err := (*Value_NumberValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_StringValue:
+		size, err := (*Value_StringValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_BoolValue:
+		size, err := (*Value_BoolValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_StructValue:
+		size, err := (*Value_StructValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	case *structpb.Value_ListValue:
+		size, err := (*Value_ListValue)(c).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Value_NullValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_NullValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.NullValue))
+	i--
+	dAtA[i] = 0x8
+	return len(dAtA) - i, nil
+}
+func (m *Value_NumberValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_NumberValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NumberValue))))
+	i--
+	dAtA[i] = 0x11
+	return len(dAtA) - i, nil
+}
+func (m *Value_StringValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_StringValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.StringValue)
+	copy(dAtA[i:], m.StringValue)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StringValue)))
+	i--
+	dAtA[i] = 0x1a
+	return len(dAtA) - i, nil
+}
+func (m *Value_BoolValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_BoolValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.BoolValue {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x20
+	return len(dAtA) - i, nil
+}
+func (m *Value_StructValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_StructValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.StructValue != nil {
+		size, err := (*Struct)(m.StructValue).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Value_ListValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Value_ListValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ListValue != nil {
+		size, err := (*ListValue)(m.ListValue).MarshalToSizedBufferVTStable(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ListValue) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListValue) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *ListValue) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Values) > 0 {
+		for iNdEx := len(m.Values) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*Value)(m.Values[iNdEx]).MarshalToSizedBufferVTStable(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Struct) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Struct) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Struct) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Fields) > 0 {
+		keysForFields := make([]string, 0, len(m.Fields))
+		for k := range m.Fields {
+			keysForFields = append(keysForFields, string(k))
+		}
+		sort.Slice(keysForFields, func(i, j int) bool {
+			return keysForFields[i] < keysForFields[j]
+		})
+		for iNdEx := len(keysForFields) - 1; iNdEx >= 0; iNdEx-- {
+			v := m.Fields[string(keysForFields[iNdEx])]
+			baseI := i
+			size, err := (*Value)(v).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			i--
+			dAtA[i] = 0x12
+			i -= len(keysForFields[iNdEx])
+			copy(dAtA[i:], keysForFields[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(keysForFields[iNdEx])))
+			i--
+			dAtA[i] = 0xa
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(baseI-i))
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Value) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Value) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m, ok := m.Kind.(*structpb.Value_ListValue); ok {
+		msg := ((*Value_ListValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m, ok := m.Kind.(*structpb.Value_StructValue); ok {
+		msg := ((*Value_StructValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m, ok := m.Kind.(*structpb.Value_BoolValue); ok {
+		msg := ((*Value_BoolValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m, ok := m.Kind.(*structpb.Value_StringValue); ok {
+		msg := ((*Value_StringValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m, ok := m.Kind.(*structpb.Value_NumberValue); ok {
+		msg := ((*Value_NumberValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	if m, ok := m.Kind.(*structpb.Value_NullValue); ok {
+		msg := ((*Value_NullValue)(m))
+		size, err := msg.MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Value_NullValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_NullValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(m.NullValue))
+	i--
+	dAtA[i] = 0x8
+	return len(dAtA) - i, nil
+}
+func (m *Value_NumberValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_NumberValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= 8
+	binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.NumberValue))))
+	i--
+	dAtA[i] = 0x11
+	return len(dAtA) - i, nil
+}
+func (m *Value_StringValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_StringValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.StringValue)
+	copy(dAtA[i:], m.StringValue)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.StringValue)))
+	i--
+	dAtA[i] = 0x1a
+	return len(dAtA) - i, nil
+}
+func (m *Value_BoolValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_BoolValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i--
+	if m.BoolValue {
+		dAtA[i] = 1
+	} else {
+		dAtA[i] = 0
+	}
+	i--
+	dAtA[i] = 0x20
+	return len(dAtA) - i, nil
+}
+func (m *Value_StructValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_StructValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.StructValue != nil {
+		size, err := (*Struct)(m.StructValue).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x2a
+	}
+	return len(dAtA) - i, nil
+}
+func (m *Value_ListValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Value_ListValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	if m.ListValue != nil {
+		size, err := (*ListValue)(m.ListValue).MarshalToSizedBufferVTStableStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		i--
+		dAtA[i] = 0x32
+	}
+	return len(dAtA) - i, nil
+}
+func (m *ListValue) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListValue) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *ListValue) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Values) > 0 {
+		for iNdEx := len(m.Values) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := (*Value)(m.Values[iNdEx]).MarshalToSizedBufferVTStableStrict(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}

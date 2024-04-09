@@ -85,6 +85,84 @@ func (m *Duration) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *Duration) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Duration) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Duration) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Nanos != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Seconds != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Duration) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Duration) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Duration) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Nanos != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Nanos))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.Seconds != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Seconds))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *Duration) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
