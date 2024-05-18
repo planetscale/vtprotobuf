@@ -2,8 +2,6 @@ package grpc
 
 import (
 	"fmt"
-
-	"github.com/golang/protobuf/proto" //nolint
 )
 
 // Name is the name registered for the proto compressor.
@@ -14,6 +12,10 @@ type Codec struct{}
 type vtprotoMessage interface {
 	MarshalVT() ([]byte, error)
 	UnmarshalVT([]byte) error
+}
+
+type reseter interface{
+	Reset()
 }
 
 func (Codec) Marshal(v interface{}) ([]byte, error) {
@@ -29,9 +31,10 @@ func (Codec) Unmarshal(data []byte, v interface{}) error {
 	if !ok {
 		return fmt.Errorf("failed to unmarshal, message is %T (missing vtprotobuf helpers)", v)
 	}
-	vv, ok := v.(proto.Message)
+	//All types that implement github.com/golang/protobuf/proto.Message have a Reset method
+	vv, ok := v.(reseter)
 	if !ok {
-		return fmt.Errorf("failed to unmarshal, message is %T (can't reset)", vv)
+		return fmt.Errorf("failed to unmarshal: can't reset. Message type %T don't implement Reset()", vv)
 	}
 	vv.Reset()
 	return vt.UnmarshalVT(data)
