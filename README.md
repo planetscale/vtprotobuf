@@ -39,6 +39,8 @@ The following features can be generated:
 
 - `unmarshal_unsafe` generates a `func (p *YourProto) UnmarshalVTUnsafe(data []byte)` that behaves like `UnmarshalVT`, except it unsafely casts slices of data to `bytes` and `string` fields instead of copying them to newly allocated arrays, so that it performs less allocations. **Data received from the wire has to be left untouched for the lifetime of the message.** Otherwise, the message's `bytes` and `string` fields can be corrupted.
 
+- `unmarshal_unique` is like `unmarshal` but it calls `unique.Make()` on each string that interns it i.e. if there are multiple copies of the same string coming through gRPC, only one copy if it is stored in memory.
+
 - `pool`: generates the following helper methods
 
     - `func (p *YourProto) ResetVT()`: this function behaves similarly to `proto.Reset(p)`, except it keeps as much memory as possible available on the message, so that further calls to `UnmarshalVT` on the same message will need to allocate less memory. This an API meant to be used with memory pools and does not need to be used directly.

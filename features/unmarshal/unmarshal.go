@@ -25,12 +25,17 @@ func init() {
 	generator.RegisterFeature("unmarshal_unsafe", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen, unsafe: true}
 	})
+
+	generator.RegisterFeature("unmarshal_unique", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &unmarshal{GeneratedFile: gen, unique: true}
+	})
 }
 
 type unmarshal struct {
 	*generator.GeneratedFile
 	unsafe bool
 	once   bool
+	unique bool
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
@@ -193,13 +198,16 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 		p.P(`if postStringIndex`, varName, ` > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		if p.unsafe {
+		switch {
+		case p.unsafe:
 			p.P(`if intStringLen`, varName, ` == 0 {`)
 			p.P(varName, ` = ""`)
 			p.P(`} else {`)
 			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)`)
 			p.P(`}`)
-		} else {
+		case p.unique:
+			p.P(varName, ` = `, "unique.Make[string](string", `(dAtA[iNdEx:postStringIndex`, varName, `])).Value()`)
+		default:
 			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
 		}
 		p.P(`iNdEx = postStringIndex`, varName)
@@ -423,12 +431,15 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		str := "string(dAtA[iNdEx:postIndex])"
-		if p.unsafe {
+		switch {
+		case p.unsafe:
 			str = "stringValue"
 			p.P(`var stringValue string`)
 			p.P(`if intStringLen > 0 {`)
 			p.P(`stringValue = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)`)
 			p.P(`}`)
+		case p.unique:
+			str = "unique.Make[string](string(dAtA[iNdEx:postIndex])).Value()"
 		}
 		if oneof {
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", str, `}`)
