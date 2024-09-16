@@ -12,11 +12,11 @@ extend google.protobuf.MessageOptions {
 }
 
 extend google.protobuf.FieldOptions {
-  optional FieldOptions options = 64102;
+  optional Opts options = 999999;
 }
 
 // These options should be used during schema definition,
 // applying them to some of the fields in protobuf
-message FieldOptions {
+message Opts {
   optional bool unique = 1;
 }

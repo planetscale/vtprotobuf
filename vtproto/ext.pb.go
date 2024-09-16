@@ -11,6 +11,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	descriptorpb "google.golang.org/protobuf/types/descriptorpb"
 	reflect "reflect"
+	sync "sync"
 )
 
 const (
@@ -19,6 +20,55 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
+
+// These options should be used during schema definition,
+// applying them to some of the fields in protobuf
+type Opts struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Unique *bool `protobuf:"varint,1,opt,name=unique" json:"unique,omitempty"`
+}
+
+func (x *Opts) Reset() {
+	*x = Opts{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Opts) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Opts) ProtoMessage() {}
+
+func (x *Opts) ProtoReflect() protoreflect.Message {
+	mi := &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Opts.ProtoReflect.Descriptor instead.
+func (*Opts) Descriptor() ([]byte, []int) {
+	return file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Opts) GetUnique() bool {
+	if x != nil && x.Unique != nil {
+		return *x.Unique
+	}
+	return false
+}
 
 var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
@@ -31,10 +81,10 @@ var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes = []protoi
 	},
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
-		ExtensionType: (*bool)(nil),
-		Field:         64102,
-		Name:          "vtproto.unique",
-		Tag:           "varint,64102,opt,name=unique",
+		ExtensionType: (*Opts)(nil),
+		Field:         999999,
+		Name:          "vtproto.options",
+		Tag:           "bytes,999999,opt,name=options",
 		Filename:      "github.com/planetscale/vtprotobuf/vtproto/ext.proto",
 	},
 }
@@ -47,8 +97,8 @@ var (
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
-	// optional bool unique = 64102;
-	E_Unique = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[1]
+	// optional vtproto.Opts options = 999999;
+	E_Options = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[1]
 )
 
 var File_github_com_planetscale_vtprotobuf_vtproto_ext_proto protoreflect.FileDescriptor
@@ -60,31 +110,49 @@ var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc = []byte{
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x07, 0x76, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x20,
 	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
 	0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x22, 0x1e, 0x0a, 0x04, 0x4f, 0x70, 0x74, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x75, 0x6e, 0x69, 0x71,
+	0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x75, 0x6e, 0x69, 0x71, 0x75, 0x65,
 	0x3a, 0x3b, 0x0a, 0x07, 0x6d, 0x65, 0x6d, 0x70, 0x6f, 0x6f, 0x6c, 0x12, 0x1f, 0x2e, 0x67, 0x6f,
 	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x4d, 0x65,
 	0x73, 0x73, 0x61, 0x67, 0x65, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xe5, 0xf4, 0x03,
-	0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x70, 0x6f, 0x6f, 0x6c, 0x3a, 0x37, 0x0a,
-	0x06, 0x75, 0x6e, 0x69, 0x71, 0x75, 0x65, 0x12, 0x1d, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x4f,
-	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xe6, 0xf4, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06,
-	0x75, 0x6e, 0x69, 0x71, 0x75, 0x65, 0x42, 0x49, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67, 0x6f,
-	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x42, 0x07, 0x56,
-	0x54, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x70, 0x6c, 0x61, 0x6e, 0x65, 0x74, 0x73, 0x63, 0x61, 0x6c, 0x65, 0x2f, 0x76,
-	0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x76, 0x74, 0x70, 0x72, 0x6f, 0x74,
-	0x6f,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x6d, 0x65, 0x6d, 0x70, 0x6f, 0x6f, 0x6c, 0x3a, 0x48, 0x0a,
+	0x07, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x1d, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64,
+	0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0xbf, 0x84, 0x3d, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0d, 0x2e, 0x76, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x4f, 0x70, 0x74, 0x73, 0x52, 0x07,
+	0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x49, 0x0a, 0x13, 0x63, 0x6f, 0x6d, 0x2e, 0x67,
+	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x42, 0x07,
+	0x56, 0x54, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x5a, 0x29, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x6c, 0x61, 0x6e, 0x65, 0x74, 0x73, 0x63, 0x61, 0x6c, 0x65, 0x2f,
+	0x76, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x76, 0x74, 0x70, 0x72, 0x6f,
+	0x74, 0x6f,
 }
 
+var (
+	file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescOnce sync.Once
+	file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescData = file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc
+)
+
+func file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescGZIP() []byte {
+	file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescOnce.Do(func() {
+		file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescData)
+	})
+	return file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDescData
+}
+
+var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_goTypes = []interface{}{
-	(*descriptorpb.MessageOptions)(nil), // 0: google.protobuf.MessageOptions
-	(*descriptorpb.FieldOptions)(nil),   // 1: google.protobuf.FieldOptions
+	(*Opts)(nil),                        // 0: vtproto.Opts
+	(*descriptorpb.MessageOptions)(nil), // 1: google.protobuf.MessageOptions
+	(*descriptorpb.FieldOptions)(nil),   // 2: google.protobuf.FieldOptions
 }
 var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_depIdxs = []int32{
-	0, // 0: vtproto.mempool:extendee -> google.protobuf.MessageOptions
-	1, // 1: vtproto.unique:extendee -> google.protobuf.FieldOptions
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
+	1, // 0: vtproto.mempool:extendee -> google.protobuf.MessageOptions
+	2, // 1: vtproto.options:extendee -> google.protobuf.FieldOptions
+	0, // 2: vtproto.options:type_name -> vtproto.Opts
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	2, // [2:3] is the sub-list for extension type_name
 	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
@@ -94,18 +162,33 @@ func file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_init() {
 	if File_github_com_planetscale_vtprotobuf_vtproto_ext_proto != nil {
 		return
 	}
+	if !protoimpl.UnsafeEnabled {
+		file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Opts); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   1,
 			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_goTypes,
 		DependencyIndexes: file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_depIdxs,
+		MessageInfos:      file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_msgTypes,
 		ExtensionInfos:    file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes,
 	}.Build()
 	File_github_com_planetscale_vtprotobuf_vtproto_ext_proto = out.File

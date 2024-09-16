@@ -158,10 +158,7 @@ func (p *unmarshal) declareMapField(varName string, nullable bool, field *protog
 }
 
 func (p *unmarshal) mapField(varName string, field *protogen.Field) {
-	var unique bool
-	if _, ok := proto.GetExtension(field.Desc.Options(), vtproto.E_Unique).(bool); ok {
-		unique = true
-	}
+	unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
 
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
@@ -211,7 +208,7 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 			p.P(`if intStringLen`, varName, ` == 0 {`)
 			p.P(varName, ` = ""`)
 			p.P(`} else {`)
-			p.P(varName, ` = unique.Make[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)).Value()`)
+			p.P(varName, ` = `, p.Ident("unique", `Make`), `[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)).Value()`)
 			p.P(`}`)
 		default:
 			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
@@ -289,16 +286,10 @@ func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 }
 
 func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
-	var unique bool
-
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 	nullable := field.Oneof != nil && field.Oneof.Desc.IsSynthetic()
-
-	if _, ok := proto.GetExtension(field.Desc.Options(), vtproto.E_Unique).(bool); ok {
-		unique = true
-	}
 
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
@@ -429,6 +420,8 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`m.`, fieldname, ` = &b`)
 		}
 	case protoreflect.StringKind:
+		unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
+
 		p.P(`var stringLen uint64`)
 		p.decodeVarint("stringLen", "uint64")
 		p.P(`intStringLen := int(stringLen)`)
@@ -454,7 +447,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			str = "stringValue"
 			p.P(`var stringValue string`)
 			p.P(`if intStringLen > 0 {`)
-			p.P(`stringValue = unique.Make[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)).Value()`)
+			p.P(`stringValue = `, p.Ident("unique", `Make`), `[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)).Value()`)
 			p.P(`}`)
 		}
 		if oneof {
