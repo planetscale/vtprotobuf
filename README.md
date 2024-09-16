@@ -39,8 +39,6 @@ The following features can be generated:
 
 - `unmarshal_unsafe` generates a `func (p *YourProto) UnmarshalVTUnsafe(data []byte)` that behaves like `UnmarshalVT`, except it unsafely casts slices of data to `bytes` and `string` fields instead of copying them to newly allocated arrays, so that it performs less allocations. **Data received from the wire has to be left untouched for the lifetime of the message.** Otherwise, the message's `bytes` and `string` fields can be corrupted.
 
-- `unmarshal_unique` is like `unmarshal` but it calls `unique.Make()` on each string that interns it i.e. if there are multiple copies of the same string coming through gRPC, only one copy if it is stored in memory.
-
 - `pool`: generates the following helper methods
 
     - `func (p *YourProto) ResetVT()`: this function behaves similarly to `proto.Reset(p)`, except it keeps as much memory as possible available on the message, so that further calls to `UnmarshalVT` on the same message will need to allocate less memory. This an API meant to be used with memory pools and does not need to be used directly.
@@ -54,6 +52,20 @@ The following features can be generated:
     - `func (p *YourProto) CloneVT() *YourProto`: this function behaves similarly to calling `proto.Clone(p)` on the message, except the cloning is performed by unrolled codegen without using reflection. If the receiver `p` is `nil` a typed `nil` is returned.
 
     - `func (p *YourProto) CloneMessageVT() proto.Message`: this function behaves like the above `p.CloneVT()`, but provides a uniform signature in order to be accessible via type assertions even if the type is not known at compile time. This allows implementing a generic `func CloneVT(proto.Message)` without reflection. If the receiver `p` is `nil`, a typed `nil` pointer of the message type will be returned inside a `proto.Message` interface.
+
+### Field Options
+
+- `unique` is a field option available on strings. If it is set to `true` then all all strings are interned using [unique.Make](https://pkg.go.dev/unique#Make). Go 1.23+ is needed. `unmarshal_unsafe` takes precendence over `unique`. Example usage:
+
+```
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message Label {
+    string name  = 1 [(vtproto.options).unique = true];
+    string value = 2 [(vtproto.options).unique = true];
+}
+```
+
 
 ## Usage
 

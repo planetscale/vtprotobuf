@@ -12,9 +12,11 @@ import (
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/encoding/protowire"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"github.com/planetscale/vtprotobuf/generator"
+	"github.com/planetscale/vtprotobuf/vtproto"
 )
 
 func init() {
@@ -25,17 +27,12 @@ func init() {
 	generator.RegisterFeature("unmarshal_unsafe", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen, unsafe: true}
 	})
-
-	generator.RegisterFeature("unmarshal_unique", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
-		return &unmarshal{GeneratedFile: gen, unique: true}
-	})
 }
 
 type unmarshal struct {
 	*generator.GeneratedFile
 	unsafe bool
 	once   bool
-	unique bool
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
@@ -161,6 +158,11 @@ func (p *unmarshal) declareMapField(varName string, nullable bool, field *protog
 }
 
 func (p *unmarshal) mapField(varName string, field *protogen.Field) {
+	var unique bool
+	if _, ok := proto.GetExtension(field.Desc.Options(), vtproto.E_Unique).(bool); ok {
+		unique = true
+	}
+
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var `, varName, `temp uint64`)
@@ -205,8 +207,12 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field) {
 			p.P(`} else {`)
 			p.P(varName, ` = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)`)
 			p.P(`}`)
-		case p.unique:
-			p.P(varName, ` = `, "unique.Make[string](string", `(dAtA[iNdEx:postStringIndex`, varName, `])).Value()`)
+		case unique:
+			p.P(`if intStringLen`, varName, ` == 0 {`)
+			p.P(varName, ` = ""`)
+			p.P(`} else {`)
+			p.P(varName, ` = unique.Make[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen`, varName, `)).Value()`)
+			p.P(`}`)
 		default:
 			p.P(varName, ` = `, "string", `(dAtA[iNdEx:postStringIndex`, varName, `])`)
 		}
@@ -283,10 +289,16 @@ func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 }
 
 func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
+	var unique bool
+
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 	nullable := field.Oneof != nil && field.Oneof.Desc.IsSynthetic()
+
+	if _, ok := proto.GetExtension(field.Desc.Options(), vtproto.E_Unique).(bool); ok {
+		unique = true
+	}
 
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
@@ -438,8 +450,12 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`if intStringLen > 0 {`)
 			p.P(`stringValue = `, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)`)
 			p.P(`}`)
-		case p.unique:
-			str = "unique.Make[string](string(dAtA[iNdEx:postIndex])).Value()"
+		case unique:
+			str = "stringValue"
+			p.P(`var stringValue string`)
+			p.P(`if intStringLen > 0 {`)
+			p.P(`stringValue = unique.Make[string](`, p.Ident("unsafe", `String`), `(&dAtA[iNdEx], intStringLen)).Value()`)
+			p.P(`}`)
 		}
 		if oneof {
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", str, `}`)
