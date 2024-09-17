@@ -12,7 +12,7 @@ extend google.protobuf.MessageOptions {
 }
 
 extend google.protobuf.FieldOptions {
-  optional Opts options = 999999;
+  optional Opts options = 64150;
 }
 
 // These options should be used during schema definition,
