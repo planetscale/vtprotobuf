@@ -53,6 +53,20 @@ The following features can be generated:
 
     - `func (p *YourProto) CloneMessageVT() proto.Message`: this function behaves like the above `p.CloneVT()`, but provides a uniform signature in order to be accessible via type assertions even if the type is not known at compile time. This allows implementing a generic `func CloneVT(proto.Message)` without reflection. If the receiver `p` is `nil`, a typed `nil` pointer of the message type will be returned inside a `proto.Message` interface.
 
+### Field Options
+
+- `unique` is a field option available on strings. If it is set to `true` then all all strings are interned using [unique.Make](https://pkg.go.dev/unique#Make). Go 1.23+ is needed. `unmarshal_unsafe` takes precendence over `unique`. Example usage:
+
+```
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message Label {
+    string name  = 1 [(vtproto.options).unique = true];
+    string value = 2 [(vtproto.options).unique = true];
+}
+```
+
+
 ## Usage
 
 1. Install `protoc-gen-go-vtproto`:
