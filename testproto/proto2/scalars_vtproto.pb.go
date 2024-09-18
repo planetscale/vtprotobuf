@@ -2279,6 +2279,2196 @@ func (m *EnumMessage) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *DoubleMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DoubleMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *DoubleMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float64bits(float64(m.PackedField[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float64bits(float64(m.RepeatedField[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f2))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.OptionalField))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.RequiredField))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FloatMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FloatMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *FloatMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float32bits(float32(m.PackedField[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f1))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float32bits(float32(m.RepeatedField[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f2))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.OptionalField))))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.RequiredField))))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Int32Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Int32Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Int32Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Int64Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Int64Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Int64Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Uint32Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Uint32Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Uint32Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Uint64Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Uint64Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Uint64Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sint32Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sint32Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Sint32Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			x3 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x3 >= 1<<7 {
+				dAtA[j1] = uint8(uint64(x3)&0x7f | 0x80)
+				j1++
+				x3 >>= 7
+			}
+			dAtA[j1] = uint8(x3)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint32(m.RepeatedField[iNdEx]) << 1) ^ uint32((m.RepeatedField[iNdEx] >> 31))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(*m.OptionalField)<<1)^uint32((*m.OptionalField>>31))))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(*m.RequiredField)<<1)^uint32((*m.RequiredField>>31))))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sint64Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sint64Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Sint64Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			x3 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x3 >= 1<<7 {
+				dAtA[j1] = uint8(uint64(x3)&0x7f | 0x80)
+				j1++
+				x3 >>= 7
+			}
+			dAtA[j1] = uint8(x3)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint64(m.RepeatedField[iNdEx]) << 1) ^ uint64((m.RepeatedField[iNdEx] >> 63))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(*m.OptionalField)<<1)^uint64((*m.OptionalField>>63))))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(*m.RequiredField)<<1)^uint64((*m.RequiredField>>63))))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Fixed32Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Fixed32Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Fixed32Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalField))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.RequiredField))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Fixed64Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Fixed64Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Fixed64Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sfixed32Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sfixed32Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Sfixed32Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalField))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.RequiredField))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sfixed64Message) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sfixed64Message) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *Sfixed64Message) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BoolMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BoolMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *BoolMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.PackedField[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.RepeatedField[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i--
+		if *m.OptionalField {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i--
+		if *m.RequiredField {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StringMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StringMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *StringMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedField[iNdEx])
+			copy(dAtA[i:], m.RepeatedField[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.OptionalField != nil {
+		i -= len(*m.OptionalField)
+		copy(dAtA[i:], *m.OptionalField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(*m.OptionalField)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= len(*m.RequiredField)
+		copy(dAtA[i:], *m.RequiredField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(*m.RequiredField)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BytesMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BytesMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *BytesMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedField[iNdEx])
+			copy(dAtA[i:], m.RepeatedField[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.OptionalField != nil {
+		i -= len(m.OptionalField)
+		copy(dAtA[i:], m.OptionalField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalField)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= len(m.RequiredField)
+		copy(dAtA[i:], m.RequiredField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RequiredField)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumMessage) MarshalVTStable() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStable(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumMessage) MarshalToVTStable(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStable(dAtA[:size])
+}
+
+func (m *EnumMessage) MarshalToSizedBufferVTStable(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DoubleMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DoubleMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *DoubleMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float64bits(float64(m.PackedField[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f1))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float64bits(float64(m.RepeatedField[iNdEx]))
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(f2))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.OptionalField))))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(*m.RequiredField))))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *FloatMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *FloatMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *FloatMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			f1 := math.Float32bits(float32(m.PackedField[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f1))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			f2 := math.Float32bits(float32(m.RepeatedField[iNdEx]))
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(f2))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.OptionalField))))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(*m.RequiredField))))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Int32Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Int32Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Int32Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Int64Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Int64Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Int64Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Uint32Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Uint32Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Uint32Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Uint64Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Uint64Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Uint64Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sint32Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sint32Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Sint32Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			x3 := (uint32(num) << 1) ^ uint32((num >> 31))
+			for x3 >= 1<<7 {
+				dAtA[j1] = uint8(uint64(x3)&0x7f | 0x80)
+				j1++
+				x3 >>= 7
+			}
+			dAtA[j1] = uint8(x3)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint32(m.RepeatedField[iNdEx]) << 1) ^ uint32((m.RepeatedField[iNdEx] >> 31))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(*m.OptionalField)<<1)^uint32((*m.OptionalField>>31))))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint32(*m.RequiredField)<<1)^uint32((*m.RequiredField>>31))))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sint64Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sint64Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Sint64Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfZigzag(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num := range m.PackedField {
+			x3 := (uint64(num) << 1) ^ uint64((num >> 63))
+			for x3 >= 1<<7 {
+				dAtA[j1] = uint8(uint64(x3)&0x7f | 0x80)
+				j1++
+				x3 >>= 7
+			}
+			dAtA[j1] = uint8(x3)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			x4 := (uint64(m.RepeatedField[iNdEx]) << 1) ^ uint64((m.RepeatedField[iNdEx] >> 63))
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(x4))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(*m.OptionalField)<<1)^uint64((*m.OptionalField>>63))))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64((uint64(*m.RequiredField)<<1)^uint64((*m.RequiredField>>63))))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Fixed32Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Fixed32Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Fixed32Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalField))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.RequiredField))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Fixed64Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Fixed64Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Fixed64Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sfixed32Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sfixed32Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Sfixed32Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*4))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 4
+			binary.LittleEndian.PutUint32(dAtA[i:], uint32(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x1d
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.OptionalField))
+		i--
+		dAtA[i] = 0x15
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 4
+		binary.LittleEndian.PutUint32(dAtA[i:], uint32(*m.RequiredField))
+		i--
+		dAtA[i] = 0xd
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Sfixed64Message) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Sfixed64Message) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *Sfixed64Message) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.PackedField[iNdEx]))
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)*8))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= 8
+			binary.LittleEndian.PutUint64(dAtA[i:], uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x19
+		}
+	}
+	if m.OptionalField != nil {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x11
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= 8
+		binary.LittleEndian.PutUint64(dAtA[i:], uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x9
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BoolMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BoolMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *BoolMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		for iNdEx := len(m.PackedField) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.PackedField[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.PackedField)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i--
+			if m.RepeatedField[iNdEx] {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i--
+		if *m.OptionalField {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i--
+		if *m.RequiredField {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *StringMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *StringMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *StringMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedField[iNdEx])
+			copy(dAtA[i:], m.RepeatedField[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.OptionalField != nil {
+		i -= len(*m.OptionalField)
+		copy(dAtA[i:], *m.OptionalField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(*m.OptionalField)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= len(*m.RequiredField)
+		copy(dAtA[i:], *m.RequiredField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(*m.RequiredField)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *BytesMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *BytesMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *BytesMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.RepeatedField[iNdEx])
+			copy(dAtA[i:], m.RepeatedField[iNdEx])
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RepeatedField[iNdEx])))
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if m.OptionalField != nil {
+		i -= len(m.OptionalField)
+		copy(dAtA[i:], m.OptionalField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.OptionalField)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i -= len(m.RequiredField)
+		copy(dAtA[i:], m.RequiredField)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.RequiredField)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *EnumMessage) MarshalVTStableStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EnumMessage) MarshalToVTStableStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStableStrict(dAtA[:size])
+}
+
+func (m *EnumMessage) MarshalToSizedBufferVTStableStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.PackedField) > 0 {
+		var pksize2 int
+		for _, num := range m.PackedField {
+			pksize2 += protohelpers.SizeOfVarint(uint64(num))
+		}
+		i -= pksize2
+		j1 := i
+		for _, num1 := range m.PackedField {
+			num := uint64(num1)
+			for num >= 1<<7 {
+				dAtA[j1] = uint8(uint64(num)&0x7f | 0x80)
+				num >>= 7
+				j1++
+			}
+			dAtA[j1] = uint8(num)
+			j1++
+		}
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(pksize2))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.RepeatedField) > 0 {
+		for iNdEx := len(m.RepeatedField) - 1; iNdEx >= 0; iNdEx-- {
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RepeatedField[iNdEx]))
+			i--
+			dAtA[i] = 0x18
+		}
+	}
+	if m.OptionalField != nil {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.OptionalField))
+		i--
+		dAtA[i] = 0x10
+	}
+	if m.RequiredField == nil {
+		return 0, fmt.Errorf("proto: required field required_field not set")
+	} else {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(*m.RequiredField))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *DoubleMessage) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
