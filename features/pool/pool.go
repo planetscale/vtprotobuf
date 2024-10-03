@@ -50,6 +50,7 @@ func (p *pool) message(message *protogen.Message) {
 	p.P(`func (m *`, ccTypeName, `) ResetVT() {`)
 	p.P(`if m != nil {`)
 	var saved []*protogen.Field
+	p.P("f0 := m.unknownFields[:0]")
 	for _, field := range message.Fields {
 		fieldName := field.GoName
 
@@ -64,7 +65,7 @@ func (p *pool) message(message *protogen.Message) {
 				}
 				p.P(`}`)
 			}
-			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
+			p.P(fmt.Sprintf("f%d", len(saved)+1), ` := m.`, fieldName, `[:0]`)
 			saved = append(saved, field)
 		} else if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
 			if p.ShouldPool(field.Message) {
@@ -86,8 +87,9 @@ func (p *pool) message(message *protogen.Message) {
 	}
 
 	p.P(`m.Reset()`)
+	p.P("m.unknownFields = f0")
 	for i, field := range saved {
-		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i))
+		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i+1))
 	}
 	p.P(`}`)
 	p.P(`}`)
