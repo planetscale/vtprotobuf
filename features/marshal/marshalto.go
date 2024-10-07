@@ -599,7 +599,7 @@ func (p *marshal) message(message *protogen.Message) {
 	p.P(`var l int`)
 	p.P(`_ = l`)
 
-	if !p.Wrapper() {
+	if !p.Wrapper() && !p.ShouldIgnoreUnknownFields(message) {
 		p.P(`if m.unknownFields != nil {`)
 		p.P(`i -= len(m.unknownFields)`)
 		p.P(`copy(dAtA[i:], m.unknownFields)`)

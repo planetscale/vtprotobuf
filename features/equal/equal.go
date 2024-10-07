@@ -113,7 +113,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 		}
 	}
 
-	if p.Wrapper() {
+	if p.Wrapper() || p.ShouldIgnoreUnknownFields(message) {
 		p.P(`return true`)
 	} else {
 		p.P(`return string(this.unknownFields) == string(that.unknownFields)`)
