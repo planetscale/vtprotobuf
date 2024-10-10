@@ -41,6 +41,16 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	return false
 }
 
+func (b *GeneratedFile) ShouldIgnoreUnknownFields(message *protogen.Message) bool {
+	if b.Config.IgnoreUnknownFields.Contains(message.GoIdent) {
+		return true
+	}
+
+	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_IgnoreUnknownFields)
+	ignoreUnknownFields, ok := ext.(bool)
+	return ok && ignoreUnknownFields
+}
+
 func (b *GeneratedFile) Alloc(vname string, message *protogen.Message, isQualifiedIdent bool) {
 	ident := message.GoIdent.GoName
 	if isQualifiedIdent {

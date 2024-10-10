@@ -56,10 +56,12 @@ type Config struct {
 	Poolable ObjectSet
 	// PoolableExclude rules determines if pool feature disabled for particular message
 	PoolableExclude ObjectSet
-	Wrap            bool
-	WellKnownTypes  bool
-	AllowEmpty      bool
-	BuildTag        string
+	// IgnoreUnknownFields contains messages for which unknown fields shall be ignored
+	IgnoreUnknownFields ObjectSet
+	Wrap                bool
+	WellKnownTypes      bool
+	AllowEmpty          bool
+	BuildTag            string
 }
 
 type Generator struct {

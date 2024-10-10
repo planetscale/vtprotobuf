@@ -1,0 +1,9 @@
+syntax = "proto3";
+option go_package = "testproto/ignore_unknown_fields";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message IgnoreUnknownFieldsExtension {
+  option (vtproto.ignore_unknown_fields) = true;
+  string foo = 1;
+}

@@ -56,6 +56,7 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		-I$(PROTOBUF_ROOT)/src \
+		testproto/ignore_unknown_fields/opt.proto \
 		testproto/empty/empty.proto \
 		testproto/pool/pool.proto \
 		testproto/pool/pool_with_slice_reuse.proto \
@@ -106,4 +107,5 @@ genall: gen-include gen-conformance gen-testproto gen-wkt
 test: install gen-conformance
 	go test -short ./...
 	go test -count=1 ./conformance/...
+	go test -count=1 ./testproto/ignore_unknown_fields/...
 	GOGC="off" go test -count=1 ./testproto/pool/...

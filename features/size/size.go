@@ -320,7 +320,7 @@ func (p *size) message(message *protogen.Message) {
 			}
 		}
 	}
-	if !p.Wrapper() {
+	if !p.Wrapper() && !p.ShouldIgnoreUnknownFields(message) {
 		p.P(`n+=len(m.unknownFields)`)
 	}
 	p.P(`return n`)
