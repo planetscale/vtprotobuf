@@ -24,6 +24,12 @@ func init() {
 	generator.RegisterFeature("marshal_strict", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &marshal{GeneratedFile: gen, Stable: false, strict: true}
 	})
+	generator.RegisterFeature("marshal_stable", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &marshal{GeneratedFile: gen, Stable: true, strict: false}
+	})
+	generator.RegisterFeature("marshal_stable_strict", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
+		return &marshal{GeneratedFile: gen, Stable: true, strict: true}
+	})
 }
 
 type counter int
@@ -533,8 +539,12 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 func (p *marshal) methodMarshalToSizedBuffer() string {
 	switch {
-	case p.strict:
+	case p.strict && !p.Stable:
 		return "MarshalToSizedBufferVTStrict"
+	case !p.strict && p.Stable:
+		return "MarshalToSizedBufferVTStable"
+	case p.strict && p.Stable:
+		return "MarshalToSizedBufferVTStableStrict"
 	default:
 		return "MarshalToSizedBufferVT"
 	}
@@ -542,8 +552,12 @@ func (p *marshal) methodMarshalToSizedBuffer() string {
 
 func (p *marshal) methodMarshalTo() string {
 	switch {
-	case p.strict:
+	case p.strict && !p.Stable:
 		return "MarshalToVTStrict"
+	case !p.strict && p.Stable:
+		return "MarshalToVTStable"
+	case p.strict && p.Stable:
+		return "MarshalToVTStableStrict"
 	default:
 		return "MarshalToVT"
 	}
@@ -551,8 +565,12 @@ func (p *marshal) methodMarshalTo() string {
 
 func (p *marshal) methodMarshal() string {
 	switch {
-	case p.strict:
+	case p.strict && !p.Stable:
 		return "MarshalVTStrict"
+	case !p.strict && p.Stable:
+		return "MarshalVTStable"
+	case p.strict && p.Stable:
+		return "MarshalVTStableStrict"
 	default:
 		return "MarshalVT"
 	}
