@@ -37,6 +37,8 @@ The following features can be generated:
 
 - `unmarshal`: generates a `func (p *YourProto) UnmarshalVT(data []byte)` that behaves similarly to calling `proto.Unmarshal(data, p)` on the message, except the unmarshalling is performed by unrolled codegen without using reflection and allocating as little memory as possible. If the receiver `p` is **not** fully zeroed-out, the unmarshal call will actually behave like `proto.Merge(data, p)`. This is because the `proto.Unmarshal` in the ProtoBuf API is implemented by resetting the destination message and then calling `proto.Merge` on it. To ensure proper `Unmarshal` semantics, ensure you've called `proto.Reset` on your message before calling `UnmarshalVT`, or that your message has been newly allocated.
 
+    - The `ignoreUnknownFields` option can be used to ignore unknown fields in protobuf messages and further reduce memory allocations.
+
 - `unmarshal_unsafe` generates a `func (p *YourProto) UnmarshalVTUnsafe(data []byte)` that behaves like `UnmarshalVT`, except it unsafely casts slices of data to `bytes` and `string` fields instead of copying them to newly allocated arrays, so that it performs less allocations. **Data received from the wire has to be left untouched for the lifetime of the message.** Otherwise, the message's `bytes` and `string` fields can be corrupted.
 
 - `pool`: generates the following helper methods
@@ -122,7 +124,14 @@ message Label {
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
     ```
-6. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
+
+6. (Optional) If you are handling messages containing unknown fields and don't intend to forward these messages to a tool that might expect these fields, you can ignore them using the `ignoreUnknownFields` option.
+
+    - You can tag messages explicitly in the `.proto` files with `option (vtproto.ignore_unknown_fields)`. Take a look at the example using `option (vtproto.mempool)` above.
+
+    - Alternatively, you can enumerate the objects with `--go-vtproto_opt=ignoreUnknownFields=<import>.<message>` flags passed via the CLI. Take a look at the example using `--go-vtproto_opt=pool=...` above.
+
+7. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
 
     When using this option, the generated code will only be compiled in if a build tag is provided.
 
@@ -133,9 +142,9 @@ message Label {
     This can be done with type assertions before using `vtprotobuf` generated methods.
     The `grpc.Codec{}` object (discussed below) shows an example.
 
-7. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
+8. Compile the `.proto` files in your project. You should see `_vtproto.pb.go` files next to the `.pb.go` and `_grpc.pb.go` files that were already being generated.
 
-8. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
+9. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
 ## `vtprotobuf` package and well-known types
 

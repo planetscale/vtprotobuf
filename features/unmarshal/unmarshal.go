@@ -856,7 +856,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 		p.P(`iNdEx += skippy`)
 		p.P(`} else {`)
 	}
-	if !p.Wrapper() {
+	if !p.Wrapper() && !p.ShouldIgnoreUnknownFields(message) {
 		p.P(`m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)`)
 	}
 	p.P(`iNdEx += skippy`)

@@ -154,7 +154,7 @@ func (p *clone) cloneField(lhsBase, rhsBase string, allFieldsNullable bool, fiel
 func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Message) {
 	ccTypeName := message.GoIdent.GoName
 	p.P(`func (m *`, ccTypeName, `) `, cloneName, `() *`, ccTypeName, ` {`)
-	p.body(!proto3, ccTypeName, message, true)
+	p.body(!proto3, ccTypeName, message)
 	p.P(`}`)
 	p.P()
 
@@ -169,7 +169,7 @@ func (p *clone) generateCloneMethodsForMessage(proto3 bool, message *protogen.Me
 // body generates the code for the actual cloning logic of a structure containing the given fields.
 // In practice, those can be the fields of a message.
 // The object to be cloned is assumed to be called "m".
-func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protogen.Message, cloneUnknownFields bool) {
+func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protogen.Message) {
 	// The method body for a message or a oneof wrapper always starts with a nil check.
 	p.P(`if m == nil {`)
 	// We use an explicitly typed nil to avoid returning the nil interface in the oneof wrapper
@@ -220,7 +220,7 @@ func (p *clone) body(allFieldsNullable bool, ccTypeName string, message *protoge
 		p.cloneField("r", "m", allFieldsNullable, field)
 	}
 
-	if cloneUnknownFields && !p.Wrapper() {
+	if !p.Wrapper() && !p.ShouldIgnoreUnknownFields(message) {
 		// Clone unknown fields, if any
 		p.P(`if len(m.unknownFields) > 0 {`)
 		p.P(`r.unknownFields = make([]byte, len(m.unknownFields))`)
