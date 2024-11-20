@@ -25,17 +25,17 @@ func TestUnmarshalSameMemory(t *testing.T) {
 	m3 := &UniqueFieldExtension{}
 	require.NoError(t, m3.UnmarshalVT(b))
 
-	require.Equal(t, unsafe.StringData(m2.Foo), unsafe.StringData(m3.Foo))
+	require.Same(t, unsafe.StringData(m2.Foo), unsafe.StringData(m3.Foo), "string field")
 
 	keys2 := slices.Collect(maps.Keys(m2.Bar))
 	keys3 := slices.Collect(maps.Keys(m3.Bar))
 	require.Len(t, keys2, 1)
 	require.Len(t, keys3, 1)
-	require.Equal(t, unsafe.StringData(keys2[0]), unsafe.StringData(keys3[0]))
+	require.Same(t, unsafe.StringData(keys2[0]), unsafe.StringData(keys3[0]), "string key")
 
 	values2 := slices.Collect(maps.Values(m2.Baz))
 	values3 := slices.Collect(maps.Values(m3.Baz))
 	require.Len(t, values2, 1)
 	require.Len(t, values2, 1)
-	require.Equal(t, unsafe.StringData(values2[0]), unsafe.StringData(values3[0]))
+	require.Same(t, unsafe.StringData(values2[0]), unsafe.StringData(values3[0]), "string value")
 }
