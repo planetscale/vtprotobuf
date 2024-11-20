@@ -157,9 +157,7 @@ func (p *unmarshal) declareMapField(varName string, nullable bool, field *protog
 	}
 }
 
-func (p *unmarshal) mapField(varName string, field *protogen.Field) {
-	unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
-
+func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var `, varName, `temp uint64`)
@@ -509,6 +507,8 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
 			p.P(`}`)
 		} else if field.Desc.IsMap() {
+			unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
+
 			goTyp, _ := p.FieldGoType(field)
 			goTypK, _ := p.FieldGoType(field.Message.Fields[0])
 			goTypV, _ := p.FieldGoType(field.Message.Fields[1])
@@ -527,9 +527,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`fieldNum := int32(wire >> 3)`)
 
 			p.P(`if fieldNum == 1 {`)
-			p.mapField("mapkey", field.Message.Fields[0])
+			p.mapField("mapkey", field.Message.Fields[0], unique)
 			p.P(`} else if fieldNum == 2 {`)
-			p.mapField("mapvalue", field.Message.Fields[1])
+			p.mapField("mapvalue", field.Message.Fields[1], unique)
 			p.P(`} else {`)
 			p.P(`iNdEx = entryPreIndex`)
 			p.P(`skippy, err := `, p.Helper("Skip"), `(dAtA[iNdEx:])`)

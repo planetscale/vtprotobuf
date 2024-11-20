@@ -28,7 +28,7 @@ type Opts struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Unique *bool `protobuf:"varint,1,opt,name=unique" json:"unique,omitempty"`
+	Unique *bool `protobuf:"varint,1,opt,name=unique" json:"unique,omitempty"` // optional bool unique_keys = 2;
 }
 
 func (x *Opts) Reset() {

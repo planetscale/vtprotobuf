@@ -20,4 +20,5 @@ extend google.protobuf.FieldOptions {
 // applying them to some of the fields in protobuf
 message Opts {
   optional bool unique = 1;
+  // optional bool unique_keys = 2;
 }

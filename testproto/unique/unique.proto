@@ -5,4 +5,6 @@ import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
 
 message UniqueFieldExtension {
   string foo = 1 [(vtproto.options).unique = true];
+  map<string,int64> bar = 2 [(vtproto.options).unique = true];
+  map<int64,string> baz = 3 [(vtproto.options).unique = true];
 }
