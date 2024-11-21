@@ -64,6 +64,7 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		testproto/proto3opt/opt.proto \
 		testproto/proto2/scalars.proto \
 		testproto/unsafe/unsafe.proto \
+		testproto/unique/unique.proto \
 		|| exit 1;
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
