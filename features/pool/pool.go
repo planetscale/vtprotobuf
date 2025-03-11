@@ -63,6 +63,8 @@ func (p *pool) message(message *protogen.Message) {
 					p.P(`mm.Reset()`)
 				}
 				p.P(`}`)
+			case protoreflect.BytesKind, protoreflect.StringKind:
+				p.P(`clear(m.`, fieldName, `)`)
 			}
 			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
 			saved = append(saved, field)

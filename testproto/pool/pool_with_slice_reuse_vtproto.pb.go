@@ -803,6 +803,7 @@ var vtprotoPool_Test1 = sync.Pool{
 
 func (m *Test1) ResetVT() {
 	if m != nil {
+		clear(m.Sl)
 		f0 := m.Sl[:0]
 		m.Reset()
 		m.Sl = f0
@@ -852,6 +853,7 @@ var vtprotoPool_Test3 = sync.Pool{
 
 func (m *Test3) ResetVT() {
 	if m != nil {
+		clear(m.Sl)
 		f0 := m.Sl[:0]
 		m.Reset()
 		m.Sl = f0
