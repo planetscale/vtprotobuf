@@ -85,7 +85,6 @@ func mut(t reflect.Type, v reflect.Value) {
 		}
 		v.Set(m)
 	}
-	return
 }
 
 // VisitWithPredicate deep-visits the given struct
