@@ -249,6 +249,53 @@ func (x *Element2) GetA() int32 {
 	return 0
 }
 
+type Test3 struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Sl [][]byte `protobuf:"bytes,1,rep,name=Sl,proto3" json:"Sl,omitempty"`
+}
+
+func (x *Test3) Reset() {
+	*x = Test3{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pool_pool_with_slice_reuse_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Test3) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Test3) ProtoMessage() {}
+
+func (x *Test3) ProtoReflect() protoreflect.Message {
+	mi := &file_pool_pool_with_slice_reuse_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Test3.ProtoReflect.Descriptor instead.
+func (*Test3) Descriptor() ([]byte, []int) {
+	return file_pool_pool_with_slice_reuse_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Test3) GetSl() [][]byte {
+	if x != nil {
+		return x.Sl
+	}
+	return nil
+}
+
 var File_pool_pool_with_slice_reuse_proto protoreflect.FileDescriptor
 
 var file_pool_pool_with_slice_reuse_proto_rawDesc = []byte{
@@ -275,8 +322,10 @@ var file_pool_pool_with_slice_reuse_proto_rawDesc = []byte{
 	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a,
 	0x02, 0x38, 0x01, 0x42, 0x04, 0x0a, 0x02, 0x5f, 0x62, 0x22, 0x18, 0x0a, 0x08, 0x45, 0x6c, 0x65,
 	0x6d, 0x65, 0x6e, 0x74, 0x32, 0x12, 0x0c, 0x0a, 0x01, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05,
-	0x52, 0x01, 0x61, 0x42, 0x10, 0x5a, 0x0e, 0x74, 0x65, 0x73, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2f, 0x70, 0x6f, 0x6f, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x01, 0x61, 0x22, 0x1d, 0x0a, 0x05, 0x54, 0x65, 0x73, 0x74, 0x33, 0x12, 0x0e, 0x0a, 0x02,
+	0x53, 0x6c, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0c, 0x52, 0x02, 0x53, 0x6c, 0x3a, 0x04, 0xa8, 0xa6,
+	0x1f, 0x01, 0x42, 0x10, 0x5a, 0x0e, 0x74, 0x65, 0x73, 0x74, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f,
+	0x70, 0x6f, 0x6f, 0x6c, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -291,17 +340,18 @@ func file_pool_pool_with_slice_reuse_proto_rawDescGZIP() []byte {
 	return file_pool_pool_with_slice_reuse_proto_rawDescData
 }
 
-var file_pool_pool_with_slice_reuse_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_pool_pool_with_slice_reuse_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_pool_pool_with_slice_reuse_proto_goTypes = []interface{}{
 	(*Test1)(nil),    // 0: Test1
 	(*Test2)(nil),    // 1: Test2
 	(*Slice2)(nil),   // 2: Slice2
 	(*Element2)(nil), // 3: Element2
-	nil,              // 4: Slice2.AEntry
+	(*Test3)(nil),    // 4: Test3
+	nil,              // 5: Slice2.AEntry
 }
 var file_pool_pool_with_slice_reuse_proto_depIdxs = []int32{
 	2, // 0: Test2.Sl:type_name -> Slice2
-	4, // 1: Slice2.a:type_name -> Slice2.AEntry
+	5, // 1: Slice2.a:type_name -> Slice2.AEntry
 	3, // 2: Slice2.d:type_name -> Element2
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
@@ -364,6 +414,18 @@ func file_pool_pool_with_slice_reuse_proto_init() {
 				return nil
 			}
 		}
+		file_pool_pool_with_slice_reuse_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Test3); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_pool_pool_with_slice_reuse_proto_msgTypes[2].OneofWrappers = []interface{}{}
 	type x struct{}
@@ -372,7 +434,7 @@ func file_pool_pool_with_slice_reuse_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pool_pool_with_slice_reuse_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

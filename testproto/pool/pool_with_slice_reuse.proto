@@ -23,3 +23,8 @@ message Slice2 {
 message Element2 {
   int32 a = 1;
 }
+
+message Test3 {
+  option (vtproto.mempool) = true;
+  repeated bytes Sl = 1;
+}
