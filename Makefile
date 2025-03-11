@@ -6,7 +6,7 @@ export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-21.12
 install: bin/protoc-gen-go-vtproto bin/protoc-gen-go
 
 bin/protoc-gen-go-vtproto:
-	go install -tags protolegacy ./cmd/protoc-gen-go-vtproto
+	go install -buildvcs=false -tags protolegacy ./cmd/protoc-gen-go-vtproto
 
 bin/protoc-gen-go:
 	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
