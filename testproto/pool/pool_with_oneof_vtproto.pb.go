@@ -973,6 +973,7 @@ var vtprotoPool_OneofTest_Test2 = sync.Pool{
 
 func (m *OneofTest_Test2) ResetVT() {
 	if m != nil {
+		clear(m.B)
 		f0 := m.B[:0]
 		m.Reset()
 		m.B = f0
