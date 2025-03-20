@@ -1,6 +1,6 @@
 export GOBIN=$(PWD)/bin
 export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-30.1
-export PROTOC_PATH=$(PROTOBUF_ROOT)/src/protoc
+export PROTOC_PATH=$(PROTOBUF_ROOT)/protoc
 
 .PHONY: install test gen-conformance gen-include gen-wkt genall bin/protoc-gen-go bin/protoc-gen-go-vtproto
 
@@ -10,7 +10,7 @@ bin/protoc-gen-go-vtproto:
 	go install -buildvcs=false -tags protolegacy ./cmd/protoc-gen-go-vtproto
 
 bin/protoc-gen-go:
-	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
+	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 gen-conformance: install
 	$(PROTOC_PATH) \

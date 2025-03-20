@@ -6,7 +6,7 @@ PROTOBUF_VERSION=30.1
 ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 PROTOBUF_PATH="${ROOT}/_vendor/protobuf-${PROTOBUF_VERSION}"
 
-if [ -f "$PROTOBUF_PATH/src/protoc" ]; then
+if [ -f "$PROTOBUF_PATH/protoc" ]; then
     echo "protoc found in $PROTOBUF_PATH"
     exit 0
 fi
@@ -18,8 +18,8 @@ cd "$ROOT/_vendor"
 tar zxf pb.tar.gz
 
 cd protobuf-${PROTOBUF_VERSION}
-cmake . -Dprotobuf_BUILD_CONFORMANCE=ON
-cmake --build .
+cmake . -Dprotobuf_BUILD_CONFORMANCE=ON -DCMAKE_CXX_STANDARD=17 -Dprotobuf_FORCE_FETCH_DEPENDENCIES=ON
+make protoc conformance_test_runner -j$(nproc)
 
 echo "Dowloaded and compiled protobuf $PROTOBUF_VERSION to $PROTOBUF_PATH"
 ls -l src/
