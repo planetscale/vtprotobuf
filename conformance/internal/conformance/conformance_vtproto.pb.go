@@ -20,15 +20,36 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+func (m *TestStatus) CloneVT() *TestStatus {
+	if m == nil {
+		return (*TestStatus)(nil)
+	}
+	r := new(TestStatus)
+	r.Name = m.Name
+	r.FailureMessage = m.FailureMessage
+	r.MatchedName = m.MatchedName
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *TestStatus) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (m *FailureSet) CloneVT() *FailureSet {
 	if m == nil {
 		return (*FailureSet)(nil)
 	}
 	r := new(FailureSet)
-	if rhs := m.Failure; rhs != nil {
-		tmpContainer := make([]string, len(rhs))
-		copy(tmpContainer, rhs)
-		r.Failure = tmpContainer
+	if rhs := m.Test; rhs != nil {
+		tmpContainer := make([]*TestStatus, len(rhs))
+		for k, v := range rhs {
+			tmpContainer[k] = v.CloneVT()
+		}
+		r.Test = tmpContainer
 	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
@@ -146,6 +167,15 @@ func (m *ConformanceResponse_SerializeError) CloneVT() isConformanceResponse_Res
 	return r
 }
 
+func (m *ConformanceResponse_TimeoutError) CloneVT() isConformanceResponse_Result {
+	if m == nil {
+		return (*ConformanceResponse_TimeoutError)(nil)
+	}
+	r := new(ConformanceResponse_TimeoutError)
+	r.TimeoutError = m.TimeoutError
+	return r
+}
+
 func (m *ConformanceResponse_RuntimeError) CloneVT() isConformanceResponse_Result {
 	if m == nil {
 		return (*ConformanceResponse_RuntimeError)(nil)
@@ -221,19 +251,52 @@ func (m *JspbEncodingConfig) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (this *TestStatus) EqualVT(that *TestStatus) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Name != that.Name {
+		return false
+	}
+	if this.FailureMessage != that.FailureMessage {
+		return false
+	}
+	if this.MatchedName != that.MatchedName {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *TestStatus) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*TestStatus)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
 func (this *FailureSet) EqualVT(that *FailureSet) bool {
 	if this == that {
 		return true
 	} else if this == nil || that == nil {
 		return false
 	}
-	if len(this.Failure) != len(that.Failure) {
+	if len(this.Test) != len(that.Test) {
 		return false
 	}
-	for i, vx := range this.Failure {
-		vy := that.Failure[i]
-		if vx != vy {
-			return false
+	for i, vx := range this.Test {
+		vy := that.Test[i]
+		if p, q := vx, vy; p != q {
+			if p == nil {
+				p = &TestStatus{}
+			}
+			if q == nil {
+				q = &TestStatus{}
+			}
+			if !p.EqualVT(q) {
+				return false
+			}
 		}
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -521,6 +584,23 @@ func (this *ConformanceResponse_TextPayload) EqualVT(thatIface isConformanceResp
 	return true
 }
 
+func (this *ConformanceResponse_TimeoutError) EqualVT(thatIface isConformanceResponse_Result) bool {
+	that, ok := thatIface.(*ConformanceResponse_TimeoutError)
+	if !ok {
+		return false
+	}
+	if this == that {
+		return true
+	}
+	if this == nil && that != nil || this != nil && that == nil {
+		return false
+	}
+	if this.TimeoutError != that.TimeoutError {
+		return false
+	}
+	return true
+}
+
 func (this *JspbEncodingConfig) EqualVT(that *JspbEncodingConfig) bool {
 	if this == that {
 		return true
@@ -540,6 +620,60 @@ func (this *JspbEncodingConfig) EqualMessageVT(thatMsg proto.Message) bool {
 	}
 	return this.EqualVT(that)
 }
+func (m *TestStatus) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestStatus) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *TestStatus) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.MatchedName) > 0 {
+		i -= len(m.MatchedName)
+		copy(dAtA[i:], m.MatchedName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.MatchedName)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.FailureMessage) > 0 {
+		i -= len(m.FailureMessage)
+		copy(dAtA[i:], m.FailureMessage)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.FailureMessage)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *FailureSet) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -570,13 +704,16 @@ func (m *FailureSet) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Failure) > 0 {
-		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Failure[iNdEx])
-			copy(dAtA[i:], m.Failure[iNdEx])
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
+	if len(m.Test) > 0 {
+		for iNdEx := len(m.Test) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Test[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
-			dAtA[i] = 0xa
+			dAtA[i] = 0x12
 		}
 	}
 	return len(dAtA) - i, nil
@@ -871,6 +1008,20 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVT(dAtA []byte) (i
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
 }
+func (m *ConformanceResponse_TimeoutError) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *ConformanceResponse_TimeoutError) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.TimeoutError)
+	copy(dAtA[i:], m.TimeoutError)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TimeoutError)))
+	i--
+	dAtA[i] = 0x4a
+	return len(dAtA) - i, nil
+}
 func (m *JspbEncodingConfig) MarshalVT() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -914,6 +1065,60 @@ func (m *JspbEncodingConfig) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *TestStatus) MarshalVTStrict() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVTStrict(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TestStatus) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *TestStatus) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if len(m.MatchedName) > 0 {
+		i -= len(m.MatchedName)
+		copy(dAtA[i:], m.MatchedName)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.MatchedName)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.FailureMessage) > 0 {
+		i -= len(m.FailureMessage)
+		copy(dAtA[i:], m.FailureMessage)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.FailureMessage)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Name) > 0 {
+		i -= len(m.Name)
+		copy(dAtA[i:], m.Name)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Name)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func (m *FailureSet) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -944,13 +1149,16 @@ func (m *FailureSet) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Failure) > 0 {
-		for iNdEx := len(m.Failure) - 1; iNdEx >= 0; iNdEx-- {
-			i -= len(m.Failure[iNdEx])
-			copy(dAtA[i:], m.Failure[iNdEx])
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Failure[iNdEx])))
+	if len(m.Test) > 0 {
+		for iNdEx := len(m.Test) - 1; iNdEx >= 0; iNdEx-- {
+			size, err := m.Test[iNdEx].MarshalToSizedBufferVTStrict(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
-			dAtA[i] = 0xa
+			dAtA[i] = 0x12
 		}
 	}
 	return len(dAtA) - i, nil
@@ -1140,6 +1348,13 @@ func (m *ConformanceResponse) MarshalToSizedBufferVTStrict(dAtA []byte) (int, er
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if msg, ok := m.Result.(*ConformanceResponse_TimeoutError); ok {
+		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+	}
 	if msg, ok := m.Result.(*ConformanceResponse_TextPayload); ok {
 		size, err := msg.MarshalToSizedBufferVTStrict(dAtA[:i])
 		if err != nil {
@@ -1311,6 +1526,20 @@ func (m *ConformanceResponse_TextPayload) MarshalToSizedBufferVTStrict(dAtA []by
 	dAtA[i] = 0x42
 	return len(dAtA) - i, nil
 }
+func (m *ConformanceResponse_TimeoutError) MarshalToVTStrict(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVTStrict(dAtA[:size])
+}
+
+func (m *ConformanceResponse_TimeoutError) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	i -= len(m.TimeoutError)
+	copy(dAtA[i:], m.TimeoutError)
+	i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.TimeoutError)))
+	i--
+	dAtA[i] = 0x4a
+	return len(dAtA) - i, nil
+}
 func (m *JspbEncodingConfig) MarshalVTStrict() (dAtA []byte, err error) {
 	if m == nil {
 		return nil, nil
@@ -1354,15 +1583,37 @@ func (m *JspbEncodingConfig) MarshalToSizedBufferVTStrict(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
+func (m *TestStatus) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Name)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.FailureMessage)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	l = len(m.MatchedName)
+	if l > 0 {
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	n += len(m.unknownFields)
+	return n
+}
+
 func (m *FailureSet) SizeVT() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.Failure) > 0 {
-		for _, s := range m.Failure {
-			l = len(s)
+	if len(m.Test) > 0 {
+		for _, e := range m.Test {
+			l = e.SizeVT()
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
@@ -1533,6 +1784,16 @@ func (m *ConformanceResponse_TextPayload) SizeVT() (n int) {
 	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	return n
 }
+func (m *ConformanceResponse_TimeoutError) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.TimeoutError)
+	n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	return n
+}
 func (m *JspbEncodingConfig) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1546,6 +1807,153 @@ func (m *JspbEncodingConfig) SizeVT() (n int) {
 	return n
 }
 
+func (m *TestStatus) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TestStatus: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TestStatus: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Name = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailureMessage", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.FailureMessage = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MatchedName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.MatchedName = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1575,11 +1983,11 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			return fmt.Errorf("proto: FailureSet: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
+		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Failure", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Test", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -1589,23 +1997,25 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return protohelpers.ErrInvalidLength
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return protohelpers.ErrInvalidLength
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Failure = append(m.Failure, string(dAtA[iNdEx:postIndex]))
+			m.Test = append(m.Test, &TestStatus{})
+			if err := m.Test[len(m.Test)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2221,6 +2631,38 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			m.Result = &ConformanceResponse_TextPayload{TextPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeoutError", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Result = &ConformanceResponse_TimeoutError{TimeoutError: string(dAtA[iNdEx:postIndex])}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -2314,7 +2756,7 @@ func (m *JspbEncodingConfig) UnmarshalVT(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
+func (m *TestStatus) UnmarshalVTUnsafe(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2337,15 +2779,15 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: FailureSet: wiretype end group for non-group")
+			return fmt.Errorf("proto: TestStatus: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: FailureSet: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: TestStatus: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Failure", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Name", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -2377,7 +2819,164 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
-			m.Failure = append(m.Failure, stringValue)
+			m.Name = stringValue
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field FailureMessage", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.FailureMessage = stringValue
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MatchedName", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.MatchedName = stringValue
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: FailureSet: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: FailureSet: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Test", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Test = append(m.Test, &TestStatus{})
+			if err := m.Test[len(m.Test)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -3034,6 +3633,42 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
 			}
 			m.Result = &ConformanceResponse_TextPayload{TextPayload: stringValue}
+			iNdEx = postIndex
+		case 9:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field TimeoutError", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			var stringValue string
+			if intStringLen > 0 {
+				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
+			}
+			m.Result = &ConformanceResponse_TimeoutError{TimeoutError: stringValue}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

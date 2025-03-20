@@ -1,5 +1,6 @@
 export GOBIN=$(PWD)/bin
-export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-21.12
+export PROTOBUF_ROOT=$(PWD)/_vendor/protobuf-30.1
+export PROTOC_PATH=$(PROTOBUF_ROOT)/protoc
 
 .PHONY: install test gen-conformance gen-include gen-wkt genall bin/protoc-gen-go bin/protoc-gen-go-vtproto
 
@@ -9,10 +10,10 @@ bin/protoc-gen-go-vtproto:
 	go install -buildvcs=false -tags protolegacy ./cmd/protoc-gen-go-vtproto
 
 bin/protoc-gen-go:
-	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go
+	go install -tags protolegacy google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 gen-conformance: install
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		--proto_path=$(PROTOBUF_ROOT) \
 		--go_out=conformance --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		--go-vtproto_out=conformance --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
@@ -28,7 +29,7 @@ gen-conformance: install
 		conformance/conformance.proto
 
 gen-include: bin/protoc-gen-go
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		--proto_path=include \
 		--go_out=include --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		-I$(PROTOBUF_ROOT)/src \
@@ -36,7 +37,7 @@ gen-include: bin/protoc-gen-go
 	mv include/github.com/planetscale/vtprotobuf/vtproto/*.go ./vtproto
 
 gen-wkt: bin/protoc-gen-go-vtproto
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		-I$(PROTOBUF_ROOT)/src \
 		--plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		--go-vtproto_out=. \
@@ -50,7 +51,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
         $(PROTOBUF_ROOT)/src/google/protobuf/struct.proto
 
 gen-testproto: get-grpc-testproto gen-wkt-testproto install
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -66,7 +67,7 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		testproto/unsafe/unsafe.proto \
 		testproto/unique/unique.proto \
 		|| exit 1;
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -78,7 +79,7 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		|| exit 1;
 
 get-grpc-testproto: install
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
 		--proto_path=. \
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
@@ -94,7 +95,7 @@ get-grpc-testproto: install
 		|| exit 1;
 
 gen-wkt-testproto: install
-	$(PROTOBUF_ROOT)/src/protoc \
+	$(PROTOC_PATH) \
     	--proto_path=testproto \
     	--proto_path=include \
     	--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
