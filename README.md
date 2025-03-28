@@ -123,7 +123,7 @@ message Label {
             --go-vtproto_opt=features=marshal+unmarshal+size+pool \
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/query.Row \
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
-            --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/response.*
+            --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/response.* \
     ```
 
 6. (Optional) If you are handling messages containing unknown fields and don't intend to forward these messages to a tool that might expect these fields, you can ignore them using the `ignoreUnknownFields` option.
