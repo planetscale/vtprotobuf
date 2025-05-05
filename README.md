@@ -255,3 +255,9 @@ plugins:
 ```
 
 Running `buf generate` will now also include the `vtprotobuf` optimized helpers.
+
+## Gogoproto compatibility
+
+As mentioned before this is not a fork of gogoproto and there are missing features and breaking changes. The little excerpt of migration could be found here: 
+- https://github.com/stackrox/stackrox/issues/15175
+- https://github.com/prometheus/prometheus/pull/14904
