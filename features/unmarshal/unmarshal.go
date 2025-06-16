@@ -199,9 +199,11 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool)
 		p.P(`if postStringIndex`, varName, ` > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(`if !`,utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postStringIndex`, varName, `]) {`)
-		p.P(`return `, p.Helper("ErrInvalidUTF8"))
-		p.P(`}`)
+		if p.Config.ValidateString {
+			p.P(`if !`, utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postStringIndex`, varName, `]) {`)
+			p.P(`return `, p.Helper("ErrInvalidUTF8"))
+			p.P(`}`)
+		}
 		switch {
 		case p.unsafe:
 			p.P(`if intStringLen`, varName, ` == 0 {`)
@@ -440,9 +442,11 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`if postIndex > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
-		p.P(`if !`, utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postIndex]) {`)
-		p.P(`return `, p.Helper("ErrInvalidUTF8"))
-		p.P(`}`)
+		if p.Config.ValidateString {
+			p.P(`if !`, utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postIndex]) {`)
+			p.P(`return `, p.Helper("ErrInvalidUTF8"))
+			p.P(`}`)
+		}
 		str := "string(dAtA[iNdEx:postIndex])"
 		switch {
 		case p.unsafe:

@@ -76,6 +76,15 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		-I$(PROTOBUF_ROOT)/src \
 		testproto/empty/empty.proto \
 		|| exit 1;
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_opt=validate-string=true \
+		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		-I$(PROTOBUF_ROOT)/src \
+		testproto/validate_string/validate_string.proto \
+		|| exit 1;
 
 get-grpc-testproto: install
 	$(PROTOBUF_ROOT)/src/protoc \

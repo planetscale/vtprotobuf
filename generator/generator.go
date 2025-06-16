@@ -61,6 +61,7 @@ type Config struct {
 	Wrap                bool
 	WellKnownTypes      bool
 	AllowEmpty          bool
+	ValidateString      bool
 	BuildTag            string
 }
 
