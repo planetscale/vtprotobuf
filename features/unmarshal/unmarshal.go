@@ -19,6 +19,10 @@ import (
 	"github.com/planetscale/vtprotobuf/vtproto"
 )
 
+var (
+	utf8Pkg = protogen.GoImportPath("unicode/utf8")
+)
+
 func init() {
 	generator.RegisterFeature("unmarshal", func(gen *generator.GeneratedFile) generator.FeatureGenerator {
 		return &unmarshal{GeneratedFile: gen}
@@ -194,6 +198,9 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool)
 		p.P(`}`)
 		p.P(`if postStringIndex`, varName, ` > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
+		p.P(`}`)
+		p.P(`if !`,utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postStringIndex`, varName, `]) {`)
+		p.P(`return `, p.Helper("ErrInvalidUTF8"))
 		p.P(`}`)
 		switch {
 		case p.unsafe:
@@ -432,6 +439,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		p.P(`}`)
 		p.P(`if postIndex > l {`)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
+		p.P(`}`)
+		p.P(`if !`, utf8Pkg.Ident("Valid"), `(dAtA[iNdEx:postIndex]) {`)
+		p.P(`return `, p.Helper("ErrInvalidUTF8"))
 		p.P(`}`)
 		str := "string(dAtA[iNdEx:postIndex])"
 		switch {

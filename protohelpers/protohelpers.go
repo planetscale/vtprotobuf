@@ -15,6 +15,8 @@ var (
 	ErrIntOverflow = fmt.Errorf("proto: integer overflow")
 	// ErrUnexpectedEndOfGroup is returned when decoding a group end without a corresponding group start.
 	ErrUnexpectedEndOfGroup = fmt.Errorf("proto: unexpected end of group")
+	// ErrInvalidUTF8 is returned when decoding a string that is not valid UTF-8.
+	ErrInvalidUTF8 = fmt.Errorf("proto: invalid UTF-8 string")
 )
 
 // EncodeVarint encodes a uint64 into a varint-encoded byte slice and returns the offset of the encoded value.

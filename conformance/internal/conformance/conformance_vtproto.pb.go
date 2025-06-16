@@ -10,6 +10,7 @@ import (
 	proto "google.golang.org/protobuf/proto"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
+	utf8 "unicode/utf8"
 	unsafe "unsafe"
 )
 
@@ -1605,6 +1606,9 @@ func (m *FailureSet) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Failure = append(m.Failure, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
 		default:
@@ -1721,6 +1725,9 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Payload = &ConformanceRequest_JsonPayload{JsonPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 3:
@@ -1771,6 +1778,9 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			m.MessageType = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
@@ -1859,6 +1869,9 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Payload = &ConformanceRequest_JspbPayload{JspbPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 8:
@@ -1890,6 +1903,9 @@ func (m *ConformanceRequest) UnmarshalVT(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			m.Payload = &ConformanceRequest_TextPayload{TextPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
@@ -1994,6 +2010,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Result = &ConformanceResponse_ParseError{ParseError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 2:
@@ -2025,6 +2044,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			m.Result = &ConformanceResponse_RuntimeError{RuntimeError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
@@ -2091,6 +2113,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Result = &ConformanceResponse_JsonPayload{JsonPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 5:
@@ -2122,6 +2147,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			m.Result = &ConformanceResponse_Skipped{Skipped: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
@@ -2155,6 +2183,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Result = &ConformanceResponse_SerializeError{SerializeError: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 7:
@@ -2187,6 +2218,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			m.Result = &ConformanceResponse_JspbPayload{JspbPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
 		case 8:
@@ -2218,6 +2252,9 @@ func (m *ConformanceResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			m.Result = &ConformanceResponse_TextPayload{TextPayload: string(dAtA[iNdEx:postIndex])}
 			iNdEx = postIndex
@@ -2373,6 +2410,9 @@ func (m *FailureSet) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2492,6 +2532,9 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2546,6 +2589,9 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			var stringValue string
 			if intStringLen > 0 {
@@ -2638,6 +2684,9 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2673,6 +2722,9 @@ func (m *ConformanceRequest) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			var stringValue string
 			if intStringLen > 0 {
@@ -2781,6 +2833,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2816,6 +2871,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			var stringValue string
 			if intStringLen > 0 {
@@ -2885,6 +2943,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2920,6 +2981,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			var stringValue string
 			if intStringLen > 0 {
@@ -2957,6 +3021,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -2993,6 +3060,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
+			}
 			var stringValue string
 			if intStringLen > 0 {
 				stringValue = unsafe.String(&dAtA[iNdEx], intStringLen)
@@ -3028,6 +3098,9 @@ func (m *ConformanceResponse) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
+			}
+			if !utf8.Valid(dAtA[iNdEx:postIndex]) {
+				return protohelpers.ErrInvalidUTF8
 			}
 			var stringValue string
 			if intStringLen > 0 {
