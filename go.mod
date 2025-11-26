@@ -2,8 +2,6 @@ module github.com/planetscale/vtprotobuf
 
 go 1.22.0
 
-toolchain go1.24.4
-
 require (
 	github.com/stretchr/testify v1.8.4
 	google.golang.org/grpc v1.71.0
