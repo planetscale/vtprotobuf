@@ -1,0 +1,26 @@
+syntax = "proto3";
+option go_package = "testproto/pool";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+message MapReuseTest1 {
+    option (vtproto.mempool) = true;
+    enum TEST {
+        test1 = 0;
+        test2 = 1;
+    }
+    map<int32, string> intToStringMap = 1;
+    map<string, TEST> stringToEnumMap = 2;
+}
+
+message TestObjWithoutPool {
+    string name = 1;
+    uint64 age = 2;
+}
+
+message MapReuseTest2 {
+    option (vtproto.mempool) = true;
+    map<int32, MapReuseTest1> intToMapReuseTest1Map = 1;
+    map<int32, TestObjWithoutPool> intToTestObjWithoutPoolMap = 2;
+    uint32 count = 3;
+}

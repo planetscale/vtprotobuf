@@ -186,3 +186,22 @@ func Test_Pool_Optional(t *testing.T) {
 	mFromPool := MemoryPoolExtensionFromVTPool()
 	require.True(t, mFromPool.EqualVT(&MemoryPoolExtension{}))
 }
+
+func Test_Pool_Reuse_Map(t *testing.T) {
+	allocs := testing.AllocsPerRun(10, func() {
+		obj := MapReuseTest1FromVTPool()
+		if obj.GetIntToStringMap() == nil {
+			obj.IntToStringMap = make(map[int32]string)
+		}
+		obj.IntToStringMap[1] = "test1"
+		obj.IntToStringMap[2] = "test2"
+		obj.IntToStringMap[3] = "test3"
+		if obj.GetStringToEnumMap() == nil {
+			obj.StringToEnumMap = make(map[string]MapReuseTest1_TEST)
+		}
+		obj.StringToEnumMap["test1"] = MapReuseTest1_test1
+		obj.StringToEnumMap["test2"] = MapReuseTest1_test2
+		obj.ReturnToVTPool()
+	})
+	require.Less(t, int(allocs), 1)
+}

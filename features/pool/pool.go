@@ -68,6 +68,21 @@ func (p *pool) message(message *protogen.Message) {
 			}
 			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
 			saved = append(saved, field)
+		} else if field.Desc.IsMap() {
+			switch field.Desc.MapValue().Kind() {
+			case protoreflect.MessageKind, protoreflect.GroupKind:
+				valueField := field.Message.Fields[1]
+				p.P(`for _, v := range m.`, fieldName, `{`)
+				if p.ShouldPool(valueField.Message) {
+					p.P(`v.ResetVT()`)
+				} else {
+					p.P(`v.Reset()`)
+				}
+				p.P(`}`)
+			}
+			p.P(`clear(m.`, fieldName, `)`)
+			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName)
+			saved = append(saved, field)
 		} else if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
 			if p.ShouldPool(field.Message) {
 				p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
