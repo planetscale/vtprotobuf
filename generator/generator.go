@@ -56,6 +56,10 @@ type Config struct {
 	Poolable ObjectSet
 	// PoolableExclude rules determines if pool feature disabled for particular message
 	PoolableExclude ObjectSet
+	// Slab rules determines if the unmarshal_slab feature generates for particular message
+	Slab ObjectSet
+	// SlabExclude rules determines if the unmarshal_slab feature is disabled for particular message
+	SlabExclude ObjectSet
 	// IgnoreUnknownFields contains messages for which unknown fields shall be ignored
 	IgnoreUnknownFields ObjectSet
 	Wrap                bool
