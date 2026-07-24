@@ -32,13 +32,25 @@ func init() {
 type unmarshal struct {
 	*generator.GeneratedFile
 	unsafe bool
+	slab   bool
 	once   bool
+
+	// slab-mode state, computed per file by generateSlabFile
+	slabFile        *protogen.File
+	slabArena       string
+	slabClosure     map[*protogen.Message]bool
+	slabFieldByType map[string]string
+	slabFieldNames  map[string]bool
+	slabFieldOrder  []string
 }
 
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
 
 func (p *unmarshal) GenerateFile(file *protogen.File) bool {
 	proto3 := file.Desc.Syntax() == protoreflect.Proto3
+	if p.slab {
+		return p.generateSlabFile(file, proto3)
+	}
 	for _, message := range file.Messages {
 		p.message(proto3, message)
 	}
@@ -54,6 +66,12 @@ func (p *unmarshal) methodUnmarshal() string {
 }
 
 func (p *unmarshal) decodeMessage(varName, buf string, message *protogen.Message) {
+	if p.slab && p.slabClosure[message] {
+		p.P(`if err := `, varName, `.unmarshalVTSlab(`, buf, `, a); err != nil {`)
+		p.P(`return err`)
+		p.P(`}`)
+		return
+	}
 	switch {
 	case p.IsWellKnownType(message):
 		p.P(`if err := (*`, p.WellKnownTypeMap(message), `)(`, varName, `).`, p.methodUnmarshal(), `(`, buf, `); err != nil {`)
@@ -226,7 +244,11 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		buf := `dAtA[iNdEx:postmsgIndex]`
-		p.P(varName, ` = &`, p.noStarOrSliceType(field), `{}`)
+		if p.slab && p.slabClosure[field.Message] {
+			p.P(varName, ` = a.`, p.slabField(field.Message.GoIdent.GoName), `.Next()`)
+		} else {
+			p.P(varName, ` = &`, p.noStarOrSliceType(field), `{}`)
+		}
 		p.decodeMessage(varName, buf, field.Message)
 		p.P(`iNdEx = postmsgIndex`)
 	case protoreflect.BytesKind:
@@ -301,8 +323,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = `, typ, "(", p.Ident("math", "Float64frombits"), `(v))`)
 		} else {
-			p.P(`v2 := `, typ, "(", p.Ident("math", "Float64frombits"), `(v))`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.storePtrExpr(fieldname, typ, "v2", typ+"("+p.Ident("math", "Float64frombits")+"(v))")
 		}
 	case protoreflect.FloatKind:
 		p.P(`var v uint32`)
@@ -315,8 +336,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = `, typ, "(", p.Ident("math", "Float32frombits"), `(v))`)
 		} else {
-			p.P(`v2 := `, typ, "(", p.Ident("math", "Float32frombits"), `(v))`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.storePtrExpr(fieldname, typ, "v2", typ+"("+p.Ident("math", "Float32frombits")+"(v))")
 		}
 	case protoreflect.Int64Kind:
 		if oneof {
@@ -333,7 +353,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Uint64Kind:
 		if oneof {
@@ -350,7 +370,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Int32Kind:
 		if oneof {
@@ -367,7 +387,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Fixed64Kind:
 		if oneof {
@@ -384,7 +404,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Fixed32Kind:
 		if oneof {
@@ -401,7 +421,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.BoolKind:
 		p.P(`var v int`)
@@ -414,8 +434,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = `, typ, `(v != 0)`)
 		} else {
-			p.P(`b := `, typ, `(v != 0)`)
-			p.P(`m.`, fieldname, ` = &b`)
+			p.storePtrExpr(fieldname, typ, "b", typ+`(v != 0)`)
 		}
 	case protoreflect.StringKind:
 		unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
@@ -455,8 +474,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = `, str)
 		} else {
-			p.P(`s := `, str)
-			p.P(`m.`, fieldname, ` = &s`)
+			p.storePtrExpr(fieldname, typ, "s", str)
 		}
 		p.P(`iNdEx = postIndex`)
 	case protoreflect.GroupKind:
@@ -498,7 +516,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`if oneof, ok := m.`, fieldname, `.(*`, field.GoIdent, `); ok {`)
 			p.decodeMessage("oneof."+field.GoName, buf, field.Message)
 			p.P(`} else {`)
-			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
+			if p.slab && p.slabClosure[field.Message] {
+				p.P(`v := a.`, p.slabField(field.Message.GoIdent.GoName), `.Next()`)
+			} else if p.ShouldPool(message) && p.ShouldPool(field.Message) {
 				p.P(`v := `, msgname, `FromVTPool()`)
 			} else {
 				p.P(`v := &`, msgname, `{}`)
@@ -547,7 +567,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`}`)
 			p.P(`m.`, fieldname, `[mapkey] = mapvalue`)
 		} else if repeated {
-			if p.ShouldPool(message) {
+			if p.slab && p.slabClosure[field.Message] {
+				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, a.`, p.slabField(field.Message.GoIdent.GoName), `.Next())`)
+			} else if p.ShouldPool(message) {
 				p.P(`if len(m.`, fieldname, `) == cap(m.`, fieldname, `) {`)
 				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
 				p.P(`} else {`)
@@ -564,7 +586,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.decodeMessage(varname, buf, field.Message)
 		} else {
 			p.P(`if m.`, fieldname, ` == nil {`)
-			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
+			if p.slab && p.slabClosure[field.Message] {
+				p.P(`m.`, fieldname, ` = a.`, p.slabField(field.Message.GoIdent.GoName), `.Next()`)
+			} else if p.ShouldPool(message) && p.ShouldPool(field.Message) {
 				p.P(`m.`, fieldname, ` = `, field.Message.GoIdent, `FromVTPool()`)
 			} else {
 				p.P(`m.`, fieldname, ` = &`, field.Message.GoIdent, `{}`)
@@ -628,7 +652,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.EnumKind:
 		if oneof {
@@ -645,7 +669,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Sfixed32Kind:
 		if oneof {
@@ -662,7 +686,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Sfixed64Kind:
 		if oneof {
@@ -679,7 +703,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Sint32Kind:
 		p.P(`var v `, typ)
@@ -692,7 +716,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = v`)
 		} else {
-			p.P(`m.`, fieldname, ` = &v`)
+			p.storePtrVar(fieldname, typ, "v")
 		}
 	case protoreflect.Sint64Kind:
 		p.P(`var v uint64`)
@@ -705,8 +729,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else if proto3 && !nullable {
 			p.P(`m.`, fieldname, ` = `, typ, `(v)`)
 		} else {
-			p.P(`v2 := `, typ, `(v)`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.storePtrExpr(fieldname, typ, "v2", typ+`(v)`)
 		}
 	default:
 		panic("not implemented")
@@ -802,12 +825,22 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	if message.Desc.IsMapEntry() {
 		return
 	}
+	if p.slab && !p.slabClosure[message] {
+		return
+	}
 
 	p.once = true
 	ccTypeName := message.GoIdent.GoName
 	required := message.Desc.RequiredNumbers()
 
-	p.P(`func (m *`, ccTypeName, `) `, p.methodUnmarshal(), `(dAtA []byte) error {`)
+	if p.slab {
+		if p.ShouldSlab(message) {
+			p.slabEntryPoint(message)
+		}
+		p.P(`func (m *`, ccTypeName, `) unmarshalVTSlab(dAtA []byte, a *`, p.slabArena, `) error {`)
+	} else {
+		p.P(`func (m *`, ccTypeName, `) `, p.methodUnmarshal(), `(dAtA []byte) error {`)
+	}
 	if required.Len() > 0 {
 		p.P(`var hasFields [`, strconv.Itoa(1+(required.Len()-1)/64), `]uint64`)
 	}
