@@ -66,6 +66,7 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		testproto/unsafe/unsafe.proto \
 		testproto/unique/unique.proto \
 		testproto/slab/slab.proto \
+		testproto/slab/nested.proto \
 		|| exit 1;
 	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
