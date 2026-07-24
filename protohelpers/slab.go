@@ -6,6 +6,14 @@ package protohelpers
 // of allocations they would save.
 const SlabUnmarshalThreshold = 256
 
+// SlabUnmarshalMinCount is the minimum number of counted repeated-message
+// elements the pre-pass must find for the generated UnmarshalVTSlab methods
+// to use the arena; below it they fall back to plain UnmarshalVT. Slabs win
+// by amortizing many same-type allocations into shared chunks, so a payload
+// that carries only a couple of elements — however large its byte size —
+// would pay the per-type chunk minimums without the amortization.
+const SlabUnmarshalMinCount = 4
+
 // Slab hands out zeroed *T elements carved from chunked backing arrays, so N
 // element allocations collapse into O(log N) chunk allocations. Elements are
 // handed out exactly once and never reused, so pointers into a chunk stay

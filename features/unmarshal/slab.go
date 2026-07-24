@@ -259,23 +259,42 @@ func (p *unmarshal) slabEntryPoint(message *protogen.Message) {
 		}
 	}
 
-	// Reservations: the counted types get their exact counts; singular
-	// message fields hanging off a counted type inherit the parent count as
-	// an upper bound (a chain of singular fields can occur at most once per
-	// parent element). Anything else — nested repeated fields, oneof
-	// variants, scalar slabs — falls back to chunked growth.
-	resTerms := make(map[string][]string)
-	var resOrder []string
-	addTerm := func(typ, term string) {
-		if _, ok := resTerms[typ]; !ok {
-			resOrder = append(resOrder, typ)
+	// Reservations: the counted types get their exact counts, and every type
+	// reachable through chains of plain singular message fields gets the
+	// originating count multiplied by how many instances one parent can hold
+	// (an upper bound: singular fields may be absent). The root's own
+	// singular chains contribute a constant. Anything else — nested repeated
+	// fields, oneof variants, scalar slabs — falls back to chunked growth.
+	type resRow struct {
+		constant int
+		coeff    []int
+	}
+	rows := make(map[*protogen.Message]*resRow)
+	var resOrder []*protogen.Message
+	row := func(t *protogen.Message) *resRow {
+		r, ok := rows[t]
+		if !ok {
+			r = &resRow{coeff: make([]int, len(counted))}
+			rows[t] = r
+			resOrder = append(resOrder, t)
 		}
-		resTerms[typ] = append(resTerms[typ], term)
+		return r
+	}
+
+	memo := make(map[*protogen.Message]map[*protogen.Message]int)
+	for _, field := range message.Fields {
+		if target := p.singularFieldTarget(field); target != nil {
+			row(target).constant++
+			for t, n := range p.singularReach(target, memo, map[*protogen.Message]bool{}) {
+				row(t).constant += n
+			}
+		}
 	}
 	for i, cf := range counted {
-		term := `counts[` + strconv.Itoa(i) + `]`
-		addTerm(cf.target.GoIdent.GoName, term)
-		p.addSingularBounds(cf.target, term, map[*protogen.Message]bool{cf.target: true}, addTerm)
+		row(cf.target).coeff[i]++
+		for t, n := range p.singularReach(cf.target, memo, map[*protogen.Message]bool{}) {
+			row(t).coeff[i] += n
+		}
 	}
 
 	p.P(`// UnmarshalVTSlab is like UnmarshalVT, but allocates nested message`)
@@ -291,44 +310,82 @@ func (p *unmarshal) slabEntryPoint(message *protogen.Message) {
 	if len(counted) > 0 {
 		k := strconv.Itoa(len(counted))
 		nums := make([]string, len(counted))
+		sum := make([]string, len(counted))
 		for i, cf := range counted {
 			nums[i] = strconv.Itoa(int(cf.number))
+			sum[i] = `counts[` + strconv.Itoa(i) + `]`
 		}
 		p.P(`fieldNums := [`, k, `]int32{`, strings.Join(nums, ", "), `}`)
 		p.P(`var counts [`, k, `]int`)
 		p.P(p.Helper("CountFields"), `(dAtA, fieldNums[:], counts[:])`)
-		for _, typ := range resOrder {
-			p.P(`a.`, p.slabField(typ), `.Reserve(`, strings.Join(resTerms[typ], ` + `), `)`)
+		p.P(`if `, strings.Join(sum, `+`), ` < `, p.Helper("SlabUnmarshalMinCount"), ` {`)
+		p.P(`return m.UnmarshalVT(dAtA)`)
+		p.P(`}`)
+	}
+	for _, t := range resOrder {
+		r := rows[t]
+		var terms []string
+		if r.constant > 0 {
+			terms = append(terms, strconv.Itoa(r.constant))
 		}
+		for i, c := range r.coeff {
+			switch {
+			case c == 1:
+				terms = append(terms, `counts[`+strconv.Itoa(i)+`]`)
+			case c > 1:
+				terms = append(terms, strconv.Itoa(c)+`*counts[`+strconv.Itoa(i)+`]`)
+			}
+		}
+		p.P(`a.`, p.slabField(t.GoIdent.GoName), `.Reserve(`, strings.Join(terms, ` + `), `)`)
 	}
 	p.P(`return m.unmarshalVTSlab(dAtA, &a)`)
 	p.P(`}`)
 	p.P()
 }
 
-// addSingularBounds walks the plain singular message fields reachable from a
-// counted type and records the parent count as a reservation upper bound for
-// each; the visited set both breaks recursion cycles and keeps every type
-// bound at most once per counted field.
-func (p *unmarshal) addSingularBounds(m *protogen.Message, term string, visited map[*protogen.Message]bool, addTerm func(typ, term string)) {
-	for _, field := range m.Fields {
-		if field.Desc.IsMap() || field.Desc.IsList() {
-			continue
-		}
-		if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
-			// At most one variant of a oneof is set; reserving for all of
-			// them would systematically over-allocate.
-			continue
-		}
-		if field.Desc.Kind() != protoreflect.MessageKind {
-			continue
-		}
-		target := p.slabFieldTarget(field)
-		if target == nil || visited[target] {
-			continue
-		}
-		visited[target] = true
-		addTerm(target.GoIdent.GoName, term)
-		p.addSingularBounds(target, term, visited, addTerm)
+// singularFieldTarget returns the slab closure type of a plain singular
+// message field (not repeated, not a map, not a member of a real oneof — at
+// most one oneof variant is set, so reserving for all of them would
+// systematically over-allocate), or nil.
+func (p *unmarshal) singularFieldTarget(field *protogen.Field) *protogen.Message {
+	if field.Desc.IsMap() || field.Desc.IsList() {
+		return nil
 	}
+	if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
+		return nil
+	}
+	if field.Desc.Kind() != protoreflect.MessageKind {
+		return nil
+	}
+	return p.slabFieldTarget(field)
+}
+
+// singularReach returns, for every slab closure type, how many instances a
+// single instance of m can allocate through chains of plain singular message
+// fields — the multiplier used to turn a parent count into a reservation
+// upper bound. Results are memoized per file; recursion cycles are cut by
+// treating the back edge as zero (an under-estimate, which merely falls back
+// to chunked growth).
+func (p *unmarshal) singularReach(m *protogen.Message, memo map[*protogen.Message]map[*protogen.Message]int, inProgress map[*protogen.Message]bool) map[*protogen.Message]int {
+	if r, ok := memo[m]; ok {
+		return r
+	}
+	if inProgress[m] {
+		return nil
+	}
+	inProgress[m] = true
+	r := make(map[*protogen.Message]int)
+	for _, field := range m.Fields {
+		target := p.singularFieldTarget(field)
+		if target == nil {
+			continue
+		}
+		r[target]++
+		for t, n := range p.singularReach(target, memo, inProgress) {
+			r[t] += n
+		}
+	}
+	delete(inProgress, m)
+	memo[m] = r
+	return r
 }

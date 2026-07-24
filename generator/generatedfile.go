@@ -153,6 +153,7 @@ var helpers = map[string]protogen.GoIdent{
 	"Slab":                    {GoName: "Slab", GoImportPath: vtHelpersPackage},
 	"CountFields":             {GoName: "CountFields", GoImportPath: vtHelpersPackage},
 	"SlabUnmarshalThreshold":  {GoName: "SlabUnmarshalThreshold", GoImportPath: vtHelpersPackage},
+	"SlabUnmarshalMinCount":   {GoName: "SlabUnmarshalMinCount", GoImportPath: vtHelpersPackage},
 }
 
 func (p *GeneratedFile) Helper(name string) protogen.GoIdent {
