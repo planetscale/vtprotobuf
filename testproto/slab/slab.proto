@@ -1,0 +1,56 @@
+syntax = "proto3";
+option go_package = "testproto/slab";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+enum SlabFlavor {
+  SLAB_FLAVOR_UNSPECIFIED = 0;
+  SLAB_FLAVOR_SWEET = 1;
+  SLAB_FLAVOR_SOUR = 2;
+}
+
+message SlabBatch {
+  option (vtproto.slab) = true;
+
+  optional int64 shard = 1;
+  repeated SlabItem items = 2;
+  repeated SlabRange ranges = 3;
+  map<string, SlabItem> index = 4;
+  SlabMeta meta = 5;
+  oneof extra {
+    SlabItem extra_item = 6;
+    string note = 7;
+  }
+  repeated int64 packed_ids = 8;
+}
+
+message SlabItem {
+  string key = 1;
+  bytes value = 2;
+  optional int64 expected_version = 3;
+  optional string client_identity = 4;
+  optional bool flag = 5;
+  optional double score = 6;
+  optional fixed64 stamp = 7;
+  optional SlabFlavor flavor = 8;
+  SlabMeta meta = 9;
+  repeated SlabItem children = 10;
+}
+
+message SlabRange {
+  string start_inclusive = 1;
+  string end_exclusive = 2;
+  optional sint64 delta = 3;
+}
+
+message SlabMeta {
+  int64 created_at = 1;
+  optional uint32 ttl = 2;
+  optional float weight = 3;
+}
+
+// SlabPlain is not reachable from any slab-enabled message: it must keep
+// only the stock unmarshalling methods.
+message SlabPlain {
+  string name = 1;
+}
