@@ -269,14 +269,13 @@ func (p *unmarshal) slabEntryPoint(message *protogen.Message) {
 		constant int
 		coeff    []int
 	}
-	rows := make(map[*protogen.Message]*resRow)
-	var resOrder []*protogen.Message
+	rows := make(map[string]*resRow)
 	row := func(t *protogen.Message) *resRow {
-		r, ok := rows[t]
+		name := t.GoIdent.GoName
+		r, ok := rows[name]
 		if !ok {
 			r = &resRow{coeff: make([]int, len(counted))}
-			rows[t] = r
-			resOrder = append(resOrder, t)
+			rows[name] = r
 		}
 		return r
 	}
@@ -322,8 +321,14 @@ func (p *unmarshal) slabEntryPoint(message *protogen.Message) {
 		p.P(`return m.UnmarshalVT(dAtA)`)
 		p.P(`}`)
 	}
-	for _, t := range resOrder {
-		r := rows[t]
+	// Emit reservations in arena field registration order (declaration
+	// order): accumulation above ranges over maps, so any first-touch order
+	// would make the output nondeterministic across generator runs.
+	for _, typ := range p.slabFieldOrder {
+		r, ok := rows[typ]
+		if !ok {
+			continue
+		}
 		var terms []string
 		if r.constant > 0 {
 			terms = append(terms, strconv.Itoa(r.constant))
@@ -336,7 +341,7 @@ func (p *unmarshal) slabEntryPoint(message *protogen.Message) {
 				terms = append(terms, strconv.Itoa(c)+`*counts[`+strconv.Itoa(i)+`]`)
 			}
 		}
-		p.P(`a.`, p.slabField(t.GoIdent.GoName), `.Reserve(`, strings.Join(terms, ` + `), `)`)
+		p.P(`a.`, p.slabField(typ), `.Reserve(`, strings.Join(terms, ` + `), `)`)
 	}
 	p.P(`return m.unmarshalVTSlab(dAtA, &a)`)
 	p.P(`}`)

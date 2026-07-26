@@ -2589,9 +2589,9 @@ func (m *SlabBatch) UnmarshalVTSlab(dAtA []byte) error {
 	if counts[0]+counts[1]+counts[2] < protohelpers.SlabUnmarshalMinCount {
 		return m.UnmarshalVT(dAtA)
 	}
-	a.f_SlabMeta.Reserve(1 + counts[0] + counts[2])
 	a.f_SlabItem.Reserve(counts[0] + counts[2])
 	a.f_SlabRange.Reserve(counts[1])
+	a.f_SlabMeta.Reserve(1 + counts[0] + counts[2])
 	return m.unmarshalVTSlab(dAtA, &a)
 }
 

@@ -4577,13 +4577,13 @@ func (m *NestedOrder) UnmarshalVTSlab(dAtA []byte) error {
 		return m.UnmarshalVT(dAtA)
 	}
 	a.f_NestedParty.Reserve(1)
+	a.f_NestedLine.Reserve(counts[0])
+	a.f_NestedNote.Reserve(counts[1])
+	a.f_NestedTotals.Reserve(1)
 	a.f_NestedAddress.Reserve(2)
 	a.f_NestedGeo.Reserve(2)
-	a.f_NestedTotals.Reserve(1)
-	a.f_NestedLine.Reserve(counts[0])
-	a.f_NestedDimensions.Reserve(counts[0])
 	a.f_NestedProduct.Reserve(counts[0])
-	a.f_NestedNote.Reserve(counts[1])
+	a.f_NestedDimensions.Reserve(counts[0])
 	return m.unmarshalVTSlab(dAtA, &a)
 }
 
