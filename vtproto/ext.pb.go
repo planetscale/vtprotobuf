@@ -86,6 +86,14 @@ var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes = []protoi
 		Filename:      "github.com/planetscale/vtprotobuf/vtproto/ext.proto",
 	},
 	{
+		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
+		ExtensionType: (*bool)(nil),
+		Field:         64103,
+		Name:          "vtproto.slab",
+		Tag:           "varint,64103,opt,name=slab",
+		Filename:      "github.com/planetscale/vtprotobuf/vtproto/ext.proto",
+	},
+	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
 		ExtensionType: (*Opts)(nil),
 		Field:         64150,
@@ -101,12 +109,14 @@ var (
 	E_Mempool = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[0]
 	// optional bool ignore_unknown_fields = 64102;
 	E_IgnoreUnknownFields = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[1]
+	// optional bool slab = 64103;
+	E_Slab = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[2]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
 	// optional vtproto.Opts options = 64150;
-	E_Options = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[2]
+	E_Options = &file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_extTypes[3]
 )
 
 var File_github_com_planetscale_vtprotobuf_vtproto_ext_proto protoreflect.FileDescriptor
@@ -117,7 +127,8 @@ const file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc = "" +
 	"\x04Opts\x12\x16\n" +
 	"\x06unique\x18\x01 \x01(\bR\x06unique:;\n" +
 	"\amempool\x12\x1f.google.protobuf.MessageOptions\x18\xe5\xf4\x03 \x01(\bR\amempool:U\n" +
-	"\x15ignore_unknown_fields\x12\x1f.google.protobuf.MessageOptions\x18\xe6\xf4\x03 \x01(\bR\x13ignoreUnknownFields:H\n" +
+	"\x15ignore_unknown_fields\x12\x1f.google.protobuf.MessageOptions\x18\xe6\xf4\x03 \x01(\bR\x13ignoreUnknownFields:5\n" +
+	"\x04slab\x12\x1f.google.protobuf.MessageOptions\x18\xe7\xf4\x03 \x01(\bR\x04slab:H\n" +
 	"\aoptions\x12\x1d.google.protobuf.FieldOptions\x18\x96\xf5\x03 \x01(\v2\r.vtproto.OptsR\aoptionsBI\n" +
 	"\x13com.google.protobufB\aVTProtoZ)github.com/planetscale/vtprotobuf/vtproto"
 
@@ -142,12 +153,13 @@ var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_goTypes = []any{
 var file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_depIdxs = []int32{
 	1, // 0: vtproto.mempool:extendee -> google.protobuf.MessageOptions
 	1, // 1: vtproto.ignore_unknown_fields:extendee -> google.protobuf.MessageOptions
-	2, // 2: vtproto.options:extendee -> google.protobuf.FieldOptions
-	0, // 3: vtproto.options:type_name -> vtproto.Opts
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	3, // [3:4] is the sub-list for extension type_name
-	0, // [0:3] is the sub-list for extension extendee
+	1, // 2: vtproto.slab:extendee -> google.protobuf.MessageOptions
+	2, // 3: vtproto.options:extendee -> google.protobuf.FieldOptions
+	0, // 4: vtproto.options:type_name -> vtproto.Opts
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	4, // [4:5] is the sub-list for extension type_name
+	0, // [0:4] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -163,7 +175,7 @@ func file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc), len(file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
-			NumExtensions: 3,
+			NumExtensions: 4,
 			NumServices:   0,
 		},
 		GoTypes:           file_github_com_planetscale_vtprotobuf_vtproto_ext_proto_goTypes,

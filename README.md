@@ -41,6 +41,12 @@ The following features can be generated:
 
 - `unmarshal_unsafe` generates a `func (p *YourProto) UnmarshalVTUnsafe(data []byte)` that behaves like `UnmarshalVT`, except it unsafely casts slices of data to `bytes` and `string` fields instead of copying them to newly allocated arrays, so that it performs less allocations. **Data received from the wire has to be left untouched for the lifetime of the message.** Otherwise, the message's `bytes` and `string` fields can be corrupted.
 
+- `unmarshal_slab` generates a `func (p *YourProto) UnmarshalVTSlab(data []byte) error` for every message that opts in (see the usage section below), plus unexported arena-threaded decoding helpers for the message types reachable from it within the same `.proto` file. `UnmarshalVTSlab` decodes exactly like `UnmarshalVT` — same merge semantics, same unknown-field retention, no aliasing of the input buffer — but allocates repeated and nested message elements, map values, and scalar presence pointers (`optional` scalars, strings and enums) from chunked slabs. A cheap counting pre-pass over the top-level wire format reserves exactly-sized chunks for the repeated message fields before decoding, so N element allocations collapse into O(log N) chunk allocations. On repeated-message-heavy payloads this typically cuts decode allocations by 40–60% and decode time by 10–30%. Payloads smaller than `protohelpers.SlabUnmarshalThreshold` (256 bytes), and payloads in which the pre-pass finds fewer than `protohelpers.SlabUnmarshalMinCount` (4) repeated message elements, skip the arena and fall back to `UnmarshalVT`: slabs win by amortizing many same-type allocations, so tiny or barely-repeated messages would pay the arena setup without the payoff.
+
+    **The trade-off**: slab elements are carved out of shared chunks. A decoded message behaves exactly like an independently allocated one, except that **retaining any pointer into the message graph (a sub-message, a repeated element, an `optional` field pointer) keeps that pointer's whole chunk alive**. This is why the feature is strictly opt-in per message: use it for messages whose lifetime ends with the RPC or request that carried them, and do not enable it for messages you dissect and retain pieces of. For the same reason it cannot be combined with `(vtproto.mempool)` on the same message — the generator will refuse.
+
+    The bundled gRPC and DRPC codecs automatically prefer `UnmarshalVTSlab` when a message provides it, so opted-in messages get slab decoding without any call-site changes.
+
 - `pool`: generates the following helper methods
 
     - `func (p *YourProto) ResetVT()`: this function behaves similarly to `proto.Reset(p)`, except it keeps as much memory as possible available on the message, so that further calls to `UnmarshalVT` on the same message will need to allocate less memory. This an API meant to be used with memory pools and does not need to be used directly.
@@ -125,13 +131,26 @@ message Label {
             --go-vtproto_opt=pool=vitess.io/vitess/go/vt/proto/binlogdata.VStreamRowsResponse \
     ```
 
-6. (Optional) If you are handling messages containing unknown fields and don't intend to forward these messages to a tool that might expect these fields, you can ignore them using the `ignoreUnknownFields` option.
+6. (Optional) If you have enabled the `unmarshal_slab` feature, you need to specify which messages get the slab-allocated `UnmarshalVTSlab` entry point — read the trade-off note in the feature list above before opting a message in.
+
+    - You can tag messages explicitly in the `.proto` files with `option (vtproto.slab)`:
+
+    ```proto
+    message WriteBatch {
+        option (vtproto.slab) = true; // Enable slab-allocated unmarshalling
+        repeated Put puts = 1;
+    }
+    ```
+
+    - Alternatively, you can enumerate the objects with `--go-vtproto_opt=slab=<import>.<message>` (and exclude some again with `--go-vtproto_opt=slab-exclude=<import>.<message>`) flags passed via the CLI. Take a look at the example using `--go-vtproto_opt=pool=...` above.
+
+7. (Optional) If you are handling messages containing unknown fields and don't intend to forward these messages to a tool that might expect these fields, you can ignore them using the `ignoreUnknownFields` option.
 
     - You can tag messages explicitly in the `.proto` files with `option (vtproto.ignore_unknown_fields)`. Take a look at the example using `option (vtproto.mempool)` above.
 
     - Alternatively, you can enumerate the objects with `--go-vtproto_opt=ignoreUnknownFields=<import>.<message>` flags passed via the CLI. Take a look at the example using `--go-vtproto_opt=pool=...` above.
 
-7. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
+8. (Optional) if you want to selectively compile the generate `vtprotobuf` files, the `--vtproto_opt=buildTag=<tag>` can be used.
 
     When using this option, the generated code will only be compiled in if a build tag is provided.
 

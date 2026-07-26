@@ -12,6 +12,14 @@ type vtprotoMessage interface {
 	UnmarshalVT([]byte) error
 }
 
+// vtprotoSlabMessage is implemented by messages that opted into slab
+// unmarshalling (`option (vtproto.slab) = true;` with the unmarshal_slab
+// feature): the codec prefers the slab entry point, so opted-in messages get
+// arena-backed decoding without any call-site changes.
+type vtprotoSlabMessage interface {
+	UnmarshalVTSlab([]byte) error
+}
+
 func (Codec) Marshal(v interface{}) ([]byte, error) {
 	vt, ok := v.(vtprotoMessage)
 	if !ok {
@@ -21,6 +29,9 @@ func (Codec) Marshal(v interface{}) ([]byte, error) {
 }
 
 func (Codec) Unmarshal(data []byte, v interface{}) error {
+	if vt, ok := v.(vtprotoSlabMessage); ok {
+		return vt.UnmarshalVTSlab(data)
+	}
 	vt, ok := v.(vtprotoMessage)
 	if !ok {
 		return fmt.Errorf("failed to unmarshal, message is %T (missing vtprotobuf helpers)", v)

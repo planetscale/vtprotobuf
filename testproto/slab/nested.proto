@@ -1,0 +1,91 @@
+syntax = "proto3";
+option go_package = "testproto/slab";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+// A somewhat complex, deeply nested shape: four to five levels of messages
+// with a mix of repeated, singular, map, oneof and optional-scalar fields at
+// every level, mirroring a realistic "document" RPC payload. Used to
+// benchmark slab decoding against the stock decoder on nested objects.
+
+message NestedOrder {
+  option (vtproto.slab) = true;
+
+  string order_id = 1;
+  optional int64 sequence = 2;
+  NestedParty customer = 3;
+  repeated NestedLine lines = 4;
+  map<string, NestedNote> notes = 5;
+  NestedTotals totals = 6;
+}
+
+message NestedParty {
+  string name = 1;
+  optional string tax_id = 2;
+  NestedAddress billing = 3;
+  NestedAddress delivery = 4;
+}
+
+message NestedAddress {
+  string street = 1;
+  string city = 2;
+  optional string region = 3;
+  optional uint32 zip = 4;
+  NestedGeo geo = 5;
+}
+
+message NestedGeo {
+  double lat = 1;
+  double lon = 2;
+  optional float accuracy = 3;
+}
+
+message NestedLine {
+  string sku = 1;
+  optional int64 quantity = 2;
+  optional double unit_price = 3;
+  NestedProduct product = 4;
+  repeated NestedDiscount discounts = 5;
+  oneof fulfillment {
+    NestedShipment ship = 6;
+    string pickup_location = 7;
+  }
+}
+
+message NestedProduct {
+  string title = 1;
+  bytes thumbnail = 2;
+  map<string, string> attributes = 3;
+  NestedDimensions dims = 4;
+  optional string brand = 5;
+}
+
+message NestedDimensions {
+  optional double width = 1;
+  optional double height = 2;
+  optional double depth = 3;
+  optional uint64 weight_mg = 4;
+}
+
+message NestedDiscount {
+  string code = 1;
+  optional sint64 amount_micros = 2;
+}
+
+message NestedShipment {
+  string carrier = 1;
+  NestedAddress destination = 2;
+  optional fixed64 eta_unix = 3;
+}
+
+message NestedNote {
+  string author = 1;
+  string text = 2;
+  optional int64 timestamp = 3;
+}
+
+message NestedTotals {
+  optional int64 subtotal_micros = 1;
+  optional int64 tax_micros = 2;
+  optional int64 total_micros = 3;
+}

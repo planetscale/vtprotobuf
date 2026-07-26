@@ -41,6 +41,23 @@ func (b *GeneratedFile) ShouldPool(message *protogen.Message) bool {
 	return false
 }
 
+func (b *GeneratedFile) ShouldSlab(message *protogen.Message) bool {
+	// Do not generate slab unmarshalling if message is nil or message excluded by external rules
+	if message == nil || b.Config.SlabExclude.Contains(message.GoIdent) {
+		return false
+	}
+
+	if b.Config.Slab.Contains(message.GoIdent) {
+		return true
+	}
+
+	ext := proto.GetExtension(message.Desc.Options(), vtproto.E_Slab)
+	if slab, ok := ext.(bool); ok {
+		return slab
+	}
+	return false
+}
+
 func (b *GeneratedFile) ShouldIgnoreUnknownFields(message *protogen.Message) bool {
 	if b.Config.IgnoreUnknownFields.Contains(message.GoIdent) {
 		return true
@@ -133,6 +150,10 @@ var helpers = map[string]protogen.GoIdent{
 	"ErrInvalidLength":        {GoName: "ErrInvalidLength", GoImportPath: vtHelpersPackage},
 	"ErrIntOverflow":          {GoName: "ErrIntOverflow", GoImportPath: vtHelpersPackage},
 	"ErrUnexpectedEndOfGroup": {GoName: "ErrUnexpectedEndOfGroup", GoImportPath: vtHelpersPackage},
+	"Slab":                    {GoName: "Slab", GoImportPath: vtHelpersPackage},
+	"CountFields":             {GoName: "CountFields", GoImportPath: vtHelpersPackage},
+	"SlabUnmarshalThreshold":  {GoName: "SlabUnmarshalThreshold", GoImportPath: vtHelpersPackage},
+	"SlabUnmarshalMinCount":   {GoName: "SlabUnmarshalMinCount", GoImportPath: vtHelpersPackage},
 }
 
 func (p *GeneratedFile) Helper(name string) protogen.GoIdent {
