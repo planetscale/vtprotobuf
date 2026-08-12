@@ -1,0 +1,15 @@
+edition = "2023";
+
+option go_package = "testproto/editions";
+
+// OpenMessage uses the open API, edition 2023's default; editions.proto covers
+// the opaque default of edition 2024.
+message OpenMessage {
+  int32 explicit_int32 = 1;
+  string explicit_string = 2;
+
+  int32 implicit_int32 = 11 [features.field_presence = IMPLICIT];
+  string implicit_string = 12 [features.field_presence = IMPLICIT];
+
+  int32 required_int32 = 21 [features.field_presence = LEGACY_REQUIRED];
+}

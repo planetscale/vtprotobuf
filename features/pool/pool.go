@@ -51,9 +51,24 @@ func (p *pool) message(message *protogen.Message) {
 	p.P(`if m != nil {`)
 	var saved []*protogen.Field
 	for _, field := range message.Fields {
-		fieldName := field.GoName
+		fieldName := p.FieldName(field)
 
-		if field.Desc.IsList() {
+		if field.Desc.IsList() && p.FieldStorageIsPointer(field) {
+			// Keep the pointer so the slice survives m.Reset().
+			ptr := fmt.Sprintf("f%d", len(saved))
+			p.P(ptr, ` := m.`, fieldName)
+			p.P(`if `, ptr, ` != nil {`)
+			p.P(`for _, mm := range *`, ptr, `{`)
+			if p.ShouldPool(field.Message) {
+				p.P(`mm.ResetVT()`)
+			} else {
+				p.P(`mm.Reset()`)
+			}
+			p.P(`}`)
+			p.P(`*`, ptr, ` = (*`, ptr, `)[:0]`)
+			p.P(`}`)
+			saved = append(saved, field)
+		} else if field.Desc.IsList() {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
 				p.P(`for _, mm := range m.`, fieldName, `{`)
@@ -70,8 +85,8 @@ func (p *pool) message(message *protogen.Message) {
 			saved = append(saved, field)
 		} else if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
 			if p.ShouldPool(field.Message) {
-				p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
-				p.P(`oneof.`, fieldName, `.ReturnToVTPool()`)
+				p.P(`if oneof, ok := `, p.OneofStore("m", field.Oneof), `.(*`, p.OneofWrapperIdent(field), `); ok {`)
+				p.P(`oneof.`, field.GoName, `.ReturnToVTPool()`)
 				p.P(`}`)
 			}
 		} else {
@@ -81,6 +96,10 @@ func (p *pool) message(message *protogen.Message) {
 					p.P(`m.`, fieldName, `.ReturnToVTPool()`)
 				}
 			case protoreflect.BytesKind:
+				// Retaining the buffer would contradict the bit m.Reset() cleared.
+				if p.UsesPresenceBit(field) {
+					break
+				}
 				p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
 				saved = append(saved, field)
 			}
@@ -89,7 +108,7 @@ func (p *pool) message(message *protogen.Message) {
 
 	p.P(`m.Reset()`)
 	for i, field := range saved {
-		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i))
+		p.P(`m.`, p.FieldName(field), ` = `, fmt.Sprintf("f%d", i))
 	}
 	p.P(`}`)
 	p.P(`}`)

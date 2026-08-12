@@ -70,11 +70,45 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go_opt=default_api_level=API_OPAQUE \
+		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		--go-vtproto_opt=default_api_level=API_OPAQUE \
+		-I$(PROTOBUF_ROOT)/src \
+		testproto/opaque/opaque.proto \
+		|| exit 1;
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go_opt=default_api_level=API_HYBRID \
+		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		--go-vtproto_opt=default_api_level=API_HYBRID \
+		-I$(PROTOBUF_ROOT)/src \
+		testproto/hybrid/hybrid.proto \
+		|| exit 1;
+	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		--go-vtproto_opt=paths=source_relative \
 		--go-vtproto_opt=buildTag=vtprotobuf \
 		--go-vtproto_out=allow-empty=true:./testproto/buildtag --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		-I$(PROTOBUF_ROOT)/src \
 		testproto/empty/empty.proto \
+		|| exit 1;
+
+# Not part of genall: the output is checked in because the vendored protoc 21.12
+# predates editions. Regenerating needs PROTOC pointed at protoc >= 32.
+PROTOC ?= protoc
+
+gen-editions-testproto: install
+	$(PROTOC) \
+		--proto_path=testproto \
+		--proto_path=include \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		testproto/editions/editions.proto \
+		testproto/editions/editions2023.proto \
 		|| exit 1;
 
 get-grpc-testproto: install

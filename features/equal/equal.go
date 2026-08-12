@@ -32,9 +32,8 @@ var _ generator.FeatureGenerator = (*equal)(nil)
 func (p *equal) Name() string { return "equal" }
 
 func (p *equal) GenerateFile(file *protogen.File) bool {
-	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(proto3, message)
+		p.message(message)
 	}
 	return p.once
 }
@@ -42,9 +41,9 @@ func (p *equal) GenerateFile(file *protogen.File) bool {
 const equalName = "EqualVT"
 const equalMessageName = "EqualMessageVT"
 
-func (p *equal) message(proto3 bool, message *protogen.Message) {
+func (p *equal) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(proto3, nested)
+		p.message(nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -74,7 +73,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 				continue
 			}
 
-			fieldname := field.Oneof.GoName
+			fieldname := p.OneofName(field.Oneof)
 			if _, ok := oneofs[fieldname]; ok {
 				continue
 			}
@@ -90,7 +89,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 			if p.IsWellKnownType(message) {
 				p.P(`switch c := this.`, fieldname, `.(type) {`)
 				for _, f := range field.Oneof.Fields {
-					p.P(`case *`, f.GoIdent, `:`)
+					p.P(`case *`, p.OneofWrapperIdent(f), `:`)
 					p.P(`if !(*`, p.WellKnownFieldMap(f), `)(c).`, equalName, `(that.`, fieldname, `) {`)
 					p.P(`return false`)
 					p.P(`}`)
@@ -107,7 +106,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 
 	for _, field := range message.Fields {
 		oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-		nullable := field.Message != nil || (field.Oneof != nil && field.Oneof.Desc.IsSynthetic()) || (!proto3 && !oneof)
+		nullable := field.Message != nil || field.Desc.HasPresence()
 		if !oneof {
 			p.field(field, nullable)
 		}
@@ -141,7 +140,7 @@ func (p *equal) message(proto3 bool, message *protogen.Message) {
 }
 
 func (p *equal) oneof(field *protogen.Field) {
-	ccTypeName := field.GoIdent.GoName
+	ccTypeName := p.OneofWrapperIdent(field).GoName
 	ccInterfaceName := fmt.Sprintf("is%s", field.Oneof.GoIdent.GoName)
 	fieldname := field.GoName
 
@@ -188,11 +187,17 @@ func (p *equal) oneof(field *protogen.Field) {
 }
 
 func (p *equal) field(field *protogen.Field, nullable bool) {
-	fieldname := field.GoName
-
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
-	lhs := fmt.Sprintf("this.%s", fieldname)
-	rhs := fmt.Sprintf("that.%s", fieldname)
+	lhs := p.FieldSliceExpr("this", field)
+	rhs := p.FieldSliceExpr("that", field)
+
+	if !repeated && p.UsesPresenceBit(field) && !p.FieldStorageIsPointer(field) {
+		// Unset and set-to-zero differ only in the presence bit.
+		p.P(`if `, p.FieldPresent("this", field), ` != `, p.FieldPresent("that", field), ` {`)
+		p.P(`return false`)
+		p.P(`}`)
+		nullable = false
+	}
 
 	if repeated {
 		p.P(`if len(`, lhs, `) != len(`, rhs, `) {`)

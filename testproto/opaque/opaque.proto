@@ -1,0 +1,49 @@
+syntax = "proto3";
+option go_package = "testproto/opaque";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+
+enum OpaqueEnum {
+  OPAQUE_ENUM_ZERO = 0;
+  OPAQUE_ENUM_ONE = 1;
+}
+
+message Inner {
+  int32 value = 1;
+}
+
+message OpaqueMessage {
+  int32 implicit_int32 = 1;
+  string implicit_string = 2;
+
+  // Explicit presence: scalars, enums and bools lose their pointer and are
+  // tracked by the presence bitfield, strings keep both.
+  optional int32 optional_int32 = 11;
+  optional double optional_double = 12;
+  optional bool optional_bool = 13;
+  optional OpaqueEnum optional_enum = 14;
+  optional string optional_string = 15;
+  optional bytes optional_bytes = 16;
+
+  Inner inner = 21;
+
+  repeated int32 repeated_int32 = 31;
+  // Repeated message fields are stored as a pointer to the slice.
+  repeated Inner repeated_inner = 32;
+
+  map<string, int32> map_int32 = 41;
+
+  oneof selected {
+    int32 oneof_int32 = 51;
+    string oneof_string = 52;
+    Inner oneof_inner = 53;
+  }
+}
+
+message PooledOpaque {
+  option (vtproto.mempool) = true;
+
+  bytes payload = 1;
+  optional int32 counter = 2;
+  repeated Inner repeated_inner = 3;
+}

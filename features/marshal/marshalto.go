@@ -113,18 +113,29 @@ func (p *marshal) mapField(kvField *protogen.Field, varName string) {
 }
 
 func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
+	// Oneof wrappers keep the exported field name at every API level.
 	fieldname := field.GoName
+	store, deref := `m.`+fieldname, ``
+	present, absent := store+` != nil`, store+` == nil`
+	if !oneof {
+		fieldname = p.FieldName(field)
+		store = p.FieldSliceExpr("m", field)
+		present, absent = p.FieldPresent("m", field), p.FieldAbsent("m", field)
+		if p.FieldStorageIsPointer(field) {
+			deref = `*`
+		}
+	}
 	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
-		p.P(`if len(m.`, fieldname, `) > 0 {`)
+		p.P(`if len(`, store, `) > 0 {`)
 	} else if nullable {
 		if field.Desc.Cardinality() == protoreflect.Required {
-			p.P(`if m.`, fieldname, ` == nil {`)
+			p.P(`if `, absent, ` {`)
 			p.P(`return 0, `, p.Ident("fmt", "Errorf"), `("proto: required field `, field.Desc.Name(), ` not set")`)
 			p.P(`} else {`)
 		} else {
-			p.P(`if m.`, fieldname, ` != nil {`)
+			p.P(`if `, present, ` {`)
 		}
 	}
 	packed := field.Desc.IsPacked()
@@ -136,54 +147,54 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		if packed {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`f`, numGen.Next(), ` := `, p.Ident("math", "Float64bits"), `(float64(`, val, `))`)
 			p.encodeFixed64("f", numGen.Current())
 			p.P(`}`)
-			p.encodeVarint(`len(m.`, fieldname, `) * 8`)
+			p.encodeVarint(`len(`, store, `) * 8`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`f`, numGen.Next(), ` := `, p.Ident("math", "Float64bits"), `(float64(`, val, `))`)
 			p.encodeFixed64("f", numGen.Current())
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(*m.`+fieldname, `))`)
+			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(`+deref+store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(m.`, fieldname, `))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(`, store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(m.`+fieldname, `))`)
+			p.encodeFixed64(p.Ident("math", "Float64bits"), `(float64(`+store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.FloatKind:
 		if packed {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`f`, numGen.Next(), ` := `, p.Ident("math", "Float32bits"), `(float32(`, val, `))`)
 			p.encodeFixed32("f" + numGen.Current())
 			p.P(`}`)
-			p.encodeVarint(`len(m.`, fieldname, `) * 4`)
+			p.encodeVarint(`len(`, store, `) * 4`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`f`, numGen.Next(), ` := `, p.Ident("math", "Float32bits"), `(float32(`, val, `))`)
 			p.encodeFixed32("f" + numGen.Current())
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(*m.`+fieldname, `))`)
+			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(`+deref+store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(m.`+fieldname, `))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(`+store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(m.`+fieldname, `))`)
+			p.encodeFixed32(p.Ident("math", "Float32bits"), `(float32(`+store, `))`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.Int32Kind, protoreflect.Uint32Kind, protoreflect.EnumKind:
@@ -192,7 +203,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			total := "pksize" + numGen.Next()
 
 			p.P(`var `, total, ` int`)
-			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(`for _, num := range `, store, ` {`)
 			p.P(total, ` += `, p.Helper("SizeOfVarint"), `(uint64(num))`)
 			p.P(`}`)
 
@@ -201,10 +212,10 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 
 			switch field.Desc.Kind() {
 			case protoreflect.Int64Kind, protoreflect.Int32Kind, protoreflect.EnumKind:
-				p.P(`for _, num1 := range m.`, fieldname, ` {`)
+				p.P(`for _, num1 := range `, store, ` {`)
 				p.P(`num := uint64(num1)`)
 			default:
-				p.P(`for _, num := range m.`, fieldname, ` {`)
+				p.P(`for _, num := range `, store, ` {`)
 			}
 			p.P(`for num >= 1<<7 {`)
 			p.P(`dAtA[`, jvar, `] = uint8(uint64(num)&0x7f|0x80)`)
@@ -218,73 +229,73 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.encodeVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.encodeVarint(val)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeVarint(`*m.`, fieldname)
+			p.encodeVarint(deref, store)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeVarint(`m.`, fieldname)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeVarint(store)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeVarint(`m.`, fieldname)
+			p.encodeVarint(store)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.Fixed64Kind, protoreflect.Sfixed64Kind:
 		if packed {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.encodeFixed64(val)
 			p.P(`}`)
-			p.encodeVarint(`len(m.`, fieldname, `) * 8`)
+			p.encodeVarint(`len(`, store, `) * 8`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.encodeFixed64(val)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeFixed64("*m.", fieldname)
+			p.encodeFixed64(deref, store)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeFixed64("m.", fieldname)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeFixed64(store)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeFixed64("m.", fieldname)
+			p.encodeFixed64(store)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.Fixed32Kind, protoreflect.Sfixed32Kind:
 		if packed {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.encodeFixed32(val)
 			p.P(`}`)
-			p.encodeVarint(`len(m.`, fieldname, `) * 4`)
+			p.encodeVarint(`len(`, store, `) * 4`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.encodeFixed32(val)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeFixed32("*m." + fieldname)
+			p.encodeFixed32(deref + store)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeFixed32("m." + fieldname)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeFixed32(store)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeFixed32("m." + fieldname)
+			p.encodeFixed32(store)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.BoolKind:
 		if packed {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`i--`)
 			p.P(`if `, val, ` {`)
 			p.P(`dAtA[i] = 1`)
@@ -292,10 +303,10 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.P(`dAtA[i] = 0`)
 			p.P(`}`)
 			p.P(`}`)
-			p.encodeVarint(`len(m.`, fieldname, `)`)
+			p.encodeVarint(`len(`, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`i--`)
 			p.P(`if `, val, ` {`)
 			p.P(`dAtA[i] = 1`)
@@ -306,16 +317,16 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.P(`}`)
 		} else if nullable {
 			p.P(`i--`)
-			p.P(`if *m.`, fieldname, ` {`)
+			p.P(`if `, deref, store, ` {`)
 			p.P(`dAtA[i] = 1`)
 			p.P(`} else {`)
 			p.P(`dAtA[i] = 0`)
 			p.P(`}`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` {`)
+			p.P(`if `, store, ` {`)
 			p.P(`i--`)
-			p.P(`if m.`, fieldname, ` {`)
+			p.P(`if `, store, ` {`)
 			p.P(`dAtA[i] = 1`)
 			p.P(`} else {`)
 			p.P(`dAtA[i] = 0`)
@@ -324,7 +335,7 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.P(`}`)
 		} else {
 			p.P(`i--`)
-			p.P(`if m.`, fieldname, ` {`)
+			p.P(`if `, store, ` {`)
 			p.P(`dAtA[i] = 1`)
 			p.P(`} else {`)
 			p.P(`dAtA[i] = 0`)
@@ -333,33 +344,33 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 		}
 	case protoreflect.StringKind:
 		if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`i -= len(`, val, `)`)
 			p.P(`copy(dAtA[i:], `, val, `)`)
 			p.encodeVarint(`len(`, val, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.P(`i -= len(*m.`, fieldname, `)`)
-			p.P(`copy(dAtA[i:], *m.`, fieldname, `)`)
-			p.encodeVarint(`len(*m.`, fieldname, `)`)
+			p.P(`i -= len(`, deref, store, `)`)
+			p.P(`copy(dAtA[i:], `, deref, store, `)`)
+			p.encodeVarint(`len(`, deref, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if len(m.`, fieldname, `) > 0 {`)
-			p.P(`i -= len(m.`, fieldname, `)`)
-			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
-			p.encodeVarint(`len(m.`, fieldname, `)`)
+			p.P(`if len(`, store, `) > 0 {`)
+			p.P(`i -= len(`, store, `)`)
+			p.P(`copy(dAtA[i:], `, store, `)`)
+			p.encodeVarint(`len(`, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.P(`i -= len(m.`, fieldname, `)`)
-			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
-			p.encodeVarint(`len(m.`, fieldname, `)`)
+			p.P(`i -= len(`, store, `)`)
+			p.P(`copy(dAtA[i:], `, store, `)`)
+			p.encodeVarint(`len(`, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.GroupKind:
 		p.encodeKey(fieldNumber, protowire.EndGroupType)
-		p.marshalBackward(`m.`+fieldname, false, field.Message)
+		p.marshalBackward(store, false, field.Message)
 		p.encodeKey(fieldNumber, protowire.StartGroupType)
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
@@ -370,8 +381,8 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			var val string
 			if p.Stable && keyKind != protoreflect.BoolKind {
 				keysName := `keysFor` + fieldname
-				p.P(keysName, ` := make([]`, goTypK, `, 0, len(m.`, fieldname, `))`)
-				p.P(`for k := range m.`, fieldname, ` {`)
+				p.P(keysName, ` := make([]`, goTypK, `, 0, len(`, store, `))`)
+				p.P(`for k := range `, store, ` {`)
 				p.P(keysName, ` = append(`, keysName, `, `, goTypK, `(k))`)
 				p.P(`}`)
 				p.P(p.Ident("sort", "Slice"), `(`, keysName, `, func(i, j int) bool {`)
@@ -379,13 +390,13 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 				p.P(`})`)
 				val = p.reverseListRange(keysName)
 			} else {
-				p.P(`for k := range m.`, fieldname, ` {`)
+				p.P(`for k := range `, store, ` {`)
 				val = "k"
 			}
 			if p.Stable {
-				p.P(`v := m.`, fieldname, `[`, goTypK, `(`, val, `)]`)
+				p.P(`v := `, store, `[`, goTypK, `(`, val, `)]`)
 			} else {
-				p.P(`v := m.`, fieldname, `[`, val, `]`)
+				p.P(`v := `, store, `[`, val, `]`)
 			}
 			p.P(`baseI := i`)
 
@@ -399,33 +410,33 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.marshalBackward(val, true, field.Message)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.marshalBackward(`m.`+fieldname, true, field.Message)
+			p.marshalBackward(store, true, field.Message)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.BytesKind:
 		if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`i -= len(`, val, `)`)
 			p.P(`copy(dAtA[i:], `, val, `)`)
 			p.encodeVarint(`len(`, val, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if !oneof && !field.Desc.HasPresence() {
-			p.P(`if len(m.`, fieldname, `) > 0 {`)
-			p.P(`i -= len(m.`, fieldname, `)`)
-			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
-			p.encodeVarint(`len(m.`, fieldname, `)`)
+			p.P(`if len(`, store, `) > 0 {`)
+			p.P(`i -= len(`, store, `)`)
+			p.P(`copy(dAtA[i:], `, store, `)`)
+			p.encodeVarint(`len(`, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.P(`i -= len(m.`, fieldname, `)`)
-			p.P(`copy(dAtA[i:], m.`, fieldname, `)`)
-			p.encodeVarint(`len(m.`, fieldname, `)`)
+			p.P(`i -= len(`, store, `)`)
+			p.P(`copy(dAtA[i:], `, store, `)`)
+			p.encodeVarint(`len(`, store, `)`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.Sint32Kind:
@@ -434,13 +445,13 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			total := "pksize" + numGen.Next()
 
 			p.P(`var `, total, ` int`)
-			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(`for _, num := range `, store, ` {`)
 			p.P(total, ` += `, p.Helper("SizeOfZigzag"), `(uint64(num))`)
 			p.P(`}`)
 			p.P(`i -= `, total)
 			p.P(jvar, `:= i`)
 
-			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(`for _, num := range `, store, ` {`)
 			xvar := "x" + numGen.Next()
 			p.P(xvar, ` := (uint32(num) << 1) ^ uint32((num >> 31))`)
 			p.P(`for `, xvar, ` >= 1<<7 {`)
@@ -455,21 +466,21 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.encodeVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`x`, numGen.Next(), ` := (uint32(`, val, `) << 1) ^ uint32((`, val, ` >> 31))`)
 			p.encodeVarint(`x`, numGen.Current())
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeVarint(`(uint32(*m.`, fieldname, `) << 1) ^ uint32((*m.`, fieldname, ` >> 31))`)
+			p.encodeVarint(`(uint32(`, deref, store, `) << 1) ^ uint32((`, deref, store, ` >> 31))`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeVarint(`(uint32(m.`, fieldname, `) << 1) ^ uint32((m.`, fieldname, ` >> 31))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeVarint(`(uint32(`, store, `) << 1) ^ uint32((`, store, ` >> 31))`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeVarint(`(uint32(m.`, fieldname, `) << 1) ^ uint32((m.`, fieldname, ` >> 31))`)
+			p.encodeVarint(`(uint32(`, store, `) << 1) ^ uint32((`, store, ` >> 31))`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	case protoreflect.Sint64Kind:
@@ -478,13 +489,13 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			total := "pksize" + numGen.Next()
 
 			p.P(`var `, total, ` int`)
-			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(`for _, num := range `, store, ` {`)
 			p.P(total, ` += `, p.Helper("SizeOfZigzag"), `(uint64(num))`)
 			p.P(`}`)
 			p.P(`i -= `, total)
 			p.P(jvar, `:= i`)
 
-			p.P(`for _, num := range m.`, fieldname, ` {`)
+			p.P(`for _, num := range `, store, ` {`)
 			xvar := "x" + numGen.Next()
 			p.P(xvar, ` := (uint64(num) << 1) ^ uint64((num >> 63))`)
 			p.P(`for `, xvar, ` >= 1<<7 {`)
@@ -499,21 +510,21 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.encodeVarint(total)
 			p.encodeKey(fieldNumber, wireType)
 		} else if repeated {
-			val := p.reverseListRange(`m.`, fieldname)
+			val := p.reverseListRange(store)
 			p.P(`x`, numGen.Next(), ` := (uint64(`, val, `) << 1) ^ uint64((`, val, ` >> 63))`)
 			p.encodeVarint("x" + numGen.Current())
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else if nullable {
-			p.encodeVarint(`(uint64(*m.`, fieldname, `) << 1) ^ uint64((*m.`, fieldname, ` >> 63))`)
+			p.encodeVarint(`(uint64(`, deref, store, `) << 1) ^ uint64((`, deref, store, ` >> 63))`)
 			p.encodeKey(fieldNumber, wireType)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.encodeVarint(`(uint64(m.`, fieldname, `) << 1) ^ uint64((m.`, fieldname, ` >> 63))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.encodeVarint(`(uint64(`, store, `) << 1) ^ uint64((`, store, ` >> 63))`)
 			p.encodeKey(fieldNumber, wireType)
 			p.P(`}`)
 		} else {
-			p.encodeVarint(`(uint64(m.`, fieldname, `) << 1) ^ uint64((m.`, fieldname, ` >> 63))`)
+			p.encodeVarint(`(uint64(`, store, `) << 1) ^ uint64((`, store, ` >> 63))`)
 			p.encodeKey(fieldNumber, wireType)
 		}
 	default:
@@ -629,10 +640,10 @@ func (p *marshal) message(message *protogen.Message) {
 				p.field(false, &numGen, field)
 			} else {
 				if p.IsWellKnownType(message) {
-					p.P(`if m, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
+					p.P(`if m, ok := `, p.OneofStore("m", field.Oneof), `.(*`, p.OneofWrapperIdent(field), `); ok {`)
 					p.P(`msg := ((*`, p.WellKnownFieldMap(field), `)(m))`)
 				} else {
-					p.P(`if msg, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent.GoName, `); ok {`)
+					p.P(`if msg, ok := `, p.OneofStore("m", field.Oneof), `.(*`, p.OneofWrapperIdent(field).GoName, `); ok {`)
 				}
 				marshalForwardOneOf("msg")
 				p.P(`}`)
@@ -647,7 +658,7 @@ func (p *marshal) message(message *protogen.Message) {
 			field := message.Fields[i]
 			oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
 			if oneof {
-				fieldname := field.Oneof.GoName
+				fieldname := p.OneofName(field.Oneof)
 				if _, ok := oneofs[fieldname]; ok {
 					continue
 				}
@@ -655,7 +666,7 @@ func (p *marshal) message(message *protogen.Message) {
 				if p.IsWellKnownType(message) {
 					p.P(`switch c := m.`, fieldname, `.(type) {`)
 					for _, f := range field.Oneof.Fields {
-						p.P(`case *`, f.GoIdent, `:`)
+						p.P(`case *`, p.OneofWrapperIdent(f), `:`)
 						marshalForwardOneOf(`(*`, p.WellKnownFieldMap(f), `)(c)`)
 					}
 					p.P(`}`)
@@ -687,7 +698,7 @@ func (p *marshal) message(message *protogen.Message) {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
 		}
-		ccTypeName := field.GoIdent.GoName
+		ccTypeName := p.OneofWrapperIdent(field).GoName
 		p.P(`func (m *`, ccTypeName, `) `, p.methodMarshalTo(), `(dAtA []byte) (int, error) {`)
 		p.P(`size := m.SizeVT()`)
 		p.P(`return m.`, p.methodMarshalToSizedBuffer(), `(dAtA[:size])`)
