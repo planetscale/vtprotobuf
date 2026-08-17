@@ -38,9 +38,8 @@ type unmarshal struct {
 var _ generator.FeatureGenerator = (*unmarshal)(nil)
 
 func (p *unmarshal) GenerateFile(file *protogen.File) bool {
-	proto3 := file.Desc.Syntax() == protoreflect.Proto3
 	for _, message := range file.Messages {
-		p.message(proto3, message)
+		p.message(message)
 	}
 
 	return p.once
@@ -283,139 +282,161 @@ func (p *unmarshal) noStarOrSliceType(field *protogen.Field) string {
 	return typ
 }
 
-func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message, proto3 bool) {
+func (p *unmarshal) setPresentValue(field *protogen.Field, fieldname, value string) {
+	if p.FieldStorageIsPointer(field) {
+		p.P(`m.`, fieldname, ` = &`, value)
+	} else {
+		p.P(`m.`, fieldname, ` = `, value)
+	}
+	p.FieldSetPresent("m", field)
+}
+
+// listStore allocates the indirection the opaque layout puts in front of
+// repeated message fields, and returns the slice expression.
+func (p *unmarshal) listStore(field *protogen.Field, fieldname string) string {
+	store := `m.` + fieldname
+	if !p.FieldStorageIsPointer(field) {
+		return store
+	}
+	goType, _ := p.FieldGoType(field)
+	p.P(`if `, store, ` == nil {`)
+	p.P(store, ` = &`, goType, `{}`)
+	p.P(`}`)
+	return `(*` + store + `)`
+}
+
+func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *protogen.Message) {
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	typ := p.noStarOrSliceType(field)
 	oneof := field.Oneof != nil && !field.Oneof.Desc.IsSynthetic()
-	nullable := field.Oneof != nil && field.Oneof.Desc.IsSynthetic()
 
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var v uint64`)
 		p.decodeFixed64("v", "uint64")
 		if oneof {
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", typ, "(", p.Ident("math", `Float64frombits`), `(v))}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), `{`, field.GoName, ": ", typ, "(", p.Ident("math", `Float64frombits`), `(v))}`)
 		} else if repeated {
 			p.P(`v2 := `, typ, "(", p.Ident("math", "Float64frombits"), `(v))`)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v2)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = `, typ, "(", p.Ident("math", "Float64frombits"), `(v))`)
 		} else {
 			p.P(`v2 := `, typ, "(", p.Ident("math", "Float64frombits"), `(v))`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.setPresentValue(field, fieldname, "v2")
 		}
 	case protoreflect.FloatKind:
 		p.P(`var v uint32`)
 		p.decodeFixed32("v", "uint32")
 		if oneof {
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", typ, "(", p.Ident("math", "Float32frombits"), `(v))}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), `{`, field.GoName, ": ", typ, "(", p.Ident("math", "Float32frombits"), `(v))}`)
 		} else if repeated {
 			p.P(`v2 := `, typ, "(", p.Ident("math", "Float32frombits"), `(v))`)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v2)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = `, typ, "(", p.Ident("math", "Float32frombits"), `(v))`)
 		} else {
 			p.P(`v2 := `, typ, "(", p.Ident("math", "Float32frombits"), `(v))`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.setPresentValue(field, fieldname, "v2")
 		}
 	case protoreflect.Int64Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeVarint("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Uint64Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeVarint("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Int32Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeVarint("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Fixed64Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeFixed64("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Fixed32Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeFixed32("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.BoolKind:
 		p.P(`var v int`)
 		p.decodeVarint("v", "int")
 		if oneof {
 			p.P(`b := `, typ, `(v != 0)`)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: b}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: b}`)
 		} else if repeated {
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, typ, `(v != 0))`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = `, typ, `(v != 0)`)
 		} else {
 			p.P(`b := `, typ, `(v != 0)`)
-			p.P(`m.`, fieldname, ` = &b`)
+			p.setPresentValue(field, fieldname, "b")
 		}
 	case protoreflect.StringKind:
 		unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
@@ -449,14 +470,14 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`}`)
 		}
 		if oneof {
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", str, `}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), `{`, field.GoName, ": ", str, `}`)
 		} else if repeated {
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, str, `)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = `, str)
 		} else {
 			p.P(`s := `, str)
-			p.P(`m.`, fieldname, ` = &s`)
+			p.setPresentValue(field, fieldname, "s")
 		}
 		p.P(`iNdEx = postIndex`)
 	case protoreflect.GroupKind:
@@ -495,7 +516,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		if oneof {
 			buf := `dAtA[iNdEx:postIndex]`
 			msgname := p.noStarOrSliceType(field)
-			p.P(`if oneof, ok := m.`, fieldname, `.(*`, field.GoIdent, `); ok {`)
+			p.P(`if oneof, ok := m.`, fieldname, `.(*`, p.OneofWrapperIdent(field), `); ok {`)
 			p.decodeMessage("oneof."+field.GoName, buf, field.Message)
 			p.P(`} else {`)
 			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
@@ -504,7 +525,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 				p.P(`v := &`, msgname, `{}`)
 			}
 			p.decodeMessage("v", buf, field.Message)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 			p.P(`}`)
 		} else if field.Desc.IsMap() {
 			unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
@@ -547,19 +568,20 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`}`)
 			p.P(`m.`, fieldname, `[mapkey] = mapvalue`)
 		} else if repeated {
+			list := p.listStore(field, fieldname)
 			if p.ShouldPool(message) {
-				p.P(`if len(m.`, fieldname, `) == cap(m.`, fieldname, `) {`)
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
+				p.P(`if len(`, list, `) == cap(`, list, `) {`)
+				p.P(list, ` = append(`, list, `, &`, field.Message.GoIdent, `{})`)
 				p.P(`} else {`)
-				p.P(`m.`, fieldname, ` = m.`, fieldname, `[:len(m.`, fieldname, `) + 1]`)
-				p.P(`if m.`, fieldname, `[len(m.`, fieldname, `) - 1] == nil {`)
-				p.P(`m.`, fieldname, `[len(m.`, fieldname, `) - 1] = &`, field.Message.GoIdent, `{}`)
+				p.P(list, ` = `, list, `[:len(`, list, `) + 1]`)
+				p.P(`if `, list, `[len(`, list, `) - 1] == nil {`)
+				p.P(list, `[len(`, list, `) - 1] = &`, field.Message.GoIdent, `{}`)
 				p.P(`}`)
 				p.P(`}`)
 			} else {
-				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, &`, field.Message.GoIdent, `{})`)
+				p.P(list, ` = append(`, list, `, &`, field.Message.GoIdent, `{})`)
 			}
-			varname := fmt.Sprintf("m.%s[len(m.%s) - 1]", fieldname, fieldname)
+			varname := fmt.Sprintf("%s[len(%s) - 1]", list, list)
 			buf := `dAtA[iNdEx:postIndex]`
 			p.decodeMessage(varname, buf, field.Message)
 		} else {
@@ -594,7 +616,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 				p.P(`v := make([]byte, postIndex-iNdEx)`)
 				p.P(`copy(v, dAtA[iNdEx:postIndex])`)
 			}
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			if p.unsafe {
 				p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, dAtA[iNdEx:postIndex])`)
@@ -611,120 +633,122 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 				p.P(`m.`, fieldname, ` = []byte{}`)
 				p.P(`}`)
 			}
+			// Bytes have no pointer to carry presence under the opaque layout.
+			p.FieldSetPresent("m", field)
 		}
 		p.P(`iNdEx = postIndex`)
 	case protoreflect.Uint32Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeVarint("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.EnumKind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeVarint("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeVarint("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Sfixed32Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeFixed32("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed32("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Sfixed64Kind:
 		if oneof {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = 0`)
 			p.decodeFixed64("m."+fieldname, typ)
 		} else {
 			p.P(`var v `, typ)
 			p.decodeFixed64("v", typ)
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Sint32Kind:
 		p.P(`var v `, typ)
 		p.decodeVarint("v", typ)
 		p.P(`v = `, typ, `((uint32(v) >> 1) ^ uint32(((v&1)<<31)>>31))`)
 		if oneof {
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), "{", field.GoName, `: v}`)
 		} else if repeated {
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, v)`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = v`)
 		} else {
-			p.P(`m.`, fieldname, ` = &v`)
+			p.setPresentValue(field, fieldname, "v")
 		}
 	case protoreflect.Sint64Kind:
 		p.P(`var v uint64`)
 		p.decodeVarint("v", "uint64")
 		p.P(`v = (v >> 1) ^ uint64((int64(v&1)<<63)>>63)`)
 		if oneof {
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, `{`, field.GoName, ": ", typ, `(v)}`)
+			p.P(`m.`, fieldname, ` = &`, p.OneofWrapperIdent(field), `{`, field.GoName, ": ", typ, `(v)}`)
 		} else if repeated {
 			p.P(`m.`, fieldname, ` = append(m.`, fieldname, `, `, typ, `(v))`)
-		} else if proto3 && !nullable {
+		} else if !field.Desc.HasPresence() {
 			p.P(`m.`, fieldname, ` = `, typ, `(v)`)
 		} else {
 			p.P(`v2 := `, typ, `(v)`)
-			p.P(`m.`, fieldname, ` = &v2`)
+			p.setPresentValue(field, fieldname, "v2")
 		}
 	default:
 		panic("not implemented")
 	}
 }
 
-func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers) {
-	fieldname := field.GoName
-	errFieldname := fieldname
+func (p *unmarshal) field(oneof bool, field *protogen.Field, message *protogen.Message, required protoreflect.FieldNumbers) {
+	fieldname := p.FieldName(field)
+	errFieldname := field.GoName
 	if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
-		fieldname = field.Oneof.GoName
+		fieldname = p.OneofName(field.Oneof)
 	}
 
 	p.P(`case `, strconv.Itoa(int(field.Desc.Number())), `:`)
 	wireType := generator.ProtoWireType(field.Desc.Kind())
 	if field.Desc.IsList() && wireType != protowire.BytesType {
 		p.P(`if wireType == `, strconv.Itoa(int(wireType)), `{`)
-		p.fieldItem(field, fieldname, message, false)
+		p.fieldItem(field, fieldname, message)
 		p.P(`} else if wireType == `, strconv.Itoa(int(protowire.BytesType)), `{`)
 		p.P(`var packedLen int`)
 		p.decodeVarint("packedLen", "int")
@@ -768,7 +792,7 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 		p.P(`}`)
 
 		p.P(`for iNdEx < postIndex {`)
-		p.fieldItem(field, fieldname, message, false)
+		p.fieldItem(field, fieldname, message)
 		p.P(`}`)
 		p.P(`} else {`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
@@ -777,7 +801,7 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 		p.P(`if wireType != `, strconv.Itoa(int(wireType)), `{`)
 		p.P(`return `, p.Ident("fmt", "Errorf"), `("proto: wrong wireType = %d for field `, errFieldname, `", wireType)`)
 		p.P(`}`)
-		p.fieldItem(field, fieldname, message, proto3)
+		p.fieldItem(field, fieldname, message)
 	}
 
 	if field.Desc.Cardinality() == protoreflect.Required {
@@ -794,9 +818,9 @@ func (p *unmarshal) field(proto3, oneof bool, field *protogen.Field, message *pr
 	}
 }
 
-func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
+func (p *unmarshal) message(message *protogen.Message) {
 	for _, nested := range message.Messages {
-		p.message(proto3, nested)
+		p.message(nested)
 	}
 
 	if message.Desc.IsMapEntry() {
@@ -827,7 +851,7 @@ func (p *unmarshal) message(proto3 bool, message *protogen.Message) {
 	p.P(`}`)
 	p.P(`switch fieldNum {`)
 	for _, field := range message.Fields {
-		p.field(proto3, false, field, message, required)
+		p.field(false, field, message, required)
 	}
 	p.P(`default:`)
 	p.P(`iNdEx=preIndex`)

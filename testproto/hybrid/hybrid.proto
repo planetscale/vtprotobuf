@@ -1,0 +1,8 @@
+syntax = "proto3";
+option go_package = "testproto/hybrid";
+
+message HybridMessage {
+  int32 implicit_int32 = 1;
+  optional string optional_string = 2;
+  repeated HybridMessage children = 3;
+}

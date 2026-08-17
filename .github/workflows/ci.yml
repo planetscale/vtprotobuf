@@ -36,6 +36,8 @@ jobs:
 
     - run: go vet ./...
 
+    - run: go vet -tags protoopaque ./testproto/hybrid/...
+
     - run: make genall
     - run: git --no-pager diff --exit-code
 

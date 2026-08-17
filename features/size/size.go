@@ -59,13 +59,22 @@ func (p *size) messageSize(varName, sizeName string, message *protogen.Message) 
 }
 
 func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
-	fieldname := field.GoName
+	// Oneof wrappers keep the exported field name at every API level.
+	store, deref := `m.`+field.GoName, ``
+	present := store + ` != nil`
+	if !oneof {
+		store = p.FieldSliceExpr("m", field)
+		present = p.FieldPresent("m", field)
+		if p.FieldStorageIsPointer(field) {
+			deref = `*`
+		}
+	}
 	nullable := field.Message != nil || (!oneof && field.Desc.HasPresence())
 	repeated := field.Desc.Cardinality() == protoreflect.Repeated
 	if repeated {
-		p.P(`if len(m.`, fieldname, `) > 0 {`)
+		p.P(`if len(`, store, `) > 0 {`)
 	} else if nullable {
-		p.P(`if m.`, fieldname, ` != nil {`)
+		p.P(`if `, present, ` {`)
 	}
 	packed := field.Desc.IsPacked()
 	wireType := generator.ProtoWireType(field.Desc.Kind())
@@ -77,11 +86,11 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind, protoreflect.Fixed64Kind, protoreflect.Sfixed64Kind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(m.`, fieldname, `)*8))`, `+len(m.`, fieldname, `)*8`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(`, store, `)*8))`, `+len(`, store, `)*8`)
 		} else if repeated {
-			p.P(`n+=`, strconv.Itoa(key+8), `*len(m.`, fieldname, `)`)
+			p.P(`n+=`, strconv.Itoa(key+8), `*len(`, store, `)`)
 		} else if !oneof && !nullable {
-			p.P(`if m.`, fieldname, ` != 0 {`)
+			p.P(`if `, store, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key+8))
 			p.P(`}`)
 		} else {
@@ -89,11 +98,11 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 		}
 	case protoreflect.FloatKind, protoreflect.Fixed32Kind, protoreflect.Sfixed32Kind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(m.`, fieldname, `)*4))`, `+len(m.`, fieldname, `)*4`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(`, store, `)*4))`, `+len(`, store, `)*4`)
 		} else if repeated {
-			p.P(`n+=`, strconv.Itoa(key+4), `*len(m.`, fieldname, `)`)
+			p.P(`n+=`, strconv.Itoa(key+4), `*len(`, store, `)`)
 		} else if !oneof && !nullable {
-			p.P(`if m.`, fieldname, ` != 0 {`)
+			p.P(`if `, store, ` != 0 {`)
 			p.P(`n+=`, strconv.Itoa(key+4))
 			p.P(`}`)
 		} else {
@@ -102,30 +111,30 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	case protoreflect.Int64Kind, protoreflect.Uint64Kind, protoreflect.Uint32Kind, protoreflect.EnumKind, protoreflect.Int32Kind:
 		if packed {
 			p.P(`l = 0`)
-			p.P(`for _, e := range m.`, fieldname, ` {`)
+			p.P(`for _, e := range `, store, ` {`)
 			p.P(`l+=`, p.Helper("SizeOfVarint"), `(uint64(e))`)
 			p.P(`}`)
 			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(l))+l`)
 		} else if repeated {
-			p.P(`for _, e := range m.`, fieldname, ` {`)
+			p.P(`for _, e := range `, store, ` {`)
 			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(e))`)
 			p.P(`}`)
 		} else if nullable {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(*m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(`, deref, store, `))`)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(m.`, fieldname, `))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(`, store, `))`)
 			p.P(`}`)
 		} else {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(`, store, `))`)
 		}
 	case protoreflect.BoolKind:
 		if packed {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(m.`, fieldname, `)))`, `+len(m.`, fieldname, `)*1`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(len(`, store, `)))`, `+len(`, store, `)*1`)
 		} else if repeated {
-			p.P(`n+=`, strconv.Itoa(key+1), `*len(m.`, fieldname, `)`)
+			p.P(`n+=`, strconv.Itoa(key+1), `*len(`, store, `)`)
 		} else if !oneof && !nullable {
-			p.P(`if m.`, fieldname, ` {`)
+			p.P(`if `, store, ` {`)
 			p.P(`n+=`, strconv.Itoa(key+1))
 			p.P(`}`)
 		} else {
@@ -133,31 +142,31 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 		}
 	case protoreflect.StringKind:
 		if repeated {
-			p.P(`for _, s := range m.`, fieldname, ` { `)
+			p.P(`for _, s := range `, store, ` { `)
 			p.P(`l = len(s)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 			p.P(`}`)
 		} else if nullable {
-			p.P(`l=len(*m.`, fieldname, `)`)
+			p.P(`l=len(`, deref, store, `)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 		} else if !oneof {
-			p.P(`l=len(m.`, fieldname, `)`)
+			p.P(`l=len(`, store, `)`)
 			p.P(`if l > 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 			p.P(`}`)
 		} else {
-			p.P(`l=len(m.`, fieldname, `)`)
+			p.P(`l=len(`, store, `)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 		}
 	case protoreflect.GroupKind:
-		p.messageSize("m."+fieldname, sizeName, field.Message)
+		p.messageSize(store, sizeName, field.Message)
 		p.P(`n+=l+`, strconv.Itoa(2*key))
 	case protoreflect.MessageKind:
 		if field.Desc.IsMap() {
 			fieldKeySize := generator.KeySize(field.Desc.Number(), generator.ProtoWireType(field.Desc.Kind()))
 			keyKeySize := generator.KeySize(1, generator.ProtoWireType(field.Message.Fields[0].Desc.Kind()))
 			valueKeySize := generator.KeySize(2, generator.ProtoWireType(field.Message.Fields[1].Desc.Kind()))
-			p.P(`for k, v := range m.`, fieldname, ` { `)
+			p.P(`for k, v := range `, store, ` { `)
 			p.P(`_ = k`)
 			p.P(`_ = v`)
 			sum := []interface{}{strconv.Itoa(keyKeySize)}
@@ -219,48 +228,48 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 			p.P(`n+=mapEntrySize+`, fieldKeySize, `+`, p.Helper("SizeOfVarint"), `(uint64(mapEntrySize))`)
 			p.P(`}`)
 		} else if field.Desc.IsList() {
-			p.P(`for _, e := range m.`, fieldname, ` { `)
+			p.P(`for _, e := range `, store, ` { `)
 			p.messageSize("e", sizeName, field.Message)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 			p.P(`}`)
 		} else {
-			p.messageSize("m."+fieldname, sizeName, field.Message)
+			p.messageSize(store, sizeName, field.Message)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 		}
 	case protoreflect.BytesKind:
 		if repeated {
-			p.P(`for _, b := range m.`, fieldname, ` { `)
+			p.P(`for _, b := range `, store, ` { `)
 			p.P(`l = len(b)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 			p.P(`}`)
 		} else if !oneof && !field.Desc.HasPresence() {
-			p.P(`l=len(m.`, fieldname, `)`)
+			p.P(`l=len(`, store, `)`)
 			p.P(`if l > 0 {`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 			p.P(`}`)
 		} else {
-			p.P(`l=len(m.`, fieldname, `)`)
+			p.P(`l=len(`, store, `)`)
 			p.P(`n+=`, strconv.Itoa(key), `+l+`, p.Helper("SizeOfVarint"), `(uint64(l))`)
 		}
 	case protoreflect.Sint32Kind, protoreflect.Sint64Kind:
 		if packed {
 			p.P(`l = 0`)
-			p.P(`for _, e := range m.`, fieldname, ` {`)
+			p.P(`for _, e := range `, store, ` {`)
 			p.P(`l+=`, p.Helper("SizeOfZigzag"), `(uint64(e))`)
 			p.P(`}`)
 			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfVarint"), `(uint64(l))+l`)
 		} else if repeated {
-			p.P(`for _, e := range m.`, fieldname, ` {`)
+			p.P(`for _, e := range `, store, ` {`)
 			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(e))`)
 			p.P(`}`)
 		} else if nullable {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(*m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(`, deref, store, `))`)
 		} else if !oneof {
-			p.P(`if m.`, fieldname, ` != 0 {`)
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(m.`, fieldname, `))`)
+			p.P(`if `, store, ` != 0 {`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(`, store, `))`)
 			p.P(`}`)
 		} else {
-			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(m.`, fieldname, `))`)
+			p.P(`n+=`, strconv.Itoa(key), `+`, p.Helper("SizeOfZigzag"), `(uint64(`, store, `))`)
 		}
 	default:
 		panic("not implemented")
@@ -269,7 +278,7 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	// See https://github.com/planetscale/vtprotobuf/issues/61
 	// Size is always keysize + 1 so just hardcode that here
 	if oneof && field.Desc.Kind() == protoreflect.MessageKind && !field.Desc.IsMap() && !field.Desc.IsList() {
-		p.P("} else { n += ", strconv.Itoa(key + 1), " }")
+		p.P("} else { n += ", strconv.Itoa(key+1), " }")
 	} else if repeated || nullable {
 		p.P(`}`)
 	}
@@ -301,7 +310,7 @@ func (p *size) message(message *protogen.Message) {
 		if !oneof {
 			p.field(false, field, sizeName)
 		} else {
-			fieldname := field.Oneof.GoName
+			fieldname := p.OneofName(field.Oneof)
 			if _, ok := oneofs[fieldname]; ok {
 				continue
 			}
@@ -309,7 +318,7 @@ func (p *size) message(message *protogen.Message) {
 			if p.IsWellKnownType(message) {
 				p.P(`switch c := m.`, fieldname, `.(type) {`)
 				for _, f := range field.Oneof.Fields {
-					p.P(`case *`, f.GoIdent, `:`)
+					p.P(`case *`, p.OneofWrapperIdent(f), `:`)
 					p.P(`n += (*`, p.WellKnownFieldMap(f), `)(c).`, sizeName, `()`)
 				}
 				p.P(`}`)
@@ -331,7 +340,7 @@ func (p *size) message(message *protogen.Message) {
 		if field.Oneof == nil || field.Oneof.Desc.IsSynthetic() {
 			continue
 		}
-		ccTypeName := field.GoIdent
+		ccTypeName := p.OneofWrapperIdent(field)
 		if p.IsWellKnownType(message) && p.IsLocalMessage(message) {
 			ccTypeName.GoImportPath = ""
 		}

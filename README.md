@@ -146,6 +146,20 @@ message Label {
 
 9. (Optional) Switch your RPC framework to use the optimized helpers (see following sections)
 
+## Editions and API levels
+
+`vtprotobuf` accepts `proto2`, `proto3` and editions 2023 and 2024 input, and generates code for all three `protoc-gen-go` API levels.
+
+- **Pass the same `default_api_level` (and any `apilevelM<file>`) to both plugins.** `protoc-gen-go` and `protoc-gen-go-vtproto` each resolve the API level independently; if they disagree, `vtprotobuf` generates open-layout code against an opaque struct and the package fails to compile.
+
+- **Hybrid** files get a `//go:build !protoopaque` constraint, matching the variant `protoc-gen-go` generates without that tag. Under `-tags protoopaque` the `vtprotobuf` helpers are absent rather than broken, so guard their use with a type assertion as described for `buildTag` above.
+
+- **`wrap=true` is incompatible with the opaque API**, which does not export the struct fields the wrapper package would have to reach; it is rejected.
+
+- **`[lazy = true]` is rejected.** `vtprotobuf` cannot honour the lazy unmarshalling contract, and silently ignoring it would drop fields.
+
+- Under the opaque API, reading or writing a field with explicit presence costs one atomic operation on the presence bitfield.
+
 ## `vtprotobuf` package and well-known types
 
 Your generated `_vtproto.pb.go` files will have a dependency on this Go package to access some helper functions as well as the optimized code for ProtoBuf [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/). `vtprotobuf` will detect these types embedded in your own Messages and generate optimized code to marshal and unmarshal them.
