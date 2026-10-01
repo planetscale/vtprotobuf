@@ -12,6 +12,7 @@ import (
 	wrapperspb "google.golang.org/protobuf/types/known/wrapperspb"
 	io "io"
 	math "math"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -36,7 +37,7 @@ func (m *DoubleValue) CloneVT() *DoubleValue {
 	if m == nil {
 		return (*DoubleValue)(nil)
 	}
-	r := new(DoubleValue)
+	r := DoubleValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -45,7 +46,7 @@ func (m *FloatValue) CloneVT() *FloatValue {
 	if m == nil {
 		return (*FloatValue)(nil)
 	}
-	r := new(FloatValue)
+	r := FloatValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -54,7 +55,7 @@ func (m *Int64Value) CloneVT() *Int64Value {
 	if m == nil {
 		return (*Int64Value)(nil)
 	}
-	r := new(Int64Value)
+	r := Int64ValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -63,7 +64,7 @@ func (m *UInt64Value) CloneVT() *UInt64Value {
 	if m == nil {
 		return (*UInt64Value)(nil)
 	}
-	r := new(UInt64Value)
+	r := UInt64ValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -72,7 +73,7 @@ func (m *Int32Value) CloneVT() *Int32Value {
 	if m == nil {
 		return (*Int32Value)(nil)
 	}
-	r := new(Int32Value)
+	r := Int32ValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -81,7 +82,7 @@ func (m *UInt32Value) CloneVT() *UInt32Value {
 	if m == nil {
 		return (*UInt32Value)(nil)
 	}
-	r := new(UInt32Value)
+	r := UInt32ValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -90,7 +91,7 @@ func (m *BoolValue) CloneVT() *BoolValue {
 	if m == nil {
 		return (*BoolValue)(nil)
 	}
-	r := new(BoolValue)
+	r := BoolValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -99,7 +100,7 @@ func (m *StringValue) CloneVT() *StringValue {
 	if m == nil {
 		return (*StringValue)(nil)
 	}
-	r := new(StringValue)
+	r := StringValueFromVTPool()
 	r.Value = m.Value
 	return r
 }
@@ -108,7 +109,7 @@ func (m *BytesValue) CloneVT() *BytesValue {
 	if m == nil {
 		return (*BytesValue)(nil)
 	}
-	r := new(BytesValue)
+	r := BytesValueFromVTPool()
 	if rhs := m.Value; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -859,6 +860,196 @@ func (m *BytesValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_DoubleValue = sync.Pool{
+	New: func() interface{} {
+		return &DoubleValue{}
+	},
+}
+
+func (m *DoubleValue) ResetVT() {
+	if m != nil {
+		(*wrapperspb.DoubleValue)(m).Reset()
+	}
+}
+func (m *DoubleValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_DoubleValue.Put(m)
+	}
+}
+func DoubleValueFromVTPool() *DoubleValue {
+	return vtprotoPool_DoubleValue.Get().(*DoubleValue)
+}
+
+var vtprotoPool_FloatValue = sync.Pool{
+	New: func() interface{} {
+		return &FloatValue{}
+	},
+}
+
+func (m *FloatValue) ResetVT() {
+	if m != nil {
+		(*wrapperspb.FloatValue)(m).Reset()
+	}
+}
+func (m *FloatValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_FloatValue.Put(m)
+	}
+}
+func FloatValueFromVTPool() *FloatValue {
+	return vtprotoPool_FloatValue.Get().(*FloatValue)
+}
+
+var vtprotoPool_Int64Value = sync.Pool{
+	New: func() interface{} {
+		return &Int64Value{}
+	},
+}
+
+func (m *Int64Value) ResetVT() {
+	if m != nil {
+		(*wrapperspb.Int64Value)(m).Reset()
+	}
+}
+func (m *Int64Value) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Int64Value.Put(m)
+	}
+}
+func Int64ValueFromVTPool() *Int64Value {
+	return vtprotoPool_Int64Value.Get().(*Int64Value)
+}
+
+var vtprotoPool_UInt64Value = sync.Pool{
+	New: func() interface{} {
+		return &UInt64Value{}
+	},
+}
+
+func (m *UInt64Value) ResetVT() {
+	if m != nil {
+		(*wrapperspb.UInt64Value)(m).Reset()
+	}
+}
+func (m *UInt64Value) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_UInt64Value.Put(m)
+	}
+}
+func UInt64ValueFromVTPool() *UInt64Value {
+	return vtprotoPool_UInt64Value.Get().(*UInt64Value)
+}
+
+var vtprotoPool_Int32Value = sync.Pool{
+	New: func() interface{} {
+		return &Int32Value{}
+	},
+}
+
+func (m *Int32Value) ResetVT() {
+	if m != nil {
+		(*wrapperspb.Int32Value)(m).Reset()
+	}
+}
+func (m *Int32Value) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Int32Value.Put(m)
+	}
+}
+func Int32ValueFromVTPool() *Int32Value {
+	return vtprotoPool_Int32Value.Get().(*Int32Value)
+}
+
+var vtprotoPool_UInt32Value = sync.Pool{
+	New: func() interface{} {
+		return &UInt32Value{}
+	},
+}
+
+func (m *UInt32Value) ResetVT() {
+	if m != nil {
+		(*wrapperspb.UInt32Value)(m).Reset()
+	}
+}
+func (m *UInt32Value) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_UInt32Value.Put(m)
+	}
+}
+func UInt32ValueFromVTPool() *UInt32Value {
+	return vtprotoPool_UInt32Value.Get().(*UInt32Value)
+}
+
+var vtprotoPool_BoolValue = sync.Pool{
+	New: func() interface{} {
+		return &BoolValue{}
+	},
+}
+
+func (m *BoolValue) ResetVT() {
+	if m != nil {
+		(*wrapperspb.BoolValue)(m).Reset()
+	}
+}
+func (m *BoolValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_BoolValue.Put(m)
+	}
+}
+func BoolValueFromVTPool() *BoolValue {
+	return vtprotoPool_BoolValue.Get().(*BoolValue)
+}
+
+var vtprotoPool_StringValue = sync.Pool{
+	New: func() interface{} {
+		return &StringValue{}
+	},
+}
+
+func (m *StringValue) ResetVT() {
+	if m != nil {
+		(*wrapperspb.StringValue)(m).Reset()
+	}
+}
+func (m *StringValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_StringValue.Put(m)
+	}
+}
+func StringValueFromVTPool() *StringValue {
+	return vtprotoPool_StringValue.Get().(*StringValue)
+}
+
+var vtprotoPool_BytesValue = sync.Pool{
+	New: func() interface{} {
+		return &BytesValue{}
+	},
+}
+
+func (m *BytesValue) ResetVT() {
+	if m != nil {
+		f0 := m.Value[:0]
+		(*wrapperspb.BytesValue)(m).Reset()
+		m.Value = f0
+	}
+}
+func (m *BytesValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_BytesValue.Put(m)
+	}
+}
+func BytesValueFromVTPool() *BytesValue {
+	return vtprotoPool_BytesValue.Get().(*BytesValue)
+}
 func (m *DoubleValue) SizeVT() (n int) {
 	if m == nil {
 		return 0

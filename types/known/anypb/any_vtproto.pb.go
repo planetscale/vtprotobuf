@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	anypb "google.golang.org/protobuf/types/known/anypb"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -26,7 +27,7 @@ func (m *Any) CloneVT() *Any {
 	if m == nil {
 		return (*Any)(nil)
 	}
-	r := new(Any)
+	r := AnyFromVTPool()
 	r.TypeUrl = m.TypeUrl
 	if rhs := m.Value; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
@@ -137,6 +138,28 @@ func (m *Any) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_Any = sync.Pool{
+	New: func() interface{} {
+		return &Any{}
+	},
+}
+
+func (m *Any) ResetVT() {
+	if m != nil {
+		f0 := m.Value[:0]
+		(*anypb.Any)(m).Reset()
+		m.Value = f0
+	}
+}
+func (m *Any) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Any.Put(m)
+	}
+}
+func AnyFromVTPool() *Any {
+	return vtprotoPool_Any.Get().(*Any)
+}
 func (m *Any) SizeVT() (n int) {
 	if m == nil {
 		return 0

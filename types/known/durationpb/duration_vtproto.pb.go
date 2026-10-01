@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	io "io"
+	sync "sync"
 )
 
 const (
@@ -25,7 +26,7 @@ func (m *Duration) CloneVT() *Duration {
 	if m == nil {
 		return (*Duration)(nil)
 	}
-	r := new(Duration)
+	r := DurationFromVTPool()
 	r.Seconds = m.Seconds
 	r.Nanos = m.Nanos
 	return r
@@ -124,6 +125,26 @@ func (m *Duration) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_Duration = sync.Pool{
+	New: func() interface{} {
+		return &Duration{}
+	},
+}
+
+func (m *Duration) ResetVT() {
+	if m != nil {
+		(*durationpb.Duration)(m).Reset()
+	}
+}
+func (m *Duration) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Duration.Put(m)
+	}
+}
+func DurationFromVTPool() *Duration {
+	return vtprotoPool_Duration.Get().(*Duration)
+}
 func (m *Duration) SizeVT() (n int) {
 	if m == nil {
 		return 0

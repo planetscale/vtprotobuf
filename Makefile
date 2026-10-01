@@ -41,6 +41,7 @@ gen-wkt: bin/protoc-gen-go-vtproto
 		--plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
 		--go-vtproto_out=. \
 		--go-vtproto_opt=module=google.golang.org/protobuf,wrap=true \
+		--go-vtproto_opt=pool=google.golang.org/protobuf/types/known/*.* \
 		$(PROTOBUF_ROOT)/src/google/protobuf/any.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/duration.proto \
         $(PROTOBUF_ROOT)/src/google/protobuf/empty.proto \
@@ -55,12 +56,15 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
 		--go-vtproto_out=allow-empty=true:. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		--go-vtproto_opt=pool=google.golang.org/protobuf/types/known/*.* \
 		-I$(PROTOBUF_ROOT)/src \
 		testproto/ignore_unknown_fields/opt.proto \
 		testproto/empty/empty.proto \
 		testproto/pool/pool.proto \
 		testproto/pool/pool_with_slice_reuse.proto \
+		testproto/pool/pool_with_map_reuse.proto \
 		testproto/pool/pool_with_oneof.proto \
+		testproto/pool/wkt_pool.proto \
 		testproto/proto3opt/opt.proto \
 		testproto/proto2/scalars.proto \
 		testproto/unsafe/unsafe.proto \

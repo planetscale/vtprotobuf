@@ -16,8 +16,9 @@ import (
 
 type GeneratedFile struct {
 	*protogen.GeneratedFile
-	Config        *Config
-	LocalPackages map[protoreflect.FullName]bool
+	Config             *Config
+	LocalPackages      map[protoreflect.FullName]bool
+	OutputGoImportPath protogen.GoImportPath
 }
 
 func (p *GeneratedFile) Ident(path, ident string) string {
@@ -52,16 +53,79 @@ func (b *GeneratedFile) ShouldIgnoreUnknownFields(message *protogen.Message) boo
 }
 
 func (b *GeneratedFile) Alloc(vname string, message *protogen.Message, isQualifiedIdent bool) {
+	if b.ShouldPool(message) {
+		b.PDeclFromVTPool(vname, message)
+		return
+	}
+
 	ident := message.GoIdent.GoName
 	if isQualifiedIdent {
 		ident = b.QualifiedGoIdent(message.GoIdent)
 	}
+	b.P(vname, " := new(", ident, `)`)
+}
 
-	if b.ShouldPool(message) {
-		b.P(vname, " := ", ident, `FromVTPool()`)
-	} else {
-		b.P(vname, " := new(", ident, `)`)
+// PoolMessageIdent is the type used for pool method receivers in the file being generated.
+func (p *GeneratedFile) PoolMessageIdent(message *protogen.Message) protogen.GoIdent {
+	if p.IsLocalWrapper(message) {
+		return protogen.GoIdent{GoName: message.GoIdent.GoName}
 	}
+	return message.GoIdent
+}
+
+// PDeclFromVTPool emits `vname := <pooled message>`. Caller must ensure ShouldPool(message).
+func (p *GeneratedFile) PDeclFromVTPool(vname string, message *protogen.Message) {
+	p.P(append([]any{vname, " := "}, p.fromVTPool(message)...)...)
+}
+
+// PAssignFromVTPool emits `target = <pooled message>`. Caller must ensure ShouldPool(message).
+func (p *GeneratedFile) PAssignFromVTPool(target string, message *protogen.Message) {
+	expr := p.fromVTPool(message)
+	if p.IsLocalWrapper(message) {
+		// The wrapper shares its layout with the underlying message, which is the type targets hold.
+		expr = p.convertExpr(message, expr)
+	}
+	p.P(append([]any{target, " = "}, expr...)...)
+}
+
+// convertExpr wraps expr in a pointer conversion to the message's own Go type.
+func (p *GeneratedFile) convertExpr(message *protogen.Message, expr []any) []any {
+	out := []any{"(*", p.QualifiedGoIdent(message.GoIdent), ")("}
+	out = append(out, expr...)
+	return append(out, ")")
+}
+
+func (p *GeneratedFile) fromVTPool(message *protogen.Message) []any {
+	if p.IsWellKnownType(message) && !p.IsLocalWrapper(message) {
+		wkt := p.WellKnownTypeMap(message)
+		fromPool := protogen.GoIdent{GoName: wkt.GoName + "FromVTPool", GoImportPath: wkt.GoImportPath}
+		return []any{"(*", p.QualifiedGoIdent(message.GoIdent), ")((*", p.QualifiedGoIdent(wkt), ")(", p.QualifiedGoIdent(fromPool), "()))"}
+	}
+	if p.IsLocalWrapper(message) || message.GoIdent.GoImportPath == p.OutputGoImportPath {
+		return []any{p.PoolMessageIdent(message).GoName, "FromVTPool()"}
+	}
+	fromPool := protogen.GoIdent{GoName: message.GoIdent.GoName + "FromVTPool", GoImportPath: message.GoIdent.GoImportPath}
+	return []any{p.QualifiedGoIdent(fromPool), "()"}
+}
+
+// PReturnToVTPool emits a statement that returns a nested message to its pool.
+func (p *GeneratedFile) PReturnToVTPool(expr string, message *protogen.Message) {
+	if p.IsWellKnownType(message) {
+		wkt := p.WellKnownTypeMap(message)
+		p.P(`(*`, p.QualifiedGoIdent(wkt), `)(`, expr, `).ReturnToVTPool()`)
+		return
+	}
+	p.P(expr, `.ReturnToVTPool()`)
+}
+
+// PResetVTElement emits a reset for a repeated element.
+func (p *GeneratedFile) PResetVTElement(expr string, message *protogen.Message) {
+	if p.IsWellKnownType(message) {
+		wkt := p.WellKnownTypeMap(message)
+		p.P(`(*`, p.QualifiedGoIdent(wkt), `)(`, expr, `).ResetVT()`)
+		return
+	}
+	p.P(expr, `.ResetVT()`)
 }
 
 func (p *GeneratedFile) FieldGoType(field *protogen.Field) (goType string, pointer bool) {
@@ -205,4 +269,9 @@ func (p *GeneratedFile) WellKnownTypeMap(message *protogen.Message) protogen.GoI
 
 func (p *GeneratedFile) Wrapper() bool {
 	return p.Config.Wrap
+}
+
+// IsLocalWrapper is true when wrap=true and the message belongs to a locally generated package.
+func (p *GeneratedFile) IsLocalWrapper(message *protogen.Message) bool {
+	return p.Wrapper() && p.IsLocalMessage(message)
 }

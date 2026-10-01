@@ -114,9 +114,10 @@ func (gen *Generator) Generate() {
 
 func (gen *Generator) generateFile(gf *protogen.GeneratedFile, file *protogen.File) {
 	p := &GeneratedFile{
-		GeneratedFile: gf,
-		Config:        gen.cfg,
-		LocalPackages: gen.local,
+		GeneratedFile:      gf,
+		Config:             gen.cfg,
+		LocalPackages:      gen.local,
+		OutputGoImportPath: file.GoImportPath,
 	}
 
 	if p.Config.BuildTag != "" {

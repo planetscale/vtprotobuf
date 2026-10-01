@@ -157,7 +157,7 @@ func (p *unmarshal) declareMapField(varName string, nullable bool, field *protog
 	}
 }
 
-func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool) {
+func (p *unmarshal) mapField(varName string, field *protogen.Field, unique, pool bool) {
 	switch field.Desc.Kind() {
 	case protoreflect.DoubleKind:
 		p.P(`var `, varName, `temp uint64`)
@@ -226,7 +226,11 @@ func (p *unmarshal) mapField(varName string, field *protogen.Field, unique bool)
 		p.P(`return `, p.Ident("io", `ErrUnexpectedEOF`))
 		p.P(`}`)
 		buf := `dAtA[iNdEx:postmsgIndex]`
-		p.P(varName, ` = &`, p.noStarOrSliceType(field), `{}`)
+		if pool {
+			p.PAssignFromVTPool(varName, field.Message)
+		} else {
+			p.P(varName, ` = &`, p.noStarOrSliceType(field), `{}`)
+		}
 		p.decodeMessage(varName, buf, field.Message)
 		p.P(`iNdEx = postmsgIndex`)
 	case protoreflect.BytesKind:
@@ -499,12 +503,16 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.decodeMessage("oneof."+field.GoName, buf, field.Message)
 			p.P(`} else {`)
 			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
-				p.P(`v := `, msgname, `FromVTPool()`)
+				p.PDeclFromVTPool("v", field.Message)
 			} else {
 				p.P(`v := &`, msgname, `{}`)
 			}
 			p.decodeMessage("v", buf, field.Message)
-			p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			if p.IsWellKnownType(field.Message) && p.IsLocalWrapper(field.Message) {
+				p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: (*`, p.QualifiedGoIdent(field.Message.GoIdent), `)(v)}`)
+			} else {
+				p.P(`m.`, fieldname, ` = &`, field.GoIdent, "{", field.GoName, `: v}`)
+			}
 			p.P(`}`)
 		} else if field.Desc.IsMap() {
 			unique := proto.GetExtension(field.Desc.Options(), vtproto.E_Options).(*vtproto.Opts).GetUnique()
@@ -527,9 +535,9 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 			p.P(`fieldNum := int32(wire >> 3)`)
 
 			p.P(`if fieldNum == 1 {`)
-			p.mapField("mapkey", field.Message.Fields[0], unique)
+			p.mapField("mapkey", field.Message.Fields[0], unique, false)
 			p.P(`} else if fieldNum == 2 {`)
-			p.mapField("mapvalue", field.Message.Fields[1], unique)
+			p.mapField("mapvalue", field.Message.Fields[1], unique, p.ShouldPool(message) && p.ShouldPool(field.Message.Fields[1].Message))
 			p.P(`} else {`)
 			p.P(`iNdEx = entryPreIndex`)
 			p.P(`skippy, err := `, p.Helper("Skip"), `(dAtA[iNdEx:])`)
@@ -565,7 +573,7 @@ func (p *unmarshal) fieldItem(field *protogen.Field, fieldname string, message *
 		} else {
 			p.P(`if m.`, fieldname, ` == nil {`)
 			if p.ShouldPool(message) && p.ShouldPool(field.Message) {
-				p.P(`m.`, fieldname, ` = `, field.Message.GoIdent, `FromVTPool()`)
+				p.PAssignFromVTPool("m."+fieldname, field.Message)
 			} else {
 				p.P(`m.`, fieldname, ` = &`, field.Message.GoIdent, `{}`)
 			}

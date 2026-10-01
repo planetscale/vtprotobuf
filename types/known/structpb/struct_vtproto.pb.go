@@ -12,6 +12,7 @@ import (
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	io "io"
 	math "math"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -36,7 +37,7 @@ func (m *Struct) CloneVT() *Struct {
 	if m == nil {
 		return (*Struct)(nil)
 	}
-	r := new(Struct)
+	r := StructFromVTPool()
 	if rhs := m.Fields; rhs != nil {
 		tmpContainer := make(map[string]*structpb.Value, len(rhs))
 		for k, v := range rhs {
@@ -51,7 +52,7 @@ func (m *Value) CloneVT() *Value {
 	if m == nil {
 		return (*Value)(nil)
 	}
-	r := new(Value)
+	r := ValueFromVTPool()
 	if m.Kind != nil {
 		switch c := m.Kind.(type) {
 		case *structpb.Value_NullValue:
@@ -129,7 +130,7 @@ func (m *ListValue) CloneVT() *ListValue {
 	if m == nil {
 		return (*ListValue)(nil)
 	}
-	r := new(ListValue)
+	r := ListValueFromVTPool()
 	if rhs := m.Values; rhs != nil {
 		tmpContainer := make([]*structpb.Value, len(rhs))
 		for k, v := range rhs {
@@ -911,6 +912,87 @@ func (m *ListValue) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_Struct = sync.Pool{
+	New: func() interface{} {
+		return &Struct{}
+	},
+}
+
+func (m *Struct) ResetVT() {
+	if m != nil {
+		for _, v := range m.Fields {
+			if v != nil {
+				(*Value)(v).ReturnToVTPool()
+			}
+		}
+		clear(m.Fields)
+		f0 := m.Fields
+		(*structpb.Struct)(m).Reset()
+		m.Fields = f0
+	}
+}
+func (m *Struct) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Struct.Put(m)
+	}
+}
+func StructFromVTPool() *Struct {
+	return vtprotoPool_Struct.Get().(*Struct)
+}
+
+var vtprotoPool_Value = sync.Pool{
+	New: func() interface{} {
+		return &Value{}
+	},
+}
+
+func (m *Value) ResetVT() {
+	if m != nil {
+		if oneof, ok := m.Kind.(*structpb.Value_StructValue); ok {
+			(*Struct)(oneof.StructValue).ReturnToVTPool()
+		}
+		if oneof, ok := m.Kind.(*structpb.Value_ListValue); ok {
+			(*ListValue)(oneof.ListValue).ReturnToVTPool()
+		}
+		(*structpb.Value)(m).Reset()
+	}
+}
+func (m *Value) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Value.Put(m)
+	}
+}
+func ValueFromVTPool() *Value {
+	return vtprotoPool_Value.Get().(*Value)
+}
+
+var vtprotoPool_ListValue = sync.Pool{
+	New: func() interface{} {
+		return &ListValue{}
+	},
+}
+
+func (m *ListValue) ResetVT() {
+	if m != nil {
+		for _, mm := range m.Values {
+			(*Value)(mm).ResetVT()
+		}
+		f0 := m.Values[:0]
+		(*structpb.ListValue)(m).Reset()
+		m.Values = f0
+	}
+}
+func (m *ListValue) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_ListValue.Put(m)
+	}
+}
+func ListValueFromVTPool() *ListValue {
+	return vtprotoPool_ListValue.Get().(*ListValue)
+}
 func (m *Struct) SizeVT() (n int) {
 	if m == nil {
 		return 0
@@ -1172,7 +1254,7 @@ func (m *Struct) UnmarshalVT(dAtA []byte) error {
 					if postmsgIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapvalue = &structpb.Value{}
+					mapvalue = (*structpb.Value)(ValueFromVTPool())
 					if err := (*Value)(mapvalue).UnmarshalVT(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
@@ -1362,11 +1444,11 @@ func (m *Value) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &structpb.Struct{}
+				v := StructFromVTPool()
 				if err := (*Struct)(v).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Kind = &structpb.Value_StructValue{StructValue: v}
+				m.Kind = &structpb.Value_StructValue{StructValue: (*structpb.Struct)(v)}
 			}
 			iNdEx = postIndex
 		case 6:
@@ -1403,11 +1485,11 @@ func (m *Value) UnmarshalVT(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &structpb.ListValue{}
+				v := ListValueFromVTPool()
 				if err := (*ListValue)(v).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Kind = &structpb.Value_ListValue{ListValue: v}
+				m.Kind = &structpb.Value_ListValue{ListValue: (*structpb.ListValue)(v)}
 			}
 			iNdEx = postIndex
 		default:
@@ -1489,7 +1571,14 @@ func (m *ListValue) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &structpb.Value{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &structpb.Value{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &structpb.Value{}
+				}
+			}
 			if err := (*Value)(m.Values[len(m.Values)-1]).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1655,7 +1744,7 @@ func (m *Struct) UnmarshalVTUnsafe(dAtA []byte) error {
 					if postmsgIndex > l {
 						return io.ErrUnexpectedEOF
 					}
-					mapvalue = &structpb.Value{}
+					mapvalue = (*structpb.Value)(ValueFromVTPool())
 					if err := (*Value)(mapvalue).UnmarshalVTUnsafe(dAtA[iNdEx:postmsgIndex]); err != nil {
 						return err
 					}
@@ -1849,11 +1938,11 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &structpb.Struct{}
+				v := StructFromVTPool()
 				if err := (*Struct)(v).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Kind = &structpb.Value_StructValue{StructValue: v}
+				m.Kind = &structpb.Value_StructValue{StructValue: (*structpb.Struct)(v)}
 			}
 			iNdEx = postIndex
 		case 6:
@@ -1890,11 +1979,11 @@ func (m *Value) UnmarshalVTUnsafe(dAtA []byte) error {
 					return err
 				}
 			} else {
-				v := &structpb.ListValue{}
+				v := ListValueFromVTPool()
 				if err := (*ListValue)(v).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 					return err
 				}
-				m.Kind = &structpb.Value_ListValue{ListValue: v}
+				m.Kind = &structpb.Value_ListValue{ListValue: (*structpb.ListValue)(v)}
 			}
 			iNdEx = postIndex
 		default:
@@ -1976,7 +2065,14 @@ func (m *ListValue) UnmarshalVTUnsafe(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Values = append(m.Values, &structpb.Value{})
+			if len(m.Values) == cap(m.Values) {
+				m.Values = append(m.Values, &structpb.Value{})
+			} else {
+				m.Values = m.Values[:len(m.Values)+1]
+				if m.Values[len(m.Values)-1] == nil {
+					m.Values[len(m.Values)-1] = &structpb.Value{}
+				}
+			}
 			if err := (*Value)(m.Values[len(m.Values)-1]).UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}

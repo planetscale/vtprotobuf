@@ -1,0 +1,19 @@
+syntax = "proto3";
+option go_package = "testproto/pool";
+
+import "github.com/planetscale/vtprotobuf/vtproto/ext.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+
+message WKTNestedPool {
+  option (vtproto.mempool) = true;
+  google.protobuf.Timestamp ts = 1;
+  google.protobuf.Struct st = 2;
+  repeated google.protobuf.Timestamp tss = 3;
+  repeated google.protobuf.Struct sts = 4;
+  oneof choice {
+    google.protobuf.Timestamp choice_ts = 5;
+    google.protobuf.Duration choice_dur = 6;
+  }
+}

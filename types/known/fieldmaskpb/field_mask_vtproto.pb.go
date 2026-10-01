@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
 	io "io"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -26,7 +27,7 @@ func (m *FieldMask) CloneVT() *FieldMask {
 	if m == nil {
 		return (*FieldMask)(nil)
 	}
-	r := new(FieldMask)
+	r := FieldMaskFromVTPool()
 	if rhs := m.Paths; rhs != nil {
 		tmpContainer := make([]string, len(rhs))
 		copy(tmpContainer, rhs)
@@ -129,6 +130,29 @@ func (m *FieldMask) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_FieldMask = sync.Pool{
+	New: func() interface{} {
+		return &FieldMask{}
+	},
+}
+
+func (m *FieldMask) ResetVT() {
+	if m != nil {
+		clear(m.Paths)
+		f0 := m.Paths[:0]
+		(*fieldmaskpb.FieldMask)(m).Reset()
+		m.Paths = f0
+	}
+}
+func (m *FieldMask) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_FieldMask.Put(m)
+	}
+}
+func FieldMaskFromVTPool() *FieldMask {
+	return vtprotoPool_FieldMask.Get().(*FieldMask)
+}
 func (m *FieldMask) SizeVT() (n int) {
 	if m == nil {
 		return 0

@@ -39,9 +39,9 @@ func (p *pool) message(message *protogen.Message) {
 	}
 
 	p.once = true
-	ccTypeName := message.GoIdent
+	ccTypeName := p.PoolMessageIdent(message)
 
-	p.P(`var vtprotoPool_`, ccTypeName, ` = `, p.Ident("sync", "Pool"), `{`)
+	p.P(`var vtprotoPool_`, ccTypeName.GoName, ` = `, p.Ident("sync", "Pool"), `{`)
 	p.P(`New: func() interface{} {`)
 	p.P(`return &`, ccTypeName, `{}`)
 	p.P(`},`)
@@ -58,7 +58,7 @@ func (p *pool) message(message *protogen.Message) {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
 				p.P(`for _, mm := range m.`, fieldName, `{`)
 				if p.ShouldPool(field.Message) {
-					p.P(`mm.ResetVT()`)
+					p.PResetVTElement("mm", field.Message)
 				} else {
 					p.P(`mm.Reset()`)
 				}
@@ -68,17 +68,30 @@ func (p *pool) message(message *protogen.Message) {
 			}
 			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
 			saved = append(saved, field)
+		} else if field.Desc.IsMap() {
+			// Pooled message values go back to their pool; other values are dropped
+			// by clear. The map itself is kept so its buckets are reused.
+			if valueField := field.Message.Fields[1]; valueField.Message != nil && p.ShouldPool(valueField.Message) {
+				p.P(`for _, v := range m.`, fieldName, `{`)
+				p.P(`if v != nil {`)
+				p.PReturnToVTPool("v", valueField.Message)
+				p.P(`}`)
+				p.P(`}`)
+			}
+			p.P(`clear(m.`, fieldName, `)`)
+			p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName)
+			saved = append(saved, field)
 		} else if field.Oneof != nil && !field.Oneof.Desc.IsSynthetic() {
 			if p.ShouldPool(field.Message) {
 				p.P(`if oneof, ok := m.`, field.Oneof.GoName, `.(*`, field.GoIdent, `); ok {`)
-				p.P(`oneof.`, fieldName, `.ReturnToVTPool()`)
+				p.PReturnToVTPool("oneof."+fieldName, field.Message)
 				p.P(`}`)
 			}
 		} else {
 			switch field.Desc.Kind() {
 			case protoreflect.MessageKind, protoreflect.GroupKind:
-				if !field.Desc.IsMap() && p.ShouldPool(field.Message) {
-					p.P(`m.`, fieldName, `.ReturnToVTPool()`)
+				if p.ShouldPool(field.Message) {
+					p.PReturnToVTPool("m."+fieldName, field.Message)
 				}
 			case protoreflect.BytesKind:
 				p.P(fmt.Sprintf("f%d", len(saved)), ` := m.`, fieldName, `[:0]`)
@@ -87,7 +100,11 @@ func (p *pool) message(message *protogen.Message) {
 		}
 	}
 
-	p.P(`m.Reset()`)
+	if p.IsLocalWrapper(message) {
+		p.P(`(*`, p.QualifiedGoIdent(message.GoIdent), `)(m).Reset()`)
+	} else {
+		p.P(`m.Reset()`)
+	}
 	for i, field := range saved {
 		p.P(`m.`, field.GoName, ` = `, fmt.Sprintf("f%d", i))
 	}
@@ -97,11 +114,11 @@ func (p *pool) message(message *protogen.Message) {
 	p.P(`func (m *`, ccTypeName, `) ReturnToVTPool() {`)
 	p.P(`if m != nil {`)
 	p.P(`m.ResetVT()`)
-	p.P(`vtprotoPool_`, ccTypeName, `.Put(m)`)
+	p.P(`vtprotoPool_`, ccTypeName.GoName, `.Put(m)`)
 	p.P(`}`)
 	p.P(`}`)
 
-	p.P(`func `, ccTypeName, `FromVTPool() *`, ccTypeName, `{`)
-	p.P(`return vtprotoPool_`, ccTypeName, `.Get().(*`, ccTypeName, `)`)
+	p.P(`func `, ccTypeName.GoName, `FromVTPool() *`, ccTypeName, `{`)
+	p.P(`return vtprotoPool_`, ccTypeName.GoName, `.Get().(*`, ccTypeName, `)`)
 	p.P(`}`)
 }

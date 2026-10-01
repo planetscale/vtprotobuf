@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	io "io"
+	sync "sync"
 )
 
 const (
@@ -25,7 +26,7 @@ func (m *Timestamp) CloneVT() *Timestamp {
 	if m == nil {
 		return (*Timestamp)(nil)
 	}
-	r := new(Timestamp)
+	r := TimestampFromVTPool()
 	r.Seconds = m.Seconds
 	r.Nanos = m.Nanos
 	return r
@@ -124,6 +125,26 @@ func (m *Timestamp) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_Timestamp = sync.Pool{
+	New: func() interface{} {
+		return &Timestamp{}
+	},
+}
+
+func (m *Timestamp) ResetVT() {
+	if m != nil {
+		(*timestamppb.Timestamp)(m).Reset()
+	}
+}
+func (m *Timestamp) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Timestamp.Put(m)
+	}
+}
+func TimestampFromVTPool() *Timestamp {
+	return vtprotoPool_Timestamp.Get().(*Timestamp)
+}
 func (m *Timestamp) SizeVT() (n int) {
 	if m == nil {
 		return 0

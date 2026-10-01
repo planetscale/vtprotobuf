@@ -10,6 +10,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	io "io"
+	sync "sync"
 )
 
 const (
@@ -25,7 +26,7 @@ func (m *Empty) CloneVT() *Empty {
 	if m == nil {
 		return (*Empty)(nil)
 	}
-	r := new(Empty)
+	r := EmptyFromVTPool()
 	return r
 }
 
@@ -96,6 +97,26 @@ func (m *Empty) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+var vtprotoPool_Empty = sync.Pool{
+	New: func() interface{} {
+		return &Empty{}
+	},
+}
+
+func (m *Empty) ResetVT() {
+	if m != nil {
+		(*emptypb.Empty)(m).Reset()
+	}
+}
+func (m *Empty) ReturnToVTPool() {
+	if m != nil {
+		m.ResetVT()
+		vtprotoPool_Empty.Put(m)
+	}
+}
+func EmptyFromVTPool() *Empty {
+	return vtprotoPool_Empty.Get().(*Empty)
+}
 func (m *Empty) SizeVT() (n int) {
 	if m == nil {
 		return 0
